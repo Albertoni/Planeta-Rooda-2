@@ -1,0 +1,257 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="portfolio.css" />
+<link type="text/css" rel="stylesheet" href="forum.css" />
+<link type="text/css" rel="stylesheet" href="blog.css" />
+<link type="text/css" rel="stylesheet" href="planeta_arte.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="planeta.js"></script>
+<script type="text/javascript" src="p_arte.js"></script>
+<script type="text/javascript" src="blog.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();">
+<img src="images/fundos/fundo6.png" width="100%" height="100%" style="position:fixed" />
+	<div id="descricao"></div>
+
+	<div id="fundo_lbox"></div>
+    <div id="light_box" class="bloco">
+        <h1>COMENTÁRIOS</h1>
+        <img src="images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
+        <div class="recebe_coments">
+        <ul class="sem_estilo" id="ie_coments">  
+            <ul>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+        </ul>
+            <li id="novo_coment">
+                POSTAR NOVO COMENTÁRIO
+            </li>
+            <li>
+                <textarea class="msg_dimensao" rows="10"></textarea>
+            </li>
+            <li>
+                <div class="enviar" align="right">
+                    <input type="image" src="images/botoes/bt_confir_pq.png" />
+                </div>
+            </li>                
+        </ul>
+        </div>
+	</div>
+
+
+<div id="topo">
+	<div id="centraliza_topo">
+        <p id="hist"><a href="#">Planeta ROODA</a> > <a href="#">Aluno Fulaninho de Tal</a> > <a href="#">Planeta Arte</a></p>
+        <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
+    </div>
+</div>
+
+<div id="geral">
+
+<!-- **************************
+			cabecalho
+***************************** -->
+<div id="cabecalho">
+    <div id="ajuda">
+        <div id="ajuda_meio">
+            <div id="ajudante">
+            	<div id="personagem"></div>
+                <div id="rel"><p id="balao">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+				Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque 
+				habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p></div>
+            </div>
+        </div>
+        <div id="ajuda_base"></div>
+    </div>
+</div><!-- fim do cabecalho -->
+    
+    
+<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+
+<!-- **************************
+			conteudo
+***************************** -->
+    <div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+        
+            
+        
+        <div id="esq">
+        	
+            	
+                <ul>
+                	<li style="float:left; width:100%">
+                    <div style="width:50%">
+                    	<a href="planeta_arte_desenho.html"><input type="image" src="images/botoes/bt_criar_desenho.png" style="margin-bottom:50px" /></a>
+                    </div>
+                    
+                    </li>
+                </ul>
+                
+        	<div id="projetos" class="bloco">
+            	<h1>
+                	<div class="abas_port aberto" id="aba_andamento"> MEUS DESENHOS</div>
+                    <div class="abas_port fechado" id="aba_encerrado"> DESENHOS DOS COLEGAS</div>
+                </h1>
+                
+                <div id="proj_andamento">
+                	<div class="cor1">
+                    	<ul class="sem_estilo">
+                            <a href="planeta_desenhos.html"><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a> 
+                            </li>
+                            <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                            <li><span class="dados">Data:</span><span class="valor">11/03/2011</span></li> 
+                            <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                            <a href="planeta_editar_desenhos.html"  class="editar">[Editar]</a>  
+                            <a class="encerrar" href="#">[Excluir desenho]</a>
+                            
+                        </ul>
+                    </div>
+                    <div class="cor2">
+                    	<ul class="sem_estilo">
+                        	<a href="planeta_desenhos.html"><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a>
+                  
+                            <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                            <li><span class="dados">Data:</span><span class="valor">11/03/2011</span></li>
+                             <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                             <a href="planeta_editar_desenhos.html"  class="editar">[Editar]</a> 
+                             <a class="encerrar"  href="#">[Excluir desenho]</a>
+                             
+ 						</ul>
+                    </div>
+                        
+                        <div class="cor1">
+                            <ul class="sem_estilo">
+                            	<a href="planeta_desenhos.html"><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a>
+                               
+                                <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                                <li><span class="dados">Data</span><span class="valor">10/03/2011</span></li>
+                                <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                                <a href="planeta_editar_desenhos.html"  class="editar">[Editar]</a>
+                                <a class="encerrar"  href="#">[Excluir desenho]</a>
+                                 
+                                 
+                         
+                            </ul>
+                            	
+                        </div>
+              </div>
+                  
+                  
+                  
+                <div id="proj_encerrados">
+                	<div class="cor1">
+                    	<ul class="sem_estilo">
+                        	<a href=""><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a>
+                            </li>
+                            <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                            <li><span class="dados">Data:</span><span class="valor">11/03/2011</span></li>
+                            <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                        </ul>
+                    </div>
+                    
+                    <div class="cor2">
+                    	<ul class="sem_estilo">
+                           <a href=""><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a>
+                            <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                            <li><span class="dados">Data:</span><span class="valor">10/03/2011</span></li>
+                              <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                        </ul>
+                    </div>
+                        <div class="cor1">
+                    	<ul class="sem_estilo">
+                        	<a href=""><div id="imagem" style="background-color:#FFF; border:1px solid #888888; display:table-cell; float:left; height:66px; width:66px; margin-right:15px"></div></a>
+                            <li class="texto_port"><span class="dados">Autor:</span><span class="valor">Fulaninho de Tal da Silva</span></li>
+                            <li><span class="dados">Data:</span><span class="valor">09/03/2011</span></li>  
+                             <a onmousedown="abreFechaLB()" a class="editar">[Ver comentários]</a>
+                        </ul>
+                        </div>
+                        
+              </div>
+                  
+                  
+                  
+            </div>
+            
+      
+            
+        
+      
+        
+            
+		<div id="procurar_topico" class="bloco">
+        <h1>PROCURAR</h1>
+        <div class="sem_estilo">
+        	
+            <ul class="tabela">
+            <li>
+        	<div class="box_dados" id="box_procurar">
+                	<ul>
+                     
+                        <li><input type="text" /></li>
+                        <li><input type="radio" name="p_material" />Palavras-chave</li>
+                        <li><input type="radio" name="p_material"  style="margin-top:15px"/>Data</li>
+                        
+                        
+       		  <li class="espaco_linhas">
+           				<select>
+                			<option>Janeiro</option>
+                            <option>Fevereiro</option>
+                            <option>Março</option>
+                    	</select>/
+                    
+                 		<select>
+                   			<option>2011</option>
+                   		</select>
+                
+</li>               
+              </ul>   
+            </div>
+            
+			<div class="bts_dir" align="right">
+            	<input type="image" src="images/botoes/bt_procurar.png" />
+            </div>
+            </li>
+            </ul>
+            
+            
+		</div>
+        
+                  
+	</div><!-- fim da div procurar_topicos -->
+        
+                  
+	
+        
+        
+      
+       
+      
+        
+        <div class="bts_baixo">
+            <input align="left" type="image" src="images/botoes/bt_voltar.png"/>
+        </div>
+    </div><!-- Fecha Div conteudo -->
+    
+  </div><!-- Fecha Div conteudo_meio -->   
+
+    </div><!-- para a imagem de fundo da base -->
+        <div id="conteudo_base">
+    </div><!-- fim da geral -->
+
+</body>
+</html>

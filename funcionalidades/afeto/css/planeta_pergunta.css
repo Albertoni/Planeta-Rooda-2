@@ -1,0 +1,71 @@
+
+body{background-image:url(../../images/fundos/fundo7.png);background-attachment:fixed;}
+
+#topicos { width:100%; float:left}
+
+.fonte_pre { font-family: Trebuchet MS, Tahoma, Verdana }
+
+.esq { display:table-cell; float:left; width:40%; padding:20px}
+
+.dir { display:table-cell; float:right; width:47%; padding:20px}
+.dir a { text-decoration:none}
+.dir input { margin-left:10px}
+
+.observacao {font-size: 8pt; color:#888888}
+
+.texto_resposta { display:table-cell; width:80%; text-align: justify}
+
+.mensagens {margin-top:37px}
+
+.criado_por { color:#999999; font-size:11px; margin-top:15px; margin-bottom:15px}
+
+#nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
+
+#bloco_mensagens { width:100%; float:left;}
+#bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
+#bloco_mensagens ul { margin:22px; float:left; width:94%}
+
+.info {float:left; width:100%; display:table-cell; margin-top:10px}
+.nome {float:left;}
+.data {float:right; text-align:right;}
+.pode_editar {float:right; position:relative; right:30%}
+.pode_deletar {float:right; position:relative; right:50%}
+
+.cor1 {background-color:#EEE8EF}
+.cor2 {background-color:#E7C7ED}
+
+.sem_estilo {background-color:#EEE8EF}
+
+.paginas_padding {background-color:#EEE8EF}
+
+
+#margem_dir {padding-top:25px;}
+
+.box_dados {width:100%; float:left; display:table-cell}
+.bts_dir {width:30%; float:right; display:table-cell;}
+
+.espaco_input {margin-left:22px;}
+
+
+.espaco_linhas {margin-top:22px}
+
+.margem_esquerda {margin-left:16px}
+
+#cancela_msg { position:relative; cursor:pointer}
+#confirm_msg { position:relative}
+
+.botao_salvar {background-image:url(../../images/botoes/bt_salvar_grande.png); border:none; width:51px; height:25px; margin-top:12px; cursor:pointer; background-repeat:no-repeat;}
+.botao_salvar:hover{ background-image:url(../../images/botoes/bt_salvar2_grande.png)}
+
+tr{
+	height:65px;
+}
+td{
+	vertical-align:middle;
+	padding-left:10px;
+}
+
+.pedreiragem:hover { cursor:default}
+
+.errada { background-color:red}
+.correta { background-color:chartreuse}

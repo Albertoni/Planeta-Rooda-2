@@ -1,0 +1,140 @@
+<?php
+	session_start();
+	
+	require("../../cfg.php");
+	require("../../bd.php");
+	require("../../funcoes_aux.php");
+	require("verifica_user.php");
+	require("sistema_forum.php");
+	require("visualizacao_forum.php");
+	
+	
+	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+	if ($VERIFICA_USER_ERRO_ID == 0) {
+		$FORUM = new forum($FORUM_ID);
+		$FORUM->configBD($BD_host1,$BD_base1,$BD_user1,$BD_pass1,$tabela_forum,$tabela_usuarios);
+		$FORUM->topicos($pagina);
+		
+		$paginas = array();
+		$paginas = $FORUM->paginas($pagina,10);
+	}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="../../planeta.css" />
+<link type="text/css" rel="stylesheet" href="forum.css" />
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="../../planeta.js"></script>
+<script type="text/javascript">
+	var forum_pg = <?php echo $pagina; ?>;
+	var deltipo = 0;
+</script>
+<script type="text/javascript" src="forum.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();">
+
+<div id="topo">
+	<div id="centraliza_topo">
+        <p id="hist"><?php echo $SISTEMA; ?> > Fórum</p>
+        <p id="bt_ajuda" onmousedown="animacao('abrirAjuda()');">OCULTAR AJUDANTE</p>
+
+    </div>
+</div>
+
+<div id="geral">
+
+<!-- **************************
+			cabecalho
+***************************** -->
+<div id="cabecalho">
+    <div id="ajuda">
+        <div id="ajuda_meio">
+            <div id="ajudante">
+            	<div id="personagem"></div>
+                <div id="rel"><p id="balao">Ferramenta de comunicação, onde poderão ser discutidos conflitos, resoluções de problemas, dúvidas e assuntos de interesse da turma</p></div>
+
+            </div>
+        </div>
+        <div id="ajuda_base"></div>
+    </div>
+</div><!-- fim do cabecalho -->
+    
+    
+<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+
+<!-- **************************
+			conteudo
+***************************** -->
+    <div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+    
+    <div class="bts_cima">
+<?php
+$linkcria = "forum_cria_topico.php?fid=$FORUM_ID";
+if ($ESCRITA) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
+    <input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location = 'forum_procurar.php'"/>
+    </div>
+    
+	<div id="dinamica">
+<?php		
+		if ($VERIFICA_USER_ERRO_ID == 0) {
+			if ($FORUM->contador > 0){
+				mostraPaginas ($paginas, $pagina, false, "forum.php?fid=$FORUM_ID");
+?>
+    <div id="topicos" class="bloco">
+        <h1>TÓPICOS</h1> <?php
+				$forum_msg_cont = count($FORUM->mensagem);
+				for ($c=0; $c<$forum_msg_cont; $c++){
+					$topico = $FORUM->mensagem[$c];
+					mostraTopicos($topico->msgId,$topico->msgUserName,$topico->msgTitulo,$topico->msgTexto,$topico->msgData,$topico->msgQntFilhos,($c % 2), $topico->msgEditavel);
+				}
+?>
+    </div><!-- fim da div topicos -->
+<?php			
+				mostraPaginas ($paginas, $pagina, false, "forum.php?fid=$FORUM_ID");
+
+			}else{
+?>
+    <div id="topicos" class="bloco">
+        <h1>TÓPICOS</h1><?php mostraAviso(5);?>
+	</div><!-- fim da div topicos -->
+<?php
+			}
+		}else{
+?>
+    <div id="topicos" class="bloco">
+        <h1>TÓPICOS</h1><?php mostraAviso($VERIFICA_USER_ERRO_ID);?>
+	</div><!-- fim da div topicos -->
+<?php
+		}
+?>
+    
+	</div>
+    
+       <div class="bts_baixo">
+<?php
+$linkcria = "forum_cria_topico.php?fid=$FORUM_ID";
+if ($ESCRITA) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
+    <input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location = 'forum_procurar.php'"/>
+    </div>
+    
+    </div>
+
+    <!-- fim do conteudo -->
+
+</div>   
+<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
+
+
+</div><!-- fim da geral -->
+</body>
+</html>

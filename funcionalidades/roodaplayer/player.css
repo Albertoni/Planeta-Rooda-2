@@ -1,0 +1,163 @@
+#videoDiv {
+	margin-right: 3px;
+	width: 100px;
+}
+#videoInfo {
+	margin-left: 3px;
+}
+#myytplayer {
+	margin-left: 15px;
+	margin-top: 14px;
+	width: 584px;
+	z-index: 100;
+}
+#player {
+	width:612px;
+	background-image:url(player_rooda.png);
+	z-index:100;
+	margin-left:33px;
+	padding-top:17px;
+}
+#embede{
+	margin-left:17px;
+}
+#video {
+	width:615px;
+	z-index:100;
+}
+#controles {
+	width:584px;
+	height:35px;
+	margin-top:15px;
+	margin-left:20px;
+	padding-bottom:3px;
+}
+#controles div {
+	float:left;
+	cursor:pointer;
+}
+#play, #pause, #mute {
+	width:35px;
+	height:35px;
+}
+#play {
+	background-image:url(play.png);
+	margin-right:10px;
+}
+#pause {
+	background-image:url(pause.png);
+}
+#mute {
+	background-image:url(unmute.png);
+	margin-right:10px
+}
+#barra {
+	width:300px;
+	height:19px;
+	background-color:white;
+	margin: 8px 15px 0 15px;
+	border-radius: 10px;
+	-moz-border-radius:10px;
+}
+#barra_branco {
+	width:200px;
+	height:15px;
+	background-color:silver;
+	margin:2px 0 0 2px;
+	position:absolute;
+	left: 5px;
+}
+#barra_carrega {
+	width:200px;
+	height:15px;
+	background-color:silver;
+	margin:2px 0 0 2px;
+	position:absolute;
+	left: 5px;
+}
+#barra_andamento {
+	width:200px;
+	height:15px;
+	background-color:silver;
+	margin:2px 0 0 2px;
+	position:absolute;
+	left: 5px;
+}
+#bolinha {
+	border:2px solid white;
+	height:15px;
+	width:15px;
+	background-color:#4C5663;
+	margin:0px 0 0 0px;
+	border-radius: 10px;
+	-moz-border-radius:10px;
+	position:absolute;
+	left:93px;
+}
+#menos {
+	width:17px;
+	height:19px;
+	background-image:url(menos.png);
+	margin-top:8px;
+}
+#mais {
+	width:17px;
+	height:19px;
+	background-image:url(mais.png);
+	margin-top:8px;
+}
+#niveis {
+	width:80px;
+	height:17px;
+	background-color:white;
+	margin-top:9px;
+}
+.nivel {
+	width:6px;
+	height:13px;
+	margin:2px;
+	background-color:#69C;
+}
+.bg0{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #93A6B0;
+	font-size: 14px;
+	color: #330;
+	padding: 2px 5px;
+	text-align:center;
+}
+.bg1{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #AAC0CA;
+	font-size: 12px;
+	color: #371C00;
+	padding: 2px 5px;
+	height:23px;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.bg2{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	background-color: #93A6B0;
+	font-size: 13px;
+	color: #330;
+	padding: 2px 5px;
+	height:23px;
+	text-align:center;
+	width:20%;
+}
+.destaque{
+	font-size: 20px;
+	color: red;
+}
+
+.unclickable{color:#777;}
+
+.big{max-width:473px;}
+.medium{max-width:248px;}
+.small{max-width:138px;}
+
+.tabela_blog {margin-bottom:15px;}
+.tabela_videos {margin-left:32px;}
+
+#comentariosVideo{cursor:pointer;}

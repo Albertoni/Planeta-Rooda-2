@@ -1,0 +1,45 @@
+body { background-image:url(../../images/fundos/fundo6.png); background-repeat:repeat-x; background-attachment:fixed}
+.traco {border: 2px solid transparent;}
+#esq { float:left}
+#dir { float:right}
+div .lista_imagem {
+	background-color:#FFF;
+	border:1px solid #888888;
+	display:table-cell;
+	float:left;
+	height:50px;
+	width:80px !important;
+	margin-right:15px;
+}
+#tabela {
+	width:100px;
+	background-color:#EEF5F5;
+	margin-left:0px;
+}
+
+#botoes {
+	background-color:#EEF5F5;
+	width:130px;
+	height:200px;
+	margin-left:15px;
+}
+
+.tamanho_traco{
+	width:80px;
+	border-color:#FFF;
+}
+
+.encerrar { color:#09C; text-decoration:none; margin-left:8px; display:table-cell; float:right; margin-bottom:15px}
+.encerrar:hover { color:#069}
+
+.excluir { color:#09C; text-decoration:none; margin-left:8px; display:table-cell; float:right; margin-bottom:15px}
+.excluir:hover { color:#069}
+
+#procurar_proj {width:680px; height:100%; margin-bottom:12px;}
+#procurar_proj input[type=text] {width:100%; margin-bottom:5px}
+#procurar_proj input[type=radio] {margin-left:0px; margin-top:7px}
+#procurar_proj input[type=image] {margin-top:25px}
+
+#carimbos { width:100%; margin-bottom:22px; float:left}
+.bloco_carimbo {background-color:#F9EADB; border-top:25px solid #53686F; border-left:1px solid #aaaaaa;
+border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; height:100px}

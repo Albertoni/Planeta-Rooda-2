@@ -1,0 +1,93 @@
+<?php
+	session_start();
+	
+	require("../../cfg.php");
+	require("../../bd.php");
+	require("../../funcoes_aux.php");
+	require("sistema_forum.php");
+	require("verifica_user.php");
+	require("visualizacao_forum.php");
+
+	if ($ESCRITA) {
+		$pesquisa1 = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);
+		$pesquisa2 = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);
+		
+		$ajax = (isset($_POST['ajax']))? $_POST['ajax'] : 0;
+		$titulo = (isset($_POST['msg_titulo']))? $_POST['msg_titulo'] : "";
+		$titulo = stripslashes($titulo);
+		$topico = stripslashes($_POST['topico']);
+		$pai = stripslashes($_POST['pai']);
+		$conteudo = stripslashes($_POST['msg_conteudo']);
+		$conteudo = str_replace("\n", "<br>", $conteudo);  
+		
+		if ($pai == '-1')
+			$link = "forum.php?fid=$FORUM_ID&pg=0";
+		else
+			$link = "forum_arvore.php?fid=$FORUM_ID&pagina=1&topico=".$pai;
+					
+		$cria = false;
+		if ($topico == "-1"){
+			$cria = true;
+			$atualiza = false;
+		}else{
+			$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
+			if($pesquisa1->erro == "") 
+			{
+				$uid = $pesquisa1->resultado['msg_usuario'];
+				if (permissao($uid)){
+					$cria = true;
+					$atualiza = ($pesquisa1->registros > 0);
+				}
+			}
+		}
+
+		if ($cria){
+			$FORUM = new forum($FORUM_ID);
+			$FORUM->configBD($BD_host1,$BD_base1,$BD_user1,$BD_pass1,$tabela_forum,$tabela_usuarios);
+			if ($atualiza){
+				$FORUM->salvaMensagem(false, $topico, $USUARIO_ID, $titulo, $conteudo);
+				}
+			else{
+				$FORUM->salvaMensagem(true, $pai, $USUARIO_ID, $titulo, $conteudo);
+				}
+
+			if ($ajax == 0){
+				echo "<script> document.location='$link'; </script>";
+			}else{
+				$pai = $FORUM->paiAbsoluto($pai);
+				$FORUM->pegaMensagensArvore($pai,1, true, true);
+				$pgI = ceil(($FORUM->contador)/10);
+				$paginas = array();
+				$paginas = $FORUM->paginas($pgI,10);
+				
+				mostraPaginas ($paginas, $pgI, false, "forum_arvore.php?fid=$FORUM_ID&topico=$pai");
+?>
+<div id="bloco_mensagens" class="bloco">
+<?php
+				echo "<h1>".$FORUM->titulo.'<select id="ordem" style="position:absolute; right:5px;" onchange="ordernar(this);"><option> -- Ordenar... --</option><option>Data</option><option>Árvore</option></select></h1>';
+				$forum_msg_cont = count($FORUM->mensagem);
+				for ($c=0; $c<$forum_msg_cont; $c++){
+					$mens = $FORUM->mensagem[$c];
+					mostraArvore($mens->msgId,$mens->msgUserName,$mens->msgTexto,$mens->msgData,($c % 2), $mens->msgEditavel, $mens->msgGrau, true);
+				}
+
+?>
+</div><!-- fim da div topicos -->
+<?php			
+				mostraPaginas ($paginas, $pgI, false, "forum_arvore.php?fid=$FORUM_ID&topico=$pai");
+			}
+		}else{
+?>
+	<div id="bloco_mensagens" class="bloco">
+        <h1>MENSAGENS</h1><?php	mostraAviso(6);?>
+    </div><!-- fim da div topicos --><br />
+<?php			
+		}
+	}else{
+?>
+	<div id="bloco_mensagens" class="bloco">
+        <h1>MENSAGENS</h1><?php	mostraAviso(6);?>
+    </div><!-- fim da div topicos --><br />
+<?php			
+	}
+	?>

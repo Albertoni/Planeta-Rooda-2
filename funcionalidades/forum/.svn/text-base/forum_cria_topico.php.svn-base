@@ -1,0 +1,136 @@
+<?php
+	session_start();
+	
+	require("../../cfg.php");
+	require("../../bd.php");
+	require("../../funcoes_aux.php");
+	require("verifica_user.php");
+	
+	if ($ESCRITA) {
+		//
+		$topico = isset($_GET['tid'])? $_GET['tid']:'-1';
+		$editar = ($topico != '-1');
+		$titulo = '';
+		$conteudo = '';
+		
+		$pai = "-1";
+		if ($editar){
+			$pesquisa1 = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);
+			$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
+			$pai = $pesquisa1->resultado['msg_pai'];
+			$titulo = $pesquisa1->resultado['msg_titulo'];
+			$conteudo = $pesquisa1->resultado['msg_conteudo'];
+			$conteudo = str_replace("<br>", "\n", $conteudo);  
+		}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="../../planeta.css" />
+<link type="text/css" rel="stylesheet" href="forum.css" />
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="../../planeta.js"></script>
+<script type="text/javascript" src="forum.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();">
+
+<div id="topo">
+	<div id="centraliza_topo">
+        <p id="hist"><?php echo $SISTEMA; ?> > Fórum</p>
+        <p id="bt_ajuda" onmousedown="animacao('abrirAjuda()');">OCULTAR AJUDANTE</p>
+    </div>
+</div>
+
+<div id="geral">
+
+<!-- **************************
+			cabecalho
+***************************** -->
+<div id="cabecalho">
+    <div id="ajuda">
+        <div id="ajuda_meio">
+            <div id="ajudante">
+            	<div id="personagem"></div>
+                <div id="rel"><p id="balao">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+				Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque 
+				habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p></div>
+            </div>
+        </div>
+        <div id="ajuda_base"></div>
+    </div>
+</div><!-- fim do cabecalho -->
+    
+    
+<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+
+<!-- **************************
+			conteudo
+***************************** -->
+    <div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
+    
+    <form id="criatop" name="criatop" action="forum_salva_topico.php" method="post">
+    <div class="bts_cima">
+        <img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer"/>
+        <img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="document.getElementById('criatop').submit();" />
+    </div>
+    
+    <div id="criar_topico" class="bloco">
+<?php
+	if ($editar){
+        echo "<h1>EDITAR TÓPICO</h1>";
+ 	}else{
+		echo "<h1>CRIAR TÓPICO</h1>";
+	}?>
+            <ul class="sem_estilo">
+            
+                <li class="tabela">
+<?php if ($pai == "-1"){ ?>
+                    <div class="box_dados">
+                        Título do Tópico
+                        <input type="text" name="msg_titulo" value="<?php echo $titulo?>"/>
+                    </div>
+<?php } ?>                
+                    <div class="bts_dir" align="right">
+                    </div>
+                </li>
+                
+                <li class="espaco_linhas">Mensagem
+                    <textarea name="msg_conteudo" rows="15" class="msg_dimensao"><?php echo $conteudo?></textarea>
+				</li>                
+			</ul>
+<?php    echo "<input type=\"hidden\" name=\"topico\" value=\"$topico\" />";?>
+			<input type="hidden" name="fid" value="<?php echo $FORUM_ID?>" />
+			<input type="hidden" name="pai" value="<?php echo $pai?>" />
+        
+                  
+	</div><!-- fim da div criar_topicos -->
+    
+    <div class="bts_baixo">
+        <img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer"/>
+        <img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="document.getElementById('criatop').submit();" />
+    </div>
+    
+	</form>
+    </div>
+    <!-- fim do conteudo -->
+
+</div>   
+<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
+
+
+</div><!-- fim da geral -->
+
+</body>
+</html>
+<?php			
+	}
+?>

@@ -1,0 +1,111 @@
+body{
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+}
+#tela_canvas_div{
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	top: 0px;
+	z-index:0;
+	background-color:#3A3;
+}
+#tela_div{
+	position:absolute;
+	top: 90px;
+	left: 110px;
+	border: 1px solid silver;
+}
+#tela_svg{
+	position:absolute;
+	top: 0px;
+	left: 0px;
+	z-index:2;
+}
+#canvas_auxiliar{
+	display:none;
+}
+
+.tela{
+	width:550px;
+	height:270px;
+}
+
+textarea{
+	background-color: transparent;
+}
+div#float textarea.texto_b_classe{
+	background-color: transparent;
+}
+
+#texto_b{
+		color: black;
+		background-color: transparent;
+		border: 0px white solid;
+		overflow:hidden;
+		font-family:Verdana;
+		font-size:12pt;
+		font-weight: normal;
+		z-index : 500;		
+	}
+	
+	.amostra_cor{
+		border: 1px solid #EEEEEE;
+		width:10px;
+		height:10px;
+		cursor:pointer;
+	}
+	
+	.amostra_cor2{
+		border: 1px solid #777777;
+		width:20px;
+		height:15px;
+		cursor:pointer;
+	}
+
+	.editor_btns{
+		top:2px;
+		width:16px;
+		height:16px;
+		position:absolute;
+		cursor: pointer;
+	}
+	
+	#editor_barra{
+		position:absolute;
+		height:20px;
+		width: 93px;
+		display:none;
+		z-index : 500;
+	}
+	
+	.sel_fonte{
+		color:white;
+		font-family: Tahoma;
+		font-weight: bold;
+		font-size: 10pt;
+		cursor:pointer;
+	}
+	
+	#editor_tam{
+		position:absolute;
+		height:26px;
+		width: 14px;
+		display:none;
+		z-index : 500;
+	}
+	
+	.editor_mbtns{
+		left:2px;
+		position:absolute;
+		width:10px;
+		height:10px;
+		cursor:pointer;
+	}
+
+	.classe_carimbo{
+		cursor: pointer;
+		border: 2px solid white;
+	}

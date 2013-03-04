@@ -1,0 +1,34 @@
+#criar_personagem {float:left; width:100%; min-height:400px}
+
+#prever_custom { width:167px; height:354px; margin-left:30px; float:left}
+#mp_limpo { z-index:10; width:167px; height:354px; background-image:url(images/desenhos/personagem_limpo.png); position:absolute}
+#pele { position:absolute; width:133px; height:110px; z-index:1; top:90px; left:72px}
+#bota_luva { position:absolute; width:118px; height:138px; z-index:1; top:262px; left:76px}
+#acessorios { position:absolute; width:118px; height:138px; z-index:1; top:222px; left:86px;}
+#troca_cabelo { width:160px; height:150px; position:absolute; z-index:10000; margin-left:6px; margin-top:8px; background-repeat:no-repeat}
+#troca_olho { width:92px; height:30px; position:absolute; z-index:1000; margin-left:37px; margin-top:88px; background-repeat:no-repeat}
+
+#botoes_custom { width:65px; height:354px; float:left; margin-left:30px; margin-top:10px}
+.botoes_custom_unidade { width:65px; height:49px; background-image:url(images/botoes/personagem_botoes.png); margin-left:0; cursor:pointer}
+#cabelo_bt { margin-top:20px} 
+#cabelo_bt:hover { background-position:-76px 0px}
+#olhos_bt { margin-top:15px; background-position:0 -60px} 
+#olhos_bt:hover { background-position:-76px -60px}
+#pele_bt { margin-top:15px; background-position:0 -120px} 
+#pele_bt:hover { background-position:-76px -120px}
+#acessorios_bt { margin-top:15px; background-position:0 -180px}
+#acessorios_bt:hover { background-position:-76px -180px}
+#botaeluva_bt { margin-top:15px; background-position:0 -240px}
+#botaeluva_bt:hover { background-position:-76px -240px}
+
+#tabelas { float:left; margin-left:30px; margin-top:30px}
+#cabelos, #olhos { padding:1px}
+#cabelos li, #olhos li { float:left; margin:3px}
+.amostras { position:absolute; height:302px; background-color:white; border:1px solid #D0DBDB; max-width:293px; display:none}
+.amostra_cor { border: 1px solid #EEEEEE; width:32px; height:32px; cursor:pointer;}
+.amostra_cabelo { border: 1px solid #aaa; width:50px; height:50px; cursor:pointer; background-color:#FFF; background-image:url(images/desenhos/cabelos/fundo_cabelos.png)}
+.amostra_cabelo img {width:50px; height:50px; margin-top:1px}
+.amostra_olho { border: 1px solid #aaa; width:50px; height:50px; cursor:pointer; background-color:#FFF;}
+.amostra_olho img {width:50px; height:18px;; margin-top:16px}
+
+#cores_pele {opacity:0}

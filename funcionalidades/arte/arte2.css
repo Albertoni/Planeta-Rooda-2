@@ -1,0 +1,125 @@
+body { background-image:url(images/fundos/fundo6.png); background-repeat:repeat;}
+
+#esq { float:left}
+#dir { float:right}
+
+#procurar_proj {width:680px; height:100%; margin-bottom:12px;}
+#procurar_proj input[type=text] {width:100%; margin-bottom:5px}
+#procurar_proj input[type=radio] {margin-left:0px; margin-top:7px}
+#procurar_proj input[type=image] {margin-top:25px}
+
+
+
+#projetos {width:680px; height:100%; margin-bottom:12px; float:left; border-top:30px solid #53686F}
+#projetos div { float:left}
+#projetos h1 { float:left}
+
+
+
+#posts {width:428px; height:100%;}
+#posts a {text-decoration:underline}
+
+#arquivos {width:236px; height:100%; margin-bottom:12px;}
+
+#links {width:236px; height:100%; margin-bottom:12px;}
+
+.texto_port {margin-bottom:15px}
+.texto_port2 {margin-top:15px}
+
+.mais_port {display:table; width:100%;}
+
+.ver_mais {float:right; display:table-cell; margin-top:-18px; margin-right:10px; position:relative;} 
+.ver_mais a {font-size:11px; font-weight:bold; 
+text-decoration:none; color:white; outline:none}
+.ver_mais a:hover {color:#E7FFAE;}
+
+
+
+
+
+
+
+.tabela_port {display:table; width:100%; margin-bottom:15px;}
+.tabela_port p {display:table-cell; width:100%; float:left}
+
+.mais_link {float:right; display:table-cell;} 
+.mais_link a {font-size:11px; font-weight:bold; 
+text-decoration:none; color:#666666; outline:none}
+.mais_link a:hover {color:#CC6600;}
+
+.titulo {font-size:14px; font-weight:600; float:left; display:table-cell;}
+
+.data {float:right; display:table-cell;}
+
+
+
+#outros_port {width:332px;}
+
+.abas_port { float:left; width:340px; border-bottom:0; padding-top:5px;; margin-top:-7px; padding-bottom:6px; cursor:pointer}
+
+.aberto {color:#cc6600; background-color:#EEF5F5}
+.fechado {color:#ffffff;}
+
+#proj_encerrados {display:none}
+#proj_andamento { display:block} 
+#proj_andamento div { width:680px}
+#proj_encerrados div { width:680px}
+
+#info_post {width:100%; float:left}
+
+.port_info {width:100%; margin-top:2px; margin-bottom:15px;}
+textarea.port_info {margin-top:0px}
+
+.exemplo {color:#888; font-size:8pt;}
+
+.valor { display:table-cell; width:auto}
+.encerrar { color:#09C; text-decoration:none; text-indent:8px; margin-left:8px; display:table-cell}
+.encerrar:hover { color:#069}
+
+.valor { display:table-cell; width:auto}
+.editar{ color:#09C; text-decoration:none; text-indent:8px; margin-left:8px; display:table-cell}
+.editar:hover { color:#069}
+
+#enviar_proj { width:680px}
+textarea {width:100%}
+input[type="text"] { width:100%}
+
+/*lightbox*/
+
+#procurar_img {width:100%; height:25px; background-image:url(images/botoes/bt_procurar_img.png); background-repeat:no-repeat; background-position:right}
+#procurar_img:hover {background-image:url(images/botoes/bt_procurar_img2.png)}
+#procurar_img input[type=text] {width:60%; margin-top:2px;}
+
+#procurar_arq {width:100%; height:25px; background-image:url(images/botoes/bt_procurar_arquivo.png); background-repeat:no-repeat; background-position:right}
+#procurar_arq:hover {background-image:url(images/botoes/bt_procurar_arquivo2.png)}
+#procurar_arq input[type=text] {width:60%; margin-top:2px;}
+
+.enviado2 {background-color:#ccecf4;}
+
+#cont_img {height:188px; margin-top:15px}
+
+#cont_img1 input[type=text] {width:318px}
+
+#cont_img2 input[type=text] {width:100%}
+
+#cont_img3 {width:456px; max-height:156px; overflow-x:hidden; overflow-y:auto; background-color:#FFF; border:1px solid #CCC}
+
+.img_enviadas {width:90%; height:50px; border:1px solid #aaa; margin:3px; background-color:#FFF}
+
+#link_lbox input[type=text] {width:100%; margin-bottom:15px}
+
+#cont_arq {height:213px; margin-top:15px}
+
+#cont_arq1 input[type=text] {width:318px}
+
+#cont_arq2 {width:456px; max-height:181px; overflow-x:hidden; overflow-y:auto; background-color:#FFFFFF; border:solid 1px #AAA}
+#cont_arq2 input[type=checkbox] {margin:5pt}
+
+.cor1 {background-color:#F9EADB}
+.cor2 {background-color:#FFD59E}
+.bloco {background-color:#F9EADB}
+.aberto {background-color:#F9EADB}
+
+#carimbos { width:100%; margin-bottom:22px; float:left}
+.bloco_carimbo {background-color:#F9EADB; border-top:25px solid #53686F; border-left:1px solid #aaaaaa;
+border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; height:100px}

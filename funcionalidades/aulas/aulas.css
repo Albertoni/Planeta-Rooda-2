@@ -1,0 +1,20 @@
+li {margin-bottom:10px}
+textarea {vertical-align:text-top}
+
+.bloco {float:left;width:100%}
+.opcao {margin-right:8px; width:160px;}
+.resize {width:158px;padding-left:1px}
+
+
+.pode_editar {float:right;position:relative;right:30%;}
+.pode_deletar {float:right;position:relative;right:50%;}
+.data {float:right;text-align:right;}
+.criado_por { color:#999999; font-size:11px; margin-top:15px;}
+.info {float:left; width:100%; display:table-cell; margin-top:10px}
+.nome {float:left;}
+.data {float:right; text-align:right;}
+.link_aula {float:right; text-align:right; margin-bottom:10px; margin-right:10px}
+.margem_raquel {margin-left:10px; width:670px}
+.no_underline {text-decoration:none}
+.sem_margem {margin-bottom:0px}
+.pad_aulas {padding:8px}

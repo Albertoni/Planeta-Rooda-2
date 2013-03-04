@@ -1,0 +1,79 @@
+#topicos { width:100%; float:left; margin-bottom:12px; margin-top:12px}
+
+.esq { display:table-cell; float:left; width:40%; padding:20px}
+
+.dir { display:table-cell; float:right; width:47%; padding:20px}
+.dir a { text-decoration:none}
+.dir input { margin-left:10px}
+
+.imagem { width:66px; height:66px; background-color:white; border:1px solid #888888; 
+float:left; margin-right:15px; display:table-cell}
+.texto_resposta { display:table-cell; width:80%}
+
+.mensagens {margin-top:37px}
+
+.criado_por { color:#999999; font-size:11px; margin-top:15px; margin-bottom:15px}
+
+#nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
+
+#bloco_mensagens { width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+#bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
+#bloco_mensagens ul { margin:22px}
+
+.info { float:left; width:60%; display:table-cell; margin-top:10px; border-bottom: 1px solid #888888; padding-bottom:10px;}
+.nome {float:left;}
+.data {float:right;}
+
+.bts_msg { float:right; width:40%; display:table-cell}
+.bts_msg input{margin-left:10px;}
+
+.resposta {width:636px; padding:22px; clear:both;}
+
+#procurar_topico { width:100%; margin-bottom:22px; float:left}
+#procurar_topico input[type=text] {width:100%; margin-bottom:5px}
+#procurar_topico input[type=image] {margin-left:22px;}
+
+#box_procurar {padding-top:10px;}
+
+#resultado_pesquisa {float:left}
+
+#margem_dir {padding-top:25px;}
+
+.box_dados {width:100%; float:left; display:table-cell}
+.bts_dir {width:30%; float:right; display:table-cell;}
+
+.espaco_input {margin-left:22px;}
+
+#criar_topico { width:100%; float:left}
+#criar_topico input[type=text] {width:100%; margin-top:5px}
+#criar_topico input[type=image] {margin-left:22px;}
+#criar_topico textarea {width:100%; margin-top:5px; resize:none}
+
+.espaco_linhas {margin-top:22px}
+
+#cancela_msg { position:relative; cursor:pointer}
+#confirm_msg { position:relative}
+
+#responder_topico { cursor:pointer}
+
+#responder_topico_cima { cursor:pointer}
+#responder_topico_baixo { cursor:pointer}
+
+.limite_resposta{
+	position:relative;
+	float:left;
+	width:540px;
+}
+.anterior{
+	border:1px silver solid;
+	margin:4px;
+	font-style:italic;
+	background-color:#ccecf4;
+}
+.cor3{
+	background-color:#EEF5F5;
+	display:table;
+	width:100%;
+	margin-top : 5px;
+	margin-bottom : 5px;
+}

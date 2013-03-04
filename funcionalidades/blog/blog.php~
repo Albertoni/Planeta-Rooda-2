@@ -1,0 +1,425 @@
+<?php
+	session_start();
+	
+	require("../../cfg.php");
+	require("../../bd.php");
+	require("../../funcoes_aux.php");
+	require("../../usuarios.class.php");
+	require("../../login.class.php");
+//	require("verifica_user.php");
+	require("blog.class.php");
+	require("../../file.class.php");
+	require("../../link.class.php");
+//	require("visualizacao_blog.php");
+	$usuario_id = $_SESSION['SS_usuario_id'];
+	
+	$blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die("não foi fornecido id de blog");
+	$blog_id = ($blog_id == "meu_blog") ? getMeuBlog() : $_GET['blog_id'];
+	
+	// Eu amo a linha de código abaixo.
+	true == (is_numeric($blog_id)) or die('RAAAAAAAAAA, pegadinha do Mallandro!'); // Sabe SQL injection?
+	
+	
+	global $usuario_id; // Acho que se comentasse isso ainda funcionaria.
+	if ($usuario_id == 0){
+		die("Voc&ecirc; n&atilde;o est&aacute; logado.");
+	}
+	
+	$blog = new Blog($blog_id);
+	if(!$blog->getExiste())
+		if($blog_id == $usuario_id)
+			$blog->save();	// Não faz muito sentido, mas não tou encostando.
+		else
+			die("Blog inexistente");
+	$ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
+	$ini = $ini < 0 ? 0 : $ini;
+	$ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$blog->getPaginacao() : $ini;
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="blog.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="planeta.js"></script>
+<script type="text/javascript" src="blog.js"></script>
+<script type="text/javascript" src="blog_ajax.js"></script>
+
+<script language="javascript">
+
+function coment(){
+	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+		document.getElementById('ie_coments').style.width = 85 + '%';
+		$('.bloqueia ul').css('margin-right','17px');
+	}
+};
+</script>
+
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();coment();">
+
+<div id="descricao"></div>
+
+<div id="fundo_lbox"></div>
+	<div id="light_box" class="bloco">
+	</div>
+
+<div id="topo">
+<div id="centraliza_topo">
+		<p id="hist"><a href="#">Planeta ROODA</a> > <a href="#">Professor Fulaninho de Tal</a> > <a href="#">Blog</a></p>
+		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
+	</div>
+</div>
+
+<div id="geral">
+
+<!-- **************************
+			cabecalho
+***************************** -->
+<div id="cabecalho">
+	<div id="ajuda">
+		<div id="ajuda_meio">
+			<div id="ajudante">
+				<div id="personagem"><img src="images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
+				<div id="rel"><p id="balao">Aqui, você pode encontra um espaço para escrita pessoal onde pode compartilhar 
+				diversos assuntos com seus colegas e permitir que eles, além de visualizar, publiquem comentários 
+				em suas postagens.</p></div>
+			</div>
+		</div>
+		<div id="ajuda_base"></div>
+	</div>
+</div><!-- fim do cabecalho -->
+<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+
+<!-- **************************
+			conteudo
+***************************** -->
+	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+		
+		<div class="bts_cima">
+			<input type="image" src="images/botoes/bt_voltar.png" align="left"/>
+			<a href="blog_postagem.php?blog_id=<?=$blog_id?>"><img src="images/botoes/bt_criar_postagem.png" border="0" align="right"/></a>
+		</div>
+		<div class="troca_paginas">
+			<center>
+			<div class="paginas_padding">
+				<?=$blog->mostraPaginacao($ini)?>
+			</div>
+			</center>
+		</div>
+
+		<div id="esq" class="margem_paginas">
+			<div class="bloco" id="ident">
+				<h1><?=mb_strtoupper($blog->getTitle())?></h1>
+
+<?php
+// script para a exibição dos posts
+	$cor_i = 0;
+	for($i=$ini;($i<$ini+$blog->getPaginacao()) && ($i<$blog->getSize());$i++) {
+		$p = $blog->posts[$i];
+?>
+				<div class="cor<?=$cor_i%2+1?>">
+				<ul class="sem_estilo">
+					<li class="tabela_blog">
+						<span class="titulo">
+							<?=$p->getTitle()?>
+						</span>
+						<span class="data">
+							<?=$p->getDate()?>
+						</span>
+					</li>
+					<li class="tabela_blog">
+						<div style="overflow-x:auto; width:384px">
+							<?=$p->getText()?>
+						</div>
+					</li>
+					<li class="tabela_blog">
+						Por <?=$p->getAuthor()->getName()?><br />
+<?php
+	foreach($blog->owners as $owner)
+		if($owner->getId()==$usuario_id)
+			echo"						<a href=\"blog_postagem.php?blog_id=".$blog->getId()."&post_id=".$p->getId()."\">Editar</a><div style=\"float:right\"><a href=\"javascript:deletar_post(".$blog->getId().",".$p->getId().")\">Deletar</a></div><br />";
+?>
+						<a onmousedown="carregaHTML('light_box','ver_comentarios','post_id=<?=$p->getId()?>');abreFechaLB()">Ver comentários</a><br />
+						Tags: <?=$p->printPostTags($p->getPostTags($p->getId())) ?>
+					</li>
+				</ul>
+				</div>
+<?php 
+		$cor_i++; // alterna o estilo da div
+	}
+?>
+			</div>
+		</div>
+		<div id="dir" class="margem_paginas">
+			<div class="bloco" id="perfil">
+				<h1 id="nomeblog"><a class="toggle" id="toggle_perfil">▼</a> <?php echo count($blog->owners) > 1 ? "AUTORES" : fullUpper($blog->owners[0]->getName()) ?></h1>
+				<ul class="sem_estilo" id="caixa_perfil">
+<?php
+	foreach($blog->owners as $owner) {
+?>
+					<li class="tabela_blog">
+						<center>
+						<?php if($owner->getId()==$usuario_id) { ?>
+							<i><?=$owner->getName()?></i>
+						<?php } else { ?>
+							<?=$owner->getName()?>
+						<?php } ?>
+						</center>
+					</li>
+					<li>
+						<center><img src="image_output.php?file=<?=$owner->getId()?>&userpic=1" alt="avatar" /></center>
+						<br />
+					</li>
+<?php
+	}	// já falei que odeio abrir tags php só pra fechar elses e ifs e coisas do tipo?
+?>
+				</ul>
+			</div>
+			<div class="bloco" id="post">
+				<h1><a class="toggle" id="toggle_post">▼</a> POSTAGENS</h1>
+				<div class="bloqueia">
+					<ul class="sem_estilo" id="caixa_post">
+					<?
+						$posts = new lista_posts($blog->getId(), $tabela_posts);
+						
+						for ($i=0; $i < $posts->tamanho_lista; $i++){
+							if($posts->lista[$i][0] == "\n"){ // Caso seja um marcador de fim de alguma coisa...
+								switch (substr($posts->lista[$i], 1)){
+								case "end_month":
+									echo "
+									</ul>
+								</li>";
+									break;
+
+
+								case "end_year":
+									echo "
+							</ul>
+						</li>";
+									break;
+
+
+								case "new_year":
+									$i += 1;// GAMBIARRAS 8D
+											// Ele incrementa em um tanto aqui quando na abaixo porque o new_algo não contem os dados do mes/ano. Precisa incrementar pra pegar ele.
+									echo "
+						<li class=\"post_ano\">
+							<a href=\"javascript:abre_topico($i);\" class=\"no_underline\">".$posts->lista[$i]."</a>
+						</li>
+						<li class=\"tabela_oculta\" id=\"topico_oculto$i\"> <!--safadeza_oculta-->
+							<ul>";
+									break;
+
+
+								case "new_month":
+									$i += 1;
+									echo "
+								<li class=\"post_mes\">
+									<a href=\"javascript:abre_topico($i);\" class=\"no_underline\">" /*NOTE QUE TEM UM $i AO LADO DE abre_topico*/.getMonth($posts->lista[$i])."</a>
+								</li>
+								<li class=\"tabela_oculta\" id=\"topico_oculto$i\">
+									<ul>";
+									break;
+								}
+							} else {
+								$pingas = explode("\n", $posts->lista[$i]); // SnooPING AS usual, I see.
+								// Falando mais sério, é passado o id do post e o nome dele, separados por um \n, que a chamada acima divide em um array.
+								// pingas[0] = nome, [1] = id.
+								echo "
+										<li class=\"post_topico\">
+											<a href=\"blog_singlepost.php?blog_id=".$blog->getId()."&post_id=".$pingas[1]."\" class=\"no_underline\">".$pingas[0]."</a>
+										</li>";
+							}
+							
+							
+						}
+					/*	ESTE É O HTML ORIGINAL USADO COMO BASE PARA CRIAR A PARTE ALI EM CIMA. BOA SORTE, QUEM FOR FAZER MANUTENÇÃO.
+						<li class="post_ano">
+							<a id="abre_mes">2010</a>
+						</li>
+						<li class="tabela_oculta" id="mes_oculto"> <!--safadeza_oculta-->
+							<ul>
+							
+								<li class="post_mes">
+									<a href="#">Abril</a>
+								</li>
+								<li>
+									<ul>
+									
+										<li class="post_topico">
+											<a href="#">Tópico 1</a>
+										</li>
+										
+										<li class="post_topico">
+											<a href="#">Tópico 2</a>
+										</li>
+										
+										<li class="post_topico">
+											<a href="#">Tópico 3</a>
+										</li>
+										
+									</ul>
+								</li>
+								
+							</ul> 
+						</li>
+						
+						<li class="post_ano">
+							<a href="#">2009</a>
+						</li>*/
+
+?>
+					</ul>
+				</div>
+			</div>
+			<div class="bloco" id="arquivos">
+				<? 
+				$consulta = new conexao();
+				$consulta->solicitar("SELECT Tipo FROM $tabela_blogs WHERE Id = $blog_id");
+				$tipoBlog = $consulta->resultado['Tipo'];
+				$funcionalidade_id = $blog->getId();
+				$funcionalidade_tipo = $tipoBlog;
+				?>
+				
+				<h1><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS </h1><div class="add" id="divLinkAdicionarArquivo">adicionar</div>
+				<div class="bloqueia">
+					<ul class="sem_estilo" id="caixa_arq">
+						<li id="liAdicionarArquivo" class="tabela_blog">
+							<iframe frameborder="0" src="uploadFileForm.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>&blog_id=<?=$blog_id?>" allowtransparency="yes" style="background-color:transparent; height:75px; overflow:hidden"></iframe>
+						</li>
+<?php	
+							//jquery com javascript
+							//colocar um evento onClick no adicionar
+							//evento tornarah uma div invisivel em visivel reestruturando adequadamente a pagina
+							//
+							$consulta = new conexao();
+							$id = $blog->getId();
+							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE funcionalidade_tipo='$tipoBlog' AND funcionalidade_id='$blog_id'");
+
+							$downloadFile="downloadFile_certo.php";
+							$funcionalidade_tipo=(string)$tipoBlog;
+							$funcionalidade_id=(string)$id;
+							for($i=0 ; $i<count($consulta->itens);$i++) {
+								$file_name= $consulta->resultado['nome'];
+								$destino =$downloadFile;
+								$destino.="?id=".$consulta->resultado['arquivo_id'];
+?>
+						<li class="tabela_blog" id="arquivo<?=$consulta->resultado['arquivo_id']?>">
+							<a href=<?=$destino ?> target='_blank'> <?=$file_name ?> </a> 
+							<div class="bts_caixa"><img class="apagar" src="images/botoes/bt_x.png" onclick="killFile(<?=$consulta->resultado['arquivo_id']?>)"/></div>
+						</li>
+<?php
+								$consulta->proximo();
+							}
+?>
+					</ul>
+				</div>
+			</div>
+			<div class="bloco" id="link">
+<?php
+					$novo_link = "novo_link.php";
+					$novo_link.= "?funcionalidade_tipo=".TIPOBLOG;
+					$novo_link.= "&funcionalidade_id=".$blog->getId();
+					$novo_link = "javascript:window.open('$novo_link');";
+				?>
+				<h1><a class="toggle" id="toggle_link">▼</a> LINKS</h1><div class="add" onclick= <?=$novo_link?> >adicionar</div>
+				<div class="bloqueia">
+					<ul class="sem_estilo" id="caixa_link">
+<?php
+							$funcionalidade_tipo= $tipoBlog;
+							$funcionalidade_id= $id;
+							
+							$link = new Link((int)$funcionalidade_tipo, $funcionalidade_id);
+							$listaLinks = $link->getListaLinks();
+							
+							//print_r($link); // wee, debugatividade extremizada
+							
+							for($i=0 ; $i<count($listaLinks) ; $i++) {
+								$file_name= $listaLinks[$i];
+?>
+						<li class="tabela_blog">
+							<a href=<?=$file_name?> target='_blank'><?=$file_name?>  </a>
+							<div class="bts_caixa"><img class="apagar" src="images/botoes/bt_x.png" /></div>
+						</li>
+<?
+							}
+?>
+					</ul>
+				</div>
+			</div>
+			<div class="bloco" id="tag">
+				<h1><a class="toggle" id="toggle_tag">▼</a> TAGS</h1>
+				<div class="bloqueia">
+					<ul class="sem_estilo" id="caixa_tag">
+<?php
+foreach ($blog->tags as $tag){
+	if ($tag != "Blog sem tags") // Gaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaambiarra
+		echo "						<li class=\"tabela_blog\">
+								<a href=\"blog_tags.php?tag=".urlencode($tag)."&blog_id=$blog_id\">".ucfirst($tag)/*Primeira letra em maiúscula.*/."</a>
+						</li>";
+	else
+		echo "						<li class=\"tabela_blog\">
+								Blog sem tags
+						</li>";
+}
+/*						<li class="tabela_blog">
+								<a href="#">Tag 1</a>
+						</li>
+						<li class="tabela_blog">
+								<a href="#">Tag 2</a>
+						</li>*/
+?>
+					</ul>
+				</div>
+			</div>
+		</div>
+			<div class="troca_paginas">
+				<center>
+				<div class="paginas_padding">
+					<?=$blog->mostraPaginacao($ini)?>
+				</div>
+				</center>
+			</div>
+
+		<div class="bts_baixo">
+			<input type="image" src="images/botoes/bt_voltar.png" align="left"/>
+			<input type="image" src="images/botoes/bt_criar_postagem.png" align="right"/>
+		</div>
+	
+	</div><!-- Fecha Div conteudo -->
+	
+	</div><!-- Fecha Div conteudo_meio -->   
+	<div id="conteudo_base">
+	</div><!-- para a imagem de fundo da base -->
+		
+</div><!-- fim da geral -->
+
+</body>
+</html>
+
+<?php
+	function getMeuBlog() {
+		global $tabela_blogs;
+		global $usuario_id;
+		$consulta = new conexao();
+		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$usuario_id'");
+		if(!$consulta->itens) {
+			$blog = new Blog(0);
+			$aux_id = $blog->getId();
+		} else {
+			$aux_id = $consulta->itens[0]['Id'];
+		}
+		return $aux_id;
+	}
+	
+?>

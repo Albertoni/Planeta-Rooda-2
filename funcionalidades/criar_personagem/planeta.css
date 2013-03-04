@@ -1,0 +1,120 @@
+body {background-image:url(images/fundos/fundo.png); background-repeat:repeat-x; 
+background-color:#AACCCA; margin:0 0 0 0; height:100%; font-family: Trebuchet MS, Tahoma, Verdana; 
+font-size:13px; color:#333333; background-attachment:fixed}
+
+html {margin:0; height:100%}
+
+.sem_estilo {padding:22px;}
+
+a{color:#333333; cursor:pointer; border:none;}
+a:hover{text-decoration:none; color:#CC6600}
+
+p {padding:0; margin:0}
+
+ul { list-style:none; margin:0; padding:0;}
+
+input[type=text] {border:solid 1px #74d3ed;}
+input[type=text]:hover {background-color:#74d3ed}
+textarea {border:solid 1px #74d3ed;}
+
+#geral {width:775px; left:50%; margin-left:-387px; position:absolute; z-index:1}
+
+/*coisas do cabeçalho*/
+#topo {width:100%; background-color:#E7FFAE; background-repeat:no-repeat; border-bottom:3px #1E3D49 solid;
+position:relative; z-index:100; display:table; font-family:Tahoma, Verdana}
+#centraliza_topo { width:775px; margin:auto}
+#hist {float:left; font-size:14px; margin:4px}
+#bt_ajuda {cursor:pointer; float:right; font-size:12px; 
+font-weight:bold; margin:6px; color:#333333}
+#bt_ajuda:hover {color:#CC6600}
+
+#cabecalho {width:100%; position:relative; height:150px}
+#ajuda {width:100%; position:relative; display:block; z-index:1}
+#ajuda_meio {background-image:url(images/fundos/tira.png); background-repeat:repeat-y;  width:100%; height:90px}
+#ajuda_base {background-image:url(images/fundos/corpo_base2.png); background-repeat:no-repeat; 
+width:100%; height:59px}
+#ajudante {width:680px; height:100%; position:absolute; margin-left:47px; margin-right:47px}
+#personagem {float:left; height:100%; width:20%}
+#balao {float:right; width:74%; background-color:white; padding:20px; -moz-border-radius:30px;
+-webkit-border-radius:30px; border-radius:30px}
+#rel {position:relative; z-index:inherit; zoom:1; height:100%} /*para funcionar borda arredondada nos IE*/
+
+/*coisas do conteudo*/
+#conteudo_topo {background-image:url(images/fundos/corpo_topo.png); background-repeat: no-repeat; 
+width:100%; height:59px; position:relative; margin-top:20px;}
+#conteudo_meio {background-image:url(images/fundos/tira.png); background-repeat:repeat-y; 
+width:100%; position:relative; z-index:100}
+#conteudo_base {background-image:url(images/fundos/corpo_base.png); background-repeat: no-repeat; 
+width:100%; height:59px; position: relative}
+
+#conteudo {width:680px; margin-left:47px; margin-right:47px; margin-top:-10px; position:absolute}
+
+.bts_cima {width:100%; float:left; margin-bottom:22px}
+.bts_baixo {width:100%; float:left; margin-top:22px}
+
+.bloco {background-color:#EEF5F5; border-top:25px solid #53686F; border-left:1px solid #aaaaaa;
+border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; min-height:20px}
+.move_bloco {border:white dotted 2px; height:50px; margin-bottom:22px; width:234px;}
+
+h1 {font-size:15px; margin-top:-22px; color:white; font-family:Tahoma, Verdana; text-indent:22px; 
+position:relative; letter-spacing:1px; font-weight:normal; cursor:default; margin-bottom:4px}
+
+.tabela {display:table; width:100%}
+
+.cor1 { display:table; width:100%; background-color:#EEF5F5}
+
+.cor2 { display:table; width:100%; background-color:#ccecf4}
+
+.dados { font-weight:bold; display:table-cell; padding-right:7px}
+.valor { display:table-cell; width:100%}
+
+.tabela_oculta { width:100%; margin-bottom:15px;}
+
+.toggle { color:#FFFFFF}
+.toggle:hover { color:#E7FFAE}
+
+#light_box {width:428px; height:80%; display:none; position:absolute; z-index:1000; background-color:#F4FFDD; top:50%; left:50%}
+#light_box textarea {margin-bottom:22px}
+
+.msg_dimensao {width:100%}
+
+#novo_coment {margin-top:15px; border-top:1px solid; padding-top:5px; margin-bottom:15px}
+
+#fundo_lbox {width:100%; height:100%; background-color:#ffffff; -moz-opacity:0.7; opacity:0.7; 
+filter: alpha(opacity=70); display:none; z-index:500; position:absolute;}
+
+.recebe_coments {overflow:auto; overflow-x: hidden; height:100%; position:relative}
+
+.fechar_coments {float:right; display:table-cell; margin-top:-25px; position:relative; cursor:pointer; z-index:10000000}
+
+.troca_paginas {background-color:#EEF5F5; width:100%; float:left}
+.troca_paginas a {margin-left:3px; margin-right:3px; text-decoration:none; color:#000000; 
+font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
+.troca_paginas a:hover {color:#C60;}
+
+.tool_bt {width:20px; height:20px; margin-right:20px; float:left; border:1px solid #EEF5F5; border:1px #CCC solid}
+.tool_bt:hover {border-right:1px #777 solid; border-bottom:1px #777 solid; border-left:1px #FFF solid; border-top:1px #FFF solid;}
+.tool_bt:active {border-right:1px #FFF solid; border-bottom:1px #FFF solid; border-left:1px #777 solid; border-top:1px #777 solid}
+/*Quando a função estiver clicada (por exemplo, o negrito está acionado), aplicar cor de fundo #BACFDA e sem borda nos botões*/
+
+.paginas_padding { padding:10px}
+
+.numero {background-color:#74D3ED; padding:2px; padding-left:8px; padding-right:8px;}
+.numero:hover {background-color:#C5E9EF}
+
+.numero_atual {background-color:#C5E9EF; padding:2px; padding-left:8px; padding-right:8px;}
+
+.espaco {margin-top:10px;}
+
+.primeira {padding:4px;}
+
+.seguinte {color:#9ED2DB; padding:4px;}
+
+.margem_paginas { margin-bottom:12px; margin-top:12px}
+
+.bloqueia {max-height:210px; overflow:auto; overflow-x:hidden; width:100%}
+
+#descricao { background-color:#FFF; border:1px solid #999; z-index:100000; position:absolute; display:none; padding-right:3px; padding-left:3px}
+
+.add { float:right; margin-right:5px; color:#e7ffae; cursor:pointer; font-size:11px; margin-top:-22px; text-indent:3px; padding:1px; padding-left:5px; padding-right:5px; font-weight:bold; font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; letter-spacing:normal; position:relative}
+.add:hover { text-decoration:underline}
