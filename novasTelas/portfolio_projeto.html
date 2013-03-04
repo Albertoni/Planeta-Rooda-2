@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="portfolio.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="planeta.js"></script>
+<script type="text/javascript" src="portfolio.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+<script language="javascript">
+function coment(){
+	if (navigator.appVersion == "4.0 (compatible; MSIE 7.0; Windows NT 5.1; FDM; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; AskTbATU2/5.8.0.12304)"){ //versao do ie 7
+		document.getElementById('ie_coments').style.width = 85 + '%';
+	}
+}
+</script>
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();coment();">
+	<div id="light_box"></div>
+    <div id="comentarios" class="bloco">
+        <h1>TÍTULO DA POSTAGEM</h1>
+        <img src="images/botoes/bt_fechar.png" id="abre_coment" class="fechar_coments" onmousedown="abreComents()" />
+        <div class="recebe_coments">
+        <ul class="sem_estilo" id="ie_coments">  
+            <ul>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+        </ul>
+            <li id="novo_coment">
+                POSTAR NOVO COMENTÁRIO
+            </li>
+            <li>
+                <textarea class="msg_dimensao" rows="10"></textarea>
+            </li>
+            <li>
+                <div class="enviar" align="right">
+                    <input type="image" src="images/botoes/bt_confir_pq.png" />
+                </div>
+            </li>                
+        </ul>
+        </div>
+	</div>
+
+<div id="topo">
+	<div id="centraliza_topo">
+        <p id="hist"><a href="#">Planeta ROODA</a> > <a href="#">Professor Fulaninho de Tal</a> > <a href="#">Biblioteca</a></p>
+        <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
+    </div>
+</div>
+
+<div id="geral">
+
+<!-- **************************
+			cabecalho
+***************************** -->
+<div id="cabecalho">
+    <div id="ajuda">
+        <div id="ajuda_meio">
+            <div id="ajudante">
+            	<div id="personagem"></div>
+                <div id="rel"><p id="balao">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+				Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque 
+				habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p></div>
+            </div>
+        </div>
+        <div id="ajuda_base"></div>
+    </div>
+</div><!-- fim do cabecalho -->
+    
+    
+<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+
+<!-- **************************
+			conteudo
+***************************** -->
+    
+<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+        <div class="bts_cima">
+            <input type="image" src="images/botoes/bt_voltar.png" align="left"/>
+            <input type="image" src="images/botoes/bt_postagem.png" align="right"/>
+    	</div>
+    	<div id="esq">
+        	<div id="projeto" class="bloco">
+            	<h1 ><a class="toggle" id="toggle_projeto">▼</a> PROJETO</h1>
+                <ul class="sem_estilo" id="caixa_projeto">
+                	<li>
+                    	<span class="dados">Descrição:
+                        </span>
+                    </li>
+                    <li class="texto_port">
+                    	<span class="valor">Sed a neque at nisl convallis euismod. Fusce volutpat erat ut nisi malesuada ornare. In condimentum
+                        </span>
+                    </li>
+					<li>
+                    	<span class="dados">Motivação:
+                        </span>
+                    </li>
+                    <li class="texto_port">
+                    	<span class="valor">Cras tincidunt nisl nec nulla laoreet laoreet. 
+                        </span>
+                    </li>
+                    <li>
+                    	<span class="dados">Objetivos:
+                        </span>
+                    </li>
+                    <li class="texto_port">
+                    	<span class="valor">Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero.
+                        </span>
+                    </li>
+                    <li>
+                    	<span class="dados">Conteúdos Abordados:
+                        </span>
+                    </li>
+                    <li class="texto_port">
+                    	<span class="valor">Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero.
+                        </span>
+                    </li>
+                     <li>
+                    	<span class="dados">Principais Ações:
+                        </span>
+                    </li>
+                    <li>
+                    	<span class="valor">Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero.
+                        </span>
+                    </li>
+                </ul>
+            </div> <!-- fim da div projeto -->
+            <div id="postagens" class="bloco">
+            	<h1 ><a class="toggle" id="toggle_posts">▼</a> POSTAGENS</h1>
+                	<ul class="sem_estilo" id="caixa_posts">
+                    	<li class="post_ano">
+                			<a id="abre_mes" onmousedown="abreMes()">2010</a>	
+						</li>
+                    	<li class="tabela_oculta" id="mes_oculto">
+                            <ul>
+                                <li class="post_mes">
+                                    <a href="#">Abril</a>	
+                                </li>
+                                <li>
+                                    <ul>
+                                         <li class="post_topico">
+                                            <a href="#">Tópico 1</a>	
+                                        </li>
+                                         <li class="post_topico">
+                                            <a href="#">Tópico 2</a>	
+                                        </li>
+                                    </ul>
+                                </li>
+							</ul> 
+						</li>
+                    <li class="post_ano">
+                		<a href="#">2009</a>	
+					</li>
+                    </ul>
+			</div>
+            <div id="arquivos" class="bloco">
+            	<h1 ><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS</h1>
+                	<ul class="sem_estilo" id="caixa_arq">
+                    <li class="tabela_port">
+                        	<a href="#">donec_dignissim01.jpg</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">donec_dignissim02.jpg</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">donec_dignissim03.jpg</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">augue.ppt</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">lacinia.ppt</a>
+					</li>
+                    <li class="tabela_oculta" id="arquivos_ocultos">
+                    	<ul>
+                            <li class="tabela_port">
+                                    <a href="#">dignissim.ppt</a>
+                            </li>
+                            <li class="texto_port">
+                                    <a href="#">tellus.ppt</a>
+                            </li>
+						</ul> 
+					</li>         
+					<li class="mais_port">
+                    	<p class="mais_link">
+                        <a id="abre_arquivos" onmousedown="abreArquivos()">Ver mais</a>
+                        </p>
+					</li>
+				</ul>
+            </div>
+            <div id="links" class="bloco">
+            	<h1 ><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
+                	<ul class="sem_estilo" id="caixa_link">
+                    <li class="tabela_port">
+                        	<a href="#">Link 1</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">Link 2</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">Link 3</a>
+					</li>
+                    <li class="tabela_port">
+                        	<a href="#">Link 4</a>
+					</li>
+                     <li class="tabela_port">
+                        	<a href="#">Link 5</a>
+					</li>
+                    <li class="tabela_oculta" id="links_ocultos">
+                    	<ul>
+                            <li class="tabela_port">
+                                    <a href="#">Link 6</a>
+                            </li>
+                            <li class="texto_port">
+                                    <a href="#">Link 7</a>
+                            </li>
+						</ul> 
+					</li> 
+                    <li class="mais_port">
+                    	<p class="mais_link">
+                        	<a id="abre_links" onmousedown="abreLinks()">Ver mais</a>
+						</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+        <div id="dir">
+        	<div id="posts" class="bloco">
+            	<h1 id="nome_projeto">CRAS QUIS TELLUS</h1>
+                <div class="cor1">
+                	<ul class="sem_estilo">
+                        <li class="tabela_port">
+                            <span class="titulo">
+                                Título 1
+                            </span>
+                            <span class="data">
+                                27/05/2010
+                            </span>
+                        </li>
+                        <li class="tabela_port">
+                    	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ligula quam, laoreet eget faucibus ut, egestas id felis. Donec sodales libero ac felis gravida sed eleifend nulla volutpat. Sed quis leo non lacus varius malesuada sed ac mi. Cras quis tellus ante, quis condimentum tellus. Sed volutpat aliquet libero vitae suscipit. Ut tincidunt ipsum in diam pellentesque ultrices. Ut suscipit, diam sit amet viverra venenatis, tortor magna bibendum mi, sed porta quam elit eu quam. Suspendisse potenti. Nam semper quam et dolor interdum egestas. Fusce vulputate sollicitudin libero ac blandit. Donec eget lacinia mauris. Aenean nec elit eros. Quisque pretium nulla sed arcu suscipit eget pellentesque ipsum posuere. Vestibulum porttitor magna quis nunc bibendum laoreet. Duis at egestas mauris. Donec ac erat augue, et fermentum dui. Aenean euismod, metus sit amet sagittis commodo, augue justo vestibulum felis, a molestie libero diam et lacus. Ut volutpat, ipsum vitae laoreet hendrerit, dui eros pellentesque massa, ut mollis purus nibh sit amet velit.
+                        <br /><br />
+                        Sed a neque at nisl convallis euismod. Fusce volutpat erat ut nisi malesuada ornare. In condimentum, lectus sit amet tempus congue, metus mi cursus magna, vel tristique sem enim at odio. Cras tincidunt nisl nec nulla laoreet laoreet. Integer consequat facilisis ipsum et volutpat. feugiat tempor metus, et scelerisque dui cursus quis. Curabitur egestas justo a ligula dictum aliquam. Etiam interdum ligula id eros rhoncus id consequat massa cursus. Vivamus purus arcu, viverra vitae accumsan non, egestas sed lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc ac fermentum nisl.</p> 
+                    	</li>
+                        <li class="tabela_port">
+                            <a id="abre_coment" onmousedown="abreComents()">3 comentários</a>
+                        </li>
+					</ul>
+                </div>
+                <div class="cor2">
+                	<ul class="sem_estilo">
+                        <li class="tabela_port">
+                            <span class="titulo">
+                                Título 2
+                            </span>
+                            <span class="data">
+                                17/05/2010
+                            </span>
+                        </li>
+                        <li class="tabela_port">
+                    	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ligula quam, laoreet eget faucibus ut, egestas id felis. Donec sodales libero ac felis gravida sed eleifend nulla volutpat. Sed quis leo non lacus varius malesuada sed ac mi. Cras quis tellus ante, quis condimentum tellus. Sed volutpat aliquet libero vitae suscipit. Ut tincidunt ipsum in diam pellentesque ultrices. Ut suscipit, diam sit amet viverra venenatis, tortor magna bibendum mi, sed porta quam elit eu quam. Suspendisse potenti. Nam semper quam et dolor interdum egestas. Fusce vulputate sollicitudin libero ac blandit. Donec eget lacinia mauris. Aenean nec elit eros. Quisque pretium nulla sed arcu suscipit eget pellentesque ipsum posuere. Vestibulum porttitor magna quis nunc bibendum laoreet. Duis at egestas mauris. Donec ac erat augue, et fermentum dui. Aenean euismod, metus sit amet sagittis commodo, augue justo vestibulum felis, a molestie libero diam et lacus. Ut volutpat, ipsum vitae laoreet hendrerit, dui eros pellentesque massa, ut mollis purus nibh sit amet velit.
+                        <br /><br />
+                        Sed a neque at nisl convallis euismod. Fusce volutpat erat ut nisi malesuada ornare. In condimentum, lectus sit amet tempus congue, metus mi cursus magna, vel tristique sem enim at odio. Cras tincidunt nisl nec nulla laoreet laoreet. Integer consequat facilisis ipsum et volutpat. feugiat tempor metus, et scelerisque dui cursus quis. Curabitur egestas justo a ligula dictum aliquam. Etiam interdum ligula id eros rhoncus id consequat massa cursus. Vivamus purus arcu, viverra vitae accumsan non, egestas sed lorem. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nunc ac fermentum nisl.</p> 
+                    	</li>
+                        <li class="tabela_port">
+                            <a id="abre_coment" onmousedown="abreComents()">3 comentários</a>
+                        </li>
+					</ul>
+                </div>
+                
+            </div>
+        </div>
+        <div class="bts_baixo">
+            <input type="image" src="images/botoes/bt_voltar.png" align="left"/>
+            <input type="image" src="images/botoes/bt_postagem.png" align="right"/>
+    	</div>
+
+
+    
+    </div><!-- Fecha Div conteudo -->
+    
+    </div><!-- Fecha Div conteudo_meio -->   
+    
+    <div id="conteudo_base">
+    </div><!-- para a imagem de fundo da base -->
+	
+    </div><!-- fim da geral -->
+
+</body>
+</html>

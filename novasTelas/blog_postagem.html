@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Planeta ROODA 2.0</title>
+<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="blog.css" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="planeta.js"></script>
+<script type="text/javascript" src="blog.js"></script>	
+
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+
+</head>
+
+<body onload="atualiza('ajusta()');inicia();">
+    <div id="topo">
+        <div id="centraliza_topo">
+            <p id="hist"><a href="#">Planeta ROODA</a> > <a href="#">Professor Fulaninho de Tal</a> > <a href="#">Biblioteca</a></p>
+            <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
+        </div>
+    </div>
+    
+    <div id="geral">
+    
+    <!-- **************************
+                cabecalho
+    ***************************** -->
+    <div id="cabecalho">
+        <div id="ajuda">
+            <div id="ajuda_meio">
+                <div id="ajudante">
+                    <div id="personagem"></div>
+                    <div id="rel"><p id="balao">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+                    Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque 
+                    habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p></div>
+                </div>
+            </div>
+            <div id="ajuda_base"></div>
+        </div>
+    </div><!-- fim do cabecalho -->
+    <div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+    <div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+    
+    <!-- **************************
+                conteudo
+    ***************************** -->
+        <div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+        	<form>
+            <div class="bts_cima">
+            <input type="image" src="images/botoes/bt_cancelar.png" align="left"/>
+            <input type="image" id="responder_topico" src="images/botoes/bt_confirm.png" align="right"/>
+            </div>	
+        	<div id="esq">
+            	<div id="importar_arq" class="bloco">
+                	<h1>IMPORTAR ARQUIVO</h1>
+                    <ul class="sem_estilo">
+                    	<li id="procurar_arq"></li>
+                        <ul class="info_importada">
+                            <li class="enviado1"><input type="checkbox" />arquivo_enviado1.aaa</li>
+                            <li class="enviado2"><input type="checkbox" />arquivo_enviado2.bbb</li>
+                            <li class="enviado1"><input type="checkbox" />arquivo_enviado3.ccc</li>
+                        </ul>
+                    </ul>
+                </div>
+                <div id="importar_link" class="bloco">
+                	<h1>IMPORTAR LINK</h1>
+                    <ul class="sem_estilo">
+                    	<li>Nome do Site <span class="exemplo">(exemplo: NUTED)</span></li>
+                        <li><input type="text" class="blog_info"/></li>
+                        <li>Link <span class="exemplo">(exemplo: www.nuted.ufrgs.br)</span></li>
+                        <li><input type="text" class="blog_info"/></li>
+                        <li id="importar"></li>
+                        <ul class="info_importada">
+                            <li class="enviado1"><input type="checkbox" />UFRGS</li>
+                            <li class="enviado2"><input type="checkbox" />CINTED</li>
+                            <li class="enviado1"><input type="checkbox" />NUTED</li>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div id="dir">
+            	<div id="info_post" class="bloco">
+                    <h1>INFORMAÇÕES DA POSTAGEM</h1>
+                    <ul class="sem_estilo">
+                    	<li>Título</li>
+                        <li><input type="text" class="blog_info"/></li>
+                        <li>Texto</li>
+                        <li><textarea class="blog_info" rows="30"></textarea></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bts_baixo">
+            <input type="image" src="images/botoes/bt_cancelar.png" align="left"/>
+            <input type="image" id="responder_topico" src="images/botoes/bt_confirm.png" align="right"/>
+            </div>	
+        </form>	
+		</div><!-- Fecha Div conteudo -->
+        </div><!-- Fecha Div conteudo_meio -->   
+        <div id="conteudo_base">
+        </div><!-- para a imagem de fundo da base -->
+            
+    </div><!-- fim da geral -->
+
+</body>
+</html>
