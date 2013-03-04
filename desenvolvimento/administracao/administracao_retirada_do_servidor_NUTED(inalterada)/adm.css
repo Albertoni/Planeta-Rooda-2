@@ -1,0 +1,105 @@
+body { background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/fundos/fundo10.png); background-color:#B5D5E6}
+
+#esq { float:left}
+
+#dir { float:right}
+#dir h1 { cursor:move}
+
+#ident {width:428px; height:100%}
+#ident a { text-decoration:underline}
+
+#perfil {width:236px; height:100%; margin-bottom:12px;}
+#perfil img{width:100%}
+
+#post {width:236px; height:100%; margin-bottom:12px}
+
+#arquivos {width:236px; height:100%; margin-bottom:12px;}
+
+#link {width:236px; height:100%; margin-bottom:12px;}
+
+.titulo {font-size:14px; font-weight:600; float:left; display:table-cell;}
+
+.data {float:right; display:table-cell;}
+
+.tabela_blog {display:table; width:100%; margin-bottom:15px;}
+.tabela_blog p {display:table-cell; width:100%; float:left}
+
+.mais_blog {display:table; width:100%;}
+
+#arquivos_ocultos {display:none}
+
+#links_ocultos {display:none}
+
+#mes_oculto {display:none;}
+
+#post_oculto {display:none;}
+
+.post_ano {width:100%; margin-bottom:15px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/seta_fechado.png); background-repeat:no-repeat; text-indent:12px;}
+
+.post_mes {width:100%; margin-bottom:15px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/seta_fechado.png); background-repeat:no-repeat; text-indent:12px; margin-left:15px;}
+
+.post_topico {width:100%; margin-bottom:15px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/seta_fechado.png); background-repeat:no-repeat; text-indent:12px; margin-left:30px;}
+
+.mais_link {float:right; display:table-cell;} 
+.mais_link a {font-size:11px; font-weight:bold; 
+text-decoration:none; color:#666666; outline:none}
+.mais_link a:hover {color:#CC6600;}
+
+#meu_blog {width:216px; margin-right:12px; float:left}
+
+#blog_coletivo {width:216px; margin-right:12px; float:left}
+
+#outros_blogs {width:216px; float:left}
+
+#importar_arq {width:236px; margin-bottom:12px;}
+
+#importar_link {width:236px;}
+
+#info_post {width:428px;}
+
+#info_blog {width:398px;}
+
+#add_colegas {width:266px; margin-bottom:12px;}
+
+#procurar_arq {width:106px; height:27px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_procurar_arquivo.png); margin-bottom:12px; background-repeat:no-repeat;}
+#procurar_arq:hover {background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_procurar_arquivo2.png)}
+
+#importar {width:64px; height:25px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_importar.png); margin-bottom:12px; background-repeat:no-repeat;}
+#importar:hover {background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_importar2.png)}
+
+#salvar {width:51px; height:25px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_salvar.png); margin-bottom:12px; background-repeat:no-repeat;}
+#salvar:hover {background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_salvar2.png)}
+
+.info_importada {width:100%; background-color:#FFFFFF; border:solid 1px #AAA;}
+.info_importada input[type=checkbox] {margin:5pt}
+
+.blog_info {width:100%; margin-top:2px; margin-bottom:15px;}
+
+/*.blog_img {width:60%; margin-top:2px}*/
+
+.enviado1 {width:100%;}
+
+.enviado2 {width:100%; background-color:#ccecf4;}
+
+.exemplo {color:#888; font-size:8pt;}
+
+#procurar_img {width:100%; height:25px; background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_procurar_img.png); background-repeat:no-repeat; background-position:right}
+#procurar_img:hover {background-image:url(file:///C|/DOCUME%7E1/NUTED/CONFIG%7E1/Temp/scp01638/planeta2/funcionalidades/administracao/imagens/images/botoes/bt_procurar_img2.png)}
+#procurar_img input[type=text] {width:60%; margin-top:2px;}
+
+#meus_coletivos {width:100%; clear:both;}
+
+#blogs_colegas {width:100%; clear:both;}
+
+.lista_esq { display:table-cell; float:left; width:40%; padding:20px}
+
+.lista_dir { display:table-cell; float:right; width:47%; padding:20px}
+.lista_dir a { text-decoration:none}
+.lista_dir input { margin-left:10px}
+
+.imagem { width:66px; height:20%; background-color:white; border:1px solid #888888; 
+float:left; margin-right:15px; display:table-cell}
+
+.mensagens {margin-top:37px}
+
+.criado_por { color:#999999; font-size:10px; margin-top:15px; margin-bottom:15px}
