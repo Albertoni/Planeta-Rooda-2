@@ -1,0 +1,90 @@
+body{
+	background-image:url(images/tela_inicial/fundo.png);
+	margin-bottom:0px !important;
+	z-index:0;
+}
+#logo{
+
+}
+#texto{
+	margin-left:500px;
+}
+
+#mural_vertical{
+	height:auto;
+	min-height:300px;
+	background-image:url('images/tela_inicial/muralpreenchimento.png');
+	background-repeat:repeat-y;
+}
+
+table{
+	border-collapse:collapse;
+}
+
+.botao_cima{
+	left:385px;
+	top:-165px;
+	background-image:url('images/botoes/up.png');
+	width:31px;
+	height:29px;
+	cursor:pointer;
+}
+
+.botao_baixo{
+	left:385px;
+	background-image:url('images/botoes/down.png');
+	width:31px;
+	height:29px;
+	cursor:pointer;
+}
+
+.mural{ /*Acho que poderia ser por ID, mas assim mexe em menos código*/
+	background-image:url('images/tela_inicial/mural_bot_stretch.png');
+	width:511px;
+	height:100%;
+	padding-top:1px; /* não remover isso */
+}
+
+#mural_topo{
+	background-image:url('images/tela_inicial/mural_up.png');
+	height:162px; /*se mudar aqui, mudar a função detectaAlturaMural do Mural.js*/
+}
+
+.janela{
+	width:348px;
+	height:164px;
+	background-image:url('images/tela_inicial/mural_janela.png');
+}
+
+
+.texto_janela{
+	color:#01574f;
+	margin-top:18px;
+	margin-left:18px;
+	font-weight:bold;
+	max-width:315px; /*era pra ser width de .janela - 20, mas tem que ser menos ainda pro texto não vazar*/
+	text-align:justify;
+	padding:25px 0 0 0;
+}
+
+#divLugarDosPlanetas{
+	float:left;
+}
+
+#divLugarDoMural{
+	float:left;
+}
+
+#contemJanelas{
+	float:left;
+	width:348px;
+}
+
+#contemBotoes{
+	float:left;
+}
+
+.contemConteudo{
+	float:left;
+	height:100%;
+}

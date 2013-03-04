@@ -1,0 +1,67 @@
+body {background-image:url(images/fundos/fundo.png); background-repeat:repeat-x; 
+background-color:#AACCCA; margin:0 0 0 0; height:100%; font-family: Verdana; 
+font-size:13px; color:#333333;}
+
+html {margin:0; height:100%;}
+
+ul { list-style:none; padding:44px; margin:0}
+
+p { margin:0; padding:0}
+
+#fundo_ilust { position:absolute; left:50%; margin-left:-100px; top:50%; margin-top:-330px}
+#ilust { position:absolute; left:50%; margin-left:50px; top:50%; margin-top:-330px}
+
+#sustenta_login {width:356px; height:auto; position:absolute; z-index:2;
+top:50%; margin-top:-284px; padding-top:5px; left:50%; margin-left:-177px}
+
+#logo {height:120px; position:relative; margin-bottom:13px;}
+#img_logo {height:100%; position:relative; margin-left:5px}
+
+#caixa_login {background-image:url(images/fundos/bloco_login.png); 
+background-repeat:no-repeat; width:356px; height:261px; 
+position:relative; margin-bottom:12px}
+#caixa_login a { float:right; font-size:11px; font-weight:bold; 
+text-decoration:none; color:#666666; width:100%; text-align:right; outline:none}
+#caixa_login a:hover{color:#CC6600}
+
+.campo_texto{border:solid 1px #74d3ed; width:100%; margin-bottom:10px}
+.campo_texto:hover{background-color:#74d3ed}
+
+#botao_entrar{ background-image:url(images/botoes/bt_entrar1.png); background-color:#DEEBEA;
+border:none; width:120px; height:41px; margin-top:30px}
+#botao_entrar:hover {background-image:url(images/botoes/bt_entrar2.png); cursor:pointer}
+
+#caixa_criar {background-image:url(images/fundos/bloco_criar.png); 
+background-repeat:no-repeat; width:356px; height:159px; position:relative}
+#caixa_criar p{ font-weight:bold; color:#CC6600; font-size:14px; margin:0}
+
+.botao_cadastro {background-image:url(images/botoes/bt_criar1.png); background-color:#DEEBEA;
+border:none; width:100px; height:41px; margin-top:10px; cursor:pointer}
+.botao_cadastro:hover{ background-image:url(images/botoes/bt_criar2.png)}
+
+.botao_tutorial {background-image:url(images/botoes/bt_tutorial.png); background-color:#DEEBEA;
+border:none; width:137px; height:41px; margin-top:10px; cursor:pointer}
+.botao_tutorial:hover{ background-image:url(images/botoes/bt_tutorial2.png)}
+
+#sustenta_cadastro {opacity:0; display:none; width:401px; height:auto; position:absolute; 
+top:50%; margin-top:-284px; left:50%; margin-left:-177px; z-index:1; }
+
+#cadastro_topo {color:#FFFFFF; width:170px; height:20px; background-color:#1E3D49; 
+float:right; position:relative; margin-top:123px; margin-right:1px}
+#cadastro_topo p { padding:3px; text-indent:3px; margin:0; font-size:12px; color:white}
+
+#caixa_cadastro { background-image:url(images/fundos/bloco_cadastro.png); width:401px; 
+height:434px; background-repeat:no-repeat; position:relative; float:left; margin-top:-5px}
+
+#botao_confirmar { background-image:url(images/botoes/bt_confirmar.png); background-color:#DEEBEA;
+border:none; width:159px; height:41px; margin-top:30px; cursor:pointer}
+#botao_confirmar:hover { background-image:url(images/botoes/bt_confirmar2.png)}
+
+#mascara { width:100%; height:100%; background-color:black; opacity:0.5; filter:alpha(opacity=50); 
+z-index:100; position:absolute; display:none}
+#alerta { width:402px; height:144px; position:absolute; z-index:101; display:none; 
+left:50%; margin-left:-200px; top:50%; margin-top:-72px; 
+background-image:url(images/botoes/alerta_cadastro.png); cursor:pointer}
+#alerta:hover { background-image:url(images/botoes/alerta_cadastro2.png)}
+
+#txt_alerta { padding-left:20px; padding-right:20px; font-size:15px}
