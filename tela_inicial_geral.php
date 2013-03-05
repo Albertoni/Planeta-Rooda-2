@@ -79,7 +79,7 @@
 					foreach($planetasQuePodeAcessar as $planeta){
 						$idPlaneta = $planeta->__get("IdTerenoPrincipal");
 						$nomePlaneta = $planeta->__get("Nome");
-						switch($planeta->getAparencia()){
+						switch($planeta->__get("Aparencia")){
 							case PlanetaBD::APARENCIA_VERDE:
 							case PlanetaBD::APARENCIA_GRAMA:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
 								break;
