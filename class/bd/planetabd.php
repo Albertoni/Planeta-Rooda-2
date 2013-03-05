@@ -50,7 +50,7 @@ class PlanetaBD extends ObjetoBD{
 	*/
 	protected static function deTupla($array_param){
 		return new PlanetaBD(	$array_param['Id'], $array_param['Nome'], $array_param['Aparencia'], $array_param['EhVisitante'], 
-								$array_param['IdTerenoPrincipal'], $array_param['IdTerrenoPatio']);
+								$array_param['IdTerrenoPrincipal'], $array_param['IdTerrenoPatio']);
 	}
 	
 	/**
@@ -127,7 +127,13 @@ class PlanetaBD extends ObjetoBD{
 		}
 	}
 	
-	
+		/*
+		* Getters.
+		* @param String		propriedade_param		A propriedade que deseja-se consultar.
+		*/
+	public function __get($propriedade_param){
+		return $this->$propriedade_param;
+	}
 	
 	
 	

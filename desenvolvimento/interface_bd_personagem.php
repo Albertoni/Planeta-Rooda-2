@@ -60,9 +60,11 @@ switch ($action) {
 		//procura todos os dados do terreno atual
 		$pesquisa0 = new conexao();
 		$pesquisa0->solicitar("SELECT * FROM `$tabela_terrenos` WHERE terreno_id='$terreno_id'");
+		$pesquisaIdPlaneta = new conexao();
+		$pesquisaIdPlaneta->solicitar("SELECT * FROM Planetas WHERE IdTerrenoPrincipal=$terreno_id OR IdTerrenoPatio=$terreno_id");
 	
-		$terreno_grupo_id = $pesquisa0->resultado['terreno_grupo_id'];
-		$terreno_nome   = $pesquisa0->resultado['terreno_nome'];
+		$terreno_grupo_id = $pesquisaIdPlaneta->resultado['Id'];
+		$terreno_nome = $pesquisa0->resultado['terreno_nome'];
 		$terreno_chat = $pesquisa0->resultado['chat_id'];
 		
 		$pesquisaPermissaoEdicao = new conexao();
@@ -287,68 +289,87 @@ switch ($action) {
 		$bd->solicitar("UPDATE $tabela_personagens SET personagem_animacao='$personagem_animacao' WHERE personagem_id=$personagem_id");
 
 		//procura todos os dados do terreno atual e de seus vizinhos
-		$pesquisaTerrenosVizinhos = new conexao();
-		$pesquisaTerrenosVizinhos->solicitar("SELECT * FROM $tabela_terrenos WHERE terreno_id=$terreno_personagem_id");
-		$planeta_personagem_id = $pesquisaTerrenosVizinhos->resultado['terreno_grupo_id'];
 		$pesquisaPlaneta = new conexao();
-		$pesquisaPlaneta->solicitar("SELECT * FROM Planetas WHERE Id = $planeta_personagem_id");
-		$tipoPlaneta = $pesquisaPlaneta->resultado['aparencia'];
-		$mensagemLocalizacao = montarMensagemDescricaoTerreno($planeta_personagem_id);
-		$pesquisaTerrenosVizinhos->solicitar("SELECT * FROM $tabela_terrenos 
-											WHERE terreno_grupo_id=$planeta_personagem_id
-											ORDER BY terreno_indice ASC");
-
+		$pesquisaPlaneta->solicitar("SELECT * FROM Planetas WHERE IdTerrenoPrincipal=$terreno_personagem_id OR IdTerrenoPatio=$terreno_personagem_id");
+		$planeta_personagem_id = $pesquisaPlaneta->resultado['Id'];
+		$tipoPlaneta = $pesquisaPlaneta->resultado['Aparencia'];
+		//$mensagemLocalizacao = montarMensagemDescricaoTerreno($planeta_personagem_id);
+		$dados = "";
+		$terreno_id = $pesquisaPlaneta->resultado['IdTerrenoPrincipal'];
+		$pesquisaTerrenos = new conexao();
+		$pesquisaTerrenos->solicitar("SELECT * FROM $tabela_terrenos WHERE Id = $terreno_id");
 		$pesquisaObjetosTerreno = new conexao();
-		for($k=0; $k<$pesquisaTerrenosVizinhos->registros; $k++){
-			if($pesquisaTerrenosVizinhos->resultado['terreno_id']==$terreno_personagem_id){
-				$indice_planeta_terreno_personagem = $k;
-			}
-			$terreno_id = $pesquisaTerrenosVizinhos->resultado['terreno_id'];
-			$pesquisaObjetosTerreno->solicitar("SELECT * FROM `$tabela_objetos` WHERE objeto_terreno_id='$terreno_id'");
-			for($i=0;$i<$pesquisaObjetosTerreno->registros;$i++) {
-				$objeto_id					= $pesquisaObjetosTerreno->resultado['objeto_id'];
-				$objeto_movieclip			= $pesquisaObjetosTerreno->resultado['objeto_movieclip'];
-				$objeto_frame				= $pesquisaObjetosTerreno->resultado['objeto_frame'];
-				$objeto_link				= $pesquisaObjetosTerreno->resultado['objeto_link'];
-				$objeto_fala				= $pesquisaObjetosTerreno->resultado['objeto_fala'];
-				$objeto_terreno_posicao_x	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_x'];
-				$objeto_terreno_posicao_y	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_y'];
-				$objeto_permissao_ver		= $pesquisaObjetosTerreno->resultado['objeto_permissao_ver'];
-				$objeto_permissao_acessar	= $pesquisaObjetosTerreno->resultado['objeto_permissao_acessar'];
-				$dados .= '&objeto_movieclip'			.$k.','.$i.'='.$objeto_movieclip;
-				$dados .= '&objeto_frame'				.$k.','.$i.'='.$objeto_frame;
-				$dados .= '&objeto_link'				.$k.','.$i.'='.$objeto_link;
-				$dados .= '&objeto_fala'				.$k.','.$i.'='.$objeto_fala;
-				$dados .= '&objeto_terreno_posicao_x'	.$k.','.$i.'='.$objeto_terreno_posicao_x;
-				$dados .= '&objeto_terreno_posicao_y'	.$k.','.$i.'='.$objeto_terreno_posicao_y;
-				$dados .= '&objeto_permissao_ver'		.$k.','.$i.'='.$objeto_permissao_ver;
-				$dados .= '&objeto_permissao_acessar'	.$k.','.$i.'='.$objeto_permissao_acessar;
-				$dados .= '&objeto_id'					.$k.','.$i.'='.$objeto_id; 
-			
-				$pesquisaObjetosTerreno->proximo();
-			}
-			$terreno_id 				= $pesquisaTerrenosVizinhos->resultado['terreno_id'];
-			$terreno_nome 				= $pesquisaTerrenosVizinhos->resultado['terreno_nome'];
-			$terreno_chat 				= $pesquisaTerrenosVizinhos->resultado['chat_id'];
-			$terreno_permissaoEditar 	= $pesquisaTerrenosVizinhos->resultado['terreno_permissao_edicao'];
-			
-			$dados .= '&numero_objetos_no_terreno'				.$k.'='.$pesquisaObjetosTerreno->registros; 
-			$dados .= '&terreno_id'								.$k.'='.$terreno_id; 
-			$dados .= '&terreno_nome'							.$k.'='.$terreno_nome; 
-			$dados .= '&terreno_solo'							.$k.'='.$tipoPlaneta; 
-			$dados .= '&terreno_chat'							.$k.'='.$terreno_chat; 
-			$dados .= '&terreno_permissaoEditar'				.$k.'='.$terreno_permissaoEditar; 
-			
-			$pesquisaTerrenosVizinhos->proximo();
+		$pesquisaObjetosTerreno->solicitar("SELECT * FROM `$tabela_objetos` WHERE objeto_terreno_id='$terreno_id'");
+		for($i=0;$i<$pesquisaObjetosTerreno->registros;$i++) {
+			$objeto_id					= $pesquisaObjetosTerreno->resultado['objeto_id'];
+			$objeto_movieclip			= $pesquisaObjetosTerreno->resultado['objeto_movieclip'];
+			$objeto_frame				= $pesquisaObjetosTerreno->resultado['objeto_frame'];
+			$objeto_link				= $pesquisaObjetosTerreno->resultado['objeto_link'];
+			$objeto_fala				= $pesquisaObjetosTerreno->resultado['objeto_fala'];
+			$objeto_terreno_posicao_x	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_x'];
+			$objeto_terreno_posicao_y	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_y'];
+			$objeto_permissao_ver		= $pesquisaObjetosTerreno->resultado['objeto_permissao_ver'];
+			$objeto_permissao_acessar	= $pesquisaObjetosTerreno->resultado['objeto_permissao_acessar'];
+			$dados .= '&principal_objeto_movieclip'				.$i.'='.$objeto_movieclip;
+			$dados .= '&principal_objeto_frame'					.$i.'='.$objeto_frame;
+			$dados .= '&principal_objeto_link'					.$i.'='.$objeto_link;
+			$dados .= '&principal_objeto_fala'					.$i.'='.$objeto_fala;
+			$dados .= '&principal_objeto_terreno_posicao_x'		.$i.'='.$objeto_terreno_posicao_x;
+			$dados .= '&principal_objeto_terreno_posicao_y'		.$i.'='.$objeto_terreno_posicao_y;
+			$dados .= '&principal_objeto_permissao_ver'			.$i.'='.$objeto_permissao_ver;
+			$dados .= '&principal_objeto_permissao_acessar'		.$i.'='.$objeto_permissao_acessar;
+			$dados .= '&principal_objeto_id'					.$i.'='.$objeto_id; 
+		
+			$pesquisaObjetosTerreno->proximo();
 		}
+		$terreno_chat 				= $pesquisaTerrenos->resultado['Chat'];
+		$terreno_permissaoEditar 	= $nivelProfessor+$nivelCoordenador+$nivelAdmin;
+		$dados .= '&principal_numero_objetos_no_terreno='.$pesquisaObjetosTerreno->registros; 
+		$dados .= '&principal_terreno_id='.$terreno_id; 
+		$dados .= '&principal_terreno_nome=Principal'; 
+		$dados .= '&principal_terreno_solo='.$tipoPlaneta; 
+		$dados .= '&principal_terreno_chat='.$terreno_chat; 
+		$dados .= '&principal_terreno_permissaoEditar='.$terreno_permissaoEditar; 
+		
+		$terreno_id = $pesquisaPlaneta->resultado['IdTerrenoPatio'];
+		$pesquisaTerrenos = new conexao();
+		$pesquisaTerrenos->solicitar("SELECT * FROM $tabela_terrenos WHERE Id = $terreno_id");
+		$pesquisaObjetosTerreno = new conexao();
+		$pesquisaObjetosTerreno->solicitar("SELECT * FROM `$tabela_objetos` WHERE objeto_terreno_id='$terreno_id'");
+		for($i=0;$i<$pesquisaObjetosTerreno->registros;$i++) {
+			$objeto_id					= $pesquisaObjetosTerreno->resultado['objeto_id'];
+			$objeto_movieclip			= $pesquisaObjetosTerreno->resultado['objeto_movieclip'];
+			$objeto_frame				= $pesquisaObjetosTerreno->resultado['objeto_frame'];
+			$objeto_link				= $pesquisaObjetosTerreno->resultado['objeto_link'];
+			$objeto_fala				= $pesquisaObjetosTerreno->resultado['objeto_fala'];
+			$objeto_terreno_posicao_x	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_x'];
+			$objeto_terreno_posicao_y	= $pesquisaObjetosTerreno->resultado['objeto_terreno_posicao_y'];
+			$objeto_permissao_ver		= $pesquisaObjetosTerreno->resultado['objeto_permissao_ver'];
+			$objeto_permissao_acessar	= $pesquisaObjetosTerreno->resultado['objeto_permissao_acessar'];
+			$dados .= '&patio_objeto_movieclip'				.$i.'='.$objeto_movieclip;
+			$dados .= '&patio_objeto_frame'					.$i.'='.$objeto_frame;
+			$dados .= '&patio_objeto_link'					.$i.'='.$objeto_link;
+			$dados .= '&patio_objeto_fala'					.$i.'='.$objeto_fala;
+			$dados .= '&patio_objeto_terreno_posicao_x'		.$i.'='.$objeto_terreno_posicao_x;
+			$dados .= '&patio_objeto_terreno_posicao_y'		.$i.'='.$objeto_terreno_posicao_y;
+			$dados .= '&patio_objeto_permissao_ver'			.$i.'='.$objeto_permissao_ver;
+			$dados .= '&patio_objeto_permissao_acessar'		.$i.'='.$objeto_permissao_acessar;
+			$dados .= '&patio_objeto_id'					.$i.'='.$objeto_id; 
+		
+			$pesquisaObjetosTerreno->proximo();
+		}
+		$terreno_chat 				= $pesquisaTerrenos->resultado['Chat'];
+		$terreno_permissaoEditar 	= $nivelAluno+$nivelMonitor+$nivelProfessor+$nivelCoordenador+$nivelAdmin;
+		$dados .= '&patio_numero_objetos_no_terreno='.$pesquisaObjetosTerreno->registros; 
+		$dados .= '&patio_terreno_id='.$terreno_id; 
+		$dados .= '&patio_terreno_nome=Patio'; 
+		$dados .= '&patio_terreno_solo='.$tipoPlaneta; 
+		$dados .= '&patio_terreno_chat='.$terreno_chat; 
+		$dados .= '&patio_terreno_permissaoEditar='.$terreno_permissaoEditar; 
 
 		// impressão dos dados pesquisados
-		$objetosNoTerreno  = $pesquisaObjetosTerreno->registros;
-		$dados  = $dados . '&indice_planeta_terreno_personagem=' . $indice_planeta_terreno_personagem;
-		$dados  = $dados . '&numeroTerrenos=' . $pesquisaTerrenosVizinhos->registros;
-		$dados  = $dados . '&mensagemLocalizacao=' . $mensagemLocalizacao;
+		//$dados  = $dados . '&mensagemLocalizacao=' . $mensagemLocalizacao;
 		echo "$dados";
-		
 	break;
 
 	case 6:
