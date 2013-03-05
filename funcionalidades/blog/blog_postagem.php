@@ -10,9 +10,9 @@
 
 	session_start();
 
-	$blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die("não foi fornecido id de blog");
+	$blog_id = isset($_GET['blog_id']) ? (int)$_GET['blog_id'] : die("não foi fornecido id de blog");
 	$blog = new Blog($blog_id);
-	$post_id = isset($_GET['post_id']) ? $_GET['post_id'] : 0;
+	$post_id = isset($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 	$post = new Post();
 	
 	
@@ -183,7 +183,8 @@ function Init() {
 									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
 									<input name="falso" type="text" id="falso_frame" />
 									<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
-									<input type="submit" name="upload" value="upload!" />
+									<br>
+									<input type="submit" name="upload" value="upload!" style="float:right" />
 								</form>
 								<iframe id="alvoAJAX" name="alvoAJAX" src="" style="display: none;"></iframe>
 								<iframe id="previewarquivos" name="previewarquivos" src="" frameborder="0"></iframe>
@@ -206,7 +207,7 @@ function Init() {
 					</div>
 				</li>
 				<li>
-					<div align="right"><a href="javascript:arquivoInsert();"><img src="images/botoes/bt_confir_pq.png" onclick="confirmaAnexarArquivos()" /></a></div>
+					<div align="right"><a href="javascript:arquivoInsert();"><img src="images/botoes/bt_confir_pq.png"/></a></div>
 				</li>
 			</form>
 			</ul>
