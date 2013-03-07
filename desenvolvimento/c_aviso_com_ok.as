@@ -63,6 +63,8 @@ class c_aviso_com_ok extends MovieClip{
 		}
 		
 		desenho.onPress = function(){
+			var terreno:c_terreno = _root.planeta.getTerrenoEmQuePersonagemEstah();
+			terreno.definirPermissaoMovimentoMp(false);
 			_root[avisoComFocoDoTeclado] = _parent;
 			_parent._alpha = 50;
 			_parent.startDrag();
@@ -70,6 +72,11 @@ class c_aviso_com_ok extends MovieClip{
 			_root.ponteiro.swapDepths(_root.getNextHighestDepth());
 		}
 		desenho.onMouseUp = function(){
+			var estahSoltandoOAviso:Boolean = _parent._alpha<100;
+			if(estahSoltandoOAviso){
+				var terreno:c_terreno = _root.planeta.getTerrenoEmQuePersonagemEstah();
+				terreno.definirPermissaoMovimentoMp(true);
+			}
 			_parent._alpha = 100;
 			_parent.stopDrag();
 		}

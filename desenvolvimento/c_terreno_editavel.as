@@ -352,8 +352,6 @@ class c_terreno_editavel extends c_terreno {
 	*/
 	public function terminarModoEdicao():Void{
 		if(em_edicao and !estahSalvando){
-			definirPermissaoMovimentoMp(true);
-			
 			centralizarTelaEm(new Point(this['mp']._x, this['mp']._y));
 			
 			btSalvarEdicao._visible 	   = false;
@@ -365,6 +363,7 @@ class c_terreno_editavel extends c_terreno {
 			desfazerSelecaoObjeto();
 			desfazerEdicoes();
 			editavel(false);
+			definirPermissaoMovimentoMp(true);
 		} else if(estahSalvando){
 			c_aviso_com_ok("Favor esperar o término da gravação.");
 		}
@@ -959,5 +958,16 @@ class c_terreno_editavel extends c_terreno {
 		}
 	}
 	
-	
+	/*
+	* @param permissao_param Determina se o personagem do usuário logado pode (true) ou não (false) se movimentar.
+	*/
+	public function definirPermissaoMovimentoMp(permissao_param:Boolean):Void{
+		if(permissao_param){
+			if(!em_edicao){
+				permissaoMovimento = permissao_param;
+			}
+		} else {
+			permissaoMovimento = permissao_param;
+		}
+	}
 }

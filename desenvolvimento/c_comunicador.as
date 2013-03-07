@@ -504,8 +504,11 @@ dynamic class c_comunicador extends MovieClip {
 		var mensagem:String;
 		mensagem = fala.getTexto();
 		fala.limparTexto();
-		enviarMensagem(mensagem, chat_destino.getIdentificacaoBancoDeDados(), true);
-		dispatchEvent({target:this, type:"mensagemEnviada", mensagem: mensagem});
+		mensagem = global_trim(mensagem);
+		if(0 < mensagem.length){
+			enviarMensagem(mensagem, chat_destino.getIdentificacaoBancoDeDados(), true);
+			dispatchEvent({target:this, type:"mensagemEnviada", mensagem: mensagem});
+		}
 	}
 
 	/*

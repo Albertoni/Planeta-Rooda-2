@@ -50,6 +50,9 @@ function recebe_flash_var_principais2(success) {      //existe uma funçao de ex
 		terreno_principal_status = new c_terreno_bd();
 		terreno_patio_status = new c_terreno_bd();
 		
+		terreno_principal_status.mensagemLocalizacao = this.mensagemLocalizacao;
+		terreno_patio_status.mensagemLocalizacao = this.mensagemLocalizacao;
+		
 		/*
 					PRINCIPAL
 		*/
@@ -107,7 +110,7 @@ function recebe_flash_var_principais2(success) {      //existe uma funçao de ex
 		terreno_principal_status.setIdentificacao(this["principal_terreno_id"]);
 		terreno_principal_status.setNome(this["principal_terreno_nome"]);
 		terreno_principal_status.setIdChat(this["principal_terreno_chat"]);
-		terreno_principal_status.mensagemLocalizacao = this["principal_mensagemLocalizacao"];
+		//terreno_principal_status.mensagemLocalizacao = this["principal_mensagemLocalizacao"];
 		terreno_principal_status.setPermissaoParaEditar(this["principal_permissaoEditar"]);
 		terreno_principal_status.setPlaneta(planeta_status);
 		
@@ -168,7 +171,7 @@ function recebe_flash_var_principais2(success) {      //existe uma funçao de ex
 		terreno_patio_status.setIdentificacao(this["patio_terreno_id"]);
 		terreno_patio_status.setNome(this["patio_terreno_nome"]);
 		terreno_patio_status.setIdChat(this["patio_terreno_chat"]);
-		terreno_patio_status.mensagemLocalizacao = this["patio_mensagemLocalizacao"];
+		//terreno_patio_status.mensagemLocalizacao = this["patio_mensagemLocalizacao"];
 		terreno_patio_status.setPermissaoParaEditar(this["patio_permissaoEditar"]);
 		terreno_patio_status.setPlaneta(planeta_status);
 		

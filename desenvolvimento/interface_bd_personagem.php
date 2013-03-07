@@ -367,8 +367,12 @@ switch ($action) {
 		$dados .= '&patio_terreno_chat='.$terreno_chat; 
 		$dados .= '&patio_terreno_permissaoEditar='.$terreno_permissaoEditar; 
 
+		$pesquisaNomeDaTurma = new conexao();
+		$pesquisaNomeDaTurma->solicitar("SELECT * FROM Turmas WHERE codTurma=".$pesquisaPlaneta->resultado['Turma']);
+		$mensagemLocalizacao = $pesquisaNomeDaTurma->resultado['nomeTurma'];
+
 		// impressão dos dados pesquisados
-		//$dados  = $dados . '&mensagemLocalizacao=' . $mensagemLocalizacao;
+		$dados  = $dados . '&mensagemLocalizacao=' . $mensagemLocalizacao;
 		echo "$dados";
 	break;
 

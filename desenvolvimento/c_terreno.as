@@ -99,7 +99,6 @@ class c_terreno extends MovieClip{
 		
 		imagemBancoDeDados = imagem_bd_param;
 		idsPersonagensOnline = new Array();
-			
 		pontoDestinoClickMp = new Point();
 		
 		habilitarPontes(true);

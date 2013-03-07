@@ -41,7 +41,7 @@ class c_mapa extends MovieClip{
 		this['mapaTxt'].selectable = false;								//Mapa do terreno - Giovani - 05.05.10
 
 		this['mapaInfo'].nomePlaneta.text = terreno_param.getImagemBancoDeDados().mensagemLocalizacao;
-		atualizarNomeTerreno(terreno_param.getImagemBancoDeDados().getNome());
+		atualizarNomeTerreno(terreno_param.getImagemBancoDeDados().mensagemLocalizacao);
 		
 		comprimentoIdeal = _width;
 		larguraIdeal = _height;

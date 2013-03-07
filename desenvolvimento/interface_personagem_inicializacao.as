@@ -34,6 +34,16 @@ btStart._visible = false;
 animacao_usuario._visible = false;
 
 //===========================================================
+//					FUNÇÕES AUXILIARES
+//===========================================================
+function global_trim(base_param:String):String{
+	var MININO_CODIGO_ASCII_VALIDO:Number=33;
+	for(var i = 0; base_param.charCodeAt(i) < MININO_CODIGO_ASCII_VALIDO; i++);
+    for(var j = base_param.length-1; base_param.charCodeAt(j) < MININO_CODIGO_ASCII_VALIDO; j--);
+    return base_param.substring(i, j+1);
+}
+
+//===========================================================
 
 var envia:LoadVars = new LoadVars();
 var recebe:LoadVars = new LoadVars();

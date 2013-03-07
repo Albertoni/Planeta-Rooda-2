@@ -64,7 +64,6 @@ if(planeta_status.getAparencia() != ''){
 }
 menuEdicao._visible = false;
 
-c_aviso_com_ok.mostrar("Aparencia="+planeta_status.getAparencia());
 attachMovie(c_planetaMC.getLinkBiblioteca(planeta_status.getAparencia()), "planeta", 1);
 this['planeta'].inicializar(personagem_status, terreno_principal_status, terreno_patio_status);
 
@@ -222,6 +221,7 @@ function seleciounouBotaoForaTerreno():Boolean{
 		or comunicador.fala.hitTest(_xmouse, _ymouse)
 		or comunicador.barra_rolagem.hitTest(_xmouse, _ymouse)
 		or comunicador.redimensionador.hitTest(_xmouse, _ymouse)
+		or comunicador.botaoEnviar.hitTest(_xmouse, _ymouse)
 		or btSalvarEdicao.hitTest(_xmouse, _ymouse)
 		or btCancelarEditarMundo.hitTest(_xmouse, _ymouse)
 		or btEditarMundo.hitTest(_xmouse, _ymouse)

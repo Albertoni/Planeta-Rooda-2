@@ -22,7 +22,7 @@
 	$bd = new conexao();
 	$bd->solicitar("INSERT INTO $tabela_objetos (objeto_id, objeto_terreno_id, objeto_movieclip, objeto_frame, objeto_terreno_posicao_x, objeto_terreno_posicao_y) VALUES ($obj_id,$obj_terrreno_id,'$obj_movieclip',$obj_frame,$obj_terreno_pos_x,$obj_terreno_pos_y)");
 	$statusTerreno = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);
-	$statusTerreno->solicitar("UPDATE `$tabela_terrenos` SET terreno_status='edicao', terreno_id_autor='$autor' WHERE terreno_id=$obj_terrreno_id");
+	//$statusTerreno->solicitar("UPDATE `$tabela_terrenos` SET terreno_status='edicao', terreno_id_autor='$autor' WHERE terreno_id=$obj_terrreno_id");
 	
 	if($bd->erro == ""){// and $statusTerreno->erro == ""){
 		$erro = '0';

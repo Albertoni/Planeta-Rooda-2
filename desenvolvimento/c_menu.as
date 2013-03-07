@@ -224,10 +224,10 @@ class c_menu extends MovieClip {
 		gotoAndStop(FRAME_ESTADO_FECHADO);
 		_visible = true;
 		
-		attachMovie("btMenuEditar", "btEditar", getNextHighestDepth());
+		/*attachMovie("btMenuEditar", "btEditar", getNextHighestDepth());
 		caixa_de_botoes.adicionar_botao( btEditar );
 		btEditar.inicializar();
-		btEditar.addEventListener("btPressionado", Delegate.create(this, abrirInterfaceEdicoes));	
+		btEditar.addEventListener("btPressionado", Delegate.create(this, abrirInterfaceEdicoes));	*/
 		
 		attachMovie(c_interface_edicoes.LINK_BIBLIOTECA, "interfaceEdicoes", getNextHighestDepth());
 		interfaceEdicoes.inicializar();
