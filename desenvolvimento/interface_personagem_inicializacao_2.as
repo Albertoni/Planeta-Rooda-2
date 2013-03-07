@@ -47,91 +47,130 @@ function recebe_flash_var_principais2(success) {      //existe uma funçao de ex
 		
 		_root.barraProgresso2.atualizarMensagem("Carregando dados dos objetos recebidos.");
 		
-		var terreno_recebido:c_terreno_bd = new c_terreno_bd();
-		var terrenos_recebidos:Array = new Array();
-		//c_aviso_com_ok.mostrar("Teste: Numero de terrenos="+this.numeroTerrenos);
+		terreno_principal_status = new c_terreno_bd();
+		terreno_patio_status = new c_terreno_bd();
 		
-		for(var k:Number=0; k<this.numeroTerrenos; k++){
+		/*
+					PRINCIPAL
+		*/
+		matriz_parede 			= [];
+		matriz_objeto_link		= [];   
+		matriz_predios          = [];
+		for(var n:Number = 0; n <this["principal_numero_objetos_no_terreno"]; n++){	
+			objeto = new Array();
+			objeto_movieclip = this['principal_objeto_movieclip' + n ];
+			objeto_frame = this['principal_objeto_frame' + n];
+			objeto_terreno_posicao_x = this['principal_objeto_terreno_posicao_x' + n];
+			objeto_terreno_posicao_y = this['principal_objeto_terreno_posicao_y' + n];
+			objeto_endereco = this['principal_objeto_link' + n];
+			objeto_id = this['principal_objeto_id' + n];
+			objeto.push(objeto_frame);
+			objeto.push(objeto_terreno_posicao_x);
+			objeto.push(objeto_terreno_posicao_y);
+			objeto.push(objeto_endereco);
+			objeto.push(objeto_id);
 			
-			terreno_recebido = new c_terreno_bd();
-			
-			matriz_parede 			= [];
-			matriz_objeto_link		= [];   
-			matriz_predios          = [];
-			for(var n:Number = 0; n <this["numero_objetos_no_terreno"+k]; n++){	
-				objeto = new Array();
-				objeto_movieclip = this['objeto_movieclip' + k + ',' + n ];
-				objeto_frame = this['objeto_frame' +k + ',' + n];
-				objeto_terreno_posicao_x = this['objeto_terreno_posicao_x' + k + ',' + n];
-				objeto_terreno_posicao_y = this['objeto_terreno_posicao_y' + k + ',' + n];
-				objeto_endereco = this['objeto_link' + k + ',' + n];
-				objeto_id = this['objeto_id' + k + ',' + n];
-				objeto.push(objeto_frame);
-				objeto.push(objeto_terreno_posicao_x);
-				objeto.push(objeto_terreno_posicao_y);
-				objeto.push(objeto_endereco);
-				objeto.push(objeto_id);
-			
-				switch(objeto_movieclip){
-					case "parede": matriz_parede.push(objeto);  
-						break;
-					case "objeto_link": 
-							tem_permissaoFuncionalidade = true;
-							switch(c_casa.frameParaTipo(objeto_frame)){
-								case c_casa.TIPO_BIBLIOTECA: tem_permissaoFuncionalidade = turma_status.permissao_biblioteca;
-									break;
-								case c_casa.TIPO_BLOG: tem_permissaoFuncionalidade = turma_status.permissao_blog;
-									break;
-								case c_casa.TIPO_FORUM: tem_permissaoFuncionalidade = turma_status.permissao_forum;
-									break;
-								case c_casa.TIPO_PORTFOLIO: tem_permissaoFuncionalidade = turma_status.permissao_portfolio;
-									break;
-								case c_casa.TIPO_APARENCIA: tem_permissaoFuncionalidade = true;
-									break;
-								case c_casa.TIPO_ARTE: tem_permissaoFuncionalidade = turma_status.permissao_planetaArte;
-									break;
-								case c_casa.TIPO_PERGUNTA: tem_permissaoFuncionalidade = turma_status.permissao_planetaPergunta;
-									break;
-								case c_casa.TIPO_AULA: tem_permissaoFuncionalidade = turma_status.permissao_aulas;
-									break;
-							}
-							if(tem_permissaoFuncionalidade){
-								matriz_objeto_link.push(objeto); 
-							}
-						break;
-					case "predio": matriz_predios.push(objeto);
-						break;
-				}
+			switch(objeto_movieclip){
+				case "parede": matriz_parede.push(objeto);  
+					break;
+				case "objeto_link": 
+						tem_permissaoFuncionalidade = true;
+						switch(c_casa.frameParaTipo(objeto_frame)){
+							case c_casa.TIPO_BIBLIOTECA: tem_permissaoFuncionalidade = turma_status.permissao_biblioteca;
+								break;
+							case c_casa.TIPO_BLOG: tem_permissaoFuncionalidade = turma_status.permissao_blog;
+								break;
+							case c_casa.TIPO_FORUM: tem_permissaoFuncionalidade = turma_status.permissao_forum;
+								break;
+							case c_casa.TIPO_PORTFOLIO: tem_permissaoFuncionalidade = turma_status.permissao_portfolio;
+								break;
+							case c_casa.TIPO_APARENCIA: tem_permissaoFuncionalidade = true;
+								break;
+							case c_casa.TIPO_ARTE: tem_permissaoFuncionalidade = turma_status.permissao_planetaArte;
+								break;
+							case c_casa.TIPO_PERGUNTA: tem_permissaoFuncionalidade = turma_status.permissao_planetaPergunta;
+								break;
+							case c_casa.TIPO_AULA: tem_permissaoFuncionalidade = turma_status.permissao_aulas;
+								break;
+						}
+						if(tem_permissaoFuncionalidade){
+							matriz_objeto_link.push(objeto); 
+						}
+					break;
+				case "predio": matriz_predios.push(objeto);
+					break;
 			}
-			terreno_recebido.setDadosArvores(matriz_parede);
-			terreno_recebido.setDadosCasas(matriz_objeto_link);
-			terreno_recebido.setDadosPredios(matriz_predios);
-			
-			terreno_recebido.setIdentificacao(this["terreno_id"+k]);
-			terreno_recebido.setNome(this["terreno_nome"+k]);
-			terreno_recebido.setIdChat(this["terreno_chat"+k]);
-			terreno_recebido.mensagemLocalizacao = this["mensagemLocalizacao"];
-			terreno_recebido.setPermissaoParaEditar(this["permissaoEditar"+k]);
-			terreno_recebido.setPlaneta(planeta_status);
-			
-			terrenos_recebidos.push(terreno_recebido);
-			if(this.indice_planeta_terreno_personagem == k){
-				terreno_principal_status = terreno_recebido;
-			}
-		}
+		} 
+		terreno_principal_status.setDadosArvores(matriz_parede);
+		terreno_principal_status.setDadosCasas(matriz_objeto_link);
+		terreno_principal_status.setDadosPredios(matriz_predios);
+		terreno_principal_status.setIdentificacao(this["principal_terreno_id"]);
+		terreno_principal_status.setNome(this["principal_terreno_nome"]);
+		terreno_principal_status.setIdChat(this["principal_terreno_chat"]);
+		terreno_principal_status.mensagemLocalizacao = this["principal_mensagemLocalizacao"];
+		terreno_principal_status.setPermissaoParaEditar(this["principal_permissaoEditar"]);
+		terreno_principal_status.setPlaneta(planeta_status);
 		
-		for(var i:Number=0; i<terrenos_recebidos.length; i++){
-			if(0<i){
-				terrenos_recebidos[i].setTerrenoOeste(terrenos_recebidos[i-1]);
-			} else {
-				terrenos_recebidos[i].setTerrenoOeste(terrenos_recebidos[terrenos_recebidos.length-1]);
+		/*
+					PÁTIO
+		*/
+		matriz_parede 			= [];
+		matriz_objeto_link		= [];   
+		matriz_predios          = [];
+		for(var n:Number = 0; n <this["patio_numero_objetos_no_terreno"]; n++){	
+			objeto = new Array();
+			objeto_movieclip = this['patio_objeto_movieclip' + n ];
+			objeto_frame = this['patio_objeto_frame' + n];
+			objeto_terreno_posicao_x = this['patio_objeto_terreno_posicao_x' + n];
+			objeto_terreno_posicao_y = this['patio_objeto_terreno_posicao_y' + n];
+			objeto_endereco = this['patio_objeto_link' + n];
+			objeto_id = this['patio_objeto_id' + n];
+			objeto.push(objeto_frame);
+			objeto.push(objeto_terreno_posicao_x);
+			objeto.push(objeto_terreno_posicao_y);
+			objeto.push(objeto_endereco);
+			objeto.push(objeto_id);
+			
+			switch(objeto_movieclip){
+				case "parede": matriz_parede.push(objeto);  
+					break;
+				case "objeto_link": 
+						tem_permissaoFuncionalidade = true;
+						switch(c_casa.frameParaTipo(objeto_frame)){
+							case c_casa.TIPO_BIBLIOTECA: tem_permissaoFuncionalidade = turma_status.permissao_biblioteca;
+								break;
+							case c_casa.TIPO_BLOG: tem_permissaoFuncionalidade = turma_status.permissao_blog;
+								break;
+							case c_casa.TIPO_FORUM: tem_permissaoFuncionalidade = turma_status.permissao_forum;
+								break;
+							case c_casa.TIPO_PORTFOLIO: tem_permissaoFuncionalidade = turma_status.permissao_portfolio;
+								break;
+							case c_casa.TIPO_APARENCIA: tem_permissaoFuncionalidade = true;
+								break;
+							case c_casa.TIPO_ARTE: tem_permissaoFuncionalidade = turma_status.permissao_planetaArte;
+								break;
+							case c_casa.TIPO_PERGUNTA: tem_permissaoFuncionalidade = turma_status.permissao_planetaPergunta;
+								break;
+							case c_casa.TIPO_AULA: tem_permissaoFuncionalidade = turma_status.permissao_aulas;
+								break;
+						}
+						if(tem_permissaoFuncionalidade){
+							matriz_objeto_link.push(objeto); 
+						}
+					break;
+				case "predio": matriz_predios.push(objeto);
+					break;
 			}
-			if(i<terrenos_recebidos.length-1){
-				terrenos_recebidos[i].setTerrenoLeste(terrenos_recebidos[i+1]);
-			} else {
-				terrenos_recebidos[i].setTerrenoLeste(terrenos_recebidos[0]);
-			}
-		}
+		} 
+		terreno_patio_status.setDadosArvores(matriz_parede);
+		terreno_patio_status.setDadosCasas(matriz_objeto_link);
+		terreno_patio_status.setDadosPredios(matriz_predios);
+		terreno_patio_status.setIdentificacao(this["patio_terreno_id"]);
+		terreno_patio_status.setNome(this["patio_terreno_nome"]);
+		terreno_patio_status.setIdChat(this["patio_terreno_chat"]);
+		terreno_patio_status.mensagemLocalizacao = this["patio_mensagemLocalizacao"];
+		terreno_patio_status.setPermissaoParaEditar(this["patio_permissaoEditar"]);
+		terreno_patio_status.setPlaneta(planeta_status);
 		
 		_root.barraProgresso2.definirPorcentagem(95+FATIA_CARREGAMENTO_INICIALIZACAO_1+FATIA_CARREGAMENTO_INICIALIZACAO_2);
 		_root.barraProgresso2.atualizarMensagem("Aguardando sincronização...");

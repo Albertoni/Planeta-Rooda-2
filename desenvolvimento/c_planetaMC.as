@@ -41,6 +41,8 @@ class c_planetaMC extends MovieClip{
 		var link_terrenoPrincipal:String = "terreno_grama_principal_mc";
 		var link_terrenoPatio:String = "terreno_grama_patio_mc";
 		
+		c_aviso_com_ok.mostrar(imagem_bd_principal_param.paraString()+"\n"+imagem_bd_patio_param.paraString());
+		
 		switch(_root.planeta_status.getAparencia()){
 			case c_terreno_bd.TIPO_VERDE:
 			case c_terreno_bd.TIPO_GRAMA:

@@ -87,23 +87,12 @@ class c_terreno_bd {
 	*/
 	private var terreno_chat:String;
 	
-	/*
-	* Terreno que fica a leste deste. Caso não haja, deve conter undefined.
-	*/
-	private var terreno_leste:c_terreno_bd;
-	
-	/*
-	* Terreno que fica a oeste deste. Caso não haja, deve conter undefined.
-	*/
-	private var terreno_oeste:c_terreno_bd;
 	
 //métodos
 	public function c_terreno_bd(){
 		matriz_parede = new Array();
 		matriz_objeto_link = new Array();
 		matriz_predios = new Array();
-		terreno_leste = undefined;
-		terreno_oeste = undefined;
 	}
 	
 	/*
@@ -218,23 +207,6 @@ class c_terreno_bd {
 	}
 	
 	/*
-	* Terrenos à direita e à esquerda.
-	* Quando não houver, conterão undefined.
-	*/
-	public function getTerrenoLeste():c_terreno_bd{
-		return terreno_leste;
-	}
-	public function getTerrenoOeste():c_terreno_bd{
-		return terreno_oeste;
-	}
-	public function setTerrenoLeste(terreno_leste_param:c_terreno_bd):Void{
-		terreno_leste = terreno_leste_param;
-	}
-	public function setTerrenoOeste(terreno_oeste_param:c_terreno_bd):Void{
-		terreno_oeste = terreno_oeste_param;
-	}
-	
-	/*
 	* Dados de objetos que ficam no terreno. Utilizados para inicialização de terrenos.
 	*/
 	public function getDadosArvores():Array{
@@ -269,9 +241,7 @@ class c_terreno_bd {
 			   "identificacao:" + identificacao + "\n" +
 			   "nome:" + nome + "\n" +
 			   "permissaoParaEditar:" + permissaoParaEditar + "\n" +
-			   "mensagemDeErro:" + mensagemDeErro + "\n" +
-			   "nome oeste:" + terreno_oeste.nome + "\n" +
-			   "nome leste:" + terreno_leste.nome + "\n";
+			   "mensagemDeErro:" + mensagemDeErro + "\n";
 	}
 	
 	/*

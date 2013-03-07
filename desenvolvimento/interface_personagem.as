@@ -64,6 +64,7 @@ if(planeta_status.getAparencia() != ''){
 }
 menuEdicao._visible = false;
 
+c_aviso_com_ok.mostrar("Aparencia="+planeta_status.getAparencia());
 attachMovie(c_planetaMC.getLinkBiblioteca(planeta_status.getAparencia()), "planeta", 1);
 this['planeta'].inicializar(personagem_status, terreno_principal_status, terreno_patio_status);
 
@@ -106,25 +107,25 @@ menu = _root.menuMC;
 menu.inicializar();
 
 switch(usuario_status.getPermissao()){
-	case c_conta.getNivelVisitante(): menu.configurarFuncionalidades( menu.EDITAR_USUARIO | menu.TROCAR_DE_PLANETA ); 
+	case c_conta.getNivelVisitante(): menu.configurarFuncionalidades( /*menu.EDITAR_USUARIO | */menu.TROCAR_DE_PLANETA ); 
 	break;
 	
-	case c_conta.getNivelAluno(): menu.configurarFuncionalidades( menu.EDITAR_USUARIO | menu.TROCAR_DE_PLANETA );
+	case c_conta.getNivelAluno(): menu.configurarFuncionalidades( /*menu.EDITAR_USUARIO | */menu.TROCAR_DE_PLANETA );
 	break;
 	
-	case c_conta.getNivelMonitor(): menu.configurarFuncionalidades( menu.EDITAR_USUARIO | menu.TROCAR_DE_PLANETA );
+	case c_conta.getNivelMonitor(): menu.configurarFuncionalidades( /*menu.EDITAR_USUARIO | */menu.TROCAR_DE_PLANETA );
 	break;
 	
-	case c_conta.getNivelProfessor(): menu.configurarFuncionalidades( menu.EDITAR_TURMA | menu.EDITAR_CONTA | menu.EDITAR_PLANETA 
-							                                     | menu.EDITAR_USUARIO | menu.TROCAR_DE_PLANETA );
+	case c_conta.getNivelProfessor(): menu.configurarFuncionalidades( /*menu.EDITAR_TURMA | menu.EDITAR_CONTA | menu.EDITAR_PLANETA 
+							                                     | menu.EDITAR_USUARIO | */menu.TROCAR_DE_PLANETA );
 	break;	
 
-	case c_conta.getNivelCoordenador(): menu.configurarFuncionalidades( menu.EDITAR_TURMA | menu.EDITAR_CONTA | menu.EDITAR_PLANETA 
-							                                       | menu.EDITAR_USUARIO | menu.CRIAR_TURMA | menu.TROCAR_DE_PLANETA
-																   | menu.CRIAR_ESCOLA );
+	case c_conta.getNivelCoordenador(): menu.configurarFuncionalidades( /*menu.EDITAR_TURMA | menu.EDITAR_CONTA | menu.EDITAR_PLANETA 
+							                                       | menu.EDITAR_USUARIO | menu.CRIAR_TURMA | */menu.TROCAR_DE_PLANETA
+																   /*| menu.CRIAR_ESCOLA */);
 	break;
 	
-	case c_conta.getNivelAdministrador(): menu.configurarFuncionalidades( menu.TODAS );
+	case c_conta.getNivelAdministrador(): menu.configurarFuncionalidades( menu.TROCAR_DE_PLANETA );
 	break;
 	
 	default: menu.configurarFuncionalidades( menu.NENHUMA );

@@ -59,7 +59,6 @@ switch(_root.animacao){
 }
 _root.barraProgresso1.definirPorcentagem(95);
 
-
 function recebe_flash_var_principais(success) {
 	_root.barraProgresso1.atualizarMensagem("Carregando dados do usuário recebidos.");
 	if(success) {

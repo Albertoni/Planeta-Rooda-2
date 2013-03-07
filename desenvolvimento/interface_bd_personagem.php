@@ -159,7 +159,7 @@ switch ($action) {
 		
 		$conexao_planeta = new conexao();
 		$conexao_planeta->solicitar("SELECT * FROM Planetas WHERE Id=$terreno_grupo_id");
-		$planeta_tipo = $conexao_planeta->resultado['Tipo'];
+		//$planeta_tipo = $conexao_planeta->resultado['Tipo'];
 		$planeta_aparencia = $conexao_planeta->resultado['Aparencia'];
 		
 		$conexao_escola = new conexao();
@@ -240,7 +240,7 @@ switch ($action) {
 		$dados_exportar.= "&habilitado_chatPrivadoParaMonitores=".$habilitado_chatPrivadoParaMonitores;
 		
 		//planeta
-		$dados_exportar.= "&planeta_tipo=".$planeta_tipo;
+		//$dados_exportar.= "&planeta_tipo=".$planeta_tipo;
 		$dados_exportar.= "&planeta_aparencia=".$planeta_aparencia;
 		
 		//personagem
