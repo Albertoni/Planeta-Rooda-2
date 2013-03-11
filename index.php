@@ -21,7 +21,7 @@
 	
 	if($action == "log0001") {
 
-		if(isset($_SESSION)){ // Caso o cara não esteja logado e acessa a página de logout
+		if(isset($_SESSION['SS_usuario_id'])){ // Caso o cara não esteja logado e acessa a página de logout
 			/*
 			@author Yuri Pelz Gossmann
 			@date 2012-08-08 -> 2012-08-14
