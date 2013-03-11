@@ -7,14 +7,14 @@ require_once dirname(__FILE__).'/cfg.php';
 		<?php
 		if(isset($_POST['usuario'])&&($_POST['usuario']!='')){
 			$usuario=new conexao();
-			$usuario->solicitarSI('SELECT usuario_nome
-								   FROM '.$tabela_usuarios.'
-								   WHERE usuario_id='.intval($_POST['usuario']));
+			$usuario->solicitarSI("SELECT usuario_nome
+								   FROM $tabela_usuarios
+								   WHERE usuario_id=".intval($_POST['usuario']));
 			echo 'Estatísticas de acesso: '.$usuario->resultado['usuario_nome'].'<br/></br>';
-			$usuario->solicitar('SELECT id_terreno,funcionalidade,data_hora,duracao
-								 FROM '.$tabela_acessos_planeta.'
-								 WHERE id_usuario='.intval($_POST['usuario']).'
-								 ORDER BY id_acesso DESC');
+			$usuario->solicitar("SELECT id_terreno,funcionalidade,data_hora,duracao
+								 FROM $tabela_acessos_planeta
+								 WHERE id_usuario=".intval($_POST['usuario'])."
+								 ORDER BY id_acesso DESC");
 			$tempoTotal=0;
 			$tempoFuncionalidade=array();
 			$tempoFuncionalidade['biblioteca']=0;
