@@ -1,0 +1,75 @@
+body{background-color:#090826;}
+
+#containerMenu{
+	position:absolute;
+	top:50%;
+	height:768px;
+	width:1024px;
+	background-image:url(images/back.png);
+	margin:-384px 0;
+}
+
+#infoTurma{
+	background-image:url(images/window.png);
+	position:absolute;
+	width:362px;
+	height:241px;
+	top:191px;
+	left:29px;
+	padding: 37px 15px 17px 15px;
+}
+
+#wrapperBotoesEsquerda{
+	position:absolute;
+	top:502px;
+	left:90px;
+	height:151px;
+}
+
+.botaoEsquerda{
+	width:270px;
+	height:37px;
+	margin-top:20px;
+}
+#botaoContatos{
+	background-image:url(images/b_contatos.png);
+	margin-top:0px !important;
+}
+#botaoFuncionalidade{
+	background-image:url(images/b_funcionalidade.png);
+}
+#botaoPlaneta{
+	background-image:url(images/b_planeta.png);
+}
+
+#menuDireita{
+	position:absolute;
+	top:191px;
+	left:437px;
+}
+
+#wrapperClasses{
+	height:49px;
+}
+
+#listaMembrosTurma{
+	height:390px;
+	width:461px;
+	background-image:url(images/list_border.png);
+	padding: 5px;
+	line-height:50px;
+}
+
+#listaMembrosTurma img{
+	vertical-align: middle;
+	float:right;
+	margin-right:10px;
+}
+
+.membroTurma{
+	height:50px;
+	padding-left:15px;
+}
+.comFundo{
+	background-image:url(images/barra_transp.png);
+}
