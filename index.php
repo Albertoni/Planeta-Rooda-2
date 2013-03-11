@@ -21,28 +21,29 @@
 	
 	if($action == "log0001") {
 
-		/*
-		@author Yuri Pelz Gossmann
-		@date 2012-08-08 -> 2012-08-14
-		INÍCIO
-		*/
-		$acessoPlaneta=new conexao(); global $tabela_acessos_planeta;
-		$acessoPlaneta->solicitarSI('SELECT id_acesso,data_hora
-									 FROM '.$tabela_acessos_planeta.'
-									 WHERE id_acesso=(SELECT MAX(id_acesso)
-													  FROM '.$tabela_acessos_planeta.'
-													  WHERE id_usuario='.intval($_SESSION['SS_usuario_id']).')');
-		if($acessoPlaneta->resultado){
-			$agora=date('Y-m-d H:i:s');
-			$acessoPlaneta->solicitarSI('UPDATE '.$tabela_acessos_planeta.'
-										 SET duracao='.intval(strtotime($agora)-strtotime($acessoPlaneta->resultado['data_hora'])).'
-										 WHERE id_acesso='.$acessoPlaneta->resultado['id_acesso']);
+		if(isset($_SESSION)){ // Caso o cara não esteja logado e acessa a página de logout
+			/*
+			@author Yuri Pelz Gossmann
+			@date 2012-08-08 -> 2012-08-14
+			INÍCIO
+			*/
+			$acessoPlaneta=new conexao(); global $tabela_acessos_planeta;
+			$acessoPlaneta->solicitarSI('SELECT id_acesso,data_hora
+										 FROM '.$tabela_acessos_planeta.'
+										 WHERE id_acesso=(SELECT MAX(id_acesso)
+														  FROM '.$tabela_acessos_planeta.'
+														  WHERE id_usuario='.intval($_SESSION['SS_usuario_id']).')');
+			if($acessoPlaneta->resultado){
+				$agora=date('Y-m-d H:i:s');
+				$acessoPlaneta->solicitarSI('UPDATE '.$tabela_acessos_planeta.'
+											 SET duracao='.intval(strtotime($agora)-strtotime($acessoPlaneta->resultado['data_hora'])).'
+											 WHERE id_acesso='.$acessoPlaneta->resultado['id_acesso']);
+			}
+			/*
+			FIM
+			*/
+			session_destroy();
 		}
-		/*
-		FIM
-		*/
-
-		session_destroy();
 	}
 
 	$niveis = "";
