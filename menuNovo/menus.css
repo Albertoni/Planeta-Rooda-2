@@ -35,18 +35,35 @@ body{background-color:#090826;}
 	background-image:url(images/b_contatos.png);
 	margin-top:0px !important;
 }
-#botaoFuncionalidade{
-	background-image:url(images/b_funcionalidade.png);
+#botaoFuncionalidade{background-image:url(images/b_funcionalidade.png);}
+#botaoPlaneta{background-image:url(images/b_planeta.png);}
+
+#botaoContatos:hover{
+	background-image:url(images/h_contatos.png);
+	margin-top:0px !important;
 }
-#botaoPlaneta{
-	background-image:url(images/b_planeta.png);
-}
+#botaoFuncionalidade:hover{background-image:url(images/h_funcionalidade.png);}
+#botaoPlaneta:hover{background-image:url(images/h_planeta.png);}
 
 #menuDireita{
 	position:absolute;
 	top:191px;
 	left:437px;
 }
+.botaoDireita{
+	width:153px;
+	height:49px;
+	float:left;
+	margin-right:6px;
+}
+#botaoProfessores{background-image:url(images/tab_prof.png);}
+#botaoMonitores{background-image:url(images/tab_monitor.png);}
+#botaoAlunos{background-image:url(images/tab_alunos.png);}
+
+#botaoProfessores:hover{background-image:url(images/htab_prof.png);}
+#botaoMonitores:hover{background-image:url(images/htab_monitor.png);}
+#botaoAlunos:hover{background-image:url(images/htab_alunos.png);}
+
 
 #wrapperClasses{
 	height:49px;
@@ -58,6 +75,7 @@ body{background-color:#090826;}
 	background-image:url(images/list_border.png);
 	padding: 5px;
 	line-height:50px;
+	margin-top:13px;
 }
 
 #listaMembrosTurma img{
@@ -73,3 +91,7 @@ body{background-color:#090826;}
 .comFundo{
 	background-image:url(images/barra_transp.png);
 }
+
+.iconeDeletar{background-image:url(images/icon_delete.png);}
+.iconeCarteira{background-image:url(images/icon_carteira.png);}
+.iconePromocao{background-image:url(images/icon_promotion.png);}
