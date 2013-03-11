@@ -50,13 +50,13 @@
 					<div class="botaoDireita" id="botaoAlunos"></div>
 				</div>
 				<div id="listaMembrosTurma">
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="iconeDeletar"></a><a href="#"><img class="iconeCarteira"></a><a href="#"><img class="iconePromocao"></a></div>
+					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
+					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
 				</div>
 			</div>
 		</div>
