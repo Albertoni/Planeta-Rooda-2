@@ -52,6 +52,7 @@ class File {
 		$this->upload = true;
 	}
 	elseif($manual_id != 0){ // usado na biblioteca, principalmente no material.class.php
+		$manual_id = (int) $manual_id;
 		$gambi = new conexao();
 		$gambi->solicitar("SELECT nome, funcionalidade_tipo, funcionalidade_id FROM $tabela_arquivos WHERE arquivo_id = $manual_id");
 		
@@ -67,11 +68,11 @@ class File {
 	public function download(){
 		if ($this->download === true){
 			global $tabela_arquivos;
-			$nome = $this->nome;
-			$funcionalidade_tipo = $this->funcionalidade_tipo;
-			$funcionalidade_id = $this->funcionalidade_id;
-			
 			$consulta = new conexao();
+			$nome = mysql_real_escape_string($this->nome);
+			$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+			$funcionalidade_id = (int) $this->funcionalidade_id;
+			
 			$consulta->connect();
 			$consulta->solicitar("SELECT * FROM $tabela_arquivos	WHERE nome = '$nome' 
 																AND funcionalidade_tipo = '$funcionalidade_tipo' 
@@ -128,9 +129,9 @@ class File {
 	//exclui o arquivo do bd
 	public function excluir(){
 		global $tabela_arquivos;
-		$file_name = $this->nome;
-		$funcionalidade_tipo = $this->funcionalidade_tipo;
-		$funcionalidade_id = $this->funcionalidade_id;
+		$file_name = mysql_real_escape_string($this->nome);
+		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+		$funcionalidade_id = (int) $this->funcionalidade_id;
 		$consulta = new conexao();
 		$consulta->connect();
 		$consulta->solicitar("DELETE FROM $tabela_arquivos 
@@ -189,16 +190,16 @@ class File {
 	public function upload(){
 	if ($this->upload === true){
 		global $tabela_arquivos;
-		$nome 					= $this->getNome();
-		$tipo					= $this->getTipo();
-		$tamanho				= $this->getTamanho();
-		$ConteudoArquivo		= $this->getConteudoArquivo();
-		$funcionalidade_tipo	= $this->getFuncionalidadeTipo();
-		$funcionalidade_id		= $this->getFuncionalidadeId();
-		$tit					= $this->getTitulo();
-		$aut					= $this->getAutor();
-		$tag					= $this->getTags();
-		$uploader_id			= $_SESSION['SS_usuario_id'];
+		$nome 					= mysql_real_escape_string($this->getNome());
+		$tipo					= mysql_real_escape_string($this->getTipo());
+		$tamanho				= (int) $this->getTamanho();
+		$ConteudoArquivo		= mysql_real_escape_string($this->getConteudoArquivo());
+		$funcionalidade_tipo	= (int) $this->getFuncionalidadeTipo();
+		$funcionalidade_id		= (int) $this->getFuncionalidadeId();
+		$tit					= mysql_real_escape_string($this->getTitulo());
+		$aut					= mysql_real_escape_string($this->getAutor());
+		$tag					= mysql_real_escape_string($this->getTags());
+		$uploader_id			= (int) $_SESSION['SS_usuario_id'];
 		
 		$consulta = new conexao();
 		$consulta->connect();

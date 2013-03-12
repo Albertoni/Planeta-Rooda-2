@@ -43,35 +43,31 @@ require_once("file.class.php");
 
 <?	
     if($_FILES['arquivo']['size'] > 0){
+		$consulta = new conexao();
 		$tipoPortfolio = TIPOPORTFOLIO;
-		$projeto_id = $_GET['projeto_id'];
-		$titulo = $_POST['tituloArquivo'];
-		$tags = $_POST['tagsArquivo'];
-		$autor = $_POST['autorArquivo'];
-		$fileName = $_FILES['arquivo']['name'];
+		$projeto_id = (int) $_GET['projeto_id'];
+		$titulo = mysql_real_escape_string($_POST['tituloArquivo']);
+		$tags = mysql_real_escape_string($_POST['tagsArquivo']);
+		$autor = mysql_real_escape_string($_POST['autorArquivo']);
+		$fileName = mysql_real_escape_string($_FILES['arquivo']['name']);
 		$tmpName  = $_FILES['arquivo']['tmp_name'];
-		$fileSize = $_FILES['arquivo']['size'];
-		$fileType = $_FILES['arquivo']['type'];
+		$fileSize = (int) $_FILES['arquivo']['size'];
+		$fileType = mysql_real_escape_string($_FILES['arquivo']['type']);
 
 		//echo $_POST['tituloArquivo']."    ".$_POST['tagsArquivo']."    ".$_POST['autorArquivo']."    ".$fileName."    ".$fileSize."   ".$fileType;
 	
 		$fp      = fopen($tmpName, 'r');
 		$content = fread($fp, filesize($tmpName));
-		$content = addslashes($content);
+		$content = mysql_real_escape_string($content);
 		fclose($fp);
 
-		if(!get_magic_quotes_gpc())
-		{
-			$fileName = addslashes($fileName);
-		}		
 		global $tabela_arquivos;
-		$consulta = new conexao();
 		$consulta->solicitar("INSERT INTO $tabela_arquivos
 							  (  titulo ,  nome     ,  autor ,  tipo     ,  tamanho  ,  arquivo ,  tags , dataUpload, funcionalidade_tipo, funcionalidade_id) VALUES
 							  ('$titulo','$fileName','$autor','$fileType','$fileSize','$content','$tags', NOW()     ,'$tipoPortfolio', '$projeto_id'  )");
 		
 
 		
-		echo "<br>File $fileName uploaded<br>";	
+		echo "<br>File ".$_FILES['arquivo']['name']." uploaded<br>";	
 	}
 ?>
