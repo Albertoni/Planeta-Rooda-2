@@ -204,7 +204,7 @@ function addRemove(arquivo_id, nome_arquivo) { // Funciona no Firefox.
 
 function previewArquivo(falha, filename, id){
 	if (falha == "0"){
-		previewarquivos.document.getElementsByTagName("body")[0].innerHTML = '<br /><p>Arquivo será exibido em um link como o a seguir:</p><a href="downloadFile_certo.php?id='+id+'">'+filename+'</a>';
+		previewarquivos.document.getElementsByTagName("body")[0].innerHTML = '<br /><p>Arquivo será exibido em um link como o a seguir:</p><a href="downloadFile.php?id='+id+'">'+filename+'</a>';
 		previewarquivos.document.getElementsByTagName("body")[0].style = "display:block";
 		imageurl = '<a href="../../downloadFile.php?id='+id+'">'+filename+'</a>';
 		objContent.execCommand('inserthtml', false, imageurl);

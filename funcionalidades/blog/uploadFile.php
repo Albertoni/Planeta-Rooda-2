@@ -38,7 +38,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 		echo("upload com sucesso".NL);
 		
 		$sucesso = 1;
-		$location='downloadFile_certo.php?id=' . $file->getId();
+		$location='downloadFile.php?id=' . $file->getId();
 	}	
 	
 } else die("uma morte horrivel e bonita");
