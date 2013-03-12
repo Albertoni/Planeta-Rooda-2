@@ -57,6 +57,7 @@ class turma{
 	* @param id_param A id que será procurar no bd.
 	*/
 	public function openTurma($id_param){
+		$id_param = (int) $id_param;
 		$conexao = new conexao();
 		$conexao->solicitar("SELECT *
 							 FROM Turmas

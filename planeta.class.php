@@ -43,7 +43,7 @@ class Planeta{
 	* @param idPlaneta_param Id do planeta a ser buscada no banco de dados.
 	*/
 	public function openPlaneta($idPlaneta_param){
-		$this->id = $idPlaneta_param;
+		$this->id = (int) $idPlaneta_param;
 		
 		$conexaoDadosPlaneta = new conexao();
 		$conexaoDadosPlaneta->solicitar("SELECT * FROM Planetas WHERE Id=".($this->id));

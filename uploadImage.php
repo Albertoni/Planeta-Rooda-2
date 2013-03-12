@@ -12,8 +12,9 @@ if (is_numeric($funcionalidade_id) == false || is_numeric($funcionalidade_tipo) 
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 	$fileName = $_FILES['userfile']['name'];
+	$fileNameSQL = mysql_real_escape_string($fileName);
 	$tmpName  = $_FILES['userfile']['tmp_name'];
-	$fileSize = $_FILES['userfile']['size'];
+	$fileSize = (int) $_FILES['userfile']['size'];
 	$fileType = $_FILES['userfile']['type'];
 	
 	
@@ -38,7 +39,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 		global $tabela_arquivos;
 		
 		$consulta = new conexao();
-		$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE nome = '$fileName'");
+		$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE nome = '$fileNameSQL'");
 		$falha = 0;
 
 		//print_r($consulta);

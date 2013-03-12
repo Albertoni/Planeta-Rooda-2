@@ -24,7 +24,7 @@ class Usuario { //estrutura para o item post do blog
 	private $dataUltimoLogin;
 	
 	function Usuario($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){
-		$this->id = $id;
+		$this->id = (int) $id;
 		$this->user = $user;
 		$this->pass = $pass;
 		$this->birthday = $birthday;
@@ -41,7 +41,7 @@ class Usuario { //estrutura para o item post do blog
 		$q = new conexao();
 		$niveis = new conexao();
 
-		$id = $param;
+		$id = (int) $param;
 		$q->solicitar("SELECT * 
 					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 					  WHERE usuario_id = '$id'");
@@ -65,7 +65,7 @@ class Usuario { //estrutura para o item post do blog
 	/**
 	*											 GETTERS & SETTERS
 	*/
-	private function setId($id)						{$this->id = $id;}
+	private function setId($id)						{$this->id = (int) $id;}
 	private function setUser($user)					{$this->user = $user;}
 	private function setPass($pass)					{$this->pass = $pass;}
 	private function setBirthday($birthday)			{$this->birthday = $birthday;}
@@ -115,6 +115,7 @@ class Usuario { //estrutura para o item post do blog
 	* @return Array<Usuario> Todos os usuários que têm o nome dado.
 	*/
 	public static function buscaPorNome($nome){
+		$nome = mysql_real_escape_string($nome);
 		$resultados = array();
 		$conexao = new conexao();
 		$conexao->solicitar("SELECT * FROM usuarios WHERE usuario_nome LIKE '%".$nome."%'");

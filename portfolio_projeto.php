@@ -266,7 +266,7 @@ function coment(){
 					<?
 						global $tabela_arquivos;
 						$tipoPortfolio = TIPOPORTFOLIO;
-						$projeto_id = $_GET['projeto_id'];
+						$projeto_id = (int) $_GET['projeto_id'];
 						$consulta = new conexao();
 						$consulta->solicitar("	SELECT arquivo_id, titulo, nome, funcionalidade_tipo, funcionalidade_id 
 												FROM $tabela_arquivos 
@@ -311,7 +311,7 @@ function coment(){
 					<?
 						global $tabela_links;
 						$tipoPortfolio=TIPOPORTFOLIO;
-						$projeto_id = $_GET['projeto_id'];
+						$projeto_id = (int) $_GET['projeto_id'];
 						$consulta = new conexao();
 						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = $tipoPortfolio
 																			AND funcionalidade_id = $projeto_id");
@@ -345,7 +345,7 @@ function coment(){
 				<h1 id="nome_projeto"><?=fullUpper($tituloProjeto)?></h1>
 				<?
 					global $tabela_portfolioPosts;
-					$projeto_id = $_GET['projeto_id'];
+					$projeto_id = (int) $_GET['projeto_id'];
 					$consulta = new conexao();
 					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
 					

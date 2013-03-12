@@ -56,12 +56,11 @@ function Link($param1 , $param2=-1, $param3=-1){
 private function upload(){
 	global $tabela_links;
 	
-	$end_link = $this->getLink();
-	$funcionalidade_tipo = $this->funcionalidade_tipo;
-	$funcionalidade_id = $this->funcionalidade_id;
+	$consulta = new conexao();
+	$end_link = mysql_real_escape_string($this->getLink());
+	$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+	$funcionalidade_id = (int) $this->funcionalidade_id;
 	if ($this->isLinkBD() === false){
-		$consulta = new conexao();
-		$consulta->connect();
 		$consulta->solicitar("INSERT INTO $tabela_links
 							(endereco, funcionalidade_tipo, funcionalidade_id)
 					VALUES ('$end_link', '$funcionalidade_tipo','$funcionalidade_id');");
@@ -77,6 +76,7 @@ private function upload(){
 
 private function download(){
 	global $tabela_links;
+	$consulta = new conexao();
 	if ($this->modo===2){
 		$id = $this->id;
 		$colunas = "endereco, funcionalidade_tipo, funcionalidade_id";
@@ -84,13 +84,11 @@ private function download(){
 	
 	}
 	else if ($this->modo===3){
-		$funcionalidade_tipo = $this->funcionalidade_tipo;
-		$funcionalidade_id	 = $this->funcionalidade_id;
+		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+		$funcionalidade_id	 = (int) $this->funcionalidade_id;
 		$colunas = "endereco";
 		$condicao = "funcionalidade_tipo='$funcionalidade_tipo' AND funcionalidade_id='$funcionalidade_id'";
 	}	
-	$consulta = new conexao();
-	$consulta->connect();
 	$consulta->solicitar("SELECT $colunas 
 							FROM $tabela_links 
 							WHERE $condicao");
@@ -139,11 +137,11 @@ private function download(){
 	//exclui o link do bd
 	public function excluir(){
 		global $tabela_links;
-		$endereco = $this->end_link;
-		$funcionalidade_tipo = $this->funcionalidade_tipo;
-		$funcionalidade_id = $this->funcionalidade_id;
-		echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");
 		$consulta = new conexao();
+		$endereco = mysql_real_escape_string($this->end_link);
+		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+		$funcionalidade_id = (int) $this->funcionalidade_id;
+		echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");
 		$consulta->connect();
 		$consulta->solicitar("DELETE FROM $tabela_links 
 								WHERE endereco = '$endereco'
@@ -184,9 +182,9 @@ private function download(){
 	//Se estah retorna true, se nao esta retorna false
 	public function isLinkBD(){
 	global $tabela_links;
-	$funcionalidade_tipo = $this->funcionalidade_tipo;
-	$funcionalidade_id = $this->funcionalidade_id;
 	$consulta = new conexao();
+	$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
+	$funcionalidade_id = (int) $this->funcionalidade_id;
 	$consulta->solicitar("SELECT * 
 							FROM $tabela_links 
 							WHERE funcionalidade_tipo=$funcionalidade_tipo
