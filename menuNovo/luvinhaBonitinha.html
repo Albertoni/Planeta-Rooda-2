@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="mockup">
+	<img src="images/carteira/back.png">
+</div>
+<button onclick="trocaFundo('#000')">000</button>
+<button onclick="trocaFundo('#FFF')">FFF</button>
+<button onclick="trocaFundo('#ABC')">ABC</button>
+<button onclick="trocaFundo('#1C8')">1C8</button>
+<button onclick="trocaFundo('#671')">671</button>
+<button onclick="trocaFundo('#213')">213</button>
+<button onclick="trocaFundo('#173')">173</button>
+<button onclick="trocaFundo('#F0F')">F0F</button>
+<br><br><br>
+<input type="text" onkeydown="trocaFundo(this.value)">
+<script>
+function trocaFundo(cor){
+	document.getElementById("mockup").style.backgroundColor = cor;
+}
+</script>
+</body>
