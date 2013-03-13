@@ -209,7 +209,6 @@ function Init() {
 				<li>
 					<div align="right"><a href="javascript:arquivoInsert();"><img src="images/botoes/bt_confir_pq.png"/></a></div>
 				</li>
-			</form>
 			</ul>
 		</div>
 	</div>

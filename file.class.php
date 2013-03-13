@@ -52,8 +52,8 @@ class File {
 		$this->upload = true;
 	}
 	elseif($manual_id != 0){ // usado na biblioteca, principalmente no material.class.php
-		$manual_id = (int) $manual_id;
 		$gambi = new conexao();
+		$manual_id = (int) $manual_id;
 		$gambi->solicitar("SELECT nome, funcionalidade_tipo, funcionalidade_id FROM $tabela_arquivos WHERE arquivo_id = $manual_id");
 		
 		$this->nome = $gambi->resultado['nome'];
@@ -129,10 +129,10 @@ class File {
 	//exclui o arquivo do bd
 	public function excluir(){
 		global $tabela_arquivos;
+		$consulta = new conexao();
 		$file_name = mysql_real_escape_string($this->nome);
 		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 		$funcionalidade_id = (int) $this->funcionalidade_id;
-		$consulta = new conexao();
 		$consulta->connect();
 		$consulta->solicitar("DELETE FROM $tabela_arquivos 
 								WHERE nome = '$file_name'
@@ -190,6 +190,8 @@ class File {
 	public function upload(){
 	if ($this->upload === true){
 		global $tabela_arquivos;
+		session_start();
+		$consulta = new conexao();
 		$nome 					= mysql_real_escape_string($this->getNome());
 		$tipo					= mysql_real_escape_string($this->getTipo());
 		$tamanho				= (int) $this->getTamanho();
@@ -201,8 +203,6 @@ class File {
 		$tag					= mysql_real_escape_string($this->getTags());
 		$uploader_id			= (int) $_SESSION['SS_usuario_id'];
 		
-		$consulta = new conexao();
-		$consulta->connect();
 		$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE nome = '$nome'
 															 AND funcionalidade_tipo = '$funcionalidade_tipo'
 															 AND funcionalidade_id = '$funcionalidade_id';");

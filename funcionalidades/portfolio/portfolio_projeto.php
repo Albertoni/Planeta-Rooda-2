@@ -8,7 +8,7 @@ require("lista_posts.php");
 require("../../usuarios.class.php");
 require("../../reguaNavegacao.class.php");
 
-$projeto_id = $_GET['projeto_id'];
+$projeto_id = (int) $_GET['projeto_id'];
 
 // print_r(get_defined_constants()); // Descomente isso para rir.
 
@@ -31,22 +31,6 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
-<script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="portfolio.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
-<!--[if IE 6]>
-<script type="text/javascript" src="planeta_ie6.js"></script>
-<![endif]-->
-
-<script language="javascript">
-function coment(){
-	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-		document.getElementById('ie_coments').style.width = 85 + '%';
-	}
-}
-</script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
@@ -137,7 +121,7 @@ function coment(){
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$_GET['projeto_id']?>&amp;turma=<?=$turma?>" align="right" >
+			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
 				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
 			</a>
 		</div>
@@ -260,13 +244,31 @@ function coment(){
 				<h1 ><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS</h1>
 				<!-- criar uma funcao no javascript para abrir a tela "formNovoArquivo" e esperar uma resposta.
 				Se arquivo criado no BD devolver uma resposta ao javascript para atualizar a pagina -->
-				<div class="add" onclick="window.open('../../formNovoArquivo.php?projeto_id=<?=$_GET['projeto_id']?>')">adicionar</div>
+				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
+					<div id="addFileDiv" style="display:none">
+					<li>
+					<ul id="cont_arq">
+						<li id="procurar_arq">
+							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" target="alvoAJAX">
+								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+								<input type="hidden" name="gambiarra" value="3337333" />
+								<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
+								<input name="falso" type="text" id="falso_frame" />
+								<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
+								<br>
+								<input type="submit" name="upload" value="upload!" style="float:right" />
+							</form>
+							<iframe id="alvoAJAX" name="alvoAJAX" style="display: none;" src=""></iframe>
+							<iframe id="previewarquivos" name="previewarquivos" src="" frameborder="0"></iframe>
+						</li>
+					</ul>
+					</li>
+					</div>
 					<?
 						global $tabela_arquivos;
 						$tipoPortfolio = TIPOPORTFOLIO;
-						$projeto_id = $_GET['projeto_id'];
 						$consulta = new conexao();
 						$consulta->solicitar("	SELECT arquivo_id, titulo, nome, funcionalidade_tipo, funcionalidade_id 
 												FROM $tabela_arquivos 
@@ -288,11 +290,12 @@ function coment(){
 						}
 					?>
 					</ul>
+					<div style="clear:both"><!-- empty --></div>
 				</div>
 			</div>
 			<div id="links" class="bloco">
 				<h1 ><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
-				<div class="add" id="addLink" onclick="unhideDiv('addLinkDiv')">adicionar</div>
+				<div class="add" id="addLink" onclick="botaoAdicionar('addLinkDiv');">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_link">
 					
@@ -301,7 +304,7 @@ function coment(){
 						<li class="tabela_port">
 							<form name="addLinkForm" action="inserirLinkBd.php" method="post">
 								<input type="text" name="newLink" align="left"/>
-								<input type="hidden" name="projeto_id" value="<?=$_GET['projeto_id'] ?>" />
+								<input type="hidden" name="projeto_id" value="<?=$projeto_id ?>" />
 								<input type="image" onClick="addLinkForm.submit()" src="../../images/botoes/bt_confirm.png" width="50%" height="50%" align="right"/>
 								<img onClick="hideDiv('addLinkDiv');" src="../../images/botoes/bt_cancelar.png" width="50%" height="50%" align="left"/>
 							</form>
@@ -310,7 +313,6 @@ function coment(){
 					<?
 						global $tabela_links;
 						$tipoPortfolio=TIPOPORTFOLIO;
-						$projeto_id = $_GET['projeto_id'];
 						$consulta = new conexao();
 						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = $tipoPortfolio
 																			AND funcionalidade_id = $projeto_id");
@@ -344,7 +346,6 @@ function coment(){
 				<h1 id="nome_projeto"><?=$titulo /*fullUpper($titulo)*/?></h1>
 				<?
 					global $tabela_portfolioPosts;
-					$projeto_id = $_GET['projeto_id'];
 					$consulta = new conexao();
 					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
 					
@@ -384,7 +385,7 @@ function coment(){
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$_GET['projeto_id']?>&amp;turma=<?=$turma?>" align="right" >
+			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
 				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
 			</a>
 		</div>
@@ -393,5 +394,23 @@ function coment(){
 	<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
 <iframe name="deletante" style="visibility: hidden;"></iframe>
+
+<script type="text/javascript" src="../../jquery.js"></script>
+<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
+<script type="text/javascript" src="../../planeta.js"></script>
+<script type="text/javascript" src="portfolio.js"></script>
+<script type="text/javascript" src="../lightbox.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
+<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
+
+<script language="javascript">
+function coment(){
+	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+		document.getElementById('ie_coments').style.width = 85 + '%';
+	}
+}
+</script>
 </body>
 </html>

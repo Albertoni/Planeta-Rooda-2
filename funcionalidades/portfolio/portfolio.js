@@ -257,6 +257,17 @@ function mataPost(postDiv){
 
 function unhideDiv(div){document.getElementById(div).style.display = "block";}
 function hideDiv(div){document.getElementById(div).style.display = "none";}
+function botaoAdicionar(id){
+	var div = document.getElementById(id);
+	if (div.style.display == "none")
+	{
+		div.style.display = "block";
+	}
+	else
+	{
+		div.style.display = "none";
+	}
+};
 
 function abreComments(pars){
 	var a = newAjax();
