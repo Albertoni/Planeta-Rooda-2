@@ -26,6 +26,12 @@ class turma{
 	private $id;
 	private $nome;
 	
+	/*
+	* Arrays de membros da turma
+	*/
+	private $professores;
+	private $monitores;
+	private $alunos;
 	
 	
 //métodos
@@ -46,10 +52,49 @@ class turma{
 		$conexao = new conexao();
 		$conexao->solicitar("SELECT COUNT(*) AS total_alunos
 							FROM TurmasUsuario
-							WHERE associacao = ".$nivelAluno."
-								AND codTurma = ".$this->id."");
+							WHERE associacao = '$nivelAluno
+								AND codTurma = '".$this->id."'");
 		
 		return $conexao->resultado['total_alunos'];
+	}
+	
+	/*
+	* Carrega os integrantes da turma e divide eles de acordo com a posição deles na turma
+	* 
+	* @return bool Falha ou sucesso no SQL
+	*/
+	public function carregaMembros(){
+		$q = new conexao();
+		$q->solicitar("SELECT * 
+						FROM TurmasUsuario
+						WHERE codTurma=".$this->getId());
+		
+		if($q->erro != ""){
+			return false;
+		}else{
+			global $nivelProfessor; global $nivelMonitor; global $nivelAluno;
+			
+			$this->professores = new array();
+			$this->monitores = new array();
+			$this->alunos = new array();
+			
+			for($i=0; $i<$q->registros; $i++){
+				switch($q->resultado['associacao']){
+					case $nivelProfessor:
+						$this->professores[] = $q->resultado['codUsuario'];
+						break;
+					case $nivelManitor:
+						$this->monitores[] = $q->resultado['codUsuario'];
+						break;
+					case $nivelAluno:
+						$this->alunos[] = $q->resultado['codUsuario'];
+						break;
+				}
+				$q->proximo();
+			}
+			
+			return true;
+		}
 	}
 	
 	/*
@@ -164,6 +209,3 @@ class turma{
 	
 }
 
-
-
-?>

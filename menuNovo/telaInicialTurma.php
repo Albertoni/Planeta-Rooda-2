@@ -1,12 +1,16 @@
 <?php
 	/*require_once("../class/planeta.php");
-	require_once("../cfg.php");
-	require_once("../bd.php");
 	require_once("../funcoes_aux.php");
 	require_once("../reguaNavegacao.class.php");
 	require_once("../usuarios.class.php");
 	require_once("../turma.class.php");
 	require_once("../AlteracoesTurmasUsuario.php");
+	
+	
+	*/
+	
+	require_once("../cfg.php");
+	require_once("../bd.php");
 	
 	session_start();
 	
@@ -17,7 +21,6 @@
 	
 	$usuario = new Usuario();
 	$usuario->openUsuario($_SESSION['SS_usuario_id']);
-	*/
 ?>
 <!DOCTYPE html>
 <html>
