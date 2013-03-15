@@ -8,7 +8,7 @@ require("lista_posts.php");
 require("../../usuarios.class.php");
 require("../../reguaNavegacao.class.php");
 
-$projeto_id = (int) $_GET['projeto_id'];
+$projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 
 // print_r(get_defined_constants()); // Descomente isso para rir.
 
@@ -31,6 +31,7 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
+<script src="../../js/rooda.js"></script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
@@ -247,43 +248,42 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
-					<div id="addFileDiv" style="display:none">
-					<li>
-					<ul id="cont_arq">
-						<li id="procurar_arq">
-							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" target="alvoAJAX">
-								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-								<input type="hidden" name="gambiarra" value="3337333" />
-								<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
-								<input name="falso" type="text" id="falso_frame" />
-								<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
-								<br>
-								<input type="submit" name="upload" value="upload!" style="float:right" />
-							</form>
-							<iframe id="alvoAJAX" name="alvoAJAX" style="display: none;" src=""></iframe>
-							<iframe id="previewarquivos" name="previewarquivos" src="" frameborder="0"></iframe>
-						</li>
-					</ul>
+					<li id="addFileDiv" style="display:none">
+						<form name="form_arquivo" id="form_arquivo" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
+							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+							<input name="userfile" type="file" id="arquivo_frame" class="upload_file" title="Procurar Arquivo" style="" required />
+							<input name="falso" type="text" id="falso_frame" />
+							<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
+							<br>
+							<input type="submit" name="upload" value="upload!" style="float:right" />
+						</form>
+<script>
+	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_tamanho","arquivo_titulo","erros"]);
+	form_arquivo.onResponse = function(){
+		if(this.response.erros != false){
+			alert(this.response.erros);
+		} else {
+			alert("ID do Arquivo: " + this.response.arquivo_id);
+		}
+	}
+</script>
 					</li>
-					</div>
 					<?
 						global $tabela_arquivos;
 						$tipoPortfolio = TIPOPORTFOLIO;
 						$consulta = new conexao();
-						$consulta->solicitar("	SELECT arquivo_id, titulo, nome, funcionalidade_tipo, funcionalidade_id 
-												FROM $tabela_arquivos 
-												WHERE funcionalidade_tipo = $tipoPortfolio
-												AND funcionalidade_id = $projeto_id");
-						for($i=0 ; $i< count($consulta->itens) ; $i++){
+						$consulta->solicitar("SELECT arquivo_id,titulo,nome FROM $tabela_arquivos WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
+						while($consulta->resultado)
+						{
 							$fileId = $consulta->resultado['arquivo_id'];
-							if($consulta->resultado['titulo'] != ""){
+							if(trim($consulta->resultado['titulo']) != ""){
 								$nomeArquivo = $consulta->resultado['titulo'];
 							}
 							else $nomeArquivo = $consulta->resultado['nome'];
 					?>
 							<li class="tabela_port" id="liFile<?=$fileId?>">
-								<a href="../../downloadFile.php?fileId=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-								<img onclick="if (confirm('Tem certeza que deseja apagar este arquivo?')){deleteTagFilha('caixa_arq','<?=("liFile".$fileId)?>');deleteBd('<?=$fileId?>','<?=$tabela_arquivos?>','arquivo_id')}" src="../../images/botoes/bt_x.png" align="right"/>
+								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
+								<img src="../../images/botoes/bt_x.png" align="right"/>
 							</li>
 					<?
 							$consulta->proximo();

@@ -7,7 +7,7 @@ require_once("bd.php");
 //UPGRADE: TRANSFORMAR FUNCIONALIDADE_TIPO EM FUNCIONALIDADE_TIPOS E FUNCIONALIDADE_ID PARA FUNCIONALIDADE_IDS (OBJETIVO: EVITAR DUPLICAÇÃO DE ARQUIVOS)
 class File {
 	private $id;
-	private $link;				//string com o endereco para o arquivo no servidor
+	//private $link;				//string com o endereco para o arquivo no servidor
 	private $nome;				//nome do arquivo. Deve conter a extensao também 
 	private $tipo = "";
 	private $tamanho;
@@ -20,7 +20,7 @@ class File {
 	private $download = false;		//variavel que diz se se tem os dados necessarios para se fazer o download
 	private $upload = false;		//variavel que diz se se tem os dados necessarios para se fazer o upload
 	private $blog_id = 0;			// Para minimizar a necessidade de gambiarras e facilitar a vida do banco de dados.
-	private $titulo = 0;			// Opcional, usado na biblioteca
+	private $titulo = "";			// Opcional, usado na biblioteca
 	private $autor = "";			// ^^^^^^^^^^^^^^^^^^^^^^^
 	private $tags = "";				// ^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -29,40 +29,40 @@ class File {
  //aceita funcionalidade_tipo, funcionalidade_id, nome, tipo, tamanho e nome temporario do arquivo no servidor,
  //que eh o necessario para efetuar o upload
 	public function File($funcionalidade_tipo=-2, $funcionalidade_id=-2, $nome="", $tipo="", $tamanho=0, $fileNameServ="", $blog_id=0, $manual_id=0){
-	global $tabela_arquivos;
-	if(($funcionalidade_tipo!==-2) and ($funcionalidade_id!==-2) and ($nome!=="") and ($tipo==="") and ($tamanho===0) and ($fileNameServ==="")){
-		$this->nome = $nome;
-		$this->funcionalidade_tipo = $funcionalidade_tipo;
-		$this->funcionalidade_id = $funcionalidade_id;
-		$this->download = true;
-	
-	}
-	else if (($funcionalidade_tipo>0) and ($funcionalidade_id>0) and ($nome!=="") and ($tipo!=="") and ($tamanho>0) and ($fileNameServ!=="")){
-		$this->nome = $nome;
-		$this->tipo = $tipo;
-		$this->tamanho = $tamanho;
-		$this->funcionalidade_tipo	= $funcionalidade_tipo;
-		$this->funcionalidade_id	= $funcionalidade_id;
-
-		$file	= fopen($fileNameServ, 'r');
-		$fileContent = fread($file, filesize($fileNameServ));
-		$fileContent = addslashes($fileContent);
-		$this->fileContent = $fileContent;
-		fclose($file);
-		$this->upload = true;
-	}
-	elseif($manual_id != 0){ // usado na biblioteca, principalmente no material.class.php
-		$gambi = new conexao();
-		$manual_id = (int) $manual_id;
-		$gambi->solicitar("SELECT nome, funcionalidade_tipo, funcionalidade_id FROM $tabela_arquivos WHERE arquivo_id = $manual_id");
+		global $tabela_arquivos;
+		if(($funcionalidade_tipo!==-2) and ($funcionalidade_id!==-2) and ($nome!=="") and ($tipo==="") and ($tamanho===0) and ($fileNameServ==="")){
+			$this->nome = $nome;
+			$this->funcionalidade_tipo = $funcionalidade_tipo;
+			$this->funcionalidade_id = $funcionalidade_id;
+			$this->download = true;
 		
-		$this->nome = $gambi->resultado['nome'];
-		$this->funcionalidade_tipo = $gambi->resultado['funcionalidade_tipo'];
-		$this->funcionalidade_id = $gambi->resultado['funcionalidade_id'];
-		$this->download = true;
-	}else{
-		$this->erros[] = "ERRO - Parametros errados em File Constructor";
-	}
+		}
+		else if (($funcionalidade_tipo>0) and ($funcionalidade_id>0) and ($nome!=="") and ($tipo!=="") and ($tamanho>0) and ($fileNameServ!=="")){
+			$this->nome = $nome;
+			$this->tipo = $tipo;
+			$this->tamanho = $tamanho;
+			$this->funcionalidade_tipo	= $funcionalidade_tipo;
+			$this->funcionalidade_id	= $funcionalidade_id;
+
+			$file	= fopen($fileNameServ, 'r');
+			$fileContent = fread($file, filesize($fileNameServ));
+			$fileContent = addslashes($fileContent);
+			$this->fileContent = $fileContent;
+			fclose($file);
+			$this->upload = true;
+		}
+		elseif($manual_id != 0){ // usado na biblioteca, principalmente no material.class.php
+			$gambi = new conexao();
+			$manual_id = (int) $manual_id;
+			$gambi->solicitar("SELECT nome, funcionalidade_tipo, funcionalidade_id FROM $tabela_arquivos WHERE arquivo_id = $manual_id");
+			
+			$this->nome = $gambi->resultado['nome'];
+			$this->funcionalidade_tipo = $gambi->resultado['funcionalidade_tipo'];
+			$this->funcionalidade_id = $gambi->resultado['funcionalidade_id'];
+			$this->download = true;
+		}else{
+			$this->erros[] = "ERRO - Parametros errados em File Constructor";
+		}
 	}
 
 	public function download(){
@@ -160,7 +160,7 @@ class File {
 		$erros = "";
 		for ($i = 0 ; $i < count($this->erros) ; $i++){
 			if ($i < (count($this->erros) - 1) ){
-				$erros .= $this->erros[$i]."<BR />";
+				$erros .= $this->erros[$i]."<BR />\n";
 			}
 			else {
 				$erros .= $this->erros[$i];
@@ -195,7 +195,7 @@ class File {
 		$nome 					= mysql_real_escape_string($this->getNome());
 		$tipo					= mysql_real_escape_string($this->getTipo());
 		$tamanho				= (int) $this->getTamanho();
-		$ConteudoArquivo		= mysql_real_escape_string($this->getConteudoArquivo());
+		$ConteudoArquivo		= $this->getConteudoArquivo();
 		$funcionalidade_tipo	= (int) $this->getFuncionalidadeTipo();
 		$funcionalidade_id		= (int) $this->getFuncionalidadeId();
 		$tit					= mysql_real_escape_string($this->getTitulo());
@@ -208,7 +208,7 @@ class File {
 															 AND funcionalidade_id = '$funcionalidade_id';");
 		if ($consulta->registros === 0){
 			$consulta->solicitar("INSERT INTO $tabela_arquivos
-								(nome , tipo, tamanho, arquivo, funcionalidade_tipo , funcionalidade_id, titulo, autor, tags, uploader_id)
+                          (nome ,    tipo,    tamanho,    arquivo,            funcionalidade_tipo,   funcionalidade_id, titulo, autor,  tags,     uploader_id)
 						VALUES ('$nome', '$tipo', '$tamanho', '$ConteudoArquivo', '$funcionalidade_tipo','$funcionalidade_id', '$tit', '$aut', '$tag', '$uploader_id');");
 			if ($consulta->erro !== ""){
 				$this->erros[] = "ERRO - \"".$consulta->erro."\"";

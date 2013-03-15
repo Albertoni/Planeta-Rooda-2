@@ -26,7 +26,7 @@ if($consulta->registros != 0){
 	} else {
 		header("Content-length: $tamanho");
 		header("Content-type: $tipo");
-		header("Content-Disposition: attachment; filename=$nome");
+		//header("Content-Disposition: attachment; filename=$nome");
 		echo $fileContent;
 	}
 }else{
