@@ -69,7 +69,7 @@ body{background-color:#090826;}
 	height:49px;
 }
 
-#listaMembrosTurma{
+#listasMembrosTurma{
 	height:390px;
 	width:461px;
 	background-image:url(images/list_border.png);
@@ -83,6 +83,7 @@ body{background-color:#090826;}
 	float:right;
 	margin-right:10px;
 }
+#listaMonitores, #listaAlunos{display: block;}
 
 .membroTurma{
 	height:50px;
@@ -92,7 +93,7 @@ body{background-color:#090826;}
 	background-image:url(images/barra_transp.png);
 }
 
-.botaoUsuario{height:50px; width:25px;}
+.botaoUsuario{height:50px; width:25px; float:right; margin-right:10px;}
 .iconeDeletar{background-image:url(images/icon_delete.png);}
 .iconeCarteira{background-image:url(images/icon_carteira.png);}
 .iconePromocao{background-image:url(images/icon_promotion.png);}

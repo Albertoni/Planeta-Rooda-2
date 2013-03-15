@@ -42,6 +42,10 @@ class turma{
 	
 	public function getId(){ return $this->id; }
 	public function getNome(){ return $this->nome; }
+	public function getProfessores(){return $this->professores;}
+	public function getMonitores(){return $this->monitores;}
+	public function getAlunoss(){return $this->alunos;}
+	
 	
 	/*
 	* @return int Total de alunos nesta turma.
@@ -74,20 +78,23 @@ class turma{
 		}else{
 			global $nivelProfessor; global $nivelMonitor; global $nivelAluno;
 			
-			$this->professores = new array();
-			$this->monitores = new array();
-			$this->alunos = new array();
+			$this->professores = array();
+			$this->monitores = array();
+			$this->alunos = array();
 			
 			for($i=0; $i<$q->registros; $i++){
+				$tempUser = new Usuario();
+				$tempUser->openUsuario($q->resultado['codUsuario']);
+				
 				switch($q->resultado['associacao']){
 					case $nivelProfessor:
-						$this->professores[] = $q->resultado['codUsuario'];
+						$this->professores[] = $tempUser;
 						break;
 					case $nivelManitor:
-						$this->monitores[] = $q->resultado['codUsuario'];
+						$this->monitores[] = $tempUser;
 						break;
 					case $nivelAluno:
-						$this->alunos[] = $q->resultado['codUsuario'];
+						$this->alunos[] = $tempUser;
 						break;
 				}
 				$q->proximo();
