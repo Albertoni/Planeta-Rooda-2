@@ -18,7 +18,7 @@ class conexao {
 
 	var $socketMysqli;
 
-	function conexao($host=0,$base=0,$usuario=0,$senha=0){
+	function __construct($host=0,$base=0,$usuario=0,$senha=0){
 		global $BD_host1;
 		global $BD_base1;
 		global $BD_user1;
@@ -47,22 +47,6 @@ class conexao {
 			$this->erro=$this->socketMysqli->connect_error;
 			$erroConexao=TRUE;
 		}
-
-		// INÍCIO
-		// Remover quando o suporte a MySQL for abandonado em prol do MySQL Improved Extension
-		$this->socket=mysql_connect($this->host,$this->usuario,$this->senha);
-		if(!$this->socket){
-			$this->erro=mysql_error($this->socket);
-			$erroConexao=TRUE;
-		}
-		else{
-			if(!mysql_select_db($this->base,$this->socket)){
-				$this->erro=mysql_error($this->socket);
-				$erroConexao=TRUE;
-			}
-		}
-		// Remover quando o suporte a MySQL for abandonado em prol do MySQL Improved Extension
-		// FIM
 
 		if($erroConexao){
 			$this->status=FALSE;
