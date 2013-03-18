@@ -13,6 +13,7 @@ $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
 
 
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -20,7 +21,6 @@ $usuario->openUsuario($_SESSION['SS_usuario_id']);
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<!-- CSS -->
 		<link href="menus.css" rel="stylesheet" type="text/css">
-		<!--script type="text/javascript" src="../jquery.js"></script-->
 		<script type="text/javascript" src="menuTurma.js"></script>
 	</head>
 	<body>
@@ -54,9 +54,21 @@ $usuario->openUsuario($_SESSION['SS_usuario_id']);
 						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 					</div>
 					<div id="listaMonitores" class="listaMembros">
 						<div class="membroTurma comFundo">NOME DO monitor <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
@@ -74,6 +86,7 @@ $usuario->openUsuario($_SESSION['SS_usuario_id']);
 						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 					</div>
 				</div>
+			<div id="botaoAdicionar"></div>
 			</div>
 		</div>
 	</body>

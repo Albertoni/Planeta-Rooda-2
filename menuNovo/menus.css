@@ -1,4 +1,6 @@
-body{background-color:#090826;}
+body{background-color:#090826;
+font-family: Tahoma, Verdana, Trebuchet MS;
+}
 
 #containerMenu{
 	position:absolute;
@@ -26,7 +28,7 @@ body{background-color:#090826;}
 	height:151px;
 }
 
-.botaoEsquerda{
+.botaoEsquerda{ 
 	width:270px;
 	height:37px;
 	margin-top:20px;
@@ -85,7 +87,6 @@ body{background-color:#090826;}
 	float:right;
 	margin-right:10px;
 }
-#listaMonitores, #listaAlunos{display: block;}
 
 .membroTurma{
 	height:50px;
@@ -105,11 +106,19 @@ body{background-color:#090826;}
 .iconePromocao:hover{background-image:url(images/hicon_promotion.png);}
 
 .listaMembros{
-	height:100%;
-	width:465px;
+	height:98%;
+	width:462px;
 	
 	padding-left: 5px;
 	
 	position:absolute;
-	top:1px;
+	top:4px;
+	
+	overflow-y:auto;
+}
+
+/*por default esses não aparecem sem algo ser clicado*/
+#listaMonitores, #listaAlunos{
+	display: none;
+	opacity:0;
 }
