@@ -70,12 +70,14 @@ body{background-color:#090826;}
 }
 
 #listasMembrosTurma{
-	height:390px;
-	width:461px;
+	height:400px;
+	width:471px;
 	background-image:url(images/list_border.png);
-	padding: 5px;
+	
 	line-height:50px;
 	margin-top:13px;
+	
+	position:relative;
 }
 
 #listaMembrosTurma img{
@@ -101,3 +103,13 @@ body{background-color:#090826;}
 .iconeDeletar:hover{background-image:url(images/hicon_delete.png);}
 .iconeCarteira:hover{background-image:url(images/hicon_carteira.png);}
 .iconePromocao:hover{background-image:url(images/hicon_promotion.png);}
+
+.listaMembros{
+	height:100%;
+	width:465px;
+	
+	padding-left: 5px;
+	
+	position:absolute;
+	top:1px;
+}
