@@ -214,8 +214,7 @@ class File {
 				$this->erros[] = "ERRO - \"".$consulta->erro."\"";
 			}
 			$this->id = $consulta->ultimo_id(); // Pega o id do arquivo!
-		}
-		else {
+		} else {
 			$this->erros[] = "ERRO - Arquivo ja existe no banco de dados";
 		}
 	}

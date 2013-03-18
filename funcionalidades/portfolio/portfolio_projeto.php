@@ -24,6 +24,10 @@ if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 $user = new Usuario();
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
+
+if($perm == false){
+	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
+}
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +40,9 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
 <body onload="atualiza('ajusta()');inicia();coment();">
 <?
+		if(!$user->podeAcessar($perm['portfolio_visualizarPost'], $turma)){
+			die("Voce nao tem permissoes para visualizar posts.");
+		}
 		global $tabela_portfolioProjetos;
 		$consulta= new conexao();
 		$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
@@ -251,19 +258,21 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 					<li id="addFileDiv" style="display:none">
 						<form name="form_arquivo" id="form_arquivo" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+							<div class="file_input">
 							<input name="userfile" type="file" id="arquivo_frame" class="upload_file" title="Procurar Arquivo" style="" required />
+							</div>
 							<input name="falso" type="text" id="falso_frame" />
 							<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
 							<br>
 							<input type="submit" name="upload" value="upload!" style="float:right" />
 						</form>
 <script>
-	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_tamanho","arquivo_titulo","erros"]);
+	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
 	form_arquivo.onResponse = function(){
 		if(this.response.erros != false){
 			alert(this.response.erros);
 		} else {
-			alert("ID do Arquivo: " + this.response.arquivo_id);
+			alert("Arquivo enviado com sucesso.");
 		}
 	}
 </script>
@@ -396,7 +405,6 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 <iframe name="deletante" style="visibility: hidden;"></iframe>
 
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="portfolio.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>

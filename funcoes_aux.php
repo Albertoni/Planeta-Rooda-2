@@ -316,4 +316,12 @@ function cospeSelectDeTurmas($t=0){
 		}
 	}
 }
+function usuarioPertenceTurma($usuario,$turma)
+{
+	$usuario = (int) $usuario;
+	$turma = (int) $turma;
+	$con = new conexao();
+	$con->solicitar("SELECT '1' FROM TurmasUsuario WHERE codUsuario='$usuario' AND codTurma='$turma'");
+	return ($con->registros > 0);
+}
 ?>
