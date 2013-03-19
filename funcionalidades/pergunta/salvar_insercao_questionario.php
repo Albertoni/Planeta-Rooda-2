@@ -11,7 +11,7 @@ require("../../funcoes_aux.php");
 $q = new conexao(); global $tabela_PerguntaPerguntas;
 global $tabela_PerguntaRespostas;
 
-$questionario = mysql_real_escape_string($_POST['idquest']);
+$questionario = (int) $_POST['idquest'];
 $usuario = $_SESSION['SS_usuario_id'];
 
 $permissoes = checa_permissoes(TIPOPERGUNTA, $turma);

@@ -20,9 +20,9 @@ if($perm == false){
 
 if($_SESSION['user']->podeAcessar($perm['portfolio_excluirPost'], $turma)){
 	$consulta= new conexao();
-	$id = mysql_real_escape_string($_GET['id']);
-	$tabela = mysql_real_escape_string($_GET['tabela']);
-	$coluna = mysql_real_escape_string($_GET['coluna']);
+	$id = $consulta->sanitizaString($_GET['id']);
+	$tabela = $consulta->sanitizaString($_GET['tabela']);
+	$coluna = $consulta->sanitizaString($_GET['coluna']);
 	$consulta->solicitar("DELETE FROM $tabela WHERE $coluna = $id");
 	if ($consulta->erro != ""){
 		echo '<script>alert("Ocorreu o seguinte erro na comunicação com o banco de dados, por favor envie esse texto para os desenvolvedores:'+$consulta->erro+'");</script>';

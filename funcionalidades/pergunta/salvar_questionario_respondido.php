@@ -10,7 +10,7 @@ require("../../funcoes_aux.php");
 
 $q = new conexao(); global $tabela_PerguntaRespostas;
 
-$questionario = mysql_real_escape_string($_POST['idquest']);
+$questionario = (int) $_POST['idquest'];
 $usuario = $_SESSION['SS_usuario_id'];
 
 
@@ -26,14 +26,14 @@ $respostas = "";
 for ($i=1; $i <= $_POST['numops']; $i++){
 	switch($_POST["tipo$i"]){
 	case 1:
-		$respostas .= mysql_real_escape_string($_POST["opmul_$i"]);
+		$respostas .= $q->sanitizaString($_POST["opmul_$i"]);
 		break;
 	case 2:
-		$respostas .= mysql_real_escape_string(str_replace("¦", "&brvbar;", $_POST["subj_$i"]));
+		$respostas .= $q->sanitizaString(str_replace("¦", "&brvbar;", $_POST["subj_$i"]));
 		break;
 	case 3:
 		for ($j=1; isset($_POST["radio".$j."_$i"]); $j++) {
-			$respostas .= mysql_real_escape_string($_POST["radio".$j."_$i"]);
+			$respostas .= $q->sanitizaString($_POST["radio".$j."_$i"]);
 			$respostas .= ";";
 		}
 		$respostas = rtrim($respostas, ";"); // remove o ; final

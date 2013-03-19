@@ -250,7 +250,7 @@
 		$deuErro = true;
 	}
 	
-	$conteudoCheckboxesGerenciamento = mysql_real_escape_string($conteudoCheckboxesGerenciamento);
+	$conteudoCheckboxesGerenciamento = $conexaoSalvarDadosGerenciamentoTurma->sanitizaString($conteudoCheckboxesGerenciamento);
 
 	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO GerenciamentoTurma (codTurma, 
 																					  dadosGerenciamento,

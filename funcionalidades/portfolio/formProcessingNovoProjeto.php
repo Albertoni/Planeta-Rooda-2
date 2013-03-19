@@ -24,15 +24,15 @@ if(!$luser->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
 $consulta = new conexao();
 
 $usuario_id		=	$_SESSION['SS_usuario_id']									or die("Nao sei como voce chegou aqui sem estar logado, mas parabens.");
-$titulo			=	mysql_real_escape_string($_POST['titulo_projeto'])			or die("Um titulo &eacute; necessario para criar um projeto.");
-$descricao		=	mysql_real_escape_string($_POST['descricao_projeto']);
-$conteudos		=	mysql_real_escape_string($_POST['conteudos_projeto']);
-$objetivos		=	mysql_real_escape_string($_POST['objetivos_projeto'])		or die("&Eacute; necessario um objetivo para criar um projeto.");
-$metodologia	=	mysql_real_escape_string($_POST['metodologia_projeto']);
-$publicoAlvo	=	mysql_real_escape_string($_POST['publicoAlvo_projeto']);
-$autor			=	mysql_real_escape_string($_POST['autor_projeto'])			or die("O nome do autor &eacute; necessario para criar um projeto.");
-$tags			=	mysql_real_escape_string($_POST['tags_projeto']);
-$text			=	mysql_real_escape_string($_POST['text']);
+$titulo			=	$consulta->sanitizaString($_POST['titulo_projeto'])			or die("Um titulo &eacute; necessario para criar um projeto.");
+$descricao		=	$consulta->sanitizaString($_POST['descricao_projeto']);
+$conteudos		=	$consulta->sanitizaString($_POST['conteudos_projeto']);
+$objetivos		=	$consulta->sanitizaString($_POST['objetivos_projeto'])		or die("&Eacute; necessario um objetivo para criar um projeto.");
+$metodologia	=	$consulta->sanitizaString($_POST['metodologia_projeto']);
+$publicoAlvo	=	$consulta->sanitizaString($_POST['publicoAlvo_projeto']);
+$autor			=	$consulta->sanitizaString($_POST['autor_projeto'])			or die("O nome do autor &eacute; necessario para criar um projeto.");
+$tags			=	$consulta->sanitizaString($_POST['tags_projeto']);
+$text			=	$consulta->sanitizaString($_POST['text']);
 
 $consulta->solicitar("INSERT INTO $tabela_portfolioProjetos
 (titulo,		autor,		descricao,		objetivos,		conteudosAbordados,		metodologia,		publicoAlvo,		tags,		dataCriacao,	owner_id,		turma) VALUES

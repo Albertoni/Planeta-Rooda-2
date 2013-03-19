@@ -69,8 +69,8 @@ $descricao_quest = conversor_pergunta($_POST['descricao'], "Descrição em branc
 
 // Cria o questionário
 $consulta = new conexao();
-$titulo_quest = mysql_real_escape_string($titulo_quest);
-$descricao_quest = mysql_real_escape_string($descricao_quest);
+$titulo_quest = $consulta->sanitizaString($titulo_quest);
+$descricao_quest = $consulta->sanitizaString($descricao_quest);
 $consulta->solicitar("INSERT INTO $tabela_PerguntaQuestionarios
 					(titulo,			descricao,			datainicio,		datafim,	liberarGabarito, criador,	alunoInsere, turma) VALUES
 					('$titulo_quest', '$descricao_quest', '$datainicio',	'$datafim',	$liberar,		$userid,	$alquest,	$turma)");

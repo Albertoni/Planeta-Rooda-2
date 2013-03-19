@@ -11,7 +11,7 @@ require("visualizacao_forum.php");
 $user = new Usuario();
 $user->openUsuario($_SESSION['SS_usuario_id']);
 
-$turma = mysql_real_escape_string($_POST['turma']);
+$turma = (int) $_POST['turma'];
 
 $permissoes = checa_permissoes(TIPOFORUM, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
@@ -19,12 +19,12 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 $pesquisa1 = new conexao();
 $pesquisa2 = new conexao();
 
-$ajax = mysql_real_escape_string((isset($_POST['ajax']))? $_POST['ajax'] : 0);
-$titulo = mysql_real_escape_string((isset($_POST['msg_titulo'])) ? $_POST['msg_titulo'] : "");
-$topico = mysql_real_escape_string($_POST['topico']);
-$pai = mysql_real_escape_string($_POST['pai']);
-$criador = isset($_POST['criador'])?mysql_real_escape_string($_POST['criador']):0;	// Possibilita edição de pessoas diferentes.
-$conteudo = str_replace("\n", "<br>", mysql_real_escape_string($_POST['msg_conteudo']));
+$ajax = $pesquisa1->sanitizaString((isset($_POST['ajax'])) ? $_POST['ajax'] : 0);
+$titulo = $pesquisa1->sanitizaString((isset($_POST['msg_titulo'])) ? $_POST['msg_titulo'] : "");
+$topico = $pesquisa1->sanitizaString($_POST['topico']);
+$pai = $pesquisa1->sanitizaString($_POST['pai']);
+$criador = isset($_POST['criador'])?$pesquisa1->sanitizaString($_POST['criador']):0;	// Possibilita edição de pessoas diferentes.
+$conteudo = str_replace("\n", "<br>", $pesquisa1->sanitizaString($_POST['msg_conteudo']));
 
 // ESPECIFICA ONDE REDIRECIONARÁ
 

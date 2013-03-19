@@ -34,11 +34,11 @@
 	*	É necessário criar o grupo e o terreno padrão para cada usuário, além de inserí-lo 
 	*	na tabela de personagens e de usuários - Guto - 11.05.10
 	--------------------------------------------------------------------------*/
-	$login		= mysql_real_escape_string($_POST["criar_apelido"]);
-	$usuario	= mysql_real_escape_string($_POST['nome_completo']);
-	$email		= mysql_real_escape_string($_POST['email']);
-	$nivel		= mysql_real_escape_string($_POST['nivel']);
-	$sexo		= mysql_real_escape_string($_POST['sexo']);
+	$login		= $registrar->sanitizaString($_POST["criar_apelido"]);
+	$usuario	= $registrar->sanitizaString($_POST['nome_completo']);
+	$email		= $registrar->sanitizaString($_POST['email']);
+	$nivel		= $registrar->sanitizaString($_POST['nivel']);
+	$sexo		= $registrar->sanitizaString($_POST['sexo']);
 	$password	= md5($_POST['criar_senha']);// insert evil code to steal passwords here
 	
 	

@@ -22,14 +22,14 @@
 		$blog = new Blog($blog_id);
 		$usuario_id = $_SESSION['SS_usuario_id'];
 		$post_id = isset($_POST['post_id']) ? (int)$_POST['post_id'] : 0;
-		$post = new Post($post_id,$blog->getId(),$usuario_id,str_replace("\n", " ", $_POST['title']),mysql_real_escape_string($_POST['text']),$_POST['is_public'],date("Y-m-d H:i:s"));	
+		$post = new Post($post_id,$blog->getId(),$usuario_id,str_replace("\n", " ", $_POST['title']),$consulta->sanitizaString($_POST['text']),$_POST['is_public'],date("Y-m-d H:i:s"));
 		$post->save();
 	
 		
 		if ($_POST['tags'] != ""){ // Se for um post novo ou uma edição de algo que não tenha tags, as tags serão inseridas.
-			$consulta->solicitar("INSERT INTO $tabela_tags VALUES (".$post->id.",".$_POST['blog_id'].",'".mysql_real_escape_string(strtolower($_POST['tags']))."')");
+			$consulta->solicitar("INSERT INTO $tabela_tags VALUES (".$post->id.",".$_POST['blog_id'].",'".$consulta->sanitizaString(strtolower($_POST['tags']))."')");
 			if ($consulta->erro != ""){ // agora, se for uma edição de algo COM tags, a anterior dá erro e aí atualiza. Espero.
-				$consulta->solicitar("UPDATE $tabela_tags SET Tags='".mysql_real_escape_string(strtolower($_POST['tags']))."' WHERE Id=".$post->id);
+				$consulta->solicitar("UPDATE $tabela_tags SET Tags='".$consulta->sanitizaString(strtolower($_POST['tags']))."' WHERE Id=".$post->id);
 			}
 		}
 	} else {

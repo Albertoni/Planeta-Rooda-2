@@ -33,12 +33,12 @@ if($perm == false){
 global $tabela_portfolioPosts; global $tabela_portfolioProjetos;
 $consulta = new conexao();
 
-$text_post		= mysql_real_escape_string($_POST['text']);
-$titulo_post	= mysql_real_escape_string($_POST['titulo_post']);
-$tags_post		= mysql_real_escape_string($_POST['tags_post']);
-$projeto_id		= mysql_real_escape_string($_POST['projeto_id']);
-$post_id		= mysql_real_escape_string($_POST['post_id']);
-$update			= mysql_real_escape_string($_POST['update']);
+$text_post		= $consulta->sanitizaString($_POST['text']);
+$titulo_post	= $consulta->sanitizaString($_POST['titulo_post']);
+$tags_post		= $consulta->sanitizaString($_POST['tags_post']);
+$projeto_id		= $consulta->sanitizaString($_POST['projeto_id']);
+$post_id		= $consulta->sanitizaString($_POST['post_id']);
+$update			= $consulta->sanitizaString($_POST['update']);
 
 $consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
 if($turma != $consulta->resultado['turma']){

@@ -38,7 +38,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0){
 		global $tabela_arquivos;
 		
 		$consulta = new conexao();
-		$fileNameSQL = mysql_real_escape_string($fileName);
+		$fileNameSQL = $conexao->sanitizaString($fileName);
 		$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE nome = '$fileNameSQL'");
 		$falha = 0;
 

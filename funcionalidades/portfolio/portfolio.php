@@ -123,7 +123,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 			$condicao = "owner_id = $id_usuario OR turma=$turma";
 			
 			if (isset($_POST['projeto_procurado'])){
-				$procurar = mysql_real_escape_string($_POST['projeto_procurado']); // bom dia SQL injection primária
+				$procurar = $consulta->sanitizaString($_POST['projeto_procurado']); // bom dia SQL injection primária
 				switch($_POST['p_proj']){
 					case "1":
 						$condicao .= " AND titulo LIKE '%$procurar%'";

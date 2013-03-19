@@ -115,9 +115,11 @@ class Usuario { //estrutura para o item post do blog
 	* @return Array<Usuario> Todos os usuários que têm o nome dado.
 	*/
 	public static function buscaPorNome($nome){
-		$nome = mysql_real_escape_string($nome);
 		$resultados = array();
 		$conexao = new conexao();
+		
+		$nome = $conexao->sanitizaString($nome);
+		
 		$conexao->solicitar("SELECT * FROM usuarios WHERE usuario_nome LIKE '%".$nome."%'");
 		for($i=0; $i<$conexao->registros; $i++){
 			array_push($resultados, new Usuario());

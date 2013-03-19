@@ -61,19 +61,21 @@ function Link($param1 , $param2=-1, $param3=-1, $titulo="", $autor="", $tags="")
 private function upload(){
 	global $tabela_links;
 	
-	$funcionalidade_tipo	= (int) $this->funcionalidade_tipo;
-	$funcionalidade_id		= (int) $this->funcionalidade_id;
-	$end_link	= mysql_real_escape_string($this->getLink());
-	$titulo		= mysql_real_escape_string($this->titulo);
-	$autor		= mysql_real_escape_string($this->autor);
-	$tags		= mysql_real_escape_string($this->tags);
-	$uid		= $_SESSION['SS_usuario_id'];
 	if ($uid == 0){
 		$this->erros[]= "ERRO - VOCÊ NÃO ESTÁ LOGADO!!!"; // mas é um babaca
 	}
 	else if ($this->isLinkBD() === false){
 		$consulta = new conexao();
-		$consulta->connect();
+		
+		$funcionalidade_tipo	= (int) $this->funcionalidade_tipo;
+		$funcionalidade_id		= (int) $this->funcionalidade_id;
+		
+		$end_link	= $consulta->sanitizaString($this->getLink());
+		$titulo		= $consulta->sanitizaString($this->titulo);
+		$autor		= $consulta->sanitizaString($this->autor);
+		$tags		= $consulta->sanitizaString($this->tags);
+		$uid		= $_SESSION['SS_usuario_id'];
+		
 		$consulta->solicitar("INSERT INTO $tabela_links
 							(endereco, funcionalidade_tipo, funcionalidade_id, titulo, autor, tags, uploader_id)
 					VALUES ('$end_link', '$funcionalidade_tipo','$funcionalidade_id', '$titulo', '$autor', '$tags', $uid);");
@@ -107,7 +109,7 @@ private function download(){
 							FROM $tabela_links 
 							WHERE $condicao");
 	if ($this->modo===2){
-		$this->end_link = $consulta->resultado['endereco'];	
+		$this->end_link = $consulta->resultado['endereco'];
 		$this->funcionalidade_tipo = $consulta->resultado['funcionalidade_tipo'];
 		$this->funcionalidade_id = $consulta->resultado['funcionalidade_id'];
 	}
@@ -151,12 +153,13 @@ private function download(){
 	//exclui o link do bd
 	public function excluir(){
 		global $tabela_links;
-		$endereco = mysql_real_escape_string($this->end_link);
 		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 		$funcionalidade_id = (int) $this->funcionalidade_id;
 		echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");
 		$consulta = new conexao();
-		$consulta->connect();
+		
+		$endereco = $consulta->sanitizaString($this->end_link);
+		
 		$consulta->solicitar("DELETE FROM $tabela_links 
 								WHERE endereco = '$endereco'
 								AND funcionalidade_tipo	= '$funcionalidade_tipo'

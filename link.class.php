@@ -57,7 +57,7 @@ private function upload(){
 	global $tabela_links;
 	
 	$consulta = new conexao();
-	$end_link = mysql_real_escape_string($this->getLink());
+	$end_link = $consulta->sanitizaString($this->getLink());
 	$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 	$funcionalidade_id = (int) $this->funcionalidade_id;
 	if ($this->isLinkBD() === false){
@@ -138,7 +138,7 @@ private function download(){
 	public function excluir(){
 		global $tabela_links;
 		$consulta = new conexao();
-		$endereco = mysql_real_escape_string($this->end_link);
+		$endereco = $consulta->sanitizaString($this->end_link);
 		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 		$funcionalidade_id = (int) $this->funcionalidade_id;
 		echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");

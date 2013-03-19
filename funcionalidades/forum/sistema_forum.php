@@ -329,8 +329,8 @@ class forum { //estrutura para o item post do forum, chamado de mensagem
 		$data = pegaData();
 		
 		if ($nova){ // Se for uma mensagem nova
-			$titulook = mysql_real_escape_string($titulo);
-			$conteudook = mysql_real_escape_string($conteudo);
+			$titulook = $pesquisa1->sanitizaString($titulo);
+			$conteudook = $pesquisa1->sanitizaString($conteudo);
 			$pesquisa1->solicitar("INSERT INTO $tabela_forum (msg_usuario, msg_titulo, msg_conteudo, msg_pai, forum_id, msg_data) VALUES ('$dono','$titulook','$conteudook','$pai','$forum_id', '$data')");
 			if($pesquisa1->erro!= ""){
 				$this->erro = $pesquisa1->erro;
@@ -339,8 +339,8 @@ class forum { //estrutura para o item post do forum, chamado de mensagem
 
 
 		}else{ // se for edição de uma já existente
-			$titulook = mysql_real_escape_string($titulo);
-			$conteudook = mysql_real_escape_string($conteudo);
+			$titulook = $pesquisa1->sanitizaString($titulo);
+			$conteudook = $pesquisa1->sanitizaString($conteudo);
 			
 			$pesquisa1->solicitar(	"UPDATE $tabela_forum
 									SET msg_titulo='$titulook', msg_conteudo='$conteudook', msg_data='$data'

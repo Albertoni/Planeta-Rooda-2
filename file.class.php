@@ -69,7 +69,7 @@ class File {
 		if ($this->download === true){
 			global $tabela_arquivos;
 			$consulta = new conexao();
-			$nome = mysql_real_escape_string($this->nome);
+			$nome = $consulta->sanitizaString($this->nome);
 			$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 			$funcionalidade_id = (int) $this->funcionalidade_id;
 			
@@ -130,7 +130,7 @@ class File {
 	public function excluir(){
 		global $tabela_arquivos;
 		$consulta = new conexao();
-		$file_name = mysql_real_escape_string($this->nome);
+		$file_name = $consulta->sanitizaString($this->nome);
 		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 		$funcionalidade_id = (int) $this->funcionalidade_id;
 		$consulta->connect();
@@ -192,15 +192,15 @@ class File {
 		global $tabela_arquivos;
 		session_start();
 		$consulta = new conexao();
-		$nome 					= mysql_real_escape_string($this->getNome());
-		$tipo					= mysql_real_escape_string($this->getTipo());
+		$nome 					= $consulta->sanitizaString($this->getNome());
+		$tipo					= $consulta->sanitizaString($this->getTipo());
 		$tamanho				= (int) $this->getTamanho();
 		$ConteudoArquivo		= $this->getConteudoArquivo();
 		$funcionalidade_tipo	= (int) $this->getFuncionalidadeTipo();
 		$funcionalidade_id		= (int) $this->getFuncionalidadeId();
-		$tit					= mysql_real_escape_string($this->getTitulo());
-		$aut					= mysql_real_escape_string($this->getAutor());
-		$tag					= mysql_real_escape_string($this->getTags());
+		$tit					= $consulta->sanitizaString($this->getTitulo());
+		$aut					= $consulta->sanitizaString($this->getAutor());
+		$tag					= $consulta->sanitizaString($this->getTags());
 		$uploader_id			= (int) $_SESSION['SS_usuario_id'];
 		
 		$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE nome = '$nome'
@@ -208,7 +208,7 @@ class File {
 															 AND funcionalidade_id = '$funcionalidade_id';");
 		if ($consulta->registros === 0){
 			$consulta->solicitar("INSERT INTO $tabela_arquivos
-                          (nome ,    tipo,    tamanho,    arquivo,            funcionalidade_tipo,   funcionalidade_id, titulo, autor,  tags,     uploader_id)
+								(nome ,    tipo,    tamanho,    arquivo,            funcionalidade_tipo,   funcionalidade_id, titulo, autor,  tags,     uploader_id)
 						VALUES ('$nome', '$tipo', '$tamanho', '$ConteudoArquivo', '$funcionalidade_tipo','$funcionalidade_id', '$tit', '$aut', '$tag', '$uploader_id');");
 			if ($consulta->erro !== ""){
 				$this->erros[] = "ERRO - \"".$consulta->erro."\"";

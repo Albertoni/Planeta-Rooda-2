@@ -17,8 +17,8 @@ $funcionalidade_tipo = TIPOPORTFOLIO;
 $consulta = new conexao();
 
 // prevenção de injeção sql
-$funcionalidade_id = mysql_real_escape_string($_POST['projeto_id']);
-$endereco = mysql_real_escape_string($_POST['newLink']);
+$funcionalidade_id = $consulta->sanitizaString($_POST['projeto_id']);
+$endereco = $consulta->sanitizaString($_POST['newLink']);
 if (strpos($endereco, 'http://') !== 0){
 	$endereco = "http://".$endereco;
 }
