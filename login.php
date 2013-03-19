@@ -7,7 +7,7 @@
 	
 	$pesquisa1 = new conexao();
 
-	$login1 = mysql_real_escape_string($_POST['login1']);
+	$login1 = $pesquisa1->sanitizaString($_POST['login1']);
 	$password1 = md5($_POST['password1']);
 
 	if($pesquisa1->erro != ""){
