@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+img{
+	width:400px;
+	height:400px;
+	position:absolute;
+	top:1px;
+	left:1px;
+}
+</style>
+</head>
+<body>
+<div>
+	<img id="um" src="fadeout1.png">
+	<img id="dois" src="fadeout2.jpg">
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<button onclick="clearInterval(idIntervalo); idIntervalo = window.setInterval(func, 10);">VAI!</button>
+<script>
+function func(){
+	um.style.opacity = 1.0 - opacidade;
+	dois.style.opacity = opacidade;
+
+	if(opacidade < 0){
+		window.clearInterval(idIntervalo);
+		temp = um;
+		um = dois;
+		dois = temp;
+		opacidade = 1.0;
+	}else{
+		opacidade -= 0.01;
+	}
+}
+var idIntervalo = 0;
+var um = document.getElementById("um");
+var dois = document.getElementById("dois");
+var opacidade = 1.0;
+</script>
+</body>
+</html>

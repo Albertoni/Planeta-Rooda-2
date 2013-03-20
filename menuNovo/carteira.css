@@ -1,0 +1,58 @@
+body { margin: 0; padding: 0; }
+#carteira-usuario
+{
+	color: #c9ffe0;
+	font-family: "Dejavu Sans";
+	font-size: 18px;
+	background-image: url('images/carteira/carteira.png');
+	background-repeat: no-repeat;
+	background-color: #FF00FF;
+	width: 800px;
+	height: 600px;
+}
+#carteira-usuario h2
+{
+	color: #038276;
+	line-height: 52px;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 160px;
+	left: 320px;
+}
+#descricao-usuario
+{
+	position: absolute;
+	top: 230px;
+	left: 320px;
+	width: 420px;
+	height: 150px;
+	overflow-y: auto;
+}
+#descricao-usuario ul,
+#descricao-usuario li
+{
+	text-decoration: none;
+	font-style: none;
+	list-style: none;
+	margin:0;
+	padding:0;
+}
+#carteira-usuario strong
+{
+	color: #ffffff;
+}
+#imagem-carteira 
+{
+	position: absolute;
+	top: 160px;
+	left: 154px;
+}
+#imagem-carteira img
+{
+	width: 136px;
+	height: 212px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
