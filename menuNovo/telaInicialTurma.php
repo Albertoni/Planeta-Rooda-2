@@ -12,8 +12,14 @@ session_start();
 $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
 
+$idTurma = (int) $_GET['turma'];
 
+$turma = new turma($idTurma);
+$turma->carregaMembros();
 
+$professores = $turma->getProfessores();
+$monitores = $turma->getMonitores();
+$alunos = $turma->getAlunos();
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +53,16 @@ $usuario->openUsuario($_SESSION['SS_usuario_id']);
 				</div>
 				<div id="listasMembrosTurma">
 					<div id="listaProfessores" class="listaMembros">
-						<div class="membroTurma comFundo">NOME DO profisor <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+<?php
+for($i=0; $i<count($professores); $i++){
+	$nome = $professores[$i]->getName();
+	$userId = $professores[$i]->getId();
+	$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
+	
+	
+	echo "						<div class=\"$comFundo\">$nome<a name=\"\" class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
+}
+?>
 						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>

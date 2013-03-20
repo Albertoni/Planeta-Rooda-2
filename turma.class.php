@@ -25,6 +25,8 @@ class turma{
 	*/
 	private $id;
 	private $nome;
+	private $idProfessorResponsavel;
+	private $descricao;
 	
 	/*
 	* Arrays de membros da turma
@@ -36,16 +38,23 @@ class turma{
 	
 //métodos
 	/***/
-	function turma(){
-		
+	function turma($id = 0){
+		if($id != 0){
+			$this->openTurma($id);
+		}
 	}
 	
 	public function getId(){ return $this->id; }
 	public function getNome(){ return $this->nome; }
 	public function getProfessores(){return $this->professores;}
 	public function getMonitores(){return $this->monitores;}
-	public function getAlunoss(){return $this->alunos;}
+	public function getAlunos(){return $this->alunos;}
+	public function getIdProfessorResponsavel(){return $this->idProfessorResponsavel;}
 	
+	private function setId		($id)	{ $this->id = $id; }
+	private function setNome		($nome)	{ $this->nome = $nome; }
+	private function setDescricao	($desc)	{ $this->descricao = $desc; }
+	private function setIdProfessorResponsavel($idProfessorResponsavel){ $this->idProfessorResponsavel = $idProfessorResponsavel; }
 	
 	/*
 	* @return int Total de alunos nesta turma.
@@ -56,7 +65,7 @@ class turma{
 		$conexao = new conexao();
 		$conexao->solicitar("SELECT COUNT(*) AS total_alunos
 							FROM TurmasUsuario
-							WHERE associacao = '$nivelAluno
+							WHERE associacao = '$nivelAluno'
 								AND codTurma = '".$this->id."'");
 		
 		return $conexao->resultado['total_alunos'];
@@ -115,8 +124,10 @@ class turma{
 							 FROM Turmas
 							 WHERE codTurma=$id_param");
 		
-		$this->id = $id_param;
-		$this->nome = $conexao->resultado['nomeTurma'];
+		$this->setId($id_param);
+		$this->setNome($conexao->resultado['nomeTurma']);
+		$this->setIdProfessorResponsavel($conexao->resultado['profResponsavel']);
+		$this->setDescricao($conexao->resultado['descricao']);
 	}
 	
 	/*
@@ -213,6 +224,5 @@ class turma{
 		}
 		return $alteracoes;
 	}
-	
 }
 
