@@ -14,8 +14,8 @@ function imprimeListaUsuarios($lista){
 		$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
 	
 	
-		echo "						<div class=\"$comFundo\">$nome<a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
-}
+		echo "						<div class=\"$comFundo\"><span id=\"nomeUser$userId\">$nome</span><a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
+	}
 }
 
 $usuario = new Usuario();
@@ -37,8 +37,14 @@ $alunos = $turma->getAlunos();
 		<!-- CSS -->
 		<link href="menus.css" rel="stylesheet" type="text/css">
 		<script type="text/javascript" src="menuTurma.js"></script>
+		<script type="text/javascript" src="../jquery.js"></script>
 	</head>
 	<body>
+		<div id="fundo_lbox">
+			<div id="light_box">
+				TESTE
+			</div>
+		</div>
 		<div id="containerMenu">
 			<div id="menuEsquerda">
 				<div id="infoTurma">
@@ -58,6 +64,7 @@ $alunos = $turma->getAlunos();
 				</div>
 				<div id="listasMembrosTurma">
 					<div id="listaProfessores" class="listaMembros">
+						<div class="membroTurma comFundo"><span id="nomeUser414">Juan Vizente</span><a class="botaoUsuario iconeDeletar" onclick="removeUsuario(414, 1081);"></a><a href="#" class="botaoUsuario iconeCarteira" onclick="mostraCarteira(414);"></a><a href="#" class="botaoUsuario iconePromocao" onclick="trocaNivel(414, 1081)"></a></div>
 <?php
 imprimeListaUsuarios($professores);
 ?>
