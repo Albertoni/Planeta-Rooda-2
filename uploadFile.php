@@ -14,14 +14,12 @@ require_once("file.class.php");
 $id_usuario = $_SESSION['SS_usuario_id'];
 $nome_usuario = $_SESSION['SS_usuario_nome'];
 
-$user = new Usuario();
-$user->openUsuario($id_usuario);
 
 $funcionalidade_id = $_GET['funcionalidade_id'];
 $funcionalidade_tipo = $_GET['funcionalidade_tipo'];
 
 if (is_numeric($funcionalidade_id) == false || is_numeric($funcionalidade_tipo) == false){
-	die('<div id="erro">Parametros invalidos</div>'); // Sabe SQL injection?
+	die('<div id="erros">Parametros invalidos</div>'); // Sabe SQL injection?
 }
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0)

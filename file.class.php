@@ -206,6 +206,7 @@ class File {
 		$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE nome = '$nome'
 															 AND funcionalidade_tipo = '$funcionalidade_tipo'
 															 AND funcionalidade_id = '$funcionalidade_id';");
+		echo "UPLLLLLL";
 		if ($consulta->registros === 0){
 			$consulta->solicitar("INSERT INTO $tabela_arquivos
 								(nome ,    tipo,    tamanho,    arquivo,            funcionalidade_tipo,   funcionalidade_id, titulo, autor,  tags,     uploader_id)

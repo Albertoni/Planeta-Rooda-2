@@ -13,20 +13,20 @@ $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 // print_r(get_defined_constants()); // Descomente isso para rir.
 
 if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
-	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
+	die("Voce precisa estar logado para acessar essa p&aacute;gina. <a href=\"../../\">Favor voltar.</a>");
 
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 	$turma = $_GET['turma'];
 }else{
-	die("Voce nao passou a ID da sua turma para a página, favor voltar e tentar novamente.");
+	die("Voce n&atilde;o passou a ID da sua turma para a p&aacute;gina, favor voltar e tentar novamente.");
 }
 
 $user = new Usuario();
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
-if($perm == false){
-	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
+if($perm === false){
+	die("Desculpe, mas o Portf&oacute;lio esta desabilitado para esta turma.");
 }
 ?><!DOCTYPE html>
 <html>
@@ -40,9 +40,6 @@ if($perm == false){
 
 <body onload="atualiza('ajusta()');inicia();coment();">
 <?
-		if(!$user->podeAcessar($perm['portfolio_visualizarPost'], $turma)){
-			die("Voce nao tem permissoes para visualizar posts.");
-		}
 		global $tabela_portfolioProjetos;
 		$consulta= new conexao();
 		$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
@@ -258,15 +255,15 @@ if($perm == false){
 					<li id="addFileDiv" style="display:none">
 						<form name="form_arquivo" id="form_arquivo" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-							<div class="file_input">
-							<input name="userfile" type="file" id="arquivo_frame" class="upload_file" title="Procurar Arquivo" style="" required />
+							<div class="file_input" style="display:inline-block">
+								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
 							</div>
-							<input name="falso" type="text" id="falso_frame" />
-							<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
+							<div id="f_arquivo" style="display:inline-block;width: 80px;" class="falso_text">&nbsp;</div>
 							<br>
 							<input type="submit" name="upload" value="upload!" style="float:right" />
 						</form>
-<script>
+							<script>
+
 	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
 	form_arquivo.onResponse = function(){
 		if(this.response.erros != false){
@@ -275,6 +272,17 @@ if($perm == false){
 			alert("Arquivo enviado com sucesso.");
 		}
 	}
+
+	// -------------
+	var bt_arquivo = document.getElementById('procura_arquivo');
+	var f_arquivo = document.getElementById('f_arquivo');
+	
+	bt_arquivo.onchange = function (){
+		f_arquivo.innerHTML = '';
+		for (i=0;i<this.files.length;i++){
+			f_arquivo.innerHTML = this.files[i].name + ' ';
+		}
+	};
 </script>
 					</li>
 					<?
@@ -323,8 +331,9 @@ if($perm == false){
 						global $tabela_links;
 						$tipoPortfolio=TIPOPORTFOLIO;
 						$consulta = new conexao();
-						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = $tipoPortfolio
-																			AND funcionalidade_id = $projeto_id");
+						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
+						print $consulta->erro;
+						print "SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'";
 						
 						for ($i=0 ; $i < count($consulta->itens) ; $i++){
 							$liId = $consulta->resultado['Id'];

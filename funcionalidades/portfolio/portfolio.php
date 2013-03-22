@@ -7,8 +7,8 @@ require("../../usuarios.class.php");
 require("../../reguaNavegacao.class.php");
 
 global $tabela_portfolioProjetos;
-$id_usuario = $_SESSION['SS_usuario_id'];
-$nome_usuario = $_SESSION['SS_usuario_nome'];
+$id_usuario = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
+$nome_usuario = isset($_SESSION['SS_usuario_nome']) ? $_SESSION['SS_usuario_nome'] : "";
 
 $user = new Usuario();
 $user->openUsuario($id_usuario);

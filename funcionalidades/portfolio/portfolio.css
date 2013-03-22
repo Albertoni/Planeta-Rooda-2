@@ -97,14 +97,13 @@ input[type="text"] { width:100%}
 #procurar_img {width:100%; height:25px; background-image:url(../../images/botoes/bt_procurar_img.png); background-repeat:no-repeat; background-position:right}
 #procurar_img:hover {background-image:url(../../images//botoes/bt_procurar_img2.png)}
 #procurar_img input[type=text] {width:60%; margin-top:2px;}
-.file_input
-{
-	background: url("../../images/botoes/bt_procurar_arquivo.png") no-repeat left;
-}
+.file_input { background: url("../../images/botoes/bt_procurar_arquivo.png") no-repeat left; }
+.file_input:hover { background: url("../../images/botoes/bt_procurar_arquivo2.png") no-repeat left; }
 .file_input input
 {
 	filter: alpha(opacity=0);
 	opacity: 0;
+	width: 105px;
 }
 
 #procurar_arq {width:100%; height:25px;}
