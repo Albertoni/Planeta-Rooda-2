@@ -66,6 +66,14 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 #botaoMonitores:hover{background-image:url(images/htab_monitor.png);}
 #botaoAlunos:hover{background-image:url(images/htab_alunos.png);}
 
+#botaoAdicionar{
+	background-image:url(images/b_add.png);
+	height:37px; width:176px;
+	position:relative;
+	left:170px;
+	bottom:25px;
+}
+#botaoAdicionar:hover{background-image:url(images/h_add.png);}
 
 #wrapperClasses{
 	height:49px;

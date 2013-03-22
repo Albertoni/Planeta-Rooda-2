@@ -7,7 +7,16 @@ session_start();
 /*if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
 	die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
 }*/
-
+function imprimeListaUsuarios($lista){
+	for($i=0; $i<count($lista); $i++){
+		$nome = $lista[$i]->getName();
+		$userId = $lista[$i]->getId();
+		$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
+	
+	
+		echo "						<div class=\"$comFundo\">$nome<a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
+}
+}
 
 $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
@@ -33,11 +42,7 @@ $alunos = $turma->getAlunos();
 		<div id="containerMenu">
 			<div id="menuEsquerda">
 				<div id="infoTurma">
-					Nesse exemplo posicionamos o elemento a 40px do topo e a 
-					20px da esquerda em relação ao lugar que ele ocuparia no 
-					fluxo do documento. Vale lembrar que utilizando 
-					position:relative todo esse espaço que foi definido ainda 
-					continua sendo ocupado pelo elemento na página. 
+					<?= ($turma->getDescricao() != "" ? $turma->getDescricao() : "Turma sem descrição.")."\n"; ?>
 				</div>
 				<div id="wrapperBotoesEsquerda">
 					<div id="botaoContatos" class="botaoEsquerda"></div>
@@ -54,51 +59,18 @@ $alunos = $turma->getAlunos();
 				<div id="listasMembrosTurma">
 					<div id="listaProfessores" class="listaMembros">
 <?php
-for($i=0; $i<count($professores); $i++){
-	$nome = $professores[$i]->getName();
-	$userId = $professores[$i]->getId();
-	$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
-	
-	
-	echo "						<div class=\"$comFundo\">$nome<a name=\"\" class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
-}
+imprimeListaUsuarios($professores);
 ?>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
 					</div>
 					<div id="listaMonitores" class="listaMembros">
-						<div class="membroTurma comFundo">NOME DO monitor <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+<?php
+imprimeListaUsuarios($monitores);
+?>
 					</div>
 					<div id="listaAlunos" class="listaMembros">
-						<div class="membroTurma comFundo">NOME DO aluno <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma">NOME DO MALUCO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
-						<div class="membroTurma comFundo">NOME DO PIRADO <a href="#" class="botaoUsuario iconeDeletar"></a><a href="#" class="botaoUsuario iconeCarteira"></a><a href="#" class="botaoUsuario iconePromocao"></a></div>
+<?php
+imprimeListaUsuarios($alunos);
+?>
 					</div>
 				</div>
 			<div id="botaoAdicionar"></div>

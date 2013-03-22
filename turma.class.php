@@ -50,6 +50,7 @@ class turma{
 	public function getMonitores(){return $this->monitores;}
 	public function getAlunos(){return $this->alunos;}
 	public function getIdProfessorResponsavel(){return $this->idProfessorResponsavel;}
+	public function getDescricao(){return $this->descricao;}
 	
 	private function setId		($id)	{ $this->id = $id; }
 	private function setNome		($nome)	{ $this->nome = $nome; }
