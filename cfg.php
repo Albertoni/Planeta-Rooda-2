@@ -87,6 +87,7 @@ $tabela_controleFuncionalidades	= "FuncionalidadesTurma";
 $tabela_playerVideos			= "PlayerVideos";
 $tabela_playerComentarios		= "PlayerComentarios";
 $tabela_acessos_planeta			= 'acessos_planeta';
+$tabela_usuario_download      = 'usuario_download';
 
 
 

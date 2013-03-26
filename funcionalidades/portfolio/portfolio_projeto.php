@@ -264,12 +264,21 @@ if($perm === false){
 						</form>
 							<script>
 
-	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
+	var form_arquivo = new ROODA.AjaxUploadForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
+	var caixa_arquivos = document.getElementById("caixa_arq");
 	form_arquivo.onResponse = function(){
-		if(this.response.erros != false){
+		if(this.response.erros !== false){
 			alert(this.response.erros);
 		} else {
-			alert("Arquivo enviado com sucesso.");
+			var new_file = document.createElement("li");
+			new_file.id = "liFile" + this.response.arquivo_id;
+			new_file.className = "tabela_port new_file";
+			new_file.innerHTML = '<a href="../../downloadFile.php?id=' + 
+				this.response.arquivo_id + 
+				'" target="_blank">' + 
+				this.response.arquivo_nome + 
+				'</a><img src="../../images/botoes/bt_x.png" align="right" />';
+			caixa_arquivos.appendChild(new_file);
 		}
 	}
 
