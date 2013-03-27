@@ -1,4 +1,4 @@
-<?php
+	<?php
 	session_start();
 	header('Content-type: text/html; charset=utf-8');
 	
@@ -194,7 +194,7 @@ imprimeListaPosts($blog->getId(), $turma);
 							$id = $blog->getId();
 							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE funcionalidade_tipo='$tipoBlog' AND funcionalidade_id='$blog_id'");
 
-							$downloadFile="downloadFile.php";
+							$downloadFile="../../downloadFile.php";
 							$funcionalidade_tipo=(string)$tipoBlog;
 							$funcionalidade_id=(string)$id;
 							for($i=0 ; $i<count($consulta->itens);$i++) {

@@ -1,3 +1,4 @@
+
 if (!Object.create) {
 	Object.create = function (o) {
 		if (arguments.length > 1) {
@@ -7,7 +8,22 @@ if (!Object.create) {
 		F.prototype = o;
 		return new F();
 	};
-}
+};
+
+// Compatibilidade com IE 5 e IE 6
+if (typeof XMLHttpRequest === "undefined") {
+  XMLHttpRequest = function () {
+    try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
+    catch (e) {}
+    try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
+    catch (e) {}
+    try { return new ActiveXObject("Microsoft.XMLHTTP"); }
+    catch (e) {}
+    // Microsoft.XMLHTTP points to Msxml2.XMLHTTP and is redundant
+    throw new Error("This browser does not support XMLHttpRequest.");
+  };
+};
+
 
 var ROODA = {};
 
@@ -28,15 +44,14 @@ var ROODA = {};
 	function AjaxUploadForm(form_id,data_requested) {
 		var form = document.getElementById(form_id);
 		
-		if (!form){
+		if (!form || form.tagName !== "FORM"){
 			console.error("new AjaxForm(): invalid form_id (1st parameter)");
 		} else {
-			// public variables
+			// public variables/functions
 			this.data_requested = data_requested; // parameter
 			this.onResponse = function(){};       // user should define this
 			this.response = {};                   // filled automatically
 			this.form = form;
-
 			// end of public variables
 
 			// Dont mess with the proprieties below
@@ -46,8 +61,8 @@ var ROODA = {};
 			// Set iframe's name and form's target
 			this.iframe.name = this.form.name+"_AjaxTarget";
 			this.form.target = this.iframe.name;
-
-
+			
+			
 			this.iframe.onload = function (event) {
 				
 				// Define the real 'onload' after first 'onload' since it will
@@ -69,12 +84,12 @@ var ROODA = {};
 							this.parent.response[data] = false;
 						}
 					}
-
+					
 					// Trigger the user-defined event function
 					this.parent.onResponse();
-				}
+				};
 			}
-
+			
 			// Hide the iframe
 			this.iframe.style.display="none";
 			// Append the iframe to the document
@@ -87,16 +102,35 @@ var ROODA = {};
 		var form = getElementById(form_id);
 		if (form && form.tagName === "FORM") {
 			this.form = form;
-			this.request = new XMLHttpRequest(this.form.action);
 			this.form.parent = this;
+			
+			this.request = new XMLHttpRequest();
+			this.request.parent = this;
+			this.request.onreadystatechange = function ()
+			{
+				if (this.readyState === 4){
+					this.parent.responseDocument = this.responseXML;
+				}
+			}
+			
+			this.onResponse = function () {};
+			
 			this.form.onsubmit = function() {
-				var requestBody = "";
-				for (var i = 0;i<this.elements.length;i+=1) {
+				
+				var requestBody = encodeURIComponent(this.elements[0].name) + "=" + encodeURIComponent(this.elements[0].value);
+				
+				for (var i = 1;i<this.elements.length;i+=1) {
 					requestBody+= "&" + encodeURIComponent(this.elements[i].name) + "=" + encodeURIComponent(this.elements[i].value);
 				}
+				
+				this.parent.request.open("POST",this.form.action);
+				this.parent.request.send(requestBody);
+				
+				this.parent.onResponse();
+				
 				return false;
-			}
-		}
-	}
+			};
+		};
+	};
 	export_to.AjaxForm = AjaxForm;
 })(ROODA);
