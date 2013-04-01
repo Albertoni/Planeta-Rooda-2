@@ -138,14 +138,20 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 	background-color:#FFF;
 	left:0%;
 	top:0%;
+	height:100%;
+	width:100%;
 	display:none;
 }
 
 #light_box{
-	left:30%;
-	top:10%;
-	height:80%;
-	width:40%;
+	display:none;
 	z-index:501;
-	position:fixed;
+	
+	position:absolute;
+	top:50%;
+	left:50%;
+	height:600px;
+	width:800px;
+	margin:-300px -400px;
+	background-color:white;
 }

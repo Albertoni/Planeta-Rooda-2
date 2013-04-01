@@ -22,7 +22,7 @@ class Usuario { //estrutura para o item post do blog
 	var $turmas = array();
 	var $nivelAbsoluto = 0;
 	private $dataUltimoLogin;
-	
+
 	function Usuario($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){
 		$this->id = (int) $id;
 		$this->user = $user;
@@ -33,7 +33,7 @@ class Usuario { //estrutura para o item post do blog
 		$this->personagemId = $personagem_id;
 		$this->nivel = $nivel;
 	}
-	
+
 	// Recebe como parametro um id (inteiro maior que 0)
 	// Segundo parametro não é usado, não removo por medo de quebrar algo.
 	public function openUsuario($param , $param2="") {
@@ -42,19 +42,19 @@ class Usuario { //estrutura para o item post do blog
 		$niveis = new conexao();
 
 		$id = (int) $param;
-		$q->solicitar("SELECT * 
+		$q->solicitar("SELECT *
 					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 					  WHERE usuario_id = '$id'");
 		$numItens= count($q->itens);
 		if($numItens == 0)
 			return "Usuario inexistente (Id=$id)" ;
-	
+
 		$this->popular($q->resultado);
-		
+
 		// Agora preparamos para setar o nível
-		
+
 		$this->nivel = array();
-		
+
 		$niveis->solicitar("SELECT codTurma,associacao FROM $tabela_turmasUsuario WHERE codUsuario = ".$q->itens[0]['usuario_id']);
 		for($i=0; $i < $niveis->registros; $i++){
 			$this->setNivel($niveis->itens[$i]['codTurma'], $niveis->itens[$i]['associacao'] != 0 ? $niveis->itens[$i]['associacao'] : $this->getNivelAbsoluto());
@@ -79,7 +79,9 @@ class Usuario { //estrutura para o item post do blog
 		}
 		array_push($this->nivel[$turma], $valor);
 	}
-	
+	private function setGosto($gosto){$this->gosto = $gosto;}
+	private function setNaoGosto($desgosto){$this->naoGosto = $desgosto;}
+
 	public function getId()			{return $this->id;}
 	public function getUser()		{return $this->user;}
 	public function getPass()		{return $this->pass;}
@@ -90,7 +92,9 @@ class Usuario { //estrutura para o item post do blog
 	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : array($this->getNivelAbsoluto());} // $turma é o id da turma no banco de dados
 	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
-	
+	public function getGosto(){return $this->gosto;}
+	public function getNaoGosto(){return $this->naoGosto;}
+
 	/**
 	* Popula este usuário com o resultado de uma consulta no BD.
 	*
@@ -106,6 +110,9 @@ class Usuario { //estrutura para o item post do blog
 		$this->setPersonagemId($resultadoBD['usuario_personagem_id']);
 		$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
 		//$this->dataUltimoLogin = $resultadoBD['personagem_ultimo_acesso'];
+		
+		$this->setGosto($resultadoBD['gosto']);
+		$this->setNaoGosto($resultadoBD['nao_gosto']);
 	}
 
 	/*
@@ -117,9 +124,9 @@ class Usuario { //estrutura para o item post do blog
 	public static function buscaPorNome($nome){
 		$resultados = array();
 		$conexao = new conexao();
-		
+
 		$nome = $conexao->sanitizaString($nome);
-		
+
 		$conexao->solicitar("SELECT * FROM usuarios WHERE usuario_nome LIKE '%".$nome."%'");
 		for($i=0; $i<$conexao->registros; $i++){
 			array_push($resultados, new Usuario());
@@ -128,14 +135,14 @@ class Usuario { //estrutura para o item post do blog
 		}
 		return $resultados;
 	}
-	
+
 	/**
 	* @return as ids no BD de todas as turmas deste usuário em um array.
 	*/
 	public function getTurmas(){
 		$turmas = array();
 		$conexaoTurmas = new conexao();
-		$conexaoTurmas->solicitar("SELECT TU.codTurma, T.codTurma 
+		$conexaoTurmas->solicitar("SELECT TU.codTurma, T.codTurma
 									FROM TurmasUsuario AS TU, Turmas AS T
 									WHERE TU.codUsuario = '".($this->id)."'
 										OR T.profResponsavel = '".($this->id)."'");
@@ -143,12 +150,12 @@ class Usuario { //estrutura para o item post do blog
 			$turmas[$i] = $conexaoTurmas->resultado['codTurma'];
 			$conexaoTurmas->proximo();
 		}
-		
+
 		$turmasSemDuplicatas = array_unique($turmas);
-		
+
 		return $turmasSemDuplicatas;
 	}
-	
+
 	/*
 	* @return Todos os planetas que o usuário pode acessar, em um array com objetos da classe Planeta.
 	*/
@@ -171,7 +178,7 @@ class Usuario { //estrutura para o item post do blog
 		}
 		return $planetasQuePodeAcessar;
 	}
-	
+
 	/**
 	* @param 	int	$nivelDeCorte	Nível que servirá para pesquisar as turmas. É importante que este nível seja atômico e não a soma de vários níveis.
 	* @return 	Array<Turma>		As turmas em que o usuário desempenha (no máximo) o papel _nivelDeCorte.
@@ -184,20 +191,20 @@ class Usuario { //estrutura para o item post do blog
 		global $nivelAluno;
 		global $nivelMonitor;
 		global $nivelProfessor;
-		
+
 		$conexaoTurmas = new conexao();
 		$conexaoTurmas->solicitar("SELECT *
 								FROM TurmasUsuario
 								WHERE codUsuario = ".$this->getId()."
 								GROUP BY codTurma");
 		$turmasUsuario = array();
-		
+
 		for($i=0; $i<$conexaoTurmas->registros; $i++){
 			$associacaoDefinida = isset($conexaoTurmas->resultado['associacao']) && $conexaoTurmas->resultado['associacao'] != '';
 			$ehNoMaximoAluno = $conexaoTurmas->resultado['associacao'] == strval($nivelAluno);
-			$ehNoMaximoMonitor = $conexaoTurmas->resultado['associacao'] == strval($nivelMonitor) 
+			$ehNoMaximoMonitor = $conexaoTurmas->resultado['associacao'] == strval($nivelMonitor)
 				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelMonitor);
-			$ehNoMaximoProfessor = $conexaoTurmas->resultado['associacao'] == strval($nivelProfessor) 
+			$ehNoMaximoProfessor = $conexaoTurmas->resultado['associacao'] == strval($nivelProfessor)
 				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelMonitor+$nivelProfessor)
 				|| $conexaoTurmas->resultado['associacao'] == strval($nivelMonitor+$nivelProfessor)
 				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelProfessor);
@@ -210,13 +217,13 @@ class Usuario { //estrutura para o item post do blog
 			} else if($associacaoDefinida && $nivelDeCorte == $nivelProfessor && $ehNoMaximoProfessor){
 				array_push($turmasUsuario, $turma);
 			}
-			
+
 			$conexaoTurmas->proximo();
 		}
-		
+
 		return $turmasUsuario;
 	}
-	
+
 	/*
 	* @return Planeta de seu quarto.
 	*/
@@ -227,7 +234,7 @@ class Usuario { //estrutura para o item post do blog
 								   WHERE U.usuario_id = ".($this->id));
 		return $conexaoQuarto->resultado['terreno_id'];
 	}
-	
+
 	public function podeAcessar($cutoff, $turma){ // cutoff = ponto de corte, o bitmap de niveis que podem acessar
 		$temPermissao = false;
 		if ($this->isAdmin()){
@@ -242,5 +249,101 @@ class Usuario { //estrutura para o item post do blog
 		return $temPermissao;
 	}
 	public function isAdmin(){return $this->getNivelAbsoluto() & 1;}
+
+	/*
+	* @return cor da luva do personagem, para a carteira dele
+	*/
+	public function getCorLuva(){
+		global $tabela_personagens; global $tabela_usuarios;
+		$q = new conexao();
+		$q->solicitar("SELECT personagem_cor_luvas_botas FROM $tabela_personagens
+						WHERE personagem_id=(
+							SELECT usuario_personagem_id FROM $tabela_usuarios
+							WHERE usuario_id=".$this->getId().")");
+		switch($q->resultado['personagem_cor_luvas_botas']){
+			case 1:
+				return '#EAC1C1';
+			case 2:
+				return '#E29696';
+			case 3:
+				return '#DD8080';
+			case 4:
+				return '#CE3E3E';
+			case 5:
+				return '#AA4B4B';
+			case 6:
+				return '#F2D2B1';
+			case 7:
+				return '#E2AD81';
+			case 8:
+				return '#DD945E';
+			case 9:
+				return '#BC794B';
+			case 10:
+				return '#966645';
+			case 11:
+				return '#EAE9BB';
+			case 12:
+				return '#DBD36E';
+			case 13:
+				return '#E2D44D';
+			case 14:
+				return '#CEBB30';
+			case 15:
+				return '#A5942B';
+			case 16:
+				return '#C9DDAC';
+			case 17:
+				return '#B9D882';
+			case 18:
+				return '#A0BF4C';
+			case 19:
+				return '#88A02D';
+			case 20:
+				return '#61721C';
+			case 21:
+				return '#B6D8D4';
+			case 22:
+				return '#8DC9C0';
+			case 23:
+				return '#68AFA3';
+			case 24:
+				return '#469183';
+			case 25:
+				return '#287768';
+			case 26:
+				return '#B4CCDB';
+			case 27:
+				return '#94B2D3';
+			case 28:
+				return '#6296C4';
+			case 29:
+				return '#467BA3';
+			case 30:
+				return '#225C7F';
+			case 31:
+				return '#C8B6DB';
+			case 32:
+				return '#B69CD8';
+			case 33:
+				return '#9675CC';
+			case 34:
+				return '#7454A3';
+			case 35:
+				return '#50327F';
+			case 36:
+				return '#BBB';
+			case 37:
+				return '#999';
+			case 38:
+				return '#777';
+			case 39:
+				return '#666';
+			case 40:
+				return '#333';
+			default:
+				return '#7F06FF'; // go go saints row
+		}
+	}
 }
 

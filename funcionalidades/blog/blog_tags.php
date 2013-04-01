@@ -5,7 +5,7 @@ require("blog.class.php");
 require("../../cfg.php");
 require("../../bd.php");
 require("../../usuarios.class.php");
-require("../../funcoes_aux.php");
+require_once("../../funcoes_aux.php");
 require("../../reguaNavegacao.class.php");
 global $tabela_tags;
 global $tabela_posts;
@@ -29,8 +29,8 @@ for ($i=0; $i < $consulta->registros; $i++){
 	$posts[] = new Post($pergunta->resultado['Id'], $pergunta->resultado['BlogId'], $pergunta->resultado['UserId'], $pergunta->resultado['Title'], $pergunta->resultado['Text'], $pergunta->resultado['IsPublic'], $pergunta->resultado['Date']); // Cria um objeto post para usar os métodos dele e poder reaproveitar o código
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>

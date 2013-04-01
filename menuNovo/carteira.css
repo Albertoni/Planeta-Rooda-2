@@ -4,9 +4,8 @@ body { margin: 0; padding: 0; }
 	color: #c9ffe0;
 	font-family: "Dejavu Sans";
 	font-size: 18px;
-	background-image: url('images/carteira/carteira.png');
+	background-image: url('images/lightboxes/carteira/carteira.png');
 	background-repeat: no-repeat;
-	background-color: #FF00FF;
 	width: 800px;
 	height: 600px;
 }

@@ -55,7 +55,7 @@ $debug = true;	// não sei se isso é usado
 $tabela_forum					= "forum";
 $tabela_biblio					= "Biblioteca";
 $tabela_objetos					= "objetos";
-$tabela_personagens 			= "personagens";
+$tabela_personagens				= "personagens";
 $tabela_terrenos				= "terrenos";
 $tabela_grupos					= "grupos";
 $tabela_usuarios				= "usuarios";
@@ -87,7 +87,7 @@ $tabela_controleFuncionalidades	= "FuncionalidadesTurma";
 $tabela_playerVideos			= "PlayerVideos";
 $tabela_playerComentarios		= "PlayerComentarios";
 $tabela_acessos_planeta			= 'acessos_planeta';
-$tabela_usuario_download      = 'usuario_download';
+$tabela_usuario_download		= 'usuario_download';
 
 
 

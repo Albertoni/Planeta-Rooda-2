@@ -36,14 +36,15 @@ $alunos = $turma->getAlunos();
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<!-- CSS -->
 		<link href="menus.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="ajax.js"></script>
 		<script type="text/javascript" src="menuTurma.js"></script>
 		<script type="text/javascript" src="../jquery.js"></script>
 	</head>
 	<body>
 		<div id="fundo_lbox">
-			<div id="light_box">
-				TESTE
-			</div>
+		</div>
+		<div id="light_box">
+		<h2 id="textoCarregando">Carregando...</h2>
 		</div>
 		<div id="containerMenu">
 			<div id="menuEsquerda">
