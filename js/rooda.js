@@ -41,10 +41,10 @@ var ROODA = {};
 //   }
 //
 // ---------------------------------------------------------------------------
-	function AjaxUploadForm(form_id,data_requested) {
+	function AjaxForm(form_id,data_requested) {
 		var form = document.getElementById(form_id);
 		
-		if (!form || form.tagName !== "FORM"){
+		if (!form || form.tagName !== "FORM") {
 			console.error("new AjaxForm(): invalid form_id (1st parameter)");
 		} else {
 			// public variables/functions
@@ -74,8 +74,8 @@ var ROODA = {};
 					
 					// Get all the data requested
 					this.parent.responseDocument = this.contentDocument;
-					for (var i=0; i<this.parent.data_requested.length;i+=1) {
-						var data = this.parent.data_requested[i];
+					for (var i=0; i<data_requested.length;i+=1) {
+						var data = data_requested[i];
 						var elem = this.parent.responseDocument.getElementById(data);
 						
 						if(elem) {
@@ -96,41 +96,6 @@ var ROODA = {};
 			document.body.appendChild(this.iframe);
 		}
 	}
-	export_to.AjaxUploadForm = AjaxUploadForm;
+	export_to.AjaxForm = AjaxUploadForm;
 
-	function AjaxForm(form_id) {
-		var form = getElementById(form_id);
-		if (form && form.tagName === "FORM") {
-			this.form = form;
-			this.form.parent = this;
-			
-			this.request = new XMLHttpRequest();
-			this.request.parent = this;
-			this.request.onreadystatechange = function ()
-			{
-				if (this.readyState === 4){
-					this.parent.responseDocument = this.responseXML;
-				}
-			}
-			
-			this.onResponse = function () {};
-			
-			this.form.onsubmit = function() {
-				
-				var requestBody = encodeURIComponent(this.elements[0].name) + "=" + encodeURIComponent(this.elements[0].value);
-				
-				for (var i = 1;i<this.elements.length;i+=1) {
-					requestBody+= "&" + encodeURIComponent(this.elements[i].name) + "=" + encodeURIComponent(this.elements[i].value);
-				}
-				
-				this.parent.request.open("POST",this.form.action);
-				this.parent.request.send(requestBody);
-				
-				this.parent.onResponse();
-				
-				return false;
-			};
-		};
-	};
-	export_to.AjaxForm = AjaxForm;
 })(ROODA);

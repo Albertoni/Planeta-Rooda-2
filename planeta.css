@@ -19,7 +19,10 @@ ul { list-style:none; margin:0; padding:0;}
 input[type=text], .falso_text {border:solid 1px #74d3ed; background: #fff;}
 .falso_test { display: inline-block; width: 100px; overflow: hidden;}
 input[type=text]:hover, .falso_text:hover {background-color:#74d3ed}
-input[type=submit] {
+button[type=submit],
+button.submit,
+input[type=submit],
+input.submit {
 	background: url('images/botoes/bt_enviar_pq.png');
 	border: 0px none;
 	text-indent: -200px;

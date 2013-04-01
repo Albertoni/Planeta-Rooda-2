@@ -260,11 +260,11 @@ if($perm === false){
 							</div>
 							<div id="f_arquivo" style="display:inline-block;width: 80px;" class="falso_text">&nbsp;</div>
 							<br>
-							<input type="submit" name="upload" value="upload!" style="float:right" />
+							<button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
 						</form>
 							<script>
 
-	var form_arquivo = new ROODA.AjaxUploadForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
+	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
 	var caixa_arquivos = document.getElementById("caixa_arq");
 	form_arquivo.onResponse = function(){
 		if(this.response.erros !== false){
