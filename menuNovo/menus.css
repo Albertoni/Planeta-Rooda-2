@@ -143,7 +143,7 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 	display:none;
 }
 
-#light_box{
+.light_box{
 	display:none;
 	z-index:501;
 	
@@ -155,3 +155,49 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 	margin:-300px -400px;
 	background-color:white;
 }
+
+#light_box_troca{
+	background-image: url('images/lightboxes/back.png');
+	background-repeat: no-repeat;
+	width: 800px;
+	height: 600px;
+}
+
+/*light box/*/
+#frase_nivel{
+	background-image: url('images/lightboxes/praquenivel.png');
+	background-repeat: no-repeat;
+	width: 402px;
+	height: 19px;
+	
+	padding: 0;
+	margin:240px auto 0;
+	overflow:hidden;
+	text-indent:-9999px;
+}
+
+.botao_troca{
+	background-repeat: no-repeat;
+	width:177px;
+	height:37px;
+	cursor:pointer;
+	position:absolute;
+	top:275px;
+}
+
+#botao_troca_aluno{
+	background-image: url('images/lightboxes/b_aluno.png');
+	left:500px;
+}
+#botao_troca_monitor{
+	background-image: url('images/lightboxes/b_monitor.png');
+	left:300px;
+}
+#botao_troca_professor{
+	background-image: url('images/lightboxes/b_prof.png');
+	left:100px;
+}
+
+#botao_troca_aluno:hover{background-image: url('images/lightboxes/h_aluno.png');}
+#botao_troca_monitor:hover{background-image: url('images/lightboxes/h_monitor.png');}
+#botao_troca_professor:hover{background-image: url('images/lightboxes/h_prof.png');}

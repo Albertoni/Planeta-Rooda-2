@@ -43,8 +43,14 @@ $alunos = $turma->getAlunos();
 	<body>
 		<div id="fundo_lbox">
 		</div>
-		<div id="light_box">
-		<h2 id="textoCarregando">Carregando...</h2>
+		<div id="light_box_carteira" class="light_box">
+		<h2>Carregando...</h2>
+		</div>
+		<div id="light_box_troca" class="light_box">
+			<h2 id="frase_nivel">Para que nivel deseja alterar esse usuário?</h2>
+			<div onclick="trocaParaAluno();" id="botao_troca_aluno" class="botao_troca"></div>
+			<div onclick="trocaParaMonitor();" id="botao_troca_monitor" class="botao_troca"></div>
+			<div onclick="trocaParaProfessor();" id="botao_troca_professor" class="botao_troca"></div>
 		</div>
 		<div id="containerMenu">
 			<div id="menuEsquerda">
