@@ -253,7 +253,7 @@ if($perm === false){
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
 					<li id="addFileDiv" style="display:none">
-						<form name="form_arquivo" id="form_arquivo" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
+						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 							<div class="file_input" style="display:inline-block">
 								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
@@ -263,24 +263,26 @@ if($perm === false){
 							<button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
 						</form>
 							<script>
-
-	var form_arquivo = new ROODA.AjaxForm("form_arquivo",["arquivo_id","arquivo_nome","arquivo_titulo","arquivo_tamanho","arquivo_tipo","erros"]);
-	var caixa_arquivos = document.getElementById("caixa_arq");
-	form_arquivo.onResponse = function(){
-		if(this.response.erros !== false){
-			alert(this.response.erros);
+	var file_list = document.getElementById("caixa_arq");
+	
+	var handler = function(){
+		if(this.response.errors !== false){
+			alert(this.response.errors);
 		} else {
 			var new_file = document.createElement("li");
-			new_file.id = "liFile" + this.response.arquivo_id;
+			new_file.id = "liFile" + this.response.file_id;
 			new_file.className = "tabela_port new_file";
 			new_file.innerHTML = '<a href="../../downloadFile.php?id=' + 
-				this.response.arquivo_id + 
+				this.response.file_id + 
 				'" target="_blank">' + 
-				this.response.arquivo_nome + 
+				this.response.file_name + 
 				'</a><img src="../../images/botoes/bt_x.png" align="right" />';
-			caixa_arquivos.appendChild(new_file);
+			file_list.appendChild(new_file);
 		}
 	}
+
+	var file_form = ROODA.AjaxForm("file_form",handler,["file_id","file_name","file_title","file_size","file_type","errors"]);
+
 
 	// -------------
 	var bt_arquivo = document.getElementById('procura_arquivo');

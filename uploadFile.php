@@ -19,7 +19,7 @@ $funcionalidade_id = $_GET['funcionalidade_id'];
 $funcionalidade_tipo = $_GET['funcionalidade_tipo'];
 
 if (is_numeric($funcionalidade_id) == false || is_numeric($funcionalidade_tipo) == false){
-	die('<div id="erros">Parametros invalidos</div>'); // Sabe SQL injection?
+	die('<div id="errors">Parametros invalidos</div>'); // Sabe SQL injection?
 }
 
 if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0)
@@ -35,7 +35,7 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0)
 	if($file->temErro())
 	{
 		$erros = $file->getErrosString();
-		echo "<li><span id=\"erros\">$erros</span></li>";
+		echo "<li><span id=\"errors\">$erros</span></li>";
 	}
 	else
 	{
@@ -45,17 +45,17 @@ if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0)
 		$arquivo_tipo = $file->getTipo();
 		$arquivo_tamanho = $file->getTamanho();
 		$arquivo_autor = $file->getAutor();
-		echo "<li>id: <span id=\"arquivo_id\">$arquivo_id</span></li>";
-		echo "<li>nome: <span id=\"arquivo_nome\">$arquivo_nome</span></li>";
-		echo "<li>titulo: <span id=\"arquivo_titulo\">$arquivo_titulo</span></li>";
-		echo "<li>tipo: <span id=\"arquivo_tipo\">$arquivo_tipo</span></li>";
-		echo "<li>tamanho: <span id=\"arquivo_tamanho\">$arquivo_tamanho</span></li>";
-		echo "<li>autor: <span id=\"arquivo_autor\">$arquivo_autor</span></li>";
+		echo "<li>id: <span id=\"file_id\">$arquivo_id</span></li>";
+		echo "<li>nome: <span id=\"file_name\">$arquivo_nome</span></li>";
+		echo "<li>titulo: <span id=\"file_title\">$arquivo_titulo</span></li>";
+		echo "<li>tipo: <span id=\"file_type\">$arquivo_tipo</span></li>";
+		echo "<li>tamanho: <span id=\"file_size\">$arquivo_tamanho</span></li>";
+		echo "<li>autor: <span id=\"file_author\">$arquivo_autor</span></li>";
 	}
 }
 else
 {
-	echo "<li id=\"erros\">Nenhum arquivo selecionado!</li>";
+	echo "<li id=\"errors\">Nenhum arquivo selecionado!</li>";
 }
 ?>
 </ul>
