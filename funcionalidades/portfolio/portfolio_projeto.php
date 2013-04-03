@@ -276,7 +276,7 @@ if($perm === false){
 				this.response.file_id + 
 				'" target="_blank">' + 
 				this.response.file_name + 
-				'</a><img src="../../images/botoes/bt_x.png" align="right" />';
+				'</a><img src="../../images/botoes/bt_x.png" onclick="deleteFile('+this.response.file_id+');" align="right" />';
 			file_list.appendChild(new_file);
 		}
 	}
@@ -294,6 +294,29 @@ if($perm === false){
 			f_arquivo.innerHTML = this.files[i].name + ' ';
 		}
 	};
+
+
+	function deleteFile(id) {
+		var li_el = document.getElementById('liFile'+id);
+		var handler = function() {
+			if(this.readyState === this.DONE) {
+				if (this.state === 200) {
+					if (var doc = this.responseXML) {
+						if (var elem = doc.getElementById('ok'){
+							li_el.parentElement.removeChild(li_el);
+							return true;
+						}
+					}
+				}
+				alert('Nao foi possivel excluir o arquivo.');
+			}
+		}
+
+		var request = new XMLHttpRequest();
+
+		request.onreadystatechange = handler;
+		request.open("GET","../../deleteFile.php");
+	}
 </script>
 					</li>
 					<?
@@ -311,7 +334,7 @@ if($perm === false){
 					?>
 							<li class="tabela_port" id="liFile<?=$fileId?>">
 								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-								<img src="../../images/botoes/bt_x.png" align="right"/>
+								<img src="../../images/botoes/bt_x.png" onclick="deleteFile(<?=$fileId?>);" align="right"/>
 							</li>
 					<?
 							$consulta->proximo();
