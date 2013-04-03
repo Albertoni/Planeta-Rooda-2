@@ -1,0 +1,39 @@
+body{background-color:#090826;}
+
+#containerMenu{
+	position:absolute;
+	top:50%;
+	height:768px;
+	width:1024px;
+	background-image:url("images/back.png");
+	margin:-384px 0;
+}
+
+#infoTurma{
+	position:absolute;
+	width:500px;
+	height:241px;
+	top:35%;
+	left:25%;
+	
+	text-align:center;
+}
+
+div{
+width:176px;
+height:37px;
+}
+
+img{margin-bottom:20px; border:0 !important;}
+
+.direita{float:right;}
+.esquerda{float:left;}
+
+#usuario{background-image:url("images/admin/b_usuario.png");}
+#usuarios{background-image:url("images/admin/b_usuarios.png");}
+#turma{background-image:url("images/admin/b_turma.png");}
+#turmas{background-image:url("images/admin/b_turmas.png");}
+#usuario:hover{background-image:url("images/admin/h_usuario.png");}
+#usuarios:hover{background-image:url("images/admin/h_usuarios.png");}
+#turma:hover{background-image:url("images/admin/h_turma.png");}
+#turmas:hover{background-image:url("images/admin/h_turmas.png");}

@@ -14,7 +14,13 @@ function imprimeListaUsuarios($lista){
 		$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
 	
 	
-		echo "						<div class=\"$comFundo\"><span id=\"nomeUser$userId\">$nome</span><a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a><a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a><a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"trocaNivel($userId, $idTurma)\"></a></div>\n";
+		echo "
+						<div class=\"$comFundo\">
+							<span id=\"nomeUser$userId\">$nome</span>
+							<a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a>
+							<a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a>
+							<a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"preparaTrocaNivel($userId, $idTurma)\"></a>
+						</div>";
 	}
 }
 
@@ -48,9 +54,9 @@ $alunos = $turma->getAlunos();
 		</div>
 		<div id="light_box_troca" class="light_box">
 			<h2 id="frase_nivel">Para que nivel deseja alterar esse usuário?</h2>
-			<div onclick="trocaParaAluno();" id="botao_troca_aluno" class="botao_troca"></div>
-			<div onclick="trocaParaMonitor();" id="botao_troca_monitor" class="botao_troca"></div>
-			<div onclick="trocaParaProfessor();" id="botao_troca_professor" class="botao_troca"></div>
+			<div onclick="efetuaTrocaNivel('aluno');" id="botao_troca_aluno" class="botao_troca"></div>
+			<div onclick="efetuaTrocaNivel('monit');" id="botao_troca_monitor" class="botao_troca"></div>
+			<div onclick="efetuaTrocaNivel('profe');" id="botao_troca_professor" class="botao_troca"></div>
 		</div>
 		<div id="containerMenu">
 			<div id="menuEsquerda">
