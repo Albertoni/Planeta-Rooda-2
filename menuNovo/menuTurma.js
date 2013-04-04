@@ -110,7 +110,7 @@ var opacidade = 1.0;
 var handlerCarteira = function(){
 	if(this.readyState==4){
 		if(this.status==200){
-			document.getElementById("light_box").innerHTML=this.responseText;
+			document.getElementById("light_box_carteira").innerHTML=this.responseText;
 			um = document.getElementById("img-cart-1");
 			dois = document.getElementById("img-cart-2");
 		}else{
@@ -163,3 +163,23 @@ var handlerTrocaNivel = function(){
 		dados = null;
 	}
 }
+// FIM TROCA DE NIVEL
+// REMOÇÃO USUARIO
+function removeUsuario(userId, idTurma){
+	argumentos = "userId="+dados.userId+"turma="+dados.turma;
+	carregaHTML('removeUser.php',argumentos, handlerRemocaoUsuario);
+}
+var handlerRemocaoUsuario = function(){
+	if(this.readyState==4){
+		if(this.status==200){
+			if(this.responseText === "OK"){
+				alert("Aluno removido com sucesso.");
+			}else{
+				alert(this.responseText);
+			}
+		}else{
+			alert("Algum erro imprevisto ocorreu. Por favor, tente novamente.")
+		}
+	}
+}
+// FIM REMOÇÃO

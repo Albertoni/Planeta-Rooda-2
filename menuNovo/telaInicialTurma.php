@@ -4,9 +4,12 @@ require("../usuarios.class.php");
 
 session_start();
 
-/*if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
+if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
 	die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
-}*/
+}
+
+
+
 function imprimeListaUsuarios($lista){
 	for($i=0; $i<count($lista); $i++){
 		$nome = $lista[$i]->getName();
@@ -14,13 +17,17 @@ function imprimeListaUsuarios($lista){
 		$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
 	
 	
-		echo "
-						<div class=\"$comFundo\">
-							<span id=\"nomeUser$userId\">$nome</span>
+		echo "						<div class=\"$comFundo\">
+							<span id=\"nomeUser$userId\">$nome</span>";
+		
+		if(isProfessor($_SESSION['SS_usuario_id'], $turma)){
+			echo"
 							<a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a>
 							<a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a>
-							<a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"preparaTrocaNivel($userId, $idTurma)\"></a>
-						</div>";
+							<a href=\"#\" class=\"botaoUsuario iconePromocao\" onclick=\"preparaTrocaNivel($userId, $idTurma)\"></a>";
+		}
+		
+		echo "\n						</div>";
 	}
 }
 
