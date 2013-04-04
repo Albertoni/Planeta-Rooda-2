@@ -1,11 +1,10 @@
 "use strict";
  
-/*\
-|*|
-|*|  :: XMLHttpRequest.prototype.sendAsBinary() Polifyll ::
-|*|
-|*|  https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#sendAsBinary()
-\*/
+/* 
+ *   :: XMLHttpRequest.prototype.sendAsBinary() Polifyll ::
+ * 
+ *   https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#sendAsBinary()
+ */
  
 if (!XMLHttpRequest.prototype.sendAsBinary) {
   XMLHttpRequest.prototype.sendAsBinary = function (sData) {
@@ -19,19 +18,18 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
   };
 }
  
-/*\
-|*|
-|*|  :: AJAX Form Submit Framework ::
-|*|
-|*|  https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest
-|*|
-|*|  This framework is released under the GNU Public License, version 3 or later.
-|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
-|*|
-|*|  Syntax:
-|*|
-|*|   AJAXSubmit(HTMLFormElement);
-\*/
+/* 
+ *   :: AJAX Form Submit Framework ::
+ * 
+ *   https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest/Using_XMLHttpRequest
+ * 
+ *   This framework is released under the GNU Public License, version 3 or later.
+ *   http://www.gnu.org/licenses/gpl-3.0-standalone.html
+ * 
+ *   Syntax:
+ * 
+ *    AJAXSubmit(HTMLFormElement,function);
+ */
  
 var AJAXSubmit = (function () {
  
@@ -42,11 +40,12 @@ var AJAXSubmit = (function () {
     /* alert(JSON.stringify(this.submittedData)); */
   }
  
-  function submitData (oData,fHandler) {
+  function submitData (oData) {
     /* the AJAX request... */
     var oAjaxReq = new XMLHttpRequest();
+	 //oAjaxReq.responseType = "document";
     oAjaxReq.submittedData = oData;
-    oAjaxReq.onload = fHandler || ajaxSuccess;
+    oAjaxReq.onload = oData.fHandler || ajaxSuccess;
     if (oData.technique === 0) {
       /* method is GET */
       oAjaxReq.open("get", oData.receiver.replace(/(?:\?.*)?$/, oData.segments.length > 0 ? "?" + oData.segments.join("&") : ""), true);
@@ -67,12 +66,12 @@ var AJAXSubmit = (function () {
     }
   }
  
-  function processStatus (oDatai,fHandler) {
+  function processStatus (oData) {
     if (oData.status > 0) { return; }
     /* the form is now totally serialized! do something before sending it to the server... */
     /* doSomething(oData); */
     /* console.log("AJAXSubmit - The form is now serialized. Submitting..."); */
-    submitData (oData,fHandler);
+    submitData (oData);
   }
  
   function pushSegment (oFREvt) {
@@ -95,6 +94,7 @@ var AJAXSubmit = (function () {
     this.receiver = oTarget.action;
     this.status = 0;
     this.segments = [];
+	 this.fHandler = fHandler;
     var fFilter = this.technique === 2 ? plainEscape : escape;
     for (var nItem = 0; nItem < oTarget.elements.length; nItem++) {
       oField = oTarget.elements[nItem];
@@ -129,10 +129,10 @@ var AJAXSubmit = (function () {
         );
       }
     }
-    processStatus(this,fHandler);
+    processStatus(this);
   }
  
-  return function (oFormElement, fHandler) {
+  return function (oFormElement,fHandler) {
     if (!oFormElement.action) { return; }
     new SubmitRequest(oFormElement,fHandler);
   };
