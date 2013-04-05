@@ -160,7 +160,7 @@ class File {
 		$erros = "";
 		for ($i = 0 ; $i < count($this->erros) ; $i++){
 			if ($i < (count($this->erros) - 1) ){
-				$erros .= $this->erros[$i]."<BR />\n";
+				$erros .= $this->erros[$i]."\n";
 			}
 			else {
 				$erros .= $this->erros[$i];
@@ -190,7 +190,7 @@ class File {
 	public function upload(){
 	if ($this->upload === true){
 		global $tabela_arquivos;
-		session_start();
+		@session_start();
 		$consulta = new conexao();
 		$nome 					= $consulta->sanitizaString($this->getNome());
 		$tipo					= $consulta->sanitizaString($this->getTipo());
@@ -206,7 +206,6 @@ class File {
 		$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE nome = '$nome'
 															 AND funcionalidade_tipo = '$funcionalidade_tipo'
 															 AND funcionalidade_id = '$funcionalidade_id';");
-		echo "UPLLLLLL";
 		if ($consulta->registros === 0){
 			$consulta->solicitar("INSERT INTO $tabela_arquivos
 								(nome ,    tipo,    tamanho,    arquivo,            funcionalidade_tipo,   funcionalidade_id, titulo, autor,  tags,     uploader_id)

@@ -35,7 +35,8 @@ if($perm === false){
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
-<script src="../../js/rooda.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../../js/ajaxFileManager.js"></script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
@@ -253,7 +254,7 @@ if($perm === false){
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
 					<li id="addFileDiv" style="display:none">
-						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>">
+						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" onsubmit="submitUploadForm(this);return false;">
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 							<div class="file_input" style="display:inline-block">
 								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
@@ -263,25 +264,6 @@ if($perm === false){
 							<button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
 						</form>
 							<script>
-	var file_list = document.getElementById("caixa_arq");
-	
-	var handler = function(){
-		if(this.response.errors !== false){
-			alert(this.response.errors);
-		} else {
-			var new_file = document.createElement("li");
-			new_file.id = "liFile" + this.response.file_id;
-			new_file.className = "tabela_port new_file";
-			new_file.innerHTML = '<a href="../../downloadFile.php?id=' + 
-				this.response.file_id + 
-				'" target="_blank">' + 
-				this.response.file_name + 
-				'</a><img src="../../images/botoes/bt_x.png" onclick="deleteFile('+this.response.file_id+');" align="right" />';
-			file_list.appendChild(new_file);
-		}
-	}
-
-	var file_form = ROODA.AjaxForm("file_form",handler,["file_id","file_name","file_title","file_size","file_type","errors"]);
 
 
 	// -------------
@@ -299,23 +281,21 @@ if($perm === false){
 	function deleteFile(id) {
 		var li_el = document.getElementById('liFile'+id);
 		var handler = function() {
-			if(this.readyState === this.DONE) {
-				if (this.state === 200) {
-					if (var doc = this.responseXML) {
-						if (var elem = doc.getElementById('ok'){
-							li_el.parentElement.removeChild(li_el);
-							return true;
-						}
-					}
+			if (text = this.responseText) {
+				try {
+					var res = JSON.parse(text);
 				}
-				alert('Nao foi possivel excluir o arquivo.');
+				catch (e) {
+					alert("Problema no JSON");
+				}
 			}
+			alert('Nao foi possivel excluir o arquivo.');
 		}
 
 		var request = new XMLHttpRequest();
 
-		request.onreadystatechange = handler;
-		request.open("GET","../../deleteFile.php");
+		request.onload = handler;
+		request.open("GET","../../deleteFile.php?id="+id);
 	}
 </script>
 					</li>
