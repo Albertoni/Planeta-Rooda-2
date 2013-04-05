@@ -143,7 +143,7 @@ function efetuaTrocaNivel(nivel){
 			default:
 				alert('Favor recarregar a página e tentar novamente, algum erro ocorreu.');
 		}
-		argumentos = "userId="+dados.userId+"turma="+dados.turma+"nivel="+nivel;
+		argumentos = "userId="+dados.userId+"&turma="+dados.turma+"&nivel="+nivel;
 		carregaHTML('trocaNivel.php',argumentos, handlerTrocaNivel);
 	}
 	abreFechaLB('light_box_troca');
@@ -166,20 +166,22 @@ var handlerTrocaNivel = function(){
 // FIM TROCA DE NIVEL
 // REMOÇÃO USUARIO
 function removeUsuario(userId, idTurma){
-	argumentos = "userId="+dados.userId+"turma="+dados.turma;
-	carregaHTML('removeUser.php',argumentos, handlerRemocaoUsuario);
-}
-var handlerRemocaoUsuario = function(){
-	if(this.readyState==4){
-		if(this.status==200){
-			if(this.responseText === "OK"){
-				alert("Aluno removido com sucesso.");
+	var handlerRemocaoUsuario = function(){
+		if(this.readyState==4){
+			if(this.status==200){
+				if(this.responseText == 'OK'){
+					document.getElementById("user"+userId).style.display = "none";
+					alert("Aluno removido com sucesso.");
+				}else{
+					alert(this.responseText);
+				}
 			}else{
-				alert(this.responseText);
+				alert("Algum erro imprevisto ocorreu. Por favor, tente novamente.")
 			}
-		}else{
-			alert("Algum erro imprevisto ocorreu. Por favor, tente novamente.")
 		}
 	}
+
+	argumentos = "userId="+userId+"&turma="+idTurma;
+	carregaHTML('removeUser.php',argumentos, handlerRemocaoUsuario);
 }
 // FIM REMOÇÃO

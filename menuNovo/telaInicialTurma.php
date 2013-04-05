@@ -1,6 +1,7 @@
 <?php
 require_once("../turma.class.php");
 require("../usuarios.class.php");
+require("funcoesMenuTurma.php");
 
 session_start();
 
@@ -17,7 +18,7 @@ function imprimeListaUsuarios($lista){
 		$comFundo = $i%2 ? "membroTurma" : "membroTurma comFundo";
 	
 	
-		echo "						<div class=\"$comFundo\">
+		echo "						<div class=\"$comFundo\" id=\"user$userId\">
 							<span id=\"nomeUser$userId\">$nome</span>";
 		
 		if(isProfessor($_SESSION['SS_usuario_id'], $turma)){
@@ -84,7 +85,7 @@ $alunos = $turma->getAlunos();
 				</div>
 				<div id="listasMembrosTurma">
 					<div id="listaProfessores" class="listaMembros">
-						<div class="membroTurma comFundo"><span id="nomeUser414">Juan Vizente</span><a class="botaoUsuario iconeDeletar" onclick="removeUsuario(414, 1081);"></a><a href="#" class="botaoUsuario iconeCarteira" onclick="mostraCarteira(414);"></a><a href="#" class="botaoUsuario iconePromocao" onclick="trocaNivel(414, 1081)"></a></div>
+						<div class="membroTurma comFundo" id="user414"><span id="nomeUser414">Juan Vizente</span><a class="botaoUsuario iconeDeletar" onclick="removeUsuario(414, 1081);"></a><a href="#" class="botaoUsuario iconeCarteira" onclick="mostraCarteira(414);"></a><a href="#" class="botaoUsuario iconePromocao" onclick="trocaNivel(414, 1081)"></a></div>
 <?php
 imprimeListaUsuarios($professores);
 ?>
