@@ -35,6 +35,7 @@ if($perm === false){
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
+<script src="../../js/compatibility.js"></script>
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 </head>
@@ -270,33 +271,16 @@ if($perm === false){
 	var bt_arquivo = document.getElementById('procura_arquivo');
 	var f_arquivo = document.getElementById('f_arquivo');
 	
-	bt_arquivo.onchange = function (){
-		f_arquivo.innerHTML = '';
-		for (i=0;i<this.files.length;i++){
-			f_arquivo.innerHTML = this.files[i].name + ' ';
+
+	var change_file = function (){
+		f_arquivo.innerHTML = '&nbsp;';
+		for (i=0;i<bt_arquivo.files.length;i++){
+			f_arquivo.innerHTML = bt_arquivo.files[i].name + ' ';
 		}
 	};
+	bt_arquivo.onchange = change_file;
+	bt_arquivo.form.onreset = change_file;
 
-
-	function deleteFile(id) {
-		var li_el = document.getElementById('liFile'+id);
-		var handler = function() {
-			if (text = this.responseText) {
-				try {
-					var res = JSON.parse(text);
-				}
-				catch (e) {
-					alert("Problema no JSON");
-				}
-			}
-			alert('Nao foi possivel excluir o arquivo.');
-		}
-
-		var request = new XMLHttpRequest();
-
-		request.onload = handler;
-		request.open("GET","../../deleteFile.php?id="+id);
-	}
 </script>
 					</li>
 					<?

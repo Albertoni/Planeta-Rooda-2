@@ -21,7 +21,7 @@ if (is_numeric($funcionalidade_id) == false || is_numeric($funcionalidade_tipo) 
 else
 {
 
-	if(isset($_POST['upload']) && $_FILES['userfile']['size'] > 0)
+	if(isset($_POST['upload']) && isset($_FILES['userfile']) && $_FILES['userfile']['size'] > 0)
 	{
 		$fileName = $_FILES['userfile']['name'];
 		$tmpName  = $_FILES['userfile']['tmp_name'];

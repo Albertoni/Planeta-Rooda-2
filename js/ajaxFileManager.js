@@ -7,6 +7,7 @@ var submitUploadForm = (function () {
 			}
 			catch (e) {
 				alert("Problema no JSON");
+				console.log("JSON: " + e.message + "'"+t+"'");
 				return;
 			}
 			if (res.erros) {
@@ -25,11 +26,48 @@ var submitUploadForm = (function () {
 				alert("Nao sabemos o que aconteceu, mas estamos trabalhando para descobrir");
 			}
 		} else {
-			alert("nada");
+			console.log("Sem resposta");
 		}
 	}
 
 	return function (oFormElement) {
 		AJAXSubmit(oFormElement,uploadHandler);
 	}
+})();
+
+var deleteFile = (function () {
+	var handler = function () {
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t)
+			}
+			catch (e)
+			{
+				console.log("JSON: " + e.message);
+				alert("Ocorreu um problema");
+				return;
+			}
+			if (res.ok) {
+				if(this.elemToRemove) {
+					this.elemToRemove.parentElement.removeChild(this.elemToRemove);
+				}
+			} else {
+				if(res.error) {
+					alert(res.error);
+				} else {
+					alert("Nao deu certo");
+				}
+			}
+		}
+	}
+	return function (id) {
+		if (!confirm("Tem certeza que deseja excluir o arquivo?")) {
+			return;
+		}
+		var oAjaxReq = new XMLHttpRequest();
+		oAjaxReq.elemToRemove = document.getElementById('liFile'+id);
+		oAjaxReq.open("GET","../../deleteFile.php?id="+id);
+		oAjaxReq.onload = handler;
+		oAjaxReq.send();
+	};
 })();

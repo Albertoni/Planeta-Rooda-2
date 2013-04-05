@@ -138,3 +138,12 @@ var AJAXSubmit = (function () {
   };
  
 })();
+
+var AJAXOpen = (function(){
+	return function (url,handler,body) {
+		var oAjaxReq = new XMLHttpRequest();
+		oAjaxReq.onload = handler;
+		oAjaxReq.open("GET",url);
+		oAjaxReq.send(body);
+	}
+})();
