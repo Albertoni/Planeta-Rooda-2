@@ -101,9 +101,9 @@ function Init() {
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
-							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins">
+							<form id="upload_image" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins">
 								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" /> 
-								<input name="userfile" type="file" id="arquivo_frame_ins" class="upload_file" style="" onchange="trocador('falso_frame_ins', 'arquivo_frame_ins')" />
+								<input name="userfile" type="file" id="arquivo_frame_ins" class="upload_file" allow="image/png,image/jpg,image/gif" onchange="trocador('falso_frame_ins', 'arquivo_frame_ins')" />
 								<input name="falso" type="text" id="falso_frame_ins" />
 								<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame_ins" />
 								<input type="submit" name="upload" value="upload!" />
@@ -118,13 +118,14 @@ function Init() {
 						</ul>
 						<div id="cont_img3">
 						<table width="100%">
+						<tr>
 <?php
 							//	Dumpando a lista de imagens que tem no blog
 
 							$consulta = new conexao();
 							$consulta->connect();
 							$id = $blog->getId();
-							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' order by arquivo_id");
+							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND  order by arquivo_id");
 
 							/*\
 							 *	SELECT arquivo FROM $tabela_arquivos WHERE tipo LIKE 'image/%'

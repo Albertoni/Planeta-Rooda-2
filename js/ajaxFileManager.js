@@ -1,6 +1,5 @@
-var submitUploadForm = (function () {
-	var uploadHandler = function(){
-		var file_list = document.getElementById("caixa_arq");
+var submitUploadFormFunction = (function (handler) {
+	var uploadHandler = handler || function(){
 		if(t = this.responseText) {
 			try {
 				var res = JSON.parse(t);
@@ -10,20 +9,16 @@ var submitUploadForm = (function () {
 				console.log("JSON: " + e.message + "'"+t+"'");
 				return;
 			}
-			if (res.erros) {
-				var erro = res.erros[0];
-				for(var i=1;i<res.erros.length;i+=1) {
+			if (res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
 					erro += "\n" + res.erros[i];
 				};
 				alert(erro);
 			} else if (res.file_id && res.file_name) {
-				var newfile = document.createElement("li");
-				newfile.id = "liFile" + res.file_id;
-				newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-					'<img align="right" src="../../images/botoes/bt_x.png" onclick="deleteFile(' + res.file_id + ');" />';
-				file_list.appendChild(newfile);
+				alert("Arquivo enviado com sucesso.");
 			} else { 
-				alert("Nao sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
 			}
 		} else {
 			console.log("Sem resposta");
@@ -33,10 +28,10 @@ var submitUploadForm = (function () {
 	return function (oFormElement) {
 		AJAXSubmit(oFormElement,uploadHandler);
 	}
-})();
+});
 
-var deleteFile = (function () {
-	var handler = function () {
+var deleteFileFunction = (function (handler) {
+	var handler = handler || function () {
 		if (t = this.responseText) {
 			try {
 				res = JSON.parse(t)
@@ -48,26 +43,27 @@ var deleteFile = (function () {
 				return;
 			}
 			if (res.ok) {
-				if(this.elemToRemove) {
-					this.elemToRemove.parentElement.removeChild(this.elemToRemove);
-				}
+				alert("Arquivo excluído com sucesso.");
 			} else {
 				if(res.error) {
 					alert(res.error);
 				} else {
-					alert("Nao deu certo");
+					alert("Não deu certo: " + res.error);
 				}
 			}
 		}
 	}
 	return function (id) {
-		if (!confirm("Tem certeza que deseja excluir o arquivo?")) {
-			return;
-		}
 		var oAjaxReq = new XMLHttpRequest();
-		oAjaxReq.elemToRemove = document.getElementById('liFile'+id);
+		oAjaxReq.fileId = id;
 		oAjaxReq.open("GET","../../deleteFile.php?id="+id);
 		oAjaxReq.onload = handler;
 		oAjaxReq.send();
 	};
-})();
+});
+
+var getFileListFunction = (function(handler) {
+	var getFileListHandler = handler || function () {};
+
+	return function (
+});

@@ -115,7 +115,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							 *	Pega o BLOB de todas as imagens pra dar resize.
 							\*/
 							global $tabela_arquivos;
-							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%'");
+							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
 
 							for($i=0 ; $i<count($consulta->itens);$i++) {
 								$id = $consulta->resultado['arquivo_id']; 

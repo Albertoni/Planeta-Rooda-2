@@ -38,6 +38,68 @@ if($perm === false){
 <script src="../../js/compatibility.js"></script>
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
+<script>
+// UPLOAD FILE AJAX
+function uploadFormHandler(){
+	var file_list = document.getElementById("caixa_arq");
+	if(t = this.responseText) {
+		try {
+			var res = JSON.parse(t);
+		}
+		catch (e) {
+			alert("Problema no JSON");
+			console.log("JSON: " + e.message + "'"+t+"'");
+			return;
+		}
+		if (res.errors) {
+			var erro = res.errors[0];
+			for(var i=1;i<res.errors.length;i+=1) {
+				erro += "\n" + res.errors[i];
+			};
+			alert(erro);
+		} else if (res.file_id && res.file_name) {
+			var newfile = document.createElement("li");
+			newfile.id = "liFile" + res.file_id;
+			newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
+				'<img align="right" src="../../images/botoes/bt_x.png" onclick="deleteFile(' + res.file_id + ');" />';
+			file_list.appendChild(newfile);
+		} else { 
+			alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+		}
+	} else {
+		console.log("Sem resposta");
+	}
+}
+var submitUploadForm = submitUploadFormFunction(uploadFormHandler);
+
+// DELETE FILE AJAX
+function deleteFileHandler() {
+	if (t = this.responseText) {
+		try {
+			res = JSON.parse(t)
+		}
+		catch (e)
+		{
+			console.log("JSON: " + e.message);
+			alert("Ocorreu um problema");
+			return;
+		}
+		if (res.ok) {
+			if(elem = document.getElementById("liFile" + this.fileId)) {
+				elem.parentElement.removeChild(elem);
+			}
+		} else {
+			if(res.error) {
+				alert(res.error);
+			} else {
+				alert("Nao deu certo: " + res.error);
+			}
+		}
+	}
+}
+
+var deleteFile = deleteFileFunction(deleteFileHandler);
+</script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
@@ -298,7 +360,7 @@ if($perm === false){
 					?>
 							<li class="tabela_port" id="liFile<?=$fileId?>">
 								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-								<img src="../../images/botoes/bt_x.png" onclick="deleteFile(<?=$fileId?>);" align="right"/>
+								<img src="../../images/botoes/bt_x.png" onclick="if (confirm('Tem certeza que deseja excluir este arquivo?')) { deleteFile(<?=$fileId?>);}; " align="right"/>
 							</li>
 					<?
 							$consulta->proximo();
