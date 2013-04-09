@@ -185,3 +185,6 @@ function removeUsuario(userId, idTurma){
 	carregaHTML('removeUser.php',argumentos, handlerRemocaoUsuario);
 }
 // FIM REMOÇÃO
+function abreMenuFuncionalidades(){
+	abreFechaLB('#light_box_funcionalidades');
+}

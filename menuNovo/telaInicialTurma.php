@@ -21,7 +21,7 @@ function imprimeListaUsuarios($lista){
 		echo "						<div class=\"$comFundo\" id=\"user$userId\">
 							<span id=\"nomeUser$userId\">$nome</span>";
 		
-		if(isProfessor($_SESSION['SS_usuario_id'], $turma)){
+		if(isProfessor($_SESSION['SS_usuario_id'], (int)$_GET['turma'])){
 			echo"
 							<a class=\"botaoUsuario iconeDeletar\" onclick=\"removeUsuario($userId, $idTurma);\"></a>
 							<a href=\"#\" class=\"botaoUsuario iconeCarteira\" onclick=\"mostraCarteira($userId);\"></a>
@@ -66,6 +66,12 @@ $alunos = $turma->getAlunos();
 			<div onclick="efetuaTrocaNivel('monit');" id="botao_troca_monitor" class="botao_troca"></div>
 			<div onclick="efetuaTrocaNivel('profe');" id="botao_troca_professor" class="botao_troca"></div>
 		</div>
+		<div id="light_box_funcionalidades" class="light_box">
+			<h2 id="frase_nivel">Que funcionalidade deseja acessar?</h2>
+			<ul>
+<?php imprimeFuncionalidadesAcessiveis($idTurma); ?>
+			</ul>
+		</div>
 		<div id="containerMenu">
 			<div id="menuEsquerda">
 				<div id="infoTurma">
@@ -73,7 +79,7 @@ $alunos = $turma->getAlunos();
 				</div>
 				<div id="wrapperBotoesEsquerda">
 					<div id="botaoContatos" class="botaoEsquerda"></div>
-					<div id="botaoFuncionalidade" class="botaoEsquerda"></div>
+					<div id="botaoFuncionalidade" class="botaoEsquerda" onclick="abreMenuFuncionalidades();"></div>
 					<div id="botaoPlaneta" class="botaoEsquerda"></div>
 				</div>
 			</div>

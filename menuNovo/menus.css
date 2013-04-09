@@ -154,6 +154,7 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 	width:800px;
 	margin:-300px -400px;
 	background-color:white;
+	background-image: url('images/lightboxes/back.png');
 }
 
 #light_box_troca{
