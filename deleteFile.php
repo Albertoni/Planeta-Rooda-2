@@ -27,6 +27,9 @@ if ($id_usuario > 0)
 
 		if($consulta->registros === 1)
 		{
+			// ARQUIVO EXISTE
+
+			// TODO: verificar se usuario pode deletar arquivo baseado no usuario/funcionalidade/turma/etc
 			$consulta2 = new conexao();
 			$consulta2->connect();
 			$consulta2->solicitar("DELETE FROM $tabela_arquivos WHERE arquivo_id = $id");

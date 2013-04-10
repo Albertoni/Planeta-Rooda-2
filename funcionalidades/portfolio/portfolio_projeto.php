@@ -39,66 +39,107 @@ if($perm === false){
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script>
-// UPLOAD FILE AJAX
-function uploadFormHandler(){
-	var file_list = document.getElementById("caixa_arq");
-	if(t = this.responseText) {
-		try {
-			var res = JSON.parse(t);
+// GET FILE LIST
+var getFileList = (function() {
+	function getFileListHandler() {
+		if(t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: " + e.message + ":\n" + t); 
+				return;
+			}
+			if (!res.ok) {
+				if (!res.errors) {
+					console.log("Unknown error 1723");
+				} else {
+					var erro = res.errors[0];
+					for (var i=1; i < res.errors.length; i+=1) {
+						erro += "\n"+res.errors[i];
+					}
+					console.log(erro);
+				}
+				return;
+			} else {
+				// SUCCESS
+			}
 		}
-		catch (e) {
-			alert("Problema no JSON");
-			console.log("JSON: " + e.message + "'"+t+"'");
-			return;
-		}
-		if (res.errors) {
-			var erro = res.errors[0];
-			for(var i=1;i<res.errors.length;i+=1) {
-				erro += "\n" + res.errors[i];
-			};
-			alert(erro);
-		} else if (res.file_id && res.file_name) {
-			var newfile = document.createElement("li");
-			newfile.id = "liFile" + res.file_id;
-			newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-				'<img align="right" src="../../images/botoes/bt_x.png" onclick="deleteFile(' + res.file_id + ');" />';
-			file_list.appendChild(newfile);
-		} else { 
-			alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-		}
-	} else {
-		console.log("Sem resposta");
 	}
-}
-var submitUploadForm = submitUploadFormFunction(uploadFormHandler);
+	return  getFileListFunction(getFileListHandler,<?=$projeto_id?>,<?=TIPOPORTFOLIO?>);
+})();
 
-// DELETE FILE AJAX
-function deleteFileHandler() {
-	if (t = this.responseText) {
-		try {
-			res = JSON.parse(t)
-		}
-		catch (e)
-		{
-			console.log("JSON: " + e.message);
-			alert("Ocorreu um problema");
-			return;
-		}
-		if (res.ok) {
-			if(elem = document.getElementById("liFile" + this.fileId)) {
-				elem.parentElement.removeChild(elem);
+// UPLOAD FILE AJAX
+var submitFileForm = (function () {
+	function uploadFormHandler(){
+		var file_list = document.getElementById("caixa_arq");
+		if(t = this.responseText) {
+			try {
+				var res = JSON.parse(t);
+			}
+			catch (e) {
+				alert("Erro desconhecido (0xTTYLGB");
+				console.log("JSON: " + e.message + ":\n"+t);
+				return;
+			}
+			if (res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
+					erro += "\n" + res.errors[i];
+				};
+				alert(erro);
+			} else if (res.file_id && res.file_name) {
+				var newfile = document.createElement("li");
+				newfile.id = "liFile" + res.file_id;
+				newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
+					'<img align="right" src="../../images/botoes/bt_x.png" onclick="if(confirm(\'Tem certeza que deseja excluir este arquivo?\')) { deleteFile(' + res.file_id + ') };" />';
+				file_list.appendChild(newfile);
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
 			}
 		} else {
-			if(res.error) {
-				alert(res.error);
+			console.log("Sem resposta");
+		}
+	}
+	submitForm = submitFormFunction(uploadFormHandler);
+	return (function (f) {
+		submitForm(f);
+	});
+})();
+
+// DELETE FILE AJAX
+
+var deleteFile = (function () {
+	function deleteFileHandler() {
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t)
+			}
+			catch (e)
+			{
+				console.log("JSON: " + e.message);
+				alert("Ocorreu um problema");
+				return;
+			}
+			if (res.ok) {
+				if(elem = document.getElementById("liFile" + this.fileId)) {
+					elem.parentElement.removeChild(elem);
+				}
 			} else {
-				alert("Nao deu certo: " + res.error);
+				if(res.error) {
+					alert(res.error);
+				} else {
+					alert("Nao deu certo: " + res.error);
+				}
 			}
 		}
 	}
-}
-
-var deleteFile = deleteFileFunction(deleteFileHandler);
+	
+	var deleteFile = deleteFileFunction(deleteFileHandler);
+	return (function (id) {
+		deleteFile(id);
+	});
+})();
 </script>
 </head>
 
@@ -317,7 +358,7 @@ var deleteFile = deleteFileFunction(deleteFileHandler);
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
 					<li id="addFileDiv" style="display:none">
-						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" onsubmit="submitUploadForm(this);return false;">
+						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" onsubmit="submitFileForm(this);return false;">
 							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 							<div class="file_input" style="display:inline-block">
 								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />

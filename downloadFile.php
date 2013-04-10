@@ -17,29 +17,88 @@ if ($id_usuario > 0)
 	}
 
 	$consulta = new conexao();
-	$consulta->connect();
 	$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE arquivo_id = $id");
 
-	if($consulta->registros != 0){
-		$fileContent = $consulta->resultado["arquivo"];
-		$nome = $consulta->resultado["nome"];
-		$tipo = $consulta->resultado["tipo"];
-		$tamanho = $consulta->resultado["tamanho"];
+	if($consulta->registros === 1){
 
-		if ($consulta->erro != ""){
-			echo "ERRO - \"".$consulta->erro."\"";
-		} else {
+		$podeBaixar = false;
+		switch ($consulta->resultado['funcionalidade_tipo']) 
+		{
+			case TIPOBLOG:
+				// QUALQUER USUARIO CADASTRADO PODE BAIXAR DE QUALQUER BLOG
+				$podeBaixar = true;
+				break;
 
-			// registra download
-			$registra = new conexao();
-			$registra->solicitar("INSERT INTO $tabela_usuario_download (usuario_id,arquivo_id) VALUES ('$id_usuario','$id')");
+			case TIPOPORTFOLIO:
+				// VERIFICAR SE ALUNO PERTENCE A TURMA DO PROJETO
+				
+				$id_portfolio = $consulta->resultado['funcionalidade_id'];
+				
+				$verifica = new conexao();
+				$verifica->solicitar(
+					"SELECT T.codUsuario "
+					."FROM $tabela_turmasUsuario as T "
+					."INNER JOIN $tabela_portfolioProjetos as P "
+					."ON T.codTurma = P.turma "
+					."WHERE T.codUsuario = '$id_usuario' "
+					."AND P.id = '$id_portfolio'"
+				);
+				if ($verifica->erro != "")
+				{
+					die("Erro: ".$verifica->erro);
+				}
+				if ($verifica->registros > 0)
+				{
+					$podeBaixar = true; // aluno pertence a turma do projeto
+				}
+				break;
 
-			header("Content-length: $tamanho");
-			header("Content-type: $tipo");
-			header("Content-Disposition: attachment; filename=$nome");
-			echo $fileContent;
+			case TIPOBIBLIOTECA:
+				// VERIFICAR SE ALUNO PERTENCE A TURMA DA BIBLIOTECA
+				/* -/
+				$verifica = new conexao();
+				$verifica->solicitar(
+					"SELECT T.codUsuario as id_usuario"
+					."FROM $tabela_turmasUsuario as T "
+					."INNER JOIN $tabela_Materiais as B "
+					."ON T.codTurma = B.codTurma "
+					."WHERE B.refMaterial = '$id' "
+					."WHERE T.codUsuario = '$id_usuario'"
+				);
+				break;
+				/* */
 		}
-	}else{
+
+		if (!$podeBaixar)
+		{
+			echo "Voc&ecirc; nao pode baixar este arquivo";
+		}
+		else
+		{
+			$fileContent = $consulta->resultado["arquivo"];
+			$nome = $consulta->resultado["nome"];
+			$tipo = $consulta->resultado["tipo"];
+			$tamanho = $consulta->resultado["tamanho"];
+
+			if ($consulta->erro != "")
+			{
+				echo "ERRO - \"".$consulta->erro."\"";
+			}
+			else
+			{
+				// registra download
+				$registra = new conexao();
+				$registra->solicitar("INSERT INTO $tabela_usuario_download (usuario_id,arquivo_id) VALUES ('$id_usuario','$id')");
+
+				header("Content-length: $tamanho");
+				header("Content-type: $tipo");
+				header("Content-Disposition: attachment; filename=$nome");
+				echo $fileContent;
+			}
+		}
+	}
+	else
+	{
 		die("Arquivo n&atilde;o encontrado.");
 	}
 }

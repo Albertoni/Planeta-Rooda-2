@@ -1,12 +1,12 @@
-var submitUploadFormFunction = (function (handler) {
+var submitFormFunction = (function (handler) {
 	var uploadHandler = handler || function(){
 		if(t = this.responseText) {
 			try {
 				var res = JSON.parse(t);
 			}
 			catch (e) {
-				alert("Problema no JSON");
-				console.log("JSON: " + e.message + "'"+t+"'");
+				alert("Erro desconhecido (0xGLHF42)");
+				console.log("JSON: " + e.message + ":\n"+t);
 				return;
 			}
 			if (res.errors) {
@@ -25,9 +25,9 @@ var submitUploadFormFunction = (function (handler) {
 		}
 	}
 
-	return function (oFormElement) {
+	return (function (oFormElement) {
 		AJAXSubmit(oFormElement,uploadHandler);
-	}
+	});
 });
 
 var deleteFileFunction = (function (handler) {
@@ -38,7 +38,7 @@ var deleteFileFunction = (function (handler) {
 			}
 			catch (e)
 			{
-				console.log("JSON: " + e.message);
+				console.log("JSON: " + e.message + ":\n"+t);
 				alert("Ocorreu um problema");
 				return;
 			}
@@ -53,17 +53,27 @@ var deleteFileFunction = (function (handler) {
 			}
 		}
 	}
-	return function (id) {
+	return (function (id) {
 		var oAjaxReq = new XMLHttpRequest();
 		oAjaxReq.fileId = id;
-		oAjaxReq.open("GET","../../deleteFile.php?id="+id);
+		oAjaxReq.open("GET","../../deleteFile.php?id="+encodeURIComponent(id));
 		oAjaxReq.onload = handler;
 		oAjaxReq.send();
-	};
+	});
 });
 
-var getFileListFunction = (function(handler) {
+var getFileListFunction = (function(handler, func_id, func_tipo, mime_type) {
 	var getFileListHandler = handler || function () {};
 
-	return function (
+	return (function () {
+		var oAjaxReq = new XMLHttpRequest();
+		var url = "../../fileList.php?funcionalidade_id="+encodeURIComponent(func_id);
+		url += "&funcionalidade_tipo="+encodeURIComponent(func_tipo);
+		if (mime_type) {
+			url += "&arquivo_tipo="+encodeURIComponent(mime_type);
+		}
+		oAjaxReq.open("GET",url);
+		oAjaxReq.onload = handler;
+		oAjaxReq.send();
+	});
 });
