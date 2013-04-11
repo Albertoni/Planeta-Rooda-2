@@ -61,14 +61,14 @@ $alunos = $turma->getAlunos();
 		<h2>Carregando...</h2>
 		</div>
 		<div id="light_box_troca" class="light_box">
-			<h2 id="frase_nivel">Para que nivel deseja alterar esse usuário?</h2>
+			<h2 class="frase" id="frase_nivel">Para que nivel deseja alterar esse usuário?</h2>
 			<div onclick="efetuaTrocaNivel('aluno');" id="botao_troca_aluno" class="botao_troca"></div>
 			<div onclick="efetuaTrocaNivel('monit');" id="botao_troca_monitor" class="botao_troca"></div>
 			<div onclick="efetuaTrocaNivel('profe');" id="botao_troca_professor" class="botao_troca"></div>
 		</div>
 		<div id="light_box_funcionalidades" class="light_box">
-			<h2 id="frase_nivel">Que funcionalidade deseja acessar?</h2>
-			<ul>
+			<h2 class="frase" id="frase_funcionalidade">Que funcionalidade deseja acessar?</h2>
+			<ul id="lista_funcionalidades">
 <?php imprimeFuncionalidadesAcessiveis($idTurma); ?>
 			</ul>
 		</div>
@@ -112,52 +112,3 @@ imprimeListaUsuarios($alunos);
 		</div>
 	</body>
 </html>
-
-<!--
-BACKUP DO HTML ORIGINAL
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link href="menus.css" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="../jquery.js"></script>
-	</head>
-	<body>
-		<div id="containerMenu">
-			<div id="menuEsquerda">
-				<div id="infoTurma">
-					Nesse exemplo posicionamos o elemento a 40px do topo e a 
-					20px da esquerda em relação ao lugar que ele ocuparia no 
-					fluxo do documento. Vale lembrar que utilizando 
-					position:relative todo esse espaço que foi definido ainda 
-					continua sendo ocupado pelo elemento na página. 
-				</div>
-				<div id="wrapperBotoesEsquerda">
-					<div id="botaoContatos" class="botaoEsquerda"></div>
-					<div id="botaoFuncionalidade" class="botaoEsquerda"></div>
-					<div id="botaoPlaneta" class="botaoEsquerda"></div>
-				</div>
-			</div>
-			<div id="menuDireita">
-				<div id="wrapperClasses">
-					<div class="botaoDireita" id="botaoProfessores"></div>
-					<div class="botaoDireita" id="botaoMonitores"></div>
-					<div class="botaoDireita" id="botaoAlunos"></div>
-				</div>
-				<div id="listaMembrosTurma">
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma">NOME DO MALUCO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-					<div class="membroTurma comFundo">NOME DO PIRADO <a href="#"><img class="botaoUsuario iconeDeletar"></a><a href="#"><img class="botaoUsuario iconeCarteira"></a><a href="#"><img class="botaoUsuario iconePromocao"></a></div>
-				</div>
-			</div>
-		</div>
-	</body>
-</html>
-
-
- -->

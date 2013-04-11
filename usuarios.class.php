@@ -345,5 +345,19 @@ class Usuario { //estrutura para o item post do blog
 				return '#7F06FF'; // go go saints row
 		}
 	}
+	
+	public function printListaTurmas(){
+		$conexaoNomes = new conexao();
+		$conexaoNomes->solicitar("SELECT T.nomeTurma
+									FROM TurmasUsuario AS TU, Turmas AS T
+									WHERE TU.codUsuario = '".($this->id)."'
+										OR T.profResponsavel = '".($this->id)."'");
+		
+		$buffer = $conexaoNomes->resultado['nomeTurma'];
+		for($i = 1; $i < $conexaoTurmas->registros; $i++){
+			$buffer .= ", ".$conexaoNomes->resultado['nomeTurma'];
+		}
+		
+		echo $buffer;
+	}
 }
-

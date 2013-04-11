@@ -21,7 +21,7 @@ $user->openUsuario($userId);
 				<ul>
 					<li><strong>Nome:</strong> <?=$user->getName()?></li>
 					<li><strong>Email:</strong> <?=$user->getEmail()?></li>
-					<li><strong>Turma:</strong> <?="VER NA REUNIÃO QUE TURMA DEVE SER EXIBIDA AQUI"?></li>
+					<li><strong>Turma:</strong> <?=$user->printListaTurmas() ?></li>
 					<li><strong>Gosto:</strong> <?=$user->getGosto()?></li>
 					<li><strong>Não gosto:</strong> <?=$user->getNaoGosto()?></li>
 				</ul>

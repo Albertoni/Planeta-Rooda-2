@@ -165,17 +165,16 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 }
 
 /*light box/*/
-#frase_nivel{
-	background-image: url('images/lightboxes/praquenivel.png');
+.frase{
 	background-repeat: no-repeat;
-	width: 402px;
 	height: 19px;
-	
 	padding: 0;
 	margin:240px auto 0;
 	overflow:hidden;
 	text-indent:-9999px;
 }
+#frase_nivel{width: 402px; background-image: url('images/paraquenivel.png');}
+#frase_funcionalidade{width: 309px;background-image: url('images/quefuncionalidade.png');}
 
 .botao_troca{
 	background-repeat: no-repeat;
@@ -202,3 +201,5 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 #botao_troca_aluno:hover{background-image: url('images/lightboxes/h_aluno.png');}
 #botao_troca_monitor:hover{background-image: url('images/lightboxes/h_monitor.png');}
 #botao_troca_professor:hover{background-image: url('images/lightboxes/h_prof.png');}
+
+#lista_funcionalidades{margin-left:28%;}
