@@ -36,12 +36,12 @@ if ($id_usuario > 0)
 				
 				$verifica = new conexao();
 				$verifica->solicitar(
-					"SELECT T.codUsuario "
-					."FROM $tabela_turmasUsuario as T "
-					."INNER JOIN $tabela_portfolioProjetos as P "
-					."ON T.codTurma = P.turma "
-					."WHERE T.codUsuario = '$id_usuario' "
-					."AND P.id = '$id_portfolio'"
+					"SELECT T.codUsuario 
+					FROM $tabela_turmasUsuario as T 
+					INNER JOIN $tabela_portfolioProjetos as P 
+					ON T.codTurma = P.turma 
+					WHERE T.codUsuario = '$id_usuario' 
+					AND P.id = '$id_portfolio'"
 				);
 				if ($verifica->erro != "")
 				{
@@ -55,23 +55,32 @@ if ($id_usuario > 0)
 
 			case TIPOBIBLIOTECA:
 				// VERIFICAR SE ALUNO PERTENCE A TURMA DA BIBLIOTECA
-				/* -/
 				$verifica = new conexao();
 				$verifica->solicitar(
-					"SELECT T.codUsuario as id_usuario"
-					."FROM $tabela_turmasUsuario as T "
-					."INNER JOIN $tabela_Materiais as B "
-					."ON T.codTurma = B.codTurma "
-					."WHERE B.refMaterial = '$id' "
-					."WHERE T.codUsuario = '$id_usuario'"
+					"SELECT T.codUsuario as id_usuario
+					FROM $tabela_turmasUsuario as T 
+					INNER JOIN $tabela_Materiais as B 
+					ON T.codTurma = B.codTurma 
+					WHERE B.refMaterial = '$id' 
+					AND T.codUsuario = '$id_usuario'"
 				);
+				if ($verifica->erro != ""){
+					die($verifica->erro);
+				}
+				else if ($verificar->registros > 0) {
+					$podeBaixar = true;
+				}
 				break;
-				/* */
+			case TIPOPERGUNDA:	// TODO
+			case TIPOFORUM:		// TODO
+			case TIPOAULAS:		// TODO
+				$podeBaixar = true;
+				break;
 		}
 
 		if (!$podeBaixar)
 		{
-			echo "Voc&ecirc; nao pode baixar este arquivo";
+			die("Voc&ecirc; nao pode baixar este arquivo");
 		}
 		else
 		{
@@ -82,7 +91,7 @@ if ($id_usuario > 0)
 
 			if ($consulta->erro != "")
 			{
-				echo "ERRO - \"".$consulta->erro."\"";
+				die("ERRO - \"".$consulta->erro."\"");
 			}
 			else
 			{
@@ -93,7 +102,7 @@ if ($id_usuario > 0)
 				header("Content-length: $tamanho");
 				header("Content-type: $tipo");
 				header("Content-Disposition: attachment; filename=$nome");
-				echo $fileContent;
+				die($fileContent);
 			}
 		}
 	}

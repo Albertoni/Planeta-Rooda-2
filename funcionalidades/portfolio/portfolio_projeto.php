@@ -39,9 +39,16 @@ if($perm === false){
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script>
-// GET FILE LIST
+/* REFRESH FILE LIST */
 var getFileList = (function() {
 	function getFileListHandler() {
+		if (this.readyState !== this.DONE) {
+			return;
+		}
+		if (this.status !== 200) {
+			return;
+		}
+		// OK
 		if(t = this.responseText) {
 			try {
 				res = JSON.parse(t);
@@ -63,15 +70,23 @@ var getFileList = (function() {
 				return;
 			} else {
 				// SUCCESS
+				var n = res.files.length;
 			}
 		}
 	}
 	return  getFileListFunction(getFileListHandler,<?=$projeto_id?>,<?=TIPOPORTFOLIO?>);
 })();
 
-// UPLOAD FILE AJAX
+/* UPLOAD FILE AJAX */
 var submitFileForm = (function () {
 	function uploadFormHandler(){
+		if (this.readyState !== this.DONE) {
+			return;
+		}
+		if (this.status !== 200) {
+			return;
+		}
+		// OK
 		var file_list = document.getElementById("caixa_arq");
 		if(t = this.responseText) {
 			try {
@@ -144,6 +159,7 @@ var deleteFile = (function () {
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
+
 <?
 		global $tabela_portfolioProjetos;
 		$consulta= new conexao();

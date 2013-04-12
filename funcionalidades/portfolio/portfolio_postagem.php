@@ -32,8 +32,8 @@ if (!is_numeric($projeto_id) or !is_numeric($post_id))die("</head>\n<body>\n<h2>
 
 $update = isset($_GET['update']) ? "1" : "0";
 
-$funcionalidade_id = TIPOPORTFOLIO;
-$funcionalidade_tipo = $projeto_id;
+$funcionalidade_tipo = TIPOPORTFOLIO;
+$funcionalidade_id = $projeto_id;
 
 $turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("</head>\n<body>\n<h2><center>A id da turma precisa estar setada para acessar, por favor volte.\n</h2></center>\n</html>");
 
@@ -43,12 +43,18 @@ if($perm == false){
 }
 ?>
 
-<script type="text/javascript" src="../../ajax.js"></script>
-<script type="text/javascript" src="../../ajaxFileManager.js"></script>
+<script type="text/javascript" src="../../js/ajax.js"></script>
+<script type="text/javascript" src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript">
 
-var getImageList = (function() {
+var refreshImageList = (function() {
 	function getFileListHandler() {
+		if (this.readyState !== this.DONE) {
+			return;
+		}
+		if (this.status !== 200) {
+			return;
+		}
 		if(t = this.responseText) {
 			try {
 				res = JSON.parse(t);
@@ -58,36 +64,26 @@ var getImageList = (function() {
 				return;
 			}
 			if (!res.ok) {
-				if (!res.errors) {
-					console.log("Unknown error: 0xE2202404");
-				} else {
+				if (res.errors) {
 					var erro = res.errors[0];
 					for (var i=1; i < res.errors.length; i+=1) {
 						erro += "\n"+res.errors[i];
 					}
 					console.log(erro);
 				}
+				console.log("Couldn't refresh image list");
 				return;
 			} else {
 				// SUCCESS
 				var n = res.files.length;
-				var loaded = 0;
-				var imgLoad = function () {
-					loaded += 1;
-					if (loaded >= n) {
-						alert("completed");
+				var images_container = document.getElementById("cont_img3");
+				if (images_container) {
+					var html = "";
+					for (var i=0;i<n;i+=1) {
+						var id = res.files[i].file_id;
+						html += '<div id="galeria'+id+'" class="img_enviadas"><img onclick="fromgallery('+id+')" src="../../image_output.php?file='+id+'" /></div>\n';
 					}
-				}
-				var imagesContainer = document.getElementById("img_list");
-				var images = [];
-				for (var i=0;i<n;i+=1) {
-					images.push(document.createElement("img"));
-				}
-				for (i=0;i<n;i+=1) {
-					images[i].onload = imgLoad;
-				}
-				for (i=0;i<n;i+=1) {
-					images[i].src = "../../image_output?id="res.files[i].file_id;
+					images_container.innerHTML = html;
 				}
 			}
 		}
@@ -134,9 +130,10 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		<div id="imagem_lbox">
 			<h1>INSERIR IMAGEM</h1>
 			<ul class="sem_estilo" style="line-height:25px">
+				/* */
 				<li><input type="radio" id="troca_img1" class="select_img" name="select_img" checked="checked" onclick="modo=1"/>Procurar no Computador</li>
 				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" onclick="modo=2"/>Imagem da Web</li>
-				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" onclick="modo=3"/>Procurar nas imagens já enviadas</li>
+				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" onclick="modo=3;refreshImageList();"/>Procurar nas imagens já enviadas</li>
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
@@ -155,9 +152,10 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							<li style="margin-top:-5px">Endereço da imagem</li>
 						</ul>
 						<div id="cont_img3">
-						<table id="img_list" width="100%">
+						<?/*<table id="img_list" width="100%">
 							<tr>
 <?php
+*/
 							//	Dumpando a lista de imagens que tem no blog
 
 							$consulta = new conexao();
@@ -169,17 +167,19 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							global $tabela_arquivos;
 							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
 
-							for($i=0 ; $i<count($consulta->itens);$i++) {
+							while($consulta->resultado) {
 								$id = $consulta->resultado['arquivo_id']; 
-								if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.
+								//if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.
 ?>
-							<td><? echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/>'; ?></div></td>
+								<? echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/>'; ?></div>
 <?php
 								$consulta->proximo();
 							}
-						?>
+	/*
 							</tr>
 						</table>
+	*/					?>
+	<br style="clear:both;" />
 						</div>
 					</div>
 				</li>

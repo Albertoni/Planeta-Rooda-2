@@ -176,13 +176,17 @@ function mostraPreviewImagem(falha, filename, location){
 
 function fromgallery(imageid){
 	if (id != false){
-		document.getElementById('galeria'+id).style.borderColor = "#AAAAAA";
-		document.getElementById('galeria'+id).style.borderWidth = "1px"; // Devolve o antigo ao estado normal. Sim, dá um erro na primeira vez que selecionar a imagem, mas ninguém vai notar.
+		var img = document.getElementById('galeria'+id);
+		img.style.borderColor = "#AAAAAA";
+		img.style.borderWidth = "1px"; // Devolve o antigo ao estado normal. Sim, dá um erro na primeira vez que selecionar a imagem, mas ninguém vai notar.
+		img.style.margin = "3px";
 	}
 	id = imageid;
-	document.getElementById('galeria'+id).style.borderStyle = "solid";
-	document.getElementById('galeria'+id).style.borderColor = "red";
-	document.getElementById('galeria'+id).style.borderWidth = "3px"; // Pinta o novo.
+	var img = document.getElementById('galeria'+id);
+	img.style.borderStyle = "solid";
+	img.style.borderColor = "red";
+	img.style.borderWidth = "3px"; // Pinta o novo.
+	img.style.margin = "1px";
 }
 
 ///////////////////////////////////////////////////////// Arquivos!

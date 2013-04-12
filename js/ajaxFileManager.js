@@ -73,7 +73,7 @@ var getFileListFunction = (function(handler, func_id, func_tipo, mime_type) {
 			url += "&arquivo_tipo="+encodeURIComponent(mime_type);
 		}
 		oAjaxReq.open("GET",url);
-		oAjaxReq.onload = handler;
+		oAjaxReq.onreadystatechange = handler;
 		oAjaxReq.send();
 	});
 });

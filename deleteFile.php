@@ -22,34 +22,62 @@ if ($id_usuario > 0)
 		$id = $_GET['id'];
 
 		$consulta = new conexao();
-		$consulta->connect();
-		$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE arquivo_id = $id");
+		$consulta->solicitar("SELECT funcionalidade_id,funcionalidade_tipo,uploader_id FROM $tabela_arquivos WHERE arquivo_id = $id");
 
-		if($consulta->registros === 1)
+		if($consulta->erro != "")
 		{
-			// ARQUIVO EXISTE
-
-			// TODO: verificar se usuario pode deletar arquivo baseado no usuario/funcionalidade/turma/etc
-			$consulta2 = new conexao();
-			$consulta2->connect();
-			$consulta2->solicitar("DELETE FROM $tabela_arquivos WHERE arquivo_id = $id");
-
-			if ($consulta2->erro != "")
-			{
-				$json['error'] = "ERRO - \"".$consulta2->erro."\"";
-			} else {
-				$json['ok'] = true;
-			}
+			$json['error'] = $consulta->erro;
 		}
 		else
 		{
-			if ($consulta->registros === 0)
+			$podeDeletar = false;
+			if($consulta->registros === 1)
 			{
-				$json['ok'] = true;
+				$funcionalidade_id = $consulta->resultado['funcionalidade_id'];
+				$funcionalidade_tipo = $consulta->resultado['funcionalidade_tipo'];
+				// ARQUIVO EXISTE
+
+				// TODO: verificar se usuario pode deletar arquivo baseado no usuario/funcionalidade/turma/etc
+				switch ($funcionalidade_tipo) {
+					case TIPOBLOG:
+						$verifica = new conexao();
+						$verifica->solicitar(
+							"SELECT OwnersIds "
+							."FROM $tabela_blogs "
+							."WHERE Id = '$funcionalidade_id'"
+						);
+						$donos = explode($verifica-resultado[''])
+						$n=count($donos);
+						for ($i=0;$i<$n;$i++)
+						{
+							// Só pode deletar se for um dos donos do blog.
+							if ($id_usuario === (int) $donos[$i])
+							{
+								$podeDeletar = true;
+							}
+						}
+				}
+
+				$deleta = new conexao();
+				$deleta->solicitar("DELETE FROM $tabela_arquivos WHERE arquivo_id = $id");
+
+				if ($deleta->erro != "")
+				{
+					$json['error'] = "ERRO - \"".$deleta->erro."\"";
+				} else {
+					$json['ok'] = true;
+				}
 			}
 			else
 			{
-				$json['error'] = "Algum problema aconteceu, isso poderia deletar mais de 1 arquivo.";
+				if ($consulta->registros === 0)
+				{
+					$json['ok'] = true;
+				}
+				else
+				{
+					$json['error'] = "Algum problema aconteceu, isso poderia deletar mais de 1 arquivo.";
+				}
 			}
 		}
 	}
