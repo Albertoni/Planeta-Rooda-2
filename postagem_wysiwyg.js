@@ -136,21 +136,36 @@ function addLink(){
 	abreFechaLB();
 }
 
+function imageHTML (id){
+	return '<img src="../../image_output.php?noresize=1&amp;file='+id+'" />';
+}
+function fileHTML(id,text){
+	return '<a href="../../downloadFile.php?id='+id+'">'+text+'</a>';
+}
 /////// Adicionador de imagens pra galeria de postagem do blog
 function addImage(){
 	switch(modo){
 		case 1: // Caso 1 a id já vem na URL.
+			if (e = document.getElementById('cont_img1')) {
+
+				if (f = e.getElementsByTagName("FORM")) {
+					if (uploadAttImage) {
+						uploadAttImage(f[0]);
+						return;
+					}
+				}
+			}
 			abreFechaLB();
 			break;
 		case 2: // Pegando da textbox do link.
 			var imageurl = document.getElementById('imagefromurl').value;
-			imageurl = '<img src="' + imageurl.replace('"', '&quot;') + '" />'; // TIRE TODOS OS " PRA NÃO DEIXAR O CARA FAZER O QUE QUISER COM A TAG
+			imageurl = '<img src="' + encodeURI(imageurl) + '" />'; // TIRE TODOS OS " PRA NÃO DEIXAR O CARA FAZER O QUE QUISER COM A TAG
 			objContent.execCommand('inserthtml', false, imageurl); // Insere a imagem!
 			abreFechaLB();
 			break;
 		case 3:
 			if (id != false){
-				var image = '<img src="../../image_output.php?noresize=1&amp;file=' + String(id).replace('"', '&quot;') + '" />';
+				var image = imageHTML(id);
 				objContent.execCommand('inserthtml', false, image); // Insere a imagem!
 			
 				abreFechaLB(); // Uma vez na vida o código do Giovani me deixou feliz.
@@ -219,13 +234,21 @@ function previewArquivo(falha, filename, id){
 
 function arquivoInsert(){
 	if (arquivos_mode == 1) { // Vindo do upload, faço isso mais tarde
+		if(e = document.getElementById('cont_arq1')) {
+			if (f = document.getElementsByTagName('FORM')) {
+				if (uploadAttFile) {
+					uploadAttFile(f[0]);
+					return;
+				}
+			}
+		}
 		abreFechaLB();
 	} else { // Postando link já uploadeado.
 		if (arquivos.length <= 0)
 			alert("Por favor, selecione pelo menos um arquivo para ser inserido.");
 		else {
 			for (i=0; i<arquivos.length; i++) {
-				url = '<a href="../../downloadFile.php?id=' + arquivos[i][0] + '">' + arquivos[i][1] + "</a><br />";
+				url = fileHTML(arquivos[i][0], arquivos[i][1]);
 				objContent.execCommand('inserthtml', false, url);
 			}
 			abreFechaLB();
@@ -365,6 +388,7 @@ $(document).ready(function(){
 			case 'alt_imagem':
 				limpaLbox();
 				$('#imagem_lbox').css('display','block');
+				mode=1;
 				abreFechaLB();
 				if (marcado){
 					limpaContImg();

@@ -149,3 +149,41 @@ font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
 	width: 428px;
 	z-index: 1000;
 }
+
+
+/* LOADING BOX */
+#loading {
+	background: transparent url('images/loading/black_trans.png');
+	position: fixed;
+	text-align: center;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 999;
+}
+.loading_anim,
+.loading_anim h2 {
+	padding:0;
+	width: 212px;
+	height: 272px;
+	font-size: 3px;
+	text-align: left;
+	text-indent: -9999px;
+	overflow: hidden;
+}
+.loading_anim {
+	background: transparent url('images/loading/loading_static.png') no-repeat top left;
+	margin: -136px auto 0;
+}
+.loading_anim h2 {
+	background: transparent url('images/loading/loading_anim.gif') no-repeat top left;
+	margin:0;
+}
+.spacer_50 {
+	height: 50%;
+	width: 100%;
+}
+

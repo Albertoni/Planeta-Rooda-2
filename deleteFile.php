@@ -46,7 +46,7 @@ if ($id_usuario > 0)
 							."FROM $tabela_blogs "
 							."WHERE Id = '$funcionalidade_id'"
 						);
-						$donos = explode($verifica-resultado[''])
+						$donos = explode($verifica->resultado['OwnersIds']);
 						$n=count($donos);
 						for ($i=0;$i<$n;$i++)
 						{

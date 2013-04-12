@@ -81,9 +81,17 @@ var getFileList = (function() {
 var submitFileForm = (function () {
 	function uploadFormHandler(){
 		if (this.readyState !== this.DONE) {
+			// requisição em andamento, não fazer nada.
 			return;
 		}
+		
+		// Fim do request, remover tela de loading
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'none';
+		}
+
 		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
 			return;
 		}
 		// OK
@@ -118,6 +126,9 @@ var submitFileForm = (function () {
 	}
 	submitForm = submitFormFunction(uploadFormHandler);
 	return (function (f) {
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'block';
+		}
 		submitForm(f);
 	});
 })();
@@ -130,10 +141,9 @@ var deleteFile = (function () {
 			try {
 				res = JSON.parse(t)
 			}
-			catch (e)
-			{
+			catch (e) {
 				console.log("JSON: " + e.message);
-				alert("Ocorreu um problema");
+				alert("Algo de errado aconteceu.");
 				return;
 			}
 			if (res.ok) {
@@ -144,11 +154,11 @@ var deleteFile = (function () {
 				if(res.error) {
 					alert(res.error);
 				} else {
-					alert("Nao deu certo: " + res.error);
+					alert("Nao deu certo");
 				}
 			}
 		}
-	}
+	};
 	
 	var deleteFile = deleteFileFunction(deleteFileHandler);
 	return (function (id) {
@@ -528,6 +538,13 @@ var deleteFile = (function () {
 	</div><!-- Fecha Div conteudo_meio -->
 	<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
+	<!-- loading -->
+	<div id="loading" style="display:none;">
+		<div class="spacer_50"><!-- empty --> </div>
+		<div class="loading_anim">
+			<h2>Processando</h2>
+		</div>
+	</div>
 <iframe name="deletante" style="visibility: hidden;"></iframe>
 
 <script type="text/javascript" src="../../jquery.js"></script>

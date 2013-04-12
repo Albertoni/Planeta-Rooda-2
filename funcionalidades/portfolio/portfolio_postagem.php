@@ -1,4 +1,11 @@
 <?php
+
+/*\
+ *
+ * portfolio_postagem.php 
+ *
+\*/
+
 require("../../reguaNavegacao.class.php");
 require("../../usuarios.class.php");
 session_start();
@@ -15,6 +22,8 @@ session_start();
 <script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="portfolio.js"></script>
+<script type="text/javascript" src="../../js/ajax.js"></script>
+<script type="text/javascript" src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <!--[if IE 6]>
@@ -35,6 +44,9 @@ $update = isset($_GET['update']) ? "1" : "0";
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
 
+if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
+	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
+
 $turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("</head>\n<body>\n<h2><center>A id da turma precisa estar setada para acessar, por favor volte.\n</h2></center>\n</html>");
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
@@ -43,15 +55,15 @@ if($perm == false){
 }
 ?>
 
-<script type="text/javascript" src="../../js/ajax.js"></script>
-<script type="text/javascript" src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript">
 
 var refreshImageList = (function() {
 	function getFileListHandler() {
 		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
 			return;
 		}
+		
 		if (this.status !== 200) {
 			return;
 		}
@@ -89,6 +101,105 @@ var refreshImageList = (function() {
 		}
 	}
 	return getFileListFunction(getFileListHandler,<?=$projeto_id?>,<?=TIPOPORTFOLIO?>,"image/%");
+})();
+
+var uploadAttImage = (function () {
+	function handler() {
+		
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
+			return;
+		}
+		// Fim do request, remover tela de loading
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'none';
+		}
+		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			return;
+		}
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: "+e.message+":\n"+t);
+				alert ("Algo de errado aconteceu.");
+			}
+			if(res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
+					erro += "\n" + res.errors[i];
+				};
+				alert(erro);
+			} else if (res.file_id && res.file_name) {
+				// SUCCESS
+				var html = imageHTML(res.file_id);
+				objContent.execCommand('inserthtml',false,html);
+				abreFechaLB();
+				document.getElementById('troca_img3').onclick();
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+			}
+		}
+	}
+	
+	var upload = submitFormFunction(handler);
+	
+	return (function (oFormElement) {
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'block';
+		}
+		upload(oFormElement);
+	});
+})();
+
+var uploadAttFile = (function() {
+	function handler() {
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
+			return;
+		}
+		// Fim do request, remover tela de loading
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'none';
+		}
+		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			return;
+		}
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: "+e.message+":\n"+t);
+				alert ("Algo de errado aconteceu.");
+			}
+			if(res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
+					erro += "\n" + res.errors[i];
+				};
+				alert(erro);
+			} else if (res.file_id && res.file_name) {
+				// SUCCESS
+				var html = fileHTML(res.file_id,res.file_name);
+				objContent.execCommand('inserthtml',false,html);
+				abreFechaLB();
+				document.getElementById('troca_img3').onclick();
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+			}
+		}
+	}
+	var upload = submitFormFunction(handler);
+	return (function (f) {
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'block';
+		}
+		upload(f);
+	});
 })();
 </script>
 <script language="javascript">
@@ -137,7 +248,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
-							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins">
+							<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins" onsubmit="uploadAttImage(this); return false;">
 								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" /> 
 								<input name="userfile" type="file" id="arquivo_frame_ins" class="upload_file" style="" onchange="trocador('falso_frame_ins', 'arquivo_frame_ins')" />
 								<input name="falso" type="text" id="falso_frame_ins" />
@@ -192,14 +303,14 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		<div id="arquivo_lbox">
 			<h1>ANEXAR ARQUIVO</h1>
 			<ul class="sem_estilo" style="line-height:25px">
-				<li><input type="radio" id="troca_arq1" class="select_arq" name="select_arq" checked="checked" />Procurar no Computador</li>
-				<li><input type="radio" id="troca_arq2" class="select_arq" name="select_arq"/>Procurar nos arquivos já enviados</li>
+				<li><input onclick="arquivos_mode = 1;" type="radio" id="troca_arq1" class="select_arq" name="select_arq" checked="checked" />Procurar no Computador</li>
+				<li><input onclick="arquivos_mode = 0;" type="radio" id="troca_arq2" class="select_arq" name="select_arq"/>Procurar nos arquivos já enviados</li>
 				<li>
 					<div id="cont_arq">
 						<ul id="cont_arq1">
 							<li id="procurar_arq">
 								Adicionar novo arquivo:
-								<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAX">
+								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
 									<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 									<input type="hidden" name="gambiarra" value="3337333" />
 									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
@@ -216,8 +327,10 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE funcionalidade_tipo='$funcionalidade_tipo' AND funcionalidade_id='$funcionalidade_id'");
 
 							for($i=0 ; $i<$consulta->registros;$i++) {
+								$arquivo_id = $consulta->resultado['arquivo_id'];
+								$arquivo_nome = $consulta->resultado['nome'];
 ?>
-								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$consulta->resultado['arquivo_id']?>" onclick="addRemove(<?=$consulta->resultado['arquivo_id']?>, '<?=$consulta->resultado['nome']?>')" /><?=$consulta->resultado['nome']?></li>
+								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$arquivo_id?>" onclick="addRemove(<?=$arquivo_id?>, '<?=$arquivo_nome?>')" /><?=$arquivo_nome?></li>
 <?php
 								$consulta->proximo();
 							}
@@ -226,7 +339,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 					</div>
 				</li>
 				<li>
-					<div align="right"><input type="image" src="../../images/botoes/bt_confir_pq.png" /></div>
+					<div align="right"><input type="image" onclick="arquivoInsert()"; src="../../images/botoes/bt_confir_pq.png" /></div>
 				</li>
 			</ul>
 		</div>
@@ -344,8 +457,13 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		</div><!-- para a imagem de fundo da base -->
 			
 	</div><!-- fim da geral -->
-
-
+	<!-- loading -->
+	<div id="loading" style="display:none;">
+		<div class="spacer_50"><!-- empty --> </div>
+		<div class="loading_anim">
+			<h2>Processando</h2>
+		</div>
+	</div>
 </body>
 </html>
 
