@@ -70,7 +70,7 @@ function doHead(hType) {
 		if(ua == "Netscape") 
 			objContent.execCommand('inserthtml', false, html);
 		else {
-			objContent.focus();
+			objHolder.focus();
 			var range = objContent.selection.createRange();
 			range.pasteHTML(html);
 		}
@@ -83,7 +83,7 @@ function doTable2(html) {
 		if(ua == "Netscape") 
 			objContent.execCommand('inserthtml', false, html);
 		else {
-			objContent.focus();
+			objHolder.focus();
 			var range = objContent.selection.createRange();
 			range.pasteHTML(html);
 		}
@@ -96,7 +96,7 @@ function doTable3(html) {
 		if(ua == "Netscape") 
 			objContent.execCommand('inserthtml', false, html);
 		else {
-			objContent.focus();
+			objHolder.focus();
 			var range = objContent.selection.createRange();
 			range.pasteHTML(html);
 		}
@@ -109,7 +109,7 @@ function doTable3(html) {
 		if(ua == "Netscape") 
 			objContent.execCommand('inserthtml', false, html);
 		else {
-			objContent.focus();
+			objHolder.focus();
 			var range = objContent.selection.createRange();
 			range.pasteHTML(html);
 		}
@@ -144,11 +144,23 @@ function fileHTML(id,text){
 }
 /////// Adicionador de imagens pra galeria de postagem do blog
 function addImage(){
+	var e = document.getElementsByName("select_img"),l,i;
+	objHolder.focus();
+
+	l = e.length;
+	for (i=0;i<l;i+=1) {
+		if (e[i].checked) {
+			modo = parseInt(e[i].value);
+			console.log("modo:"+modo);
+		}
+	}
+	
 	switch(modo){
 		case 1: // Caso 1 a id já vem na URL.
+			console.log("modo1:"+modo);
 			if (e = document.getElementById('cont_img1')) {
 
-				if (f = e.getElementsByTagName("FORM")) {
+				if (f = e.getElementsByTagName("form")) {
 					if (uploadAttImage) {
 						uploadAttImage(f[0]);
 						return;
@@ -206,7 +218,7 @@ function fromgallery(imageid){
 
 ///////////////////////////////////////////////////////// Arquivos!
 
-var arquivos = new Array();
+var arquivos = [];
 var arquivos_mode = 1;
 
 function addRemove(arquivo_id, nome_arquivo) { // Funciona no Firefox. 
@@ -233,10 +245,15 @@ function previewArquivo(falha, filename, id){
 }
 
 function arquivoInsert(){
-	if (arquivos_mode == 1) { // Vindo do upload, faço isso mais tarde
-		if(e = document.getElementById('cont_arq1')) {
-			if (f = document.getElementsByTagName('FORM')) {
+	var arq,l,i,name,id;
+	objHolder.focus();
+	if (arquivos_mode === 1) { // Vindo do upload, faço isso mais tarde
+		e = document.getElementById('cont_arq1');
+		if(e) {
+			f = e.getElementsByTagName('form');
+			if (f && (f.length > 0)) {
 				if (uploadAttFile) {
+					console.log(f[0]);
 					uploadAttFile(f[0]);
 					return;
 				}
@@ -244,13 +261,30 @@ function arquivoInsert(){
 		}
 		abreFechaLB();
 	} else { // Postando link já uploadeado.
-		if (arquivos.length <= 0)
-			alert("Por favor, selecione pelo menos um arquivo para ser inserido.");
-		else {
-			for (i=0; i<arquivos.length; i++) {
-				url = fileHTML(arquivos[i][0], arquivos[i][1]);
-				objContent.execCommand('inserthtml', false, url);
+		arquivos = [];
+		
+		arq = document.getElementsByName("arquivo");
+		l = arq.length;
+		
+		for (i=0;i<3;i+=1) {
+			_id = null;
+			_name = null;
+			if (arq[i].checked) {
+				_id = arq[i].value;
+				_name = document.getElementById("fileN"+_id).innerText;
+				console.log(_name);
+				arquivos.push([_id, _name]);
 			}
+		}
+		if (arquivos.length <= 0) {
+			alert("Por favor, selecione pelo menos um arquivo para ser inserido.");
+		}
+		else {
+			url = [];
+			for (i=0; i<arquivos.length; i++) {
+				url.push(fileHTML(arquivos[i][0], arquivos[i][1]))
+			}
+			objContent.execCommand('inserthtml', false, url.join("<br /> "));
 			abreFechaLB();
 		}
 	}

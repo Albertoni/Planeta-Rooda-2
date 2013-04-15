@@ -19,7 +19,6 @@ session_start();
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
 <script type="text/javascript" src="../../js/compatibility.js"></script>
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="portfolio.js"></script>
 <script type="text/javascript" src="../../js/ajax.js"></script>
@@ -101,7 +100,7 @@ var refreshImageList = (function() {
 		}
 	}
 	return getFileListFunction(getFileListHandler,<?=$projeto_id?>,<?=TIPOPORTFOLIO?>,"image/%");
-})();
+}());
 
 var uploadAttImage = (function () {
 	function handler() {
@@ -152,7 +151,7 @@ var uploadAttImage = (function () {
 		}
 		upload(oFormElement);
 	});
-})();
+}());
 
 var uploadAttFile = (function() {
 	function handler() {
@@ -200,7 +199,7 @@ var uploadAttFile = (function() {
 		}
 		upload(f);
 	});
-})();
+}());
 </script>
 <script language="javascript">
 function ajusta_img(){
@@ -212,13 +211,15 @@ function ajusta_img(){
 }
 
 var objContent;
+var objHolder;
 
 function Init() {
 	var ua = navigator.appName; 
+	objHolder = document.getElementById('text_post');
 	if(ua == "Netscape")
-		objContent = document.getElementById('text_post').contentDocument;
+		objContent = objHolder.contentDocument;
 	else
-		objContent = document.getElementById('text_post').document;
+		objContent = objHolder.document;
 	objContent.designMode = "On";
 	
 	objContent.body.style.fontFamily = 'Verdana';
@@ -242,9 +243,9 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 			<h1>INSERIR IMAGEM</h1>
 			<ul class="sem_estilo" style="line-height:25px">
 				/* */
-				<li><input type="radio" id="troca_img1" class="select_img" name="select_img" checked="checked" onclick="modo=1"/>Procurar no Computador</li>
-				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" onclick="modo=2"/>Imagem da Web</li>
-				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" onclick="modo=3;refreshImageList();"/>Procurar nas imagens já enviadas</li>
+				<li><input type="radio" id="troca_img1" class="select_img" name="select_img" checked="checked" value="1"/>Procurar no Computador</li>
+				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" value="2" />Imagem da Web</li>
+				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" value="3" onclick="refreshImageList();" />Procurar nas imagens já enviadas</li>
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
@@ -330,7 +331,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 								$arquivo_id = $consulta->resultado['arquivo_id'];
 								$arquivo_nome = $consulta->resultado['nome'];
 ?>
-								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$arquivo_id?>" onclick="addRemove(<?=$arquivo_id?>, '<?=$arquivo_nome?>')" /><?=$arquivo_nome?></li>
+								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$arquivo_id?>" name="arquivo" value="<?=$arquivo_id?>" /><span id="fileN<?=$arquivo_id?>"><?=$arquivo_nome?></span></li>
 <?php
 								$consulta->proximo();
 							}
@@ -339,7 +340,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 					</div>
 				</li>
 				<li>
-					<div align="right"><input type="image" onclick="arquivoInsert()"; src="../../images/botoes/bt_confir_pq.png" /></div>
+					<div align="right"><input type="image" onclick="arquivoInsert();" src="../../images/botoes/bt_confir_pq.png" /></div>
 				</li>
 			</ul>
 		</div>
