@@ -141,6 +141,7 @@ class turma{
 		$alteracoes = 0;
 		$sql = '';
 		
+		// DEBUG REMOVER ISSO ASSIM QUE O TEMPO DE ULTIMO LOGIN FOR IMPLEMENTADO
 		$data_param = strtotime("-5 years"); //código de teste para mostrar para as gurias na reunião...
 		$data_param = date("Y-m-d H:i:s", $data_param);
 		
