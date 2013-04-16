@@ -54,12 +54,89 @@
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
+<script src="../../js/compatibility.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript" src="../../postagem_wysiwyg.js"></script><!--para o mostraDescri()-->
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="blog.js"></script>
 <script type="text/javascript" src="blog_ajax.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 
+<script>
+/* REFRESH FILE LIST */
+var getFileList = (function() {
+	function getFileListHandler() {
+		if (this.readyState !== this.DONE) {
+			return;
+		}
+		if (this.status !== 200) {
+			return;
+		}
+		// OK
+		if(t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+				console.log(t);
+			}
+			catch (e) {
+				c
+				console.log("JSON: " + e.message + ":\n" + t); 
+				return;
+			}
+			if (!res.ok) {
+				if (!res.errors) {
+					console.log("Unknown error 1723");
+				} else {
+					var erro = res.errors[0];
+					for (var i=1; i < res.errors.length; i+=1) {
+						erro += "\n"+res.errors[i];
+					}
+					console.log(erro);
+				}
+				return;
+			} else {
+				// SUCCESS
+				var n = res.files.length;
+			}
+		}
+	}
+	return  getFileListFunction(getFileListHandler,<?=$blog_id?>,<?=TIPOBLOG?>);
+})();
+
+// DELETE FILE AJAX
+
+var deleteFile = (function () {
+	function deleteFileHandler() {
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t)
+			}
+			catch (e) {
+				console.log("JSON: " + e.message);
+				alert("Algo de errado aconteceu.");
+				return;
+			}
+			if (res.ok) {
+				if(elem = document.getElementById("liFile" + this.fileId)) {
+					elem.parentElement.removeChild(elem);
+				}
+			} else {
+				if(res.error) {
+					alert(res.error);
+				} else {
+					alert("Nao deu certo");
+				}
+			}
+		}
+	};
+	
+	var deleteFile = deleteFileFunction(deleteFileHandler);
+	return (function (id) {
+		deleteFile(id);
+	});
+})();
+</script>
 <script language="javascript">
 
 function coment(){
@@ -121,10 +198,10 @@ function coment(){
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		
 		<div class="bts_cima">
-			<a href="blog_inicio.php"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
+		<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
 <?php
 if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
-	echo "			<a href=\"blog_postagem.php?blog_id=$blog_id&turma=$turma\"><img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\" align=\"right\"/></a>";
+	echo "			<a href=\"blog_postagem.php?blog_id=$blog_id&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\" align=\"right\"/></a>";
 }
 ?>
 		</div>
@@ -202,9 +279,9 @@ imprimeListaPosts($blog->getId(), $turma);
 								$destino =$downloadFile;
 								$destino.="?id=".$consulta->resultado['arquivo_id'];
 ?>
-						<li class="tabela_blog" id="arquivo<?=$consulta->resultado['arquivo_id']?>">
+						<li class="tabela_blog" id="liFile<?=$consulta->resultado['arquivo_id']?>">
 							<a href="<?=$destino?>" target='_blank'> <?=$file_name ?> </a> 
-							<div class="bts_caixa"><img class="apagar" src="../../images/botoes/bt_x.png" onclick="killFile(<?=$consulta->resultado['arquivo_id']?>)"/></div>
+							<div class="bts_caixa"><img class="apagar" src="../../images/botoes/bt_x.png" onclick="deleteFile(<?=$consulta->resultado['arquivo_id']?>)"/></div>
 						</li>
 <?php
 								$consulta->proximo();

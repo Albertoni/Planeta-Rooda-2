@@ -118,9 +118,9 @@ input[type="text"] { width:100%}
 #cont_img2 input[type=text] {width:100%}
 
 #cont_img3 {width:456px; max-height:156px; overflow-x:hidden; overflow-y:auto; background-color:#FFF; border:1px solid #CCC}
-
+/*
 .img_enviadas {float: left; height:50px; border:1px solid #aaa; margin:3px; background-color:#FFF}
-
+*/
 #link_lbox input[type=text] {width:100%; margin-bottom:15px}
 
 #cont_arq {height:213px; margin-top:15px}

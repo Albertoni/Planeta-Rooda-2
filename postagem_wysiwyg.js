@@ -16,8 +16,12 @@ function enviaForm(action_url,confirma) {
 }
 
 function checar(){
-	document.getElementById('troca_img1').checked='checked';
-	document.getElementById('troca_arq1').checked='checked';
+	if (elem = document.getElementById('troca_img1')) {
+		elem.checked='checked';
+	}
+	if (elem = document.getElementById('troca_arq1')) {
+		elem.checked='checked';
+	}
 }
 
 function gravaConteudo() {
@@ -151,13 +155,11 @@ function addImage(){
 	for (i=0;i<l;i+=1) {
 		if (e[i].checked) {
 			modo = parseInt(e[i].value);
-			console.log("modo:"+modo);
 		}
 	}
 	
 	switch(modo){
 		case 1: // Caso 1 a id já vem na URL.
-			console.log("modo1:"+modo);
 			if (e = document.getElementById('cont_img1')) {
 
 				if (f = e.getElementsByTagName("form")) {
@@ -425,8 +427,10 @@ $(document).ready(function(){
 				mode=1;
 				abreFechaLB();
 				if (marcado){
-					limpaContImg();
-					$('#cont_img1').css('display','block');
+					if(document.getElementById("cont_img1")){
+						limpaContImg();
+						$('#cont_img1').css('display','block');
+					}
 				}
 				marcado = false;
 				break;

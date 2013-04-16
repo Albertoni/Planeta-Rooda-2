@@ -1,4 +1,11 @@
 <?php
+
+/*\
+ *
+ * portfolio_novo_projeto.php
+ *
+\*/
+
 require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
@@ -35,8 +42,8 @@ if(!$_SESSION['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
 	<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 	<link type="text/css" rel="stylesheet" href="portfolio.css" />
 
+	<script type="text/javascript" src="../../js/compatibility.js"></script>
 	<script type="text/javascript" src="../../jquery.js"></script>
-	<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 	<script type="text/javascript" src="../../planeta.js"></script>
 	<script type="text/javascript" src="portfolio.js"></script>
 	<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
@@ -46,30 +53,33 @@ if(!$_SESSION['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
 	<script type="text/javascript" src="planeta_ie6.js"></script>
 	<![endif]-->
 
-	<script language="javascript">
-	function ajusta_img(){ 
-		if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-			$('#cont_img3').css('width','436px');
-			$('#cont_img3').css('padding-right','20px');
-			$('#cont_img').css('height','170px');
-		}
+<script type="text/javascript">
+function ajusta_img() { 
+	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+		$('#cont_img3').css('width','436px');
+		$('#cont_img3').css('padding-right','20px');
+		$('#cont_img').css('height','170px');
 	}
-	function Init() {
-		var ua = navigator.appName; 
-		if(ua == "Netscape") 
-			objContent = document.getElementById('text_post').contentDocument;
-		else
-			objContent = document.getElementById('text_post').document;
-		objContent.designMode = "On";
-	
-		objContent.body.style.fontFamily = 'Verdana';
-		objContent.body.style.fontSize = '11px';
+}
+
+var objContent;
+var objHolder;
+
+function Init() {
+	var ua = navigator.appName; 
+	objHolder = document.getElementById('text_post');
+	if(ua == "Netscape") {
+		objContent = objHolder.contentDocument;
+	} else {
+		objContent = objHolder.document;
 	}
-	
-	var objContent;
-	
-	function teste621(){alert("socorro estou preso no computador");}
-	</script>
+	objContent.designMode = "On";
+
+	objContent.body.style.fontFamily = 'Verdana';
+	objContent.body.style.fontSize = '11px';
+}
+modo=2;
+</script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();Init(); checar(); ajusta_img();">
@@ -85,41 +95,13 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 			<h1>INSERIR IMAGEM</h1>
 			<ul class="sem_estilo" style="line-height:25px">
 				<li>Você não pode enviar uma imagem antes de criar o Portfólio. Caso seja necessário, edite o post depois de criá-lo, ou use outro site para dar upload na imagem.</li>
-				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" onclick="modo=2"/>Imagem da Web</li>
-				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" onclick="modo=3"/>Procurar nas imagens já enviadas</li>
+				<li><input type="radio" id="troca_img2" class="select_img" checked name="select_img" value="2" />Imagem da Web</li>
 				<li>
 					<div id="cont_img">
-						<ul id="cont_img2">
+						<ul id="cont_img2" style="display:block;">
 							<li><input type="text" id="imagefromurl" value="http://" /></li>
 							<li style="margin-top:-5px">Endereço da imagem</li>
 						</ul>
-						<div id="cont_img3">
-						<table width="100%">
-							<tr>
-							<?php
-							//	Dumpando a lista de imagens que tem no blog
-
-							$consulta = new conexao();
-
-							/*\
-							 *	SELECT arquivo FROM $tabela_arquivos WHERE tipo LIKE 'image/%'
-							 *	Pega o BLOB de todas as imagens pra dar resize.
-							\*/
-							global $tabela_arquivos;
-							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%'");
-
-							for($i=0 ; $i<count($consulta->itens);$i++) {
-								$id = $consulta->resultado['arquivo_id']; 
-								if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.
-							?>
-							<td><? echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/>'; ?></div></td>
-<?php
-								$consulta->proximo();
-							}
-						?>
-							</tr>
-						</table>
-						</div>
 					</div>
 				</li>
 				<li>
@@ -128,33 +110,6 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 			</ul>
 		</div>
 		
-		<div id="arquivo_lbox">
-			<h1>ANEXAR ARQUIVO</h1>
-			<ul class="sem_estilo" style="line-height:25px">
-				<li>Você não pode enviar um arquivo antes de criar o Portfólio. Caso seja necessário, edite o post depois de criá-lo.</li>
-				<li><input type="radio" id="troca_arq2" class="select_arq" onclick="arquivos_mode=2" name="select_arq"/>Procurar nos arquivos já enviados</li>
-				<li>
-					<div id="cont_arq">
-						<ul id="cont_arq2">
-
-<?php
-							$consulta = new conexao();
-							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE uploader_id='".$_SESSION['SS_usuario_id']."'");
-							for($i=0 ; $i<count($consulta->itens);$i++) {
-?>
-								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$consulta->resultado['arquivo_id']?>" onclick="addRemove(<?=$consulta->resultado['arquivo_id']?>, '<?=$consulta->resultado['nome']?>')" /><?=$consulta->resultado['nome']?></li>
-<?php
-								$consulta->proximo();
-							}
-?>
-						</ul>
-					</div>
-				</li>
-				<li>
-					<div align="right"><a href="javascript:arquivoInsert();"><img src="../../images/botoes/bt_confir_pq.png" onclick="confirmaAnexarArquivos()" /></a></div>
-				</li>
-			</ul>
-		</div>
 <?php
 }
 
@@ -260,7 +215,6 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 {
 ?>
-								<div class="tool_bt" id="alt_arquivo"><img src="../../images/botoes/tool_arquivo.png" /></div>
 								<div class="tool_bt" id="alt_imagem"><img src="../../images/botoes/tool_imagem.png" /></div>
 <?php
 }

@@ -6,9 +6,14 @@
  *
 \*/
 
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
 require("../../reguaNavegacao.class.php");
 require("../../usuarios.class.php");
+
 session_start();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -29,9 +34,6 @@ session_start();
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
 <?php
-require_once("../../bd.php");
-require_once("../../cfg.php");
-require_once("../../funcoes_aux.php");
 
 $projeto_id	= isset($_GET['projeto_id'])	? $_GET['projeto_id']	: NULL;
 $post_id	= isset($_GET['post_id'])		? $_GET['post_id']		: 0;
@@ -200,9 +202,8 @@ var uploadAttFile = (function() {
 		upload(f);
 	});
 }());
-</script>
-<script language="javascript">
-function ajusta_img(){
+
+function ajusta_img() {
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
 		$('#cont_img3').css('width','436px');
 		$('#cont_img3').css('padding-right','20px');
@@ -216,10 +217,11 @@ var objHolder;
 function Init() {
 	var ua = navigator.appName; 
 	objHolder = document.getElementById('text_post');
-	if(ua == "Netscape")
+	if(ua == "Netscape") {
 		objContent = objHolder.contentDocument;
-	else
+	} else {
 		objContent = objHolder.document;
+	}
 	objContent.designMode = "On";
 	
 	objContent.body.style.fontFamily = 'Verdana';
@@ -276,15 +278,15 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							 *	SELECT arquivo FROM $tabela_arquivos WHERE tipo LIKE 'image/%'
 							 *	Pega o BLOB de todas as imagens pra dar resize.
 							\*/
+
 							global $tabela_arquivos;
 							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
 
 							while($consulta->resultado) {
 								$id = $consulta->resultado['arquivo_id']; 
 								//if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.
-?>
-								<? echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/>'; ?></div>
-<?php
+
+								echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/></div>';
 								$consulta->proximo();
 							}
 	/*
@@ -304,8 +306,8 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		<div id="arquivo_lbox">
 			<h1>ANEXAR ARQUIVO</h1>
 			<ul class="sem_estilo" style="line-height:25px">
-				<li><input onclick="arquivos_mode = 1;" type="radio" id="troca_arq1" class="select_arq" name="select_arq" checked="checked" />Procurar no Computador</li>
-				<li><input onclick="arquivos_mode = 0;" type="radio" id="troca_arq2" class="select_arq" name="select_arq"/>Procurar nos arquivos já enviados</li>
+				<li><input onclick="arquivos_mode = 1;" value="1" type="radio" id="troca_arq1" class="select_arq" name="select_arq" checked="checked" />Procurar no Computador</li>
+				<li><input onclick="arquivos_mode = 0;" value="0" type="radio" id="troca_arq2" class="select_arq" name="select_arq"/>Procurar nos arquivos já enviados</li>
 				<li>
 					<div id="cont_arq">
 						<ul id="cont_arq1">

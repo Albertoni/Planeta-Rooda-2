@@ -9,14 +9,17 @@ require("aula.class.php");
 require("../../reguaNavegacao.class.php");
 
 session_start();
+if (! isset($_SESSION['SS_usuario_id'])) die("favor voltar e logar em sua conta");
+
+$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : false;
+if (!$turma)
+{
+	die("Turma n&atilde;o encontrada");
+}
+
 $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
 
-if (! isset($_SESSION['SS_usuario_id'])) die("favor voltar e logar em sua conta");
-
-if (isset($_GET['turma']) and $_GET['turma'] != ""){
-	$turma = $_GET['turma'];
-}
 
 $permissoes = checa_permissoes(TIPOAULA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
@@ -26,6 +29,9 @@ if(!$usuario->podeAcessar($permissoes['aulas_criarAulas'], $turma)){
 	$uri	=	rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
 	header("Location: http://$host$uri/planeta_aulas.php?turma=$turma");
 }
+
+$funcionalidade_tipo=TIPOAULA;
+$funcionalidade_id = $turma;
 
 $aula_id = isset($_GET['aula_id']) ? $_GET['aula_id'] : 0;
 $aula = new aula();
@@ -56,6 +62,8 @@ if($aula_id!=0) {
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="aulas.js"></script>
+<script type="text/javascript" src="../../js/ajax.js"></script>
+<script type="text/javascript" src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 
@@ -65,19 +73,173 @@ if($aula_id!=0) {
 <![endif]-->
 
 
-<script type="text/javascript" src="blog_postagem.js"></script>
+<!-- <script type="text/javascript" src="blog_postagem.js"></script> -->
 <script language="javascript">
+var refreshImageList = (function() {
+	function getFileListHandler() {
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
+			return;
+		}
+		
+		if (this.status !== 200) {
+			return;
+		}
+		if(t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: " + e.message + ":\n" + t); 
+				return;
+			}
+			if (!res.ok) {
+				if (res.errors) {
+					var erro = res.errors[0];
+					for (var i=1; i < res.errors.length; i+=1) {
+						erro += "\n"+res.errors[i];
+					}
+					console.log(erro);
+				}
+				console.log("Couldn't refresh image list");
+				return;
+			} else {
+				// SUCCESS
+				var n = res.files.length;
+				var images_container = document.getElementById("cont_img3");
+				if (images_container) {
+					var html = "";
+					for (var i=0;i<n;i+=1) {
+						var id = res.files[i].file_id;
+						html += '<div id="galeria'+id+'" class="img_enviadas"><img onclick="fromgallery('+id+')" src="../../image_output.php?file='+id+'" /></div>\n';
+					}
+					images_container.innerHTML = html;
+				}
+			}
+		}
+	}
+	return getFileListFunction(getFileListHandler,<?=$turma?>,<?=TIPOAULA?>,"image/%");
+}());
 
-// Código do Pato para ativar HTML na área de edição
+var uploadAttImage = (function () {
+	function handler() {
+		
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
+			return;
+		}
+		// Fim do request, remover tela de loading
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'none';
+		}
+		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			return;
+		}
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: "+e.message+":\n"+t);
+				alert ("Algo de errado aconteceu.");
+			}
+			if(res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
+					erro += "\n" + res.errors[i];
+				};
+				alert(erro);
+			} else if (res.file_id && res.file_name) {
+				// SUCCESS
+				var html = imageHTML(res.file_id);
+				objContent.execCommand('inserthtml',false,html);
+				abreFechaLB();
+				document.getElementById('troca_img3').onclick();
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+			}
+		}
+	}
+	
+	var upload = submitFormFunction(handler);
+	
+	return (function (oFormElement) {
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'block';
+		}
+		upload(oFormElement);
+	});
+}());
+
+var uploadAttFile = (function() {
+	function handler() {
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, nao fazer nada.
+			return;
+		}
+		// Fim do request, remover tela de loading
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'none';
+		}
+		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			return;
+		}
+		if (t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				console.log("JSON: "+e.message+":\n"+t);
+				alert ("Algo de errado aconteceu.");
+			}
+			if(res.errors) {
+				var erro = res.errors[0];
+				for(var i=1;i<res.errors.length;i+=1) {
+					erro += "\n" + res.errors[i];
+				};
+				alert(erro);
+			} else if (res.file_id && res.file_name) {
+				// SUCCESS
+				var html = fileHTML(res.file_id,res.file_name);
+				objContent.execCommand('inserthtml',false,html);
+				abreFechaLB();
+				document.getElementById('troca_img3').onclick();
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+			}
+		}
+	}
+	var upload = submitFormFunction(handler);
+	return (function (f) {
+		if (e = document.getElementById('loading')) {
+			e.style.display = 'block';
+		}
+		upload(f);
+	});
+}());
+
+function ajusta_img() {
+	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+		$('#cont_img3').css('width','436px');
+		$('#cont_img3').css('padding-right','20px');
+		$('#cont_img').css('height','170px');
+	}
+}
+var objContent;
+var objHolder;
+
 function Init() {
 	var ua = navigator.appName; 
+	objHolder = document.getElementById('iView');
 	if(ua == "Netscape") 
-		objContent = document.getElementById('iView').contentDocument;
+		objContent = objHolder.contentDocument;
 	else
-		objContent = document.getElementById('iView').document;
+		objContent = objHolder.document;
 
 	objContent.designMode = "On";
-<?=$edita?"objContent.write('$cont');":""?>
+<?=($edita ? "objContent.write('$cont');" : " ");?>
 	objContent.body.style.fontFamily = 'Verdana';
 	objContent.body.style.fontSize = '11px';
 }
@@ -99,7 +261,7 @@ function Init() {
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
-							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$aula_id?>&funcionalidade_tipo=<?=TIPOAULA?>" target="alvoAJAXins">
+							<form method="post" enctype="multipart/form-data" action="../../uploadImage.php?funcionalidade_id=<?=$turma?>&funcionalidade_tipo=<?=TIPOAULA?>" target="alvoAJAXins" onsubmit="uploadAttImage(this); return false;">
 								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" /> 
 								<input name="userfile" type="file" id="arquivo_frame_ins" class="upload_file" style="" onchange="trocador('falso_frame_ins', 'arquivo_frame_ins')" />
 								<input name="falso" type="text" id="falso_frame_ins" />
@@ -115,8 +277,11 @@ function Init() {
 							<li style="margin-top:-5px">Endereço da imagem</li>
 						</ul>
 						<div id="cont_img3">
+<?php /*
 						<table width="100%">
+						<tr>
 <?php
+ */
 							$consulta = new conexao();
 
 							/*\
@@ -125,8 +290,8 @@ function Init() {
 							\*/
 							global $tabela_arquivos;
 							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%'");
+							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
 
-							echo '<tr>';
 							for($i=0 ; $i<count($consulta->itens);$i++) {
 								$id = $consulta->resultado['arquivo_id']; 
 								if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.

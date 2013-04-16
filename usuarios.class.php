@@ -111,8 +111,10 @@ class Usuario { //estrutura para o item post do blog
 		$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
 		//$this->dataUltimoLogin = $resultadoBD['personagem_ultimo_acesso'];
 		
-		$this->setGosto($resultadoBD['gosto']);
-		$this->setNaoGosto($resultadoBD['nao_gosto']);
+		
+		// DEBUG REMOVER ARROBAS E TESTAR ISSO CORRETAMENTE MAIS TARDE
+		@$this->setGosto($resultadoBD['gosto']);
+		@$this->setNaoGosto($resultadoBD['nao_gosto']);
 	}
 
 	/*
