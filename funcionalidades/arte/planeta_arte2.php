@@ -206,9 +206,6 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 			</div><!-- fim da div proj_encerrados -->
 		</div><!-- fim da div projetos -->
 	</div>
-		<div class="bts_baixo">
-			<img align="left" src="../../images/botoes/bt_voltar.png"/>
-		</div>
 	</div><!-- Fecha Div conteudo -->
 	</div><!-- Fecha Div conteudo_meio -->	
 	<div id="conteudo_base">
