@@ -21,9 +21,8 @@
 // AVISO IMPORTANTE: TODOS OS GOTOS LEVAM PARA O MESMO LUGAR, BEM NO FIM DO ARQUIVO.
 // AVISO DOIS: GOTOS SÓ EXISTEM DENTRO DE IFS E SE LOCALIZAM BEM NO FIM DA LINHA
 	
-	$pesquisar = new conexao();		//Conexão para as pesquisas no Bd - Guto - 10.05.10
 	$registrar = new conexao();		//Conexão para os registros no Bd - Guto - 10.05.10
-	if(($registrar->erro != "") or ($pesquisar->erro != "")) {
+	if($registrar->erro != "") {
 		$data .= '{ "valor":"1", "texto":"Erro no servidor"}'; //goto gambi;
 		$erro = 1;
 	}
@@ -42,8 +41,8 @@
 	$password	= md5($_POST['criar_senha']);// insert evil code to steal passwords here
 	
 	
-	$pesquisar->solicitar("SELECT * FROM $tabela_usuarios WHERE usuario_login='$login'");
-	if ($pesquisar->registros != 0) {
+	$registrar->solicitar("SELECT * FROM $tabela_usuarios WHERE usuario_login='$login'");
+	if ($registrar->registros != 0) {
 		$data .= '{ "valor":"1", "texto":"Este nome de usuário já existe"}'; //goto gambi;
 		$erro = 1;
 	}
@@ -55,11 +54,9 @@
 	}
 
 	if($erro != 1){
-		$registrar_chat = new conexao();
-		$registrar_chat->solicitar("INSERT INTO Chats (nome) VALUES ('$usuario')");
-		//$registrar_chat->solicitar("SELECT id FROM Chats WHERE nome = '$usuario'");
-		$idChat = $registrar_chat->ultimo_id();
-		if ($registrar_chat->erro != ""){
+		$registrar->solicitar("INSERT INTO Chats (nome) VALUES ('$usuario')");
+		$idChat = $registrar->ultimo_id();
+		if ($registrar->erro != ""){
 			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código cadastro_chat, valor '.$usuario.'"}'; //goto gambi;
 			$erro = 1;
 		}
@@ -73,7 +70,7 @@
 			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código 1. Detalhes:'.$registrar->erro.'"}'; //goto gambi;
 			$erro = 1;
 		}
-		$personagem_id = $registrar->ultimo_id();
+		$personagem_id  = $registrar->ultimo_id();
 		//O nome poderá ser mudado na ferramenta de administração pelo usuário - Guto - 10.05.10
 		$grupo_nome = "Sistema de ".$usuario;
 	}
@@ -97,18 +94,17 @@
 	}
 	
 	if($erro != 1){
-		$registrar_quarto = new conexao();
-		$registrar_quarto->solicitar("INSERT INTO $tabela_terrenos (terreno_nome, terreno_solo) VALUES ('$usuario', '6')");
-		if($registrar_quarto->erro != "") {
+		$registrar->solicitar("INSERT INTO $tabela_terrenos (terreno_nome, terreno_solo) VALUES ('$usuario', '6')");
+		if($registrar->erro != "") {
 			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código 7. Detalhes:'.$registrar->erro.'"}'; //goto gambi;
 			$erro = 1;
 		}
-		$quarto_id = $registrar_quarto->ultimo_id();
+		$quarto_id = $registrar->ultimo_id();
 	}
 	
 	if($erro != 1){
-		$registrar_quarto->solicitar("UPDATE $tabela_usuarios SET quarto_id = $quarto_id WHERE usuario_id='$usuario_id'");
-		if($registrar_quarto->erro != "") {
+		$registrar->solicitar("UPDATE $tabela_usuarios SET quarto_id = $quarto_id WHERE usuario_id='$usuario_id'");
+		if($registrar->erro != "") {
 			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código 8. Detalhes:'.$registrar->erro.'"}'; //goto gambi;
 			$erro = 1;
 		}
@@ -123,8 +119,8 @@
 			}
 		
 			$data .= '{ "valor":"0", "texto":"Cadastro efetuado"}';
-			$pesquisar->solicitar("SELECT * FROM $tabela_nivel_permissoes WHERE nivel='$nivel'");
-			$nomeNivel = $pesquisar->resultado['nivel_nome'];;
+			$registrar->solicitar("SELECT * FROM $tabela_nivel_permissoes WHERE nivel='$nivel'");
+			$nomeNivel = $registrar->resultado['nivel_nome'];;
 			$assunto = "Pedido de nível";
 			$mensagem = "O usuário $usuario\n";
 			$mensagem .= "solicitou o pedido de nível de $nomeNivel\n";
