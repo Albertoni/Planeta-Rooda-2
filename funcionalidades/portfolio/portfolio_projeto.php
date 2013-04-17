@@ -39,55 +39,18 @@ if($perm === false){
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script>
-/* REFRESH FILE LIST */
-var getFileList = (function() {
-	function getFileListHandler() {
-		if (this.readyState !== this.DONE) {
-			return;
-		}
-		if (this.status !== 200) {
-			return;
-		}
-		// OK
-		if(t = this.responseText) {
-			try {
-				res = JSON.parse(t);
-			}
-			catch (e) {
-				console.log("JSON: " + e.message + ":\n" + t); 
-				return;
-			}
-			if (!res.ok) {
-				if (!res.errors) {
-					console.log("Unknown error 1723");
-				} else {
-					var erro = res.errors[0];
-					for (var i=1; i < res.errors.length; i+=1) {
-						erro += "\n"+res.errors[i];
-					}
-					console.log(erro);
-				}
-				return;
-			} else {
-				// SUCCESS
-				var n = res.files.length;
-			}
-		}
-	}
-	return  getFileListFunction(getFileListHandler,<?=$projeto_id?>,<?=TIPOPORTFOLIO?>);
-})();
-
 /* UPLOAD FILE AJAX */
 var submitFileForm = (function () {
 	function uploadFormHandler(){
+		var loading, file_list, t, res, newfile;
 		if (this.readyState !== this.DONE) {
 			// requisição em andamento, não fazer nada.
 			return;
 		}
 		
 		// Fim do request, remover tela de loading
-		if (e = document.getElementById('loading')) {
-			e.style.display = 'none';
+		if (loading = document.getElementById('loading')) {
+			loading.style.display = 'none';
 		}
 
 		if (this.status !== 200) {
@@ -95,10 +58,10 @@ var submitFileForm = (function () {
 			return;
 		}
 		// OK
-		var file_list = document.getElementById("caixa_arq");
+		file_list = document.getElementById("caixa_arq");
 		if(t = this.responseText) {
 			try {
-				var res = JSON.parse(t);
+				res = JSON.parse(t);
 			}
 			catch (e) {
 				alert("Erro desconhecido (0xTTYLGB");
@@ -106,13 +69,9 @@ var submitFileForm = (function () {
 				return;
 			}
 			if (res.errors) {
-				var erro = res.errors[0];
-				for(var i=1;i<res.errors.length;i+=1) {
-					erro += "\n" + res.errors[i];
-				};
-				alert(erro);
+				alert(res.errors.join("\n"));
 			} else if (res.file_id && res.file_name) {
-				var newfile = document.createElement("li");
+				newfile = document.createElement("li");
 				newfile.id = "liFile" + res.file_id;
 				newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
 					'<img align="right" src="../../images/botoes/bt_x.png" onclick="if(confirm(\'Tem certeza que deseja excluir este arquivo?\')) { deleteFile(' + res.file_id + ') };" />';
@@ -126,12 +85,13 @@ var submitFileForm = (function () {
 	}
 	submitForm = submitFormFunction(uploadFormHandler);
 	return (function (f) {
-		if (e = document.getElementById('loading')) {
+		var e = document.getElementById('loading');
+		if (e) {
 			e.style.display = 'block';
 		}
 		submitForm(f);
 	});
-})();
+}());
 
 // DELETE FILE AJAX
 
@@ -164,7 +124,7 @@ var deleteFile = (function () {
 	return (function (id) {
 		deleteFile(id);
 	});
-})();
+}());
 </script>
 </head>
 
@@ -383,35 +343,6 @@ var deleteFile = (function () {
 				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
-					<li id="addFileDiv" style="display:none">
-						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$projeto_id?>&amp;funcionalidade_tipo=<?=TIPOPORTFOLIO?>" onsubmit="submitFileForm(this);return false;">
-							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-							<div class="file_input" style="display:inline-block">
-								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
-							</div>
-							<div id="f_arquivo" style="display:inline-block;width: 80px;" class="falso_text">&nbsp;</div>
-							<br>
-							<button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
-						</form>
-							<script>
-
-
-	// -------------
-	var bt_arquivo = document.getElementById('procura_arquivo');
-	var f_arquivo = document.getElementById('f_arquivo');
-	
-
-	var change_file = function (){
-		f_arquivo.innerHTML = '&nbsp;';
-		for (i=0;i<bt_arquivo.files.length;i++){
-			f_arquivo.innerHTML = bt_arquivo.files[i].name + ' ';
-		}
-	};
-	bt_arquivo.onchange = change_file;
-	bt_arquivo.form.onreset = change_file;
-
-</script>
-					</li>
 					<?
 						global $tabela_arquivos;
 						$tipoPortfolio = TIPOPORTFOLIO;
@@ -459,8 +390,6 @@ var deleteFile = (function () {
 						$tipoPortfolio=TIPOPORTFOLIO;
 						$consulta = new conexao();
 						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
-						print $consulta->erro;
-						print "SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'";
 						
 						for ($i=0 ; $i < count($consulta->itens) ; $i++){
 							$liId = $consulta->resultado['Id'];

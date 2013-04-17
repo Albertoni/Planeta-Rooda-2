@@ -51,7 +51,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>
-<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
 <script src="../../js/compatibility.js"></script>
@@ -64,44 +64,111 @@
 <script type="text/javascript" src="../lightbox.js"></script>
 
 <script>
-/* REFRESH FILE LIST */
-var getFileList = (function() {
-	function getFileListHandler() {
+var linkHTML = function (link) {
+	return "<li class=\"tabela_blog\"><a href=\""+link+"\" target=\"_blank\">"+link+"</a><div class=\"bts_caixa\"><img class=\"apagar\" src=\"../../images/botoes/bt_x.png\" /></div>";
+}
+
+var submitLinkForm = (function () {
+	function handler() {
+		var loading, link_box;
 		if (this.readyState !== this.DONE) {
+			// requisição em andamento, não fazer nada.
 			return;
 		}
+		
+		// Fim do request, remover tela de loading
+		if (loading = document.getElementById('loading')) {
+			loading.style.display = 'none';
+		}
+
 		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
 			return;
 		}
-		// OK
 		if(t = this.responseText) {
 			try {
 				res = JSON.parse(t);
-				console.log(t);
 			}
 			catch (e) {
-				c
-				console.log("JSON: " + e.message + ":\n" + t); 
+				alert("Erro desconhecido (0xTTYLGB");
+				console.log("JSON: " + e.message + ":\n"+t);
 				return;
 			}
-			if (!res.ok) {
-				if (!res.errors) {
-					console.log("Unknown error 1723");
-				} else {
-					var erro = res.errors[0];
-					for (var i=1; i < res.errors.length; i+=1) {
-						erro += "\n"+res.errors[i];
-					}
-					console.log(erro);
+			if (res.errors) {
+				alert(res.errors.join("\n"));
+			} else if (res.ok) {
+				link_box = document.getElementById("caixa_link");
+				if (link_box) {
+					link_box.innerHTML += linkHTML(res.endereco);
 				}
-				return;
-			} else {
-				// SUCCESS
-				var n = res.files.length;
 			}
+		} else {
+			console.log("Sem resposta do servidor.");
 		}
 	}
-	return  getFileListFunction(getFileListHandler,<?=$blog_id?>,<?=TIPOBLOG?>);
+
+	var submitForm = submitFormFunction(handler);
+	return (function (f) {
+		var e = document.getElementById('loading');
+		if (e) {
+			e.style.display = 'block';
+		}
+		submitForm(f);
+	});
+}());
+
+/* UPLOAD FILE AJAX */
+var submitFileForm = (function () {
+	function uploadFormHandler(){
+		var loading, file_list, t, res, newfile;
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, não fazer nada.
+			return;
+		}
+		
+		// Fim do request, remover tela de loading
+		if (loading = document.getElementById('loading')) {
+			loading.style.display = 'none';
+		}
+
+		if (this.status !== 200) {
+			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			return;
+		}
+		// OK
+		file_list = document.getElementById("caixa_arq");
+		if(t = this.responseText) {
+			try {
+				res = JSON.parse(t);
+			}
+			catch (e) {
+				alert("Erro desconhecido (0xTTYLGB");
+				console.log("JSON: " + e.message + ":\n"+t);
+				return;
+			}
+			if (res.errors) {
+				alert(res.errors.join("\n"));
+			} else if (res.file_id && res.file_name) {
+				newfile = document.createElement("li");
+				newfile.id = "liFile" + res.file_id;
+				newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
+					'<img align="right" src="../../images/botoes/bt_x.png" onclick="if(confirm(\'Tem certeza que deseja excluir este arquivo?\')) { deleteFile(' + res.file_id + ') };" />';
+				file_list.appendChild(newfile);
+			} else {
+				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+			}
+		} else {
+			console.log("Sem resposta do servidor.");
+		}
+	}
+	var submitForm = submitFormFunction(uploadFormHandler);
+	return (function (f) {
+		var e = document.getElementById('loading');
+		if (e) {
+			e.style.display = 'block';
+		}
+		submitForm(f);
+	});
 })();
 
 // DELETE FILE AJAX
@@ -256,13 +323,45 @@ imprimeListaPosts($blog->getId(), $turma);
 				$funcionalidade_tipo = $tipoBlog;
 				?>
 				
-				<h1><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS </h1><div class="add" id="divLinkAdicionarArquivo">adicionar</div>
+				<h1><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS </h1>
+				<!-- <div class="add" id="divLinkAdicionarArquivo">adicionar</div> -->
+				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
+					<li id="addFileDiv" style="display:none">
+						<form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$blog_id?>&amp;funcionalidade_tipo=<?=TIPOBLOG?>" onsubmit="submitFileForm(this);return false;">
+							<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+							<div class="file_input" style="display:inline-block">
+								<input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
+							</div>
+							<div id="f_arquivo" style="display:inline-block;width: 80px;" class="falso_text">&nbsp;</div>
+							<br>
+							<button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
+						</form>
+							<script>
+
+
+	// -------------
+	var bt_arquivo = document.getElementById('procura_arquivo');
+	var f_arquivo = document.getElementById('f_arquivo');
+	
+
+	var change_file = function (){
+		f_arquivo.innerHTML = '&nbsp;';
+		for (i=0;i<bt_arquivo.files.length;i++){
+			f_arquivo.innerHTML = bt_arquivo.files[i].name + ' ';
+		}
+	};
+	bt_arquivo.onchange = change_file;
+	bt_arquivo.form.onreset = change_file;
+
+</script>
+					</li>
+<?php /*
 						<li id="liAdicionarArquivo" class="tabela_blog">
 							<iframe frameborder="0" src="uploadFileForm.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>&blog_id=<?=$blog_id?>" allowtransparency="yes" style="background-color:transparent; height:75px; overflow:hidden"></iframe>
 						</li>
-<?php	
+<?php	*/
 							//jquery com javascript
 							//colocar um evento onClick no adicionar
 							//evento tornarah uma div invisivel em visivel reestruturando adequadamente a pagina
@@ -297,9 +396,18 @@ imprimeListaPosts($blog->getId(), $turma);
 					$novo_link.= "&funcionalidade_id=".$blog->getId();
 					$novo_link = "javascript:window.open('$novo_link');";
 				?>
-				<h1><a class="toggle" id="toggle_link">▼</a> LINKS</h1><div class="add" onclick="<?=$novo_link?>">adicionar</div>
+				<h1><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
+				<div class="add" onclick="botaoAdicionar('addLinkDiv');">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_link">
+					<div id="addLinkDiv" style="display:none;">
+						<li class="tabela_port">
+						<form name="addLinkForm" action="novo_link.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
+								Novo Link: <input name="novoLink" id="novoLink" type="text"/>
+								<input name="submit" type="submit" id="submit" value="Submit" />
+							</form>
+						</li>
+					</div>
 <?php
 							$funcionalidade_tipo= $tipoBlog;
 							$funcionalidade_id= $id;
@@ -354,6 +462,13 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 	</div><!-- para a imagem de fundo da base -->
 		
 </div><!-- fim da geral -->
+	<!-- loading -->
+	<div id="loading" style="display:none;">
+		<div class="spacer_50"><!-- empty --> </div>
+		<div class="loading_anim">
+			<h2>Processando</h2>
+		</div>
+	</div>
 
 </body>
 </html>

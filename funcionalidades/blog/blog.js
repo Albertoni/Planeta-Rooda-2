@@ -6,6 +6,17 @@ function deletar_post (blog, id, turma) {
 	}
 };
 
+function botaoAdicionar(id){
+	var div = document.getElementById(id);
+	if (div.style.display == "none")
+	{
+		div.style.display = "block";
+	}
+	else
+	{
+		div.style.display = "none";
+	}
+};
 // Vide lista de posts na sidebar do blog
 function abre_topico(id) {
 	if ($('#topico_oculto' + id).css('display') == 'none'){

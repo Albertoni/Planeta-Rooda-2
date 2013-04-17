@@ -31,10 +31,10 @@ else
 		// GERANDO CONSULTA
 		$consulta = new conexao();
 		
-		$sql = "SELECT arquivo_id,nome,titulo,tipo,tamanho,uploader_id"; 
-		$sql .= " FROM $tabela_arquivos";
-		$sql .= " WHERE funcionalidade_tipo = '$funcionalidade_tipo'";
-		$sql .= " AND funcionalidade_id = '$funcionalidade_id'";
+		$sql = "SELECT arquivo_id,nome,titulo,tipo,tamanho,uploader_id 
+					FROM $tabela_arquivos 
+					WHERE funcionalidade_tipo = '$funcionalidade_tipo'
+					AND funcionalidade_id = '$funcionalidade_id'";
 		
 		if ($arquivo_tipo !== false)
 		{
