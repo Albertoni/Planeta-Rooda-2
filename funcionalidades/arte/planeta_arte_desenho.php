@@ -14,6 +14,7 @@ $user_id = $_SESSION['SS_usuario_id'];
 $desenho		= isset($_GET['desenho'])?$_GET['desenho']:0;
 $turma		= isset($_GET['turma'])?$_GET['turma']:0;
 $existente	= isset($_GET['existente'])?$_GET['existente']:0;
+$insta		= isset($_GET['queroSerHipster']);
 
 /*
 *	Verifica se ele está tentando criar ou abrir um desenho
@@ -49,8 +50,9 @@ if ($existente != 0){
 <script type="text/javascript" src="p_arte.js"></script>
 <script type="text/javascript" src="../blog/blog.js"></script>
 <script src="js/raphael.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/rgbcolor.js" type="text/javascript"></script> 
+<script src="js/rgbcolor.js" type="text/javascript"></script>
 <script src="js/planeta_arte_c.js"></script>
+<script src="js/instaRooda.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
@@ -69,7 +71,7 @@ if ($existente != 0){
 		<h1>COMENTÁRIOS</h1>
 		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
 		<div class="recebe_coments">
-		<ul class="sem_estilo" id="ie_coments">	
+		<ul class="sem_estilo" id="ie_coments">
 			<ul>
 				<li class="tabela_blog">
 					FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
@@ -96,7 +98,7 @@ if ($existente != 0){
 
 <div id="topo">
 	<div id="centraliza_topo">
-		<?php 
+		<?php
 			$regua = new reguaNavegacao();
 			$regua->adicionarNivel("Arte", "planeta_arte2.php", false);
 			$regua->adicionarNivel("Desenho");
@@ -133,17 +135,17 @@ if ($existente != 0){
 				<?php echo $html; ?>
 			</center>
 			<div class="sem_estilo"></div>
-<?php				
+<?php
 			} else {
-		
+
 ?>
-			<div id="tela_div" class="tela">  
+			<div id="tela_div" class="tela">
 				<div id="tela_svg" class="tela"></div>
 				<div id="tela_canvas_div"><canvas id="tela_canvas" class="tela"></canvas></div>
 				<canvas id="canvas_auxiliar" class="tela"></canvas>
-			</div>		
+			</div>
 			<div class="sem_estilo">
-				Título: 
+				Título:
 				<div id="progresso_envio_imagem_container" style="position:absolute; right: 20px; margin-bottom:2px; display:none">
 					<span style="font-size: 8pt; color: #777;"> Salvando</span>
 					<div style="display: inline-block; width:100px; height:5px; border: 1px solid gray;">
@@ -153,7 +155,7 @@ if ($existente != 0){
 				<input type="text" id="titulo" size="40" value="<?php echo $titulo ?>"/>
 
 			</div>
-			
+
 <!--			<div id="botoes" style="width:80px; text-align:center; padding: 5px;"> -->
 			<div id="botoes" style="width:80px; padding: 5px;">
 				<img src="icones/novo.png" style="margin:1px;"  onclick="selecionaFerramenta(0);" width="35"/>
@@ -189,30 +191,30 @@ if ($existente != 0){
 								<td><img onclick="selecionaLargura(20);" class="traco" id="traco_15" src="../../images/arte/traco_15.png"></td>
 							</tr>
 							</tbody></table>
-						</div>					
+						</div>
 						</center>
 					</td>
 					<td class="amostra_cor2" style="background-color:#000000"></td>
 					<td class="amostra_cor2" style="background-color:#666666"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#330000"></td>
 					<td class="amostra_cor2" style="background-color:#BB0000"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#333300"></td>
 					<td class="amostra_cor2" style="background-color:#BBBB00"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#003300"></td>
 					<td class="amostra_cor2" style="background-color:#00BB00"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#003333"></td>
 					<td class="amostra_cor2" style="background-color:#00BBBB"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#000033"></td>
 					<td class="amostra_cor2" style="background-color:#0000BB"></td>
 
 					<td class="amostra_cor2" style="background-color:#330033"></td>
 					<td class="amostra_cor2" style="background-color:#BB00BB"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#FF7777"></td>
 					<td class="amostra_cor2" style="background-color:#996622"></td>
 					<td class="amostra_cor2" style="background-color:#DD8800"></td>
@@ -224,25 +226,25 @@ if ($existente != 0){
 				<tr>
 					<td class="amostra_cor2" style="background-color:#FFFFFF"></td>
 					<td class="amostra_cor2" style="background-color:#CCCCCC"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#770000"></td>
 					<td class="amostra_cor2" style="background-color:#FF0000"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#777700"></td>
 					<td class="amostra_cor2" style="background-color:#FFFF00"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#007700"></td>
 					<td class="amostra_cor2" style="background-color:#00FF00"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#007777"></td>
 					<td class="amostra_cor2" style="background-color:#00FFFF"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#000077"></td>
 					<td class="amostra_cor2" style="background-color:#0000FF"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#770077"></td>
 					<td class="amostra_cor2" style="background-color:#FF00FF"></td>
-					
+
 					<td class="amostra_cor2" style="background-color:#FFCCCC"></td>
 					<td class="amostra_cor2" style="background-color:#CCAA77"></td>
 					<td class="amostra_cor2" style="background-color:#FFBB00"></td>
@@ -256,24 +258,24 @@ if ($existente != 0){
 			<!-- <a onclick="salvar()"><img id="botao_salvar" align="right" src="../../images/botoes/bt_salvar.png"/></a> -->
 <?php
 			}
-?>	
+?>
 		</div><!-- fim da div procurar_topicos -->
 		<div class="bts_baixo">
 			<a href="planeta_arte2.php?turma=<?php echo $turma;?>"><img align="left" src="../../images/botoes/bt_voltar.png"/></a>
 		</div>
 	</div><!-- Fecha Div conteudo -->
-	</div><!-- Fecha Div conteudo_meio -->	
+	</div><!-- Fecha Div conteudo_meio -->
 	<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
 	<div id="carimbos">
 		<img id="carimbo1" src="imagens/pernalonga1.png" style="display:none;"/>
 	</div>
-	
+
 <!-- ********************
 	Editor de texto
 ************************* -->
 
-	
+
 <div id="float" style="position:absolute; z-index : 500;">
 <!--	<textarea id="texto_b" class="texto_b_classe" onkeypress="return captureKeys(event);" style=" background: none repeat scroll 0pt 0pt transparent;" ></textarea> -->
 	<textarea  id="texto_b" onkeypress="return captureKeys(event);" style="display:none; overflow-y:auto;"></textarea>
@@ -412,6 +414,36 @@ if ($existente != 0){
 ?>
 <!-- ********************
 	Fim do editor de texto
-************************* -->	
+************************* -->
+<?php
+
+	if ($insta){
+?>
+		<div onclick="aplicaFiltro1(contexto);" style="position:fixed; top:100px; left: 50px; border-top:1px solid silver; border-left:1px solid silver; border-right:1px solid black; border-bottom:1px solid black; width: 100px; margin: 10px; cursor:pointer;">
+			<div style="border-top:1px solid white; border-left:1px solid white; border-right:1px solid grey; border-bottom:1px solid grey;">
+				<div style="background-color: silver; padding: 4px; text-align:center;">
+					<span style="font-family: Tahoma;" > Aplicar filtro 1 </span>
+				</div>
+			</div>
+		</div>
+
+		<div onclick="aplicaFiltro2(contexto);" style="position:fixed; top:130px; left: 50px; border-top:1px solid silver; border-left:1px solid silver; border-right:1px solid black; border-bottom:1px solid black; width: 100px; margin: 10px; cursor:pointer;">
+			<div style="border-top:1px solid white; border-left:1px solid white; border-right:1px solid grey; border-bottom:1px solid grey;">
+				<div style="background-color: silver; padding: 4px; text-align:center;">
+					<span style="font-family: Tahoma;" > Aplicar filtro 2 </span>
+				</div>
+			</div>
+		</div>
+
+		<div onclick="aplicaFiltro3(contexto);" style="position:fixed; top:160px; left: 50px; border-top:1px solid silver; border-left:1px solid silver; border-right:1px solid black; border-bottom:1px solid black; width: 100px; margin: 10px; cursor:pointer;">
+			<div style="border-top:1px solid white; border-left:1px solid white; border-right:1px solid grey; border-bottom:1px solid grey;">
+				<div style="background-color: silver; padding: 4px; text-align:center;">
+					<span style="font-family: Tahoma;" > Aplicar filtro 3 </span>
+				</div>
+			</div>
+		</div>
+<?
+	}
+?>
 </body>
 </html>

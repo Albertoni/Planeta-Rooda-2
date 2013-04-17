@@ -1,4 +1,8 @@
-
+/*
+*	Se você abriu este arquivo, então deve estar perdido.
+*
+*	Boa sorte
+*/
 
 /*
 *	os valores de telaWidth e telaHeight devem ser os mesmos das dimensões colocadas para a classe tela no css
@@ -6,7 +10,7 @@
 *	no javascript:
 *	var telaWidth = 550;
 *	var telaHeight = 270;
-*	
+*
 *	no CSS (que se encontra em arte_desenho.css):
 *	.tela{
 *		width:550px;
@@ -14,7 +18,7 @@
 *	}
 */
 // Proporções da tela do desenho
-var telaWidth = 550;	
+var telaWidth = 550;
 var telaHeight = 270;
 
 // Canvas e Raphael
@@ -59,7 +63,10 @@ cursores.push(0);
 cursores.push(0);
 cursores.push("url(icones/preench.cur)");	//	21
 cursores.push(1);
-cursores.push(15);
+cursores.push(0);
+cursores.push("text");					//	24
+cursores.push(0);
+cursores.push(0);
 
 var cursor_selecionado = 0;
 
@@ -145,12 +152,12 @@ function salvar(){
 		return 0;
 	}
 	titulo = encodeURIComponent(document.getElementById('titulo').value);
-	
+
 	var imagem = canvas.toDataURL("image/png");		// pega os dados da imagem, para enviá-la ao servidor em base64
 	imagem = encodeURIComponent(imagem);
-	
+
 	alert(imagem.length);
-	
+
 	var url = "salva_imagem.php";
 	var params = "imagem="+imagem+"&turma="+turma+"&titulo="+titulo+"&existente="+existente+"&id="+id_do_desenho;
 	http_salvar.open("POST", url, true);
@@ -167,7 +174,7 @@ function salvar(){
 		}
 	}
 	http_salvar.send(params);
-	
+
 }
 */
 var ImagemEnviada = {
@@ -280,16 +287,6 @@ function selecionaFerramenta(ferramenta){
 		case 2:
 			cursor_selecionado = 21;
 			break;
-		case 8:
-			cursor_selecionado = 9;
-			if (borracha.largura <= 3)
-				cursor_selecionado = 15;
-			else{
-				if (borracha.largura <= 8)
-					cursor_selecionado = 12;
-			}	
-			break;
-			
 		case 3:	// retangulo vazio
 		case 4:	// elipse vazia
 		case 5:	// linha
@@ -297,6 +294,18 @@ function selecionaFerramenta(ferramenta){
 		case 7:	//
 			cursor_selecionado = 6;
 			mouse.preenchido = false;
+			break;
+		case 8:
+			cursor_selecionado = 9;
+			if (borracha.largura <= 3)
+				cursor_selecionado = 15;
+			else{
+				if (borracha.largura <= 8)
+					cursor_selecionado = 12;
+			}
+			break;
+		case 9:	//
+			cursor_selecionado = 24;
 			break;
 		case 10:	// retangulo cheio
 		case 11:	// elipse cheia
@@ -319,7 +328,7 @@ function selecionaCarimbo(){
 }
 
 /*
-*	Limpa todos 
+*	Limpa todos
 *
 */
 function limpa_mao_livre(){
@@ -342,7 +351,7 @@ function limpa_mao_livre(){
 *
 *	Sempre que é chamada a função pega a posição atual do ponteiro do mouse
 *	Depois ela adiciona o ponto a um array, que será utilizado para a construção de uma linha com curvas suaves
-*	
+*
 *	Obs.: Esta função é utilizada pelo lápis (mão_livre) e a borracha (pois ambos funcionam da mesma forma)
 *
 *
@@ -369,10 +378,10 @@ function coletaPontos(){
 	var index_ultimo_elemento = lista_pontos.length - 1;
 	if (index_ultimo_elemento == -1){ // array vazio. simplesmente aceita o novo ponto. (ponto inicial do path)
 		path.push(Array());
-		
+
 		path[path.length-1].push(["M", cursor.x, cursor.y]);	// para entender o que ocorre aqui vale dar uma procurada no google sobre a documentação do SVG
 		lista_pontos.push([cursor.x,cursor.y]);	// guarda ponto
-		
+
 		if (mouse.borracha){		// verifica o tipo de ferramenta, pois cada uma tem um preview diferente
 			mao_livre_preview.push(tela_svg.path(path[path.length-1]).attr({stroke: borracha.cor, "stroke-width": borracha.largura, "stroke-linecap": "rounded"})); // borracha
 		}else{
@@ -384,7 +393,7 @@ function coletaPontos(){
 			var intermediario = pontoIntermediario(ultimo_elemento, cursor); 			// adiciona o elemento intermediário, para o cálculo da bezier
 			lista_pontos.push([intermediario.x,intermediario.y]);
 			lista_pontos.push([cursor.x,cursor.y]);
-			
+
 // se o ponto anterior é o primeiro, então não é possível fazer uma bezier, então é feita uma linha reta
 			if (index_ultimo_elemento == 0){
 				path[path.length-1].push(["L", intermediario.x, intermediario.y]);
@@ -394,7 +403,7 @@ function coletaPontos(){
 				path[path.length-1].push(["C", ponto_velho[1], ponto_velho[2], ponto_velho[1], ponto_velho[2], intermediario.x, intermediario.y]);
 			}
 			path[path.length-1].push(["L", cursor.x, cursor.y]); // faz linha reta para o último ponto
-			
+
 			mao_livre_preview[mao_livre_preview.length - 1].attr({path: path[path.length-1]});
 			mao_livre_preview[mao_livre_preview.length - 1].show();
 		}
@@ -426,18 +435,18 @@ function recSVGparaCanvas(ctx){
 	var width = cursor.x - cursor.inicial.x;
 
 	if (height > 0){
-		y = cursor.inicial.y;	
+		y = cursor.inicial.y;
 	}else{
-		y = cursor.inicial.y + height;	
-		height = -height;	
+		y = cursor.inicial.y + height;
+		height = -height;
 	}
 	if (width > 0){
-		x = cursor.inicial.x;	
+		x = cursor.inicial.x;
 	}else{
-		x = cursor.inicial.x + width;	
-		width = -width;	
+		x = cursor.inicial.x + width;
+		width = -width;
 	}
-	
+
 	ctx.fillStyle = linha.cor;
 	ctx.strokeStyle = linha.cor;
 	ctx.lineWidth = linha.largura;
@@ -470,7 +479,7 @@ function ellipseSVGparaCanvas(ctx){
 		altura : Math.abs(ry),
 		largura : Math.abs(rx)
 	}
-	
+
 	ctx.fillStyle = linha.cor;
 	ctx.strokeStyle = linha.cor;
 	ctx.lineWidth = linha.largura;
@@ -562,7 +571,7 @@ function imageSVGparaCanvas(ctx){
 		x = cursor.inicial.x;
 	}else{
 		x = cursor.inicial.x + width;
-		width = -width;	
+		width = -width;
 	}
 
 	//Função que será chamada assim que a imagem for carregada
@@ -612,7 +621,7 @@ function textoCanvas(ctx){
 
 }
 
-/* 
+/*
 Implementação incompleta do Copiar/Colar
 
 function areaSelecionada(ctx){
@@ -629,34 +638,34 @@ function areaSelecionada(ctx){
 	var width = cursor.x - cursor.inicial.x;
 
 	if (height > 0){
-		y = cursor.inicial.y;	
+		y = cursor.inicial.y;
 	}else{
-		y = cursor.inicial.y + height;	
-		height = -height;	
+		y = cursor.inicial.y + height;
+		height = -height;
 	}
 	if (width > 0){
-		x = cursor.inicial.x;	
+		x = cursor.inicial.x;
 	}else{
-		x = cursor.inicial.x + width;	
-		width = -width;	
-	}	
-	
+		x = cursor.inicial.x + width;
+		width = -width;
+	}
+
 	x = (x < 0)? 0: x;
 	y = (y < 0)? 0: y;
 
 	width = ((width+x) > telaWidth)? (telaWidth - x) : width;
 	height = ((height+y) > telaHeight)? (telaHeight - y) : height;
-	
+
 	mouse.area.x = x;
 	mouse.area.y = y;
 	mouse.area.width = width;
 	mouse.area.height = height;
-//	var Pixels = ctx.getImageData(0,0,500,500); 
+//	var Pixels = ctx.getImageData(0,0,500,500);
 
 }
 
 function copiaImagem(){
-	areaTransferencia = contexto.getImageData(mouse.x,mouse.y,mouse.width,mouse.height); 
+	areaTransferencia = contexto.getImageData(mouse.x,mouse.y,mouse.width,mouse.height);
 }
 
 
@@ -674,10 +683,10 @@ function colaImagemNoCanvas(){
 
 function preview_colaImagem(){
 	var canvas = document.getElementById('canvas_auxiliar'); // verifica se o canvas auxiliar já existe
-	
+
 	canvas.width = mouse.area.width;
 	canvas.height = mouse.area.height;
-		
+
 	var contextoAT = canvas.getContext("2d");  // prepara o canvas para receber os dados da seleção feita anteriormente
 	contextoAT.putImageData(areaTransferencia, 0, 0);
 	var src = canvas.toDataURL("image/png");	// cria uma referência a esta imagem, para que possa ser utilizada com o Raphael
@@ -721,7 +730,7 @@ function renderizaSVGnoCanvas(){
 // Se fosse continuar a implementação para estilos de linhas
 //	stringPath = stringPath  + '" stroke-dasharray="''";
 	stringPath = stringPath  + ' fill="none" /></svg>';
-	
+
 	c.width = '500';
 	c.height = '300';
 	if (contexto) c.getContext = contexto;
@@ -757,7 +766,7 @@ function pinta(cor){
 		x : mouse.posicao.x,
 		y : mouse.posicao.y
 	}
-	
+
 	cursor.x = cursor.x + cursores[cursor_selecionado + 1];
 	cursor.y = cursor.y + cursores[cursor_selecionado + 2];
 	pixelStack = [[cursor.x, cursor.y]];
@@ -766,7 +775,7 @@ function pinta(cor){
 	startR = imageData.data[pixelPos];
 	startG = imageData.data[pixelPos+1];
 	startB = imageData.data[pixelPos+2];
-	
+
 	if ((R != startR)||(G != startG)||(B != startB)){
 		while(pixelStack.length)
 		{
@@ -807,23 +816,23 @@ function pinta(cor){
 						reachRight = false;
 					}
 				}
-		
+
 				pixelPos += telaWidth * 4;
 			}
 		}
 		contexto.putImageData(imageData, 0, 0);
 	}
-	  
+
 	function matchStartColor(pixelPos){
-		var r = imageData.data[pixelPos];	
-		var g = imageData.data[pixelPos+1];	
+		var r = imageData.data[pixelPos];
+		var g = imageData.data[pixelPos+1];
 		var b = imageData.data[pixelPos+2];
 		var a = imageData.data[pixelPos+3];
 
 		var testeR = ((r > (startR - 50)) && (r < (startR + 50)));
 		var testeG = ((g > (startG - 50)) && (g < (startG + 50)));
 		var testeB = ((b > (startB - 50)) && (b < (startB + 50)));
-		
+
 		return (testeR && testeG && testeB && a == 255);
 	}
 
@@ -853,18 +862,18 @@ function controlaRetangulo(){
 	var width = cursor.x - cursor.inicial.x;
 
 	if (height > 0){
-		retangulo_preview.attr({"y" : cursor.inicial.y});	
-		retangulo_preview.attr({"height" : height});	
+		retangulo_preview.attr({"y" : cursor.inicial.y});
+		retangulo_preview.attr({"height" : height});
 	}else{
-		retangulo_preview.attr({"y" : cursor.inicial.y + height});	
-		retangulo_preview.attr({"height" : -height});	
+		retangulo_preview.attr({"y" : cursor.inicial.y + height});
+		retangulo_preview.attr({"height" : -height});
 	}
 	if (width > 0){
-		retangulo_preview.attr({"x" : cursor.inicial.x});	
-		retangulo_preview.attr({"width" : width});	
+		retangulo_preview.attr({"x" : cursor.inicial.x});
+		retangulo_preview.attr({"width" : width});
 	}else{
-		retangulo_preview.attr({"x" : cursor.inicial.x + width});	
-		retangulo_preview.attr({"width" : -width});	
+		retangulo_preview.attr({"x" : cursor.inicial.x + width});
+		retangulo_preview.attr({"width" : -width});
 	}
 	retangulo_preview.show();
 }
@@ -885,22 +894,22 @@ function controlaCarimbo(){
 	}
 	var height = cursor.y - cursor.inicial.y;
 	var width = cursor.x - cursor.inicial.x;
-	
+
 	if (height > 0){
-		carimbo_preview.attr({"y" : cursor.inicial.y});	
-		carimbo_preview.attr({"height" : height});	
+		carimbo_preview.attr({"y" : cursor.inicial.y});
+		carimbo_preview.attr({"height" : height});
 		guia.attr({"y" : cursor.inicial.y, "height" : height});
 	}else{
-		carimbo_preview.attr({"y" : cursor.inicial.y + height});	
-		carimbo_preview.attr({"height" : -height});	
+		carimbo_preview.attr({"y" : cursor.inicial.y + height});
+		carimbo_preview.attr({"height" : -height});
 		guia.attr({"y" : cursor.inicial.y + height, "height" : -height});
 	}
 	if (width > 0){
-		carimbo_preview.attr({"x" : cursor.inicial.x});	
-		carimbo_preview.attr({"width" : width});	
+		carimbo_preview.attr({"x" : cursor.inicial.x});
+		carimbo_preview.attr({"width" : width});
 		guia.attr({"x" : cursor.inicial.x, "width" : width});
 	}else{
-		carimbo_preview.attr({"x" : cursor.inicial.x + width});	
+		carimbo_preview.attr({"x" : cursor.inicial.x + width});
 		carimbo_preview.attr({"width" : -width});
 		guia.attr({"x" : cursor.inicial.x + width, "width" : -width});
 	}
@@ -922,7 +931,7 @@ function controlaSelecao(){
 	}
 	var height = cursor.y - cursor.inicial.y;
 	var width = cursor.x - cursor.inicial.x;
-	
+
 	if (height > 0){
 		guia.attr({"y" : cursor.inicial.y, "height" : height});
 	}else{
@@ -953,13 +962,13 @@ function controlaElipse(){
 	}
 	var ry = Math.round((cursor.y - cursor.inicial.y)/2);
 	var rx = Math.round((cursor.x - cursor.inicial.x)/2);
-	
-	elipse_preview.attr({"cx" : cursor.inicial.x + rx});	
-	elipse_preview.attr({"rx" : Math.abs(rx)});	
-	elipse_preview.attr({"cy" : cursor.inicial.y + ry});	
-	elipse_preview.attr({"ry" : Math.abs(ry)});	
-//	elipse_preview.attr({"cy" : mouse.posicao.inicial.y});	
-//	elipse_preview.attr({"ry" : ry});	
+
+	elipse_preview.attr({"cx" : cursor.inicial.x + rx});
+	elipse_preview.attr({"rx" : Math.abs(rx)});
+	elipse_preview.attr({"cy" : cursor.inicial.y + ry});
+	elipse_preview.attr({"ry" : Math.abs(ry)});
+//	elipse_preview.attr({"cy" : mouse.posicao.inicial.y});
+//	elipse_preview.attr({"ry" : ry});
 	elipse_preview.show();
 }
 
@@ -978,7 +987,7 @@ function controlaReta(){
 		}
 	}
 	var reta = [["M",cursor.inicial.x,cursor.inicial.y],["L",cursor.x,cursor.y]];
-	reta_preview.attr({path : reta});	
+	reta_preview.attr({path : reta});
 	reta_preview.show();
 }
 
@@ -996,7 +1005,7 @@ function selecionaLargura(largura){
 	else{
 		if (borracha.largura <= 8)
 			cursor_selecionado = 12;
-	}	
+	}
 	$('#tela_svg').css("cursor",cursores[cursor_selecionado]);
 	$('svg').css("cursor",cursores[cursor_selecionado]);
   }
@@ -1034,7 +1043,7 @@ function controleDeFerramentas(){
 				break;
 			case 9:
 //				preview_colaImagem();
-				
+
 				break;
 		}
 	}
@@ -1063,8 +1072,10 @@ function fechaEscolhaDeCarimbos(){
 */
 
 function limpaTela(){
-	contexto.fillStyle = "rgba(255, 255, 255, 1)";			// pinta o canvas de branco
-	contexto.fillRect (0, 0, telaWidth,telaHeight);			//
+	if (confirm("A tela de desenho será limpa.")){
+		contexto.fillStyle = "rgba(255, 255, 255, 1)";			// pinta o canvas de branco
+		contexto.fillRect (0, 0, telaWidth,telaHeight);			//
+	}
 	selecionaFerramenta(1);								// seleciona o lápis ( ferramenta padrão )
 }
 
@@ -1098,7 +1109,7 @@ jQuery(document).ready(function(){
 
 	atualiza('ajusta()');	// gambiarra do planeta, feita há muito tempo pelo Giovani
 						// faz alguns ajustes nas posições de divs e etc. EU ACHO :D
-	
+
 	var cola_inicio,cola_move = function () {
 		// nada ainda
 	}
@@ -1204,11 +1215,11 @@ jQuery(document).ready(function(){
 */
 	$("#tela_svg").mouseout(function(e){
 		if (mouse.ativo){
-			if( e.toElement ) {				
+			if( e.toElement ) {
 				current_mouse_target 			 = e.toElement;
-			} else if( e.relatedTarget ) {				
+			} else if( e.relatedTarget ) {
 				current_mouse_target 			 = e.relatedTarget;
-			}	
+			}
 			if ((current_mouse_target.innerHTML != undefined) && (current_mouse_target.innerHTML) && (current_mouse_target.innerHTML != "")){
 				switch(mouse.ferramenta){
 					case 8:
@@ -1234,7 +1245,7 @@ jQuery(document).ready(function(){
 *	Todas as ferramentas utilizam este evento
 */
 	$("#tela_svg").mousedown(function(e){
-	
+
 		mouse.status.pressionado = true;
 		mouse.ativo = true;
 		if (mouse.ferramenta == 2){					// PREENCHIMENTO
@@ -1242,7 +1253,7 @@ jQuery(document).ready(function(){
 		}else{
 			lista_pontos = Array();					// novos arrays para serem trabalhados pelo lápis/borracha
 			path = Array();							//
-			mouse.borracha = (mouse.ferramenta == 8);	// atualiza informações da ferramenta 
+			mouse.borracha = (mouse.ferramenta == 8);	// atualiza informações da ferramenta
 			mouse.posicao.inicial.x = mouse.posicao.x;	//
 			mouse.posicao.inicial.y = mouse.posicao.y;	//
 
@@ -1256,8 +1267,8 @@ jQuery(document).ready(function(){
 
 			coleta_pontos = setInterval("controleDeFerramentas()",INTERVALO_PARA_PONTOS);	// liga a coleta de pontos
 		}
-	
-	}); 
+
+	});
 
 // Atualiza a posição guardada do mouse
 	$(document).mousemove(function(e){
@@ -1265,7 +1276,7 @@ jQuery(document).ready(function(){
 		posicaoYdaTela = (document.getElementById("tela_div").offsetTop + document.getElementById("geral").offsetTop + document.getElementById("conteudo_meio").offsetTop + document.getElementById("conteudo").offsetTop);
 		mouse.posicao.x = e.pageX - posicaoXdaTela;
 		mouse.posicao.y = e.pageY - posicaoYdaTela;
-	}); 
+	});
 
 // Evento da paleta de cores
 	$(".amostra_cor2").click(function(e){
@@ -1304,7 +1315,7 @@ jQuery(document).ready(function(){
 	$(".sel_fonte").mouseover(function(){
 		this.style.backgroundColor="#111180";
 	});
-	
+
 	$(".sel_fonte").mouseout(function(){
 		this.style.backgroundColor="transparent";
 	});
@@ -1330,7 +1341,7 @@ jQuery(document).ready(function(){
 			this.src="imagens/"+this.id+".png";
 			$("#selFontes").fadeOut(300);
 		}
-	});	
+	});
 
 	$("#edbold").click(function(){
 		recolhe();
@@ -1345,7 +1356,7 @@ jQuery(document).ready(function(){
 		}
 		document.getElementById('texto_b').focus();
 	});
-	
+
 	$("#editalic").click(function(){
 		recolhe();
 		if (!texto.italico){
@@ -1358,24 +1369,24 @@ jQuery(document).ready(function(){
 			document.getElementById('texto_b').style.fontStyle = "normal";
 		}
 		document.getElementById('texto_b').focus();
-	});	
-	
+	});
+
 	$("#edconfirm").click(function(){
 		textoCanvas(contexto);
-		some_editor();	
-	});	
-	
+		some_editor();
+	});
+
 	$("#edcancel").click(function(){
 		document.getElementById('texto_b').value = "";
-		some_editor();	
-	});	
+		some_editor();
+	});
 
 	$(".amostra_cor").click(function(){
 		texto.cor = this.style.backgroundColor;
 		document.getElementById('texto_b').style.color = texto.cor;
 		$("#tabela_cores").fadeOut(300);
 		document.getElementById('texto_b').focus();
-	});	
+	});
 
 /*
 *
@@ -1404,7 +1415,7 @@ function posTexto(){
 	document.getElementById('float').style.top = y1 + "px";
 	document.getElementById('editor_tam').style.left = (x1-14) + "px";
 	document.getElementById('editor_tam').style.top = y1 + "px";
-	
+
 	document.getElementById('editor_barra').style.left = x1 + "px";
 	document.getElementById('editor_barra').style.top = (y1-20) + "px";
 	document.getElementById('tabela_cores').style.top = (y1-120)+"px";
