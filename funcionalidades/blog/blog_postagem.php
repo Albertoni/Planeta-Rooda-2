@@ -139,6 +139,7 @@ var uploadAttImage = (function () {
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = imageHTML(res.file_id);
+				objHolder.focus();
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
@@ -187,6 +188,7 @@ var uploadAttFile = (function() {
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = fileHTML(res.file_id,res.file_name);
+				objHolder.focus();
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
@@ -218,12 +220,12 @@ function Init() {
 	}
 	objContent.designMode = "On";
 
-<?php /* if($edita && ($post->getText() != "")) {		// TEM UM INICIALIZADOR DE PHP AQUI MINHA BOA GENTE, SE LIGUEM
+<?php  if($edita && ($post->getText() != "")) {		// TEM UM INICIALIZADOR DE PHP AQUI MINHA BOA GENTE, SE LIGUEM
 	$cont = trim(str_replace("'","&prime;",$post->getText()));
 	$cont = trim(str_replace("\r\n"," ",$cont));
 ?>
 	objContent.write('<?=trim(str_replace("\r\n"," ",$cont))?>');
-<?php } */ ?>
+<?php } /* */ ?>
 	
 	objContent.body.style.fontFamily = 'Verdana';
 	objContent.body.style.fontSize = '11px';
@@ -431,6 +433,12 @@ function Init() {
 		</div><!-- para a imagem de fundo da base -->
 
 	</div><!-- fim da geral -->
-
+	<!-- loading -->
+	<div id="loading" style="display:none;">
+		<div class="spacer_50"><!-- empty --> </div>
+		<div class="loading_anim">
+			<h2>Processando</h2>
+		</div>
+	</div>
 </body>
 </html>

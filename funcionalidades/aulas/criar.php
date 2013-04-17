@@ -151,6 +151,7 @@ var uploadAttImage = (function () {
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = imageHTML(res.file_id);
+				objHolder.focus();
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
@@ -199,6 +200,7 @@ var uploadAttFile = (function() {
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = fileHTML(res.file_id,res.file_name);
+				objHolder.focus();
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
