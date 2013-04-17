@@ -1,11 +1,17 @@
 <?php
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");
-//	require("verifica_user.php");
+
+/*\
+ *
+ * funcionalidades/blog/blog_postagem.php
+ *
+\*/
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
 	require("../../reguaNavegacao.class.php");
+	require("../../usuarios.class.php");
 	require("blog.class.php");
+//	require("verifica_user.php");
 //	require("visualizacao_blog.php");
 
 	session_start();
@@ -62,9 +68,9 @@
 <![endif]-->
 
 <script type="text/javascript">
-	
 var refreshImageList = (function() {
 	function getFileListHandler() {
+		var t, res, n, i, images_container, id, html = [];
 		if (this.readyState !== this.DONE) {
 			// requisição em andamento, nao fazer nada.
 			return;
@@ -83,42 +89,38 @@ var refreshImageList = (function() {
 			}
 			if (!res.ok) {
 				if (res.errors) {
-					var erro = res.errors[0];
-					for (var i=1; i < res.errors.length; i+=1) {
-						erro += "\n"+res.errors[i];
-					}
-					console.log(erro);
+					console.log(res.errors.join("\n"));
 				}
 				console.log("Couldn't refresh image list");
 				return;
 			} else {
 				// SUCCESS
-				var n = res.files.length;
-				var images_container = document.getElementById("cont_img3");
+				n = res.files.length;
+				images_container = document.getElementById("cont_img3");
 				if (images_container) {
-					var html = "";
-					for (var i=0;i<n;i+=1) {
-						var id = res.files[i].file_id;
-						html += '<div id="galeria'+id+'" class="img_enviadas"><img onclick="fromgallery('+id+')" src="../../image_output.php?file='+id+'" /></div>\n';
+					for (i=0;i<n;i+=1) {
+						id = res.files[i].file_id;
+						html.push('<div id="galeria'+id+'" class="img_enviadas"><img onclick="fromgallery('+id+')" src="../../image_output.php?file='+id+'" /></div>');
 					}
-					images_container.innerHTML = html;
+					images_container.innerHTML = html.join("\n");
 				}
 			}
 		}
 	}
-	return getFileListFunction(getFileListHandler,<?=$blog_id?>,<?=TIPOBLOG?>,"image/%");
+	return getFileListFunction(getFileListHandler,<?=$funcionalidade_id?>,<?=$funcionalidade_tipo?>,"image/%");
 }());
 
 var uploadAttImage = (function () {
 	function handler() {
+		var loading, t, res, html;
 		
 		if (this.readyState !== this.DONE) {
 			// requisição em andamento, nao fazer nada.
 			return;
 		}
 		// Fim do request, remover tela de loading
-		if (e = document.getElementById('loading')) {
-			e.style.display = 'none';
+		if (loading = document.getElementById('loading')) {
+			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
 			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
@@ -133,14 +135,10 @@ var uploadAttImage = (function () {
 				alert ("Algo de errado aconteceu.");
 			}
 			if(res.errors) {
-				var erro = res.errors[0];
-				for(var i=1;i<res.errors.length;i+=1) {
-					erro += "\n" + res.errors[i];
-				};
-				alert(erro);
+				alert(res.errors.join("\n"));
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
-				var html = imageHTML(res.file_id);
+				html = imageHTML(res.file_id);
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
@@ -153,23 +151,24 @@ var uploadAttImage = (function () {
 	var upload = submitFormFunction(handler);
 	
 	return (function (oFormElement) {
-		if (e = document.getElementById('loading')) {
+		var e = document.getElementById('loading');
+		if (e) {
 			e.style.display = 'block';
 		}
 		upload(oFormElement);
 	});
 }());
 
-
 var uploadAttFile = (function() {
 	function handler() {
+		var loading, t, res, html;
 		if (this.readyState !== this.DONE) {
 			// requisição em andamento, nao fazer nada.
 			return;
 		}
 		// Fim do request, remover tela de loading
-		if (e = document.getElementById('loading')) {
-			e.style.display = 'none';
+		if (loading = document.getElementById('loading')) {
+			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
 			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
@@ -184,14 +183,10 @@ var uploadAttFile = (function() {
 				alert ("Algo de errado aconteceu.");
 			}
 			if(res.errors) {
-				var erro = res.errors[0];
-				for(var i=1;i<res.errors.length;i+=1) {
-					erro += "\n" + res.errors[i];
-				};
-				alert(erro);
+				alert(res.errors.join("\n"));
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
-				var html = fileHTML(res.file_id,res.file_name);
+				html = fileHTML(res.file_id,res.file_name);
 				objContent.execCommand('inserthtml',false,html);
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
@@ -202,19 +197,13 @@ var uploadAttFile = (function() {
 	}
 	var upload = submitFormFunction(handler);
 	return (function (f) {
-
-		// Show loading screen
-		if (e = document.getElementById('loading')) {
+		var e = document.getElementById('loading');
+		if (e) {
 			e.style.display = 'block';
 		}
 		upload(f);
 	});
 }());
-
-	
-// O CÓDIGO REMOVIDO DAQUI ESTÁ NO POSTAGEM_WYSIWYG.JS
-
-// Código do Pato para ativar HTML na área de edição
 
 var objContent;
 var objHolder;
@@ -225,7 +214,7 @@ function Init() {
 	if(ua == "Netscape") {
 		objContent = objHolder.contentDocument;
 	} else {
-		objContent = objHolder.document; 
+		objContent = objHolder.document;
 	}
 	objContent.designMode = "On";
 
@@ -240,26 +229,22 @@ function Init() {
 	objContent.body.style.fontSize = '11px';
 }
 </script>
-
-
 </head>
-<body onload="atualiza('ajusta()'); inicia(); checar(); ajusta_img(); Init(); fakeFile('botao_upload_frame', 'arquivo_frame', 'falso_frame'); fakeFile('botao_upload_frame_ins','arquivo_frame_ins', 'falso_frame_ins');">
+<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img(); Init(); fakeFile('botao_upload_frame', 'arquivo_frame', 'falso_frame'); fakeFile('botao_upload_frame_ins','arquivo_frame_ins', 'falso_frame_ins');">
 	<div id="descricao"></div>
-	
 	<div id="fundo_lbox"></div>
-	
 	<div id="light_box" class="bloco">
 		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
 		<div id="imagem_lbox">
 			<h1>INSERIR IMAGEM</h1>
 			<ul class="sem_estilo" style="line-height:25px">
 				<li><input type="radio" id="troca_img1" class="select_img" name="select_img" checked="checked" value="1"/>Procurar no Computador</li>
-				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" value="2"/>Imagem da Web</li>
+				<li><input type="radio" id="troca_img2" class="select_img" name="select_img" value="2" />Imagem da Web</li>
 				<li><input type="radio" id="troca_img3" class="select_img" name="select_img" value="3" onclick="refreshImageList();" />Procurar nas imagens já enviadas</li>
 				<li>
 					<div id="cont_img">
 						<ul id="cont_img1">
-							<form id="upload_image" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins" onsubmit="uploadAttImage(this); return false;">
+							<form id="upload_image" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" target="alvoAJAXins" onsubmit="uploadAttImage(this); return false;">
 								<input type="hidden" name="MAX_FILE_SIZE" value="2000000" /> 
 								<input name="userfile" type="file" id="arquivo_frame_ins" class="upload_file" allow="image/png,image/jpg,image/gif" onchange="trocador('falso_frame_ins', 'arquivo_frame_ins')" />
 								<input name="falso" type="text" id="falso_frame_ins" />
@@ -269,58 +254,36 @@ function Init() {
 							<iframe id="alvoAJAXins" name="alvoAJAXins" style="display: none;" src=""></iframe>
 							<iframe id="editavel" name="editavel" frameborder="0" src="">Por favor, atualize seu navegador.</iframe>
 						</ul>
-						
 						<ul id="cont_img2">
 							<li><input type="text" value="http://" id="imagefromurl" /></li>
 							<li style="margin-top:-5px">Endereço da imagem</li>
 						</ul>
 						<div id="cont_img3">
 <?php
-/*						<table width="100%">
-						<tr>
-<?php
- */
- 							//	Dumpando a lista de imagens que tem no blog
+							//	Dumpando a lista de imagens que tem no blog
 							$consulta = new conexao();
-							$consulta->connect();
-							$id = $blog->getId();
 
 							/*\
 							 *	SELECT arquivo FROM $tabela_arquivos WHERE tipo LIKE 'image/%'
 							 *	Pega o BLOB de todas as imagens pra dar resize.
 							\*/
 
+							global $tabela_arquivos; // nao sei se precisa disso
 							$consulta->solicitar("SELECT arquivo_id FROM $tabela_arquivos WHERE tipo LIKE 'image/%' AND funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
 
 							while($consulta->resultado) {
 								$id = $consulta->resultado['arquivo_id']; 
-								//if ($i % 5 == 0 && $i != 0) { echo "</tr><tr>"; } // 5 imagens por linha, sabe.
+
 								echo '<div class="img_enviadas" id="galeria'.$id.'" ><img src="../../image_output.php?file='.$id.'" onClick="fromgallery('.$id.')"/></div>';
 								$consulta->proximo();
 							}
-/*
-						?>
-						</tr>
-						</table>
- */
 ?>
 	<br style="clear:both;" />
 						</div>
 					</div>
 				</li>
 				<li>
-					<div align="right" onclick="addImage()"><img src="images/botoes/bt_confir_pq.png" /></div>
-				</li>
-			</ul>
-		</div>
-		
-		<div id="link_lbox">
-			<h1>INSERIR LINK</h1>
-			<ul class="sem_estilo">
-				<li>Texto a ser exibido: <input type="text" id="addlinktext" /></li>
-				<li style="margin-bottom:172px">Link para: <input type="text" value="http://" id="addlinkurl" /></li>
-				<li>
-					<div align="right"><img src="../../images/botoes/bt_confir_pq.png" alt="Confirmar" onclick="addLink()" /></div>
+					<div align="right" onclick="addImage()"><img src="../../images/botoes/bt_confir_pq.png" /></div>
 				</li>
 			</ul>
 		</div>
@@ -328,37 +291,30 @@ function Init() {
 		<div id="arquivo_lbox">
 			<h1>ANEXAR ARQUIVO</h1>
 			<ul class="sem_estilo" style="line-height:25px">
-				<li><input onclick="arquivos_mode = 1;" value="1" type="radio" id="troca_arq1" class="select_arq" onclick="arquivos_mode=1" name="select_arq" checked="checked" />Procurar no Computador</li>
-				<li><input onclick="arquivos_mode = 0;" value="0" type="radio" id="troca_arq2" class="select_arq" onclick="arquivos_mode=2" name="select_arq"/>Procurar nos arquivos já enviados</li>
+				<li><input onclick="arquivos_mode = 1;" value="1" type="radio" id="troca_arq1" class="select_arq" name="select_arq" checked="checked" />Procurar no Computador</li>
+				<li><input onclick="arquivos_mode = 0;" value="0" type="radio" id="troca_arq2" class="select_arq" name="select_arq"/>Procurar nos arquivos já enviados</li>
 				<li>
 					<div id="cont_arq">
 						<ul id="cont_arq1">
 							<li id="procurar_arq">
 								Adicionar novo arquivo:
-<?php
-								$funcionalidade_id = $blog->getId();
-								$funcionalidade_tipo = TIPOBLOG;
-?>
-								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
+								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
 									<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 									<input type="hidden" name="gambiarra" value="3337333" />
 									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
 									<input name="falso" type="text" id="falso_frame" />
 									<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
-									<br>
-									<input type="submit" name="upload" value="upload!" style="float:right" />
+									<input type="submit" name="upload" value="upload!" />
 								</form>
 								<iframe id="alvoAJAX" name="alvoAJAX" src="" style="display: none;"></iframe>
 								<iframe id="previewarquivos" name="previewarquivos" src="" frameborder="0"></iframe>
 						</ul>
 						<ul id="cont_arq2">
-
 <?php
 							$consulta = new conexao();
-							$id = $blog->getId();
 							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE funcionalidade_tipo='$funcionalidade_tipo' AND funcionalidade_id='$funcionalidade_id'");
 
-							for($i=0 ; $i<count($consulta->itens);$i++) {
+							while($consulta->resultado) {
 								$arquivo_id = $consulta->resultado['arquivo_id'];
 								$arquivo_nome = $consulta->resultado['nome'];
 ?>
@@ -371,10 +327,30 @@ function Init() {
 					</div>
 				</li>
 				<li>
-					<div align="right"><a href="javascript:arquivoInsert();"><img src="images/botoes/bt_confir_pq.png"/></a></div>
+					<div align="right"><input type="image" onclick="arquivoInsert();" src="../../images/botoes/bt_confir_pq.png" /></div>
 				</li>
 			</ul>
 		</div>
+<?
+
+// Pode inserir links?
+
+
+?>
+		<div id="link_lbox">
+			<h1>INSERIR LINK</h1>
+			<ul class="sem_estilo">
+				<li>Texto a ser exibido: <input id="addlinktext" type="text" /></li>
+				<li style="margin-bottom:172px">Link para: <input id="addlinkurl" type="text" value="http://" /></li>
+				<li>
+					<div align="right"><img src="../../images/botoes/bt_confir_pq.png" alt="Confirmar" onclick="addLink()" /></div>
+				</li>
+			</ul>
+		</div>
+<?php
+
+?>
+		
 	</div>
 	
 	<div id="topo">
