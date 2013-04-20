@@ -141,7 +141,7 @@ private function download(){
 		$endereco = $consulta->sanitizaString($this->end_link);
 		$funcionalidade_tipo = (int) $this->funcionalidade_tipo;
 		$funcionalidade_id = (int) $this->funcionalidade_id;
-		echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");
+		//echo("$endereco	 $funcionalidade_tipo	$funcionalidade_id");
 		$consulta->connect();
 		$consulta->solicitar("DELETE FROM $tabela_links 
 								WHERE endereco = '$endereco'

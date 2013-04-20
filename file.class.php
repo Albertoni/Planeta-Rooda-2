@@ -55,11 +55,14 @@ class File {
 			$gambi = new conexao();
 			$manual_id = (int) $manual_id;
 			$gambi->solicitar("SELECT nome, funcionalidade_tipo, funcionalidade_id FROM $tabela_arquivos WHERE arquivo_id = $manual_id");
-			
-			$this->nome = $gambi->resultado['nome'];
-			$this->funcionalidade_tipo = $gambi->resultado['funcionalidade_tipo'];
-			$this->funcionalidade_id = $gambi->resultado['funcionalidade_id'];
-			$this->download = true;
+			if ($gambi->registros === 1) {
+				$this->nome = $gambi->resultado['nome'];
+				$this->funcionalidade_tipo = $gambi->resultado['funcionalidade_tipo'];
+				$this->funcionalidade_id = $gambi->resultado['funcionalidade_id'];
+				$this->download = true;
+			} else {
+				$this->erros[] = "ERRO - Arquivo n&atilde;o encontrado";
+			}
 		}else{
 			$this->erros[] = "ERRO - Parametros errados em File Constructor";
 		}

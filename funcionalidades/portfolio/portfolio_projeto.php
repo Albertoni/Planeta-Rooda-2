@@ -13,20 +13,23 @@ $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 // print_r(get_defined_constants()); // Descomente isso para rir.
 
 if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
-	die("Voce precisa estar logado para acessar essa p&aacute;gina. <a href=\"../../\">Favor voltar.</a>");
+    die("Voce precisa estar logado para acessar essa p&aacute;gina. <a href=\"../../\">Favor voltar.</a>");
 
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
-	$turma = $_GET['turma'];
+    $turma = $_GET['turma'];
 }else{
-	die("Voce n&atilde;o passou a ID da sua turma para a p&aacute;gina, favor voltar e tentar novamente.");
+    die("Voce n&atilde;o passou a ID da sua turma para a p&aacute;gina, favor voltar e tentar novamente.");
 }
 
 $user = new Usuario();
-
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
+
+$funcionalidade_tipo = TIPOPORTFOLIO;
+$funcionalidade_id = $projeto_id;
+
 if($perm === false){
-	die("Desculpe, mas o Portf&oacute;lio esta desabilitado para esta turma.");
+    die("Desculpe, mas o Portf&oacute;lio esta desabilitado para esta turma.");
 }
 ?><!DOCTYPE html>
 <html>
@@ -36,94 +39,144 @@ if($perm === false){
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
 <script src="../../js/compatibility.js"></script>
+<script src="../../js/rooda.js"></script>
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script>
 /* UPLOAD FILE AJAX */
-var submitFileForm = (function () {
-	function uploadFormHandler(){
-		var loading, file_list, t, res, newfile;
-		if (this.readyState !== this.DONE) {
-			// requisição em andamento, não fazer nada.
-			return;
-		}
-		
-		// Fim do request, remover tela de loading
-		if (loading = document.getElementById('loading')) {
-			loading.style.display = 'none';
-		}
+var submitLinkForm = (function () {
+    function handler() {
+        var loading, link_box;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        
+        // Fim do request, remover tela de loading
+        if (loading = document.getElementById('loading')) {
+            loading.style.display = 'none';
+        }
 
-		if (this.status !== 200) {
-			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-			return;
-		}
-		// OK
-		file_list = document.getElementById("caixa_arq");
-		if(t = this.responseText) {
-			try {
-				res = JSON.parse(t);
-			}
-			catch (e) {
-				alert("Erro desconhecido (0xTTYLGB");
-				console.log("JSON: " + e.message + ":\n"+t);
-				return;
-			}
-			if (res.errors) {
-				alert(res.errors.join("\n"));
-			} else if (res.file_id && res.file_name) {
-				newfile = document.createElement("li");
-				newfile.id = "liFile" + res.file_id;
-				newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-					'<img align="right" src="../../images/botoes/bt_x.png" onclick="if(confirm(\'Tem certeza que deseja excluir este arquivo?\')) { deleteFile(' + res.file_id + ') };" />';
-				file_list.appendChild(newfile);
-			} else {
-				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-			}
-		} else {
-			console.log("Sem resposta");
-		}
-	}
-	submitForm = submitFormFunction(uploadFormHandler);
-	return (function (f) {
-		var e = document.getElementById('loading');
-		if (e) {
-			e.style.display = 'block';
-		}
-		submitForm(f);
-	});
+        if (this.status !== 200) {
+            ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            return;
+        }
+        if(t = this.responseText) {
+            try {
+                res = JSON.parse(t);
+            }
+            catch (e) {
+                ROODA.ui.alert("Erro desconhecido (0xTTYLGB");
+                console.log("JSON: " + e.message + ":\n"+t);
+                return;
+            }
+            if (res.errors) {
+                ROODA.ui.alert(res.errors.join("\n"));
+            } else if (res.ok) {
+                link_box = document.getElementById("caixa_link");
+                if (link_box) {
+                    link_box.innerHTML += linkHTML(res.endereco);
+                }
+            }
+        } else {
+            console.log("Sem resposta do servidor.");
+        }
+    }
+
+    var submitForm = submitFormFunction(handler);
+    return (function (f) {
+        var e = document.getElementById('loading');
+        if (e) {
+            e.style.display = 'block';
+        }
+        submitForm(f);
+    });
+}());
+
+var submitFileForm = (function () {
+    function uploadFormHandler(){
+        var loading, file_list, t, res, newfile;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        
+        // Fim do request, remover tela de loading
+        if (loading = document.getElementById('loading')) {
+            loading.style.display = 'none';
+        }
+
+        if (this.status !== 200) {
+            ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            return;
+        }
+        // OK
+        file_list = document.getElementById("caixa_arq");
+        if(t = this.responseText) {
+            try {
+                res = JSON.parse(t);
+            }
+            catch (e) {
+                ROODA.ui.alert("Erro desconhecido (0xTTYLGB");
+                console.log("JSON: " + e.message + ":\n"+t);
+                return;
+            }
+            if (res.errors) {
+                ROODA.ui.alert(res.errors.join("\n"));
+            } else if (res.file_id && res.file_name) {
+                newfile = document.createElement("li");
+                newfile.id = "liFile" + res.file_id;
+                newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
+                    '<img align="right" src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){deleteFile(' + res.file_id + ');});" />';
+                file_list.appendChild(newfile);
+            } else {
+                ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+            }
+        } else {
+            console.log("Sem resposta");
+        }
+    }
+    submitForm = submitFormFunction(uploadFormHandler);
+    return (function (f) {
+        var e = document.getElementById('loading');
+        if (e) {
+            e.style.display = 'block';
+        }
+        submitForm(f);
+    });
 }());
 
 // DELETE FILE AJAX
 
 var deleteFile = (function () {
-	function deleteFileHandler() {
-		if (t = this.responseText) {
-			try {
-				res = JSON.parse(t)
-			}
-			catch (e) {
-				console.log("JSON: " + e.message);
-				alert("Algo de errado aconteceu.");
-				return;
-			}
-			if (res.ok) {
-				if(elem = document.getElementById("liFile" + this.fileId)) {
-					elem.parentElement.removeChild(elem);
-				}
-			} else {
-				if(res.error) {
-					alert(res.error);
-				} else {
-					alert("Nao deu certo");
-				}
-			}
-		}
-	};
-	
-	var deleteFile = deleteFileFunction(deleteFileHandler);
-	return (function (id) {
-		deleteFile(id);
-	});
+    function deleteFileHandler() {
+        if (t = this.responseText) {
+            try {
+                res = JSON.parse(t)
+            }
+            catch (e) {
+                console.log("JSON: " + e.message);
+                ROODA.ui.alert("Algo de errado aconteceu.");
+                return;
+            }
+            if (res.ok) {
+                if(elem = document.getElementById("liFile" + this.fileId)) {
+                    elem.parentElement.removeChild(elem);
+                }
+            } else {
+                if(res.error) {
+                    ROODA.ui.alert(res.error);
+                } else {
+                    ROODA.ui.alert("Nao deu certo");
+                }
+            }
+        }
+    };
+    
+    var deleteFile = deleteFileFunction(deleteFileHandler);
+    return (function (id) {
+        deleteFile(id);
+    });
 }());
 </script>
 </head>
@@ -131,349 +184,372 @@ var deleteFile = (function () {
 <body onload="atualiza('ajusta()');inicia();coment();">
 
 <?
-		global $tabela_portfolioProjetos;
-		$consulta= new conexao();
-		$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
-		$titulo = $consulta->resultado['titulo'];
-		$descricao = $consulta->resultado['descricao'];
-		$objetivos = $consulta->resultado['objetivos'];
-		$conteudosAbordados = $consulta->resultado['conteudosAbordados'];
-		$metodologia = $consulta->resultado['metodologia'];
-		$publicoAlvo = $consulta->resultado['publicoAlvo'];
+        global $tabela_portfolioProjetos;
+        $consulta= new conexao();
+        $consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
+        $titulo = $consulta->resultado['titulo'];
+        $descricao = $consulta->resultado['descricao'];
+        $objetivos = $consulta->resultado['objetivos'];
+        $conteudosAbordados = $consulta->resultado['conteudosAbordados'];
+        $metodologia = $consulta->resultado['metodologia'];
+        $publicoAlvo = $consulta->resultado['publicoAlvo'];
 ?>
-	<div id="fundo_lbox"></div>
-	<div id="light_box" class="bloco">
-		<h1>TÍTULO DA POSTAGEM</h1>
-		<img src="../../images/botoes/bt_fechar.png" id="abre_coment" class="fechar_coments" onmousedown="abreFechaLB()" />
-		<div class="recebe_coments">
-		<ul class="sem_estilo" id="ie_coments">
-			<ul>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-		</ul>
-			<li id="novo_coment">
-				POSTAR NOVO COMENTÁRIO
-			</li>
-			<li>
-				<textarea class="msg_dimensao" rows="10"></textarea>
-			</li>
-			<li>
-				<div class="enviar" align="right">
-					<input type="image" src="../../images/botoes/bt_confir_pq.png" />
-				</div>
-			</li>
-		</ul>
-		</div>
-	</div>
+    <div id="fundo_lbox"></div>
+    <div id="light_box" class="bloco">
+        <h1>TÍTULO DA POSTAGEM</h1>
+        <img src="../../images/botoes/bt_fechar.png" id="abre_coment" class="fechar_coments" onmousedown="abreFechaLB()" />
+        <div class="recebe_coments">
+        <ul class="sem_estilo" id="ie_coments">
+            <ul>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+            <li class="tabela_blog">
+                FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
+            </li>
+        </ul>
+            <li id="novo_coment">
+                POSTAR NOVO COMENTÁRIO
+            </li>
+            <li>
+                <textarea class="msg_dimensao" rows="10"></textarea>
+            </li>
+            <li>
+                <div class="enviar" align="right">
+                    <input type="image" src="../../images/botoes/bt_confir_pq.png" />
+                </div>
+            </li>
+        </ul>
+        </div>
+    </div>
 
 <div id="topo">
-	<div id="centraliza_topo">
-		<?php 
-				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Portfólio", "portfolio_inicio.php", false);
-				$regua->adicionarNivel("Projeto");
-				$regua->imprimir();
-			?>
-		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
-	</div>
+    <div id="centraliza_topo">
+        <?php 
+                $regua = new reguaNavegacao();
+                $regua->adicionarNivel("Portfólio", "portfolio_inicio.php", false);
+                $regua->adicionarNivel("Projeto");
+                $regua->imprimir();
+            ?>
+        <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
+    </div>
 </div>
 
 <div id="geral">
 
 <!-- **************************
-			cabecalho
+            cabecalho
 ***************************** -->
 <div id="cabecalho">
-	<div id="ajuda">
-		<div id="ajuda_meio">
-			<div id="ajudante">
-				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-				<div id="rel"><p id="balao">Funcionalidade destinada aos formadores e voltada à construção de um histórico
-				da turma através do registro e da publicação de arquivos, possibilitando acompanhar os alunos e as práticas
-				pedagógicas.</p></div>
-			</div>
-		</div>
-		<div id="ajuda_base"></div>
-	</div>
+    <div id="ajuda">
+        <div id="ajuda_meio">
+            <div id="ajudante">
+                <div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
+                <div id="rel"><p id="balao">Funcionalidade destinada aos formadores e voltada à construção de um histórico
+                da turma através do registro e da publicação de arquivos, possibilitando acompanhar os alunos e as práticas
+                pedagógicas.</p></div>
+            </div>
+        </div>
+        <div id="ajuda_base"></div>
+    </div>
 </div><!-- fim do cabecalho -->
-	
-	
+    
+    
 <div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
 <div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 
 <!-- **************************
-			conteudo
+            conteudo
 ***************************** -->
-	
+    
 <div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
-		<div class="bts_cima">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
-			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
-			</a>
-		</div>
-		<div id="esq">
-			<div id="projeto" class="bloco">
-				<h1 ><a class="toggle" id="toggle_projeto">▼</a> PROJETO</h1>
-				<ul class="sem_estilo" id="caixa_projeto">
+        <div class="bts_cima">
+            <a href="portfolio.php?turma=<?=$turma?>" align="left" >
+                <img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+            </a>
+            <a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
+                <img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+            </a>
+        </div>
+        <div id="esq">
+            <div id="projeto" class="bloco">
+                <h1 ><a class="toggle" id="toggle_projeto">▼</a> PROJETO</h1>
+                <ul class="sem_estilo" id="caixa_projeto">
 <?php
-	if ($descricao != "")
-		echo "					<li>
-						<span class=\"dados\">Descrição:
-						</span>
-					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$descricao
-						</span>
-					</li>";
+    if ($descricao != "")
+        echo "                  <li>
+                        <span class=\"dados\">Descrição:
+                        </span>
+                    </li>
+                    <li class=\"texto_port\">
+                        <span class=\"valor\">$descricao
+                        </span>
+                    </li>";
 ?>
-					<li>
-						<span class="dados">Objetivos:
-						</span>
-					</li>
-					<li class="texto_port">
-						<span class="valor"><?=$objetivos?>
-						</span>
-					</li>
+                    <li>
+                        <span class="dados">Objetivos:
+                        </span>
+                    </li>
+                    <li class="texto_port">
+                        <span class="valor"><?=$objetivos?>
+                        </span>
+                    </li>
 <?php
-	if ($conteudosAbordados != "")
-		echo "					<li>
-						<span class=\"dados\">Conteúdos Abordados:
-						</span>
-					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$conteudosAbordados
-						</span>
-					</li>";
+    if ($conteudosAbordados != "")
+        echo "                  <li>
+                        <span class=\"dados\">Conteúdos Abordados:
+                        </span>
+                    </li>
+                    <li class=\"texto_port\">
+                        <span class=\"valor\">$conteudosAbordados
+                        </span>
+                    </li>";
 
-	if ($metodologia != "")
-		echo "					<li>
-						<span class=\"dados\">Metodologia:
-						</span>
-					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$metodologia
-						</span>
-					</li>";
-	if ($publicoAlvo != "")
-		echo "					<li>
-						<span class=\"dados\">Publico-Alvo:
-						</span>
-					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$publicoAlvo
-						</span>
-					</li>";
+    if ($metodologia != "")
+        echo "                  <li>
+                        <span class=\"dados\">Metodologia:
+                        </span>
+                    </li>
+                    <li class=\"texto_port\">
+                        <span class=\"valor\">$metodologia
+                        </span>
+                    </li>";
+    if ($publicoAlvo != "")
+        echo "                  <li>
+                        <span class=\"dados\">Publico-Alvo:
+                        </span>
+                    </li>
+                    <li class=\"texto_port\">
+                        <span class=\"valor\">$publicoAlvo
+                        </span>
+                    </li>";
 ?>
-					
-				</ul>
-			</div> <!-- fim da div projeto -->
-			<div id="postagens" class="bloco">
-				<h1 ><a class="toggle" id="toggle_posts">▼</a> POSTAGENS</h1>
-				<div class="bloqueia">
-					<ul class="sem_estilo" id="caixa_posts">
-					<?
-						$posts = new lista_posts($projeto_id, $tabela_portfolioPosts);
-						
-						for ($i=0; $i < $posts->tamanho_lista; $i++){
-							if($posts->lista[$i][0] == "\n"){ // Caso seja um marcador de fim de alguma coisa...
-								switch (substr($posts->lista[$i], 1)){
-								case "end_month":
-									echo "
-									</ul>
-								</li>";
-									break;
+                    
+                </ul>
+            </div> <!-- fim da div projeto -->
+            <div id="postagens" class="bloco">
+                <h1 ><a class="toggle" id="toggle_posts">▼</a> POSTAGENS</h1>
+                <div class="bloqueia">
+                    <ul class="sem_estilo" id="caixa_posts">
+                    <?
+                        $posts = new lista_posts($projeto_id, $tabela_portfolioPosts);
+                        
+                        for ($i=0; $i < $posts->tamanho_lista; $i++){
+                            if($posts->lista[$i][0] == "\n"){ // Caso seja um marcador de fim de alguma coisa...
+                                switch (substr($posts->lista[$i], 1)){
+                                case "end_month":
+                                    echo "
+                                    </ul>
+                                </li>";
+                                    break;
 
 
-								case "end_year":
-									echo "
-							</ul>
-						</li>";
-									break;
+                                case "end_year":
+                                    echo "
+                            </ul>
+                        </li>";
+                                    break;
 
 
-								case "new_year":
-									$i += 1;// GAMBIARRAS 8D
-											// Ele incrementa em um tanto aqui quando na abaixo porque o new_algo não contem os dados do mes/ano. Precisa incrementar pra pegar ele.
-									echo "
-						<li class=\"post_ano\">
-							<a href=\"javascript:abre_topico($i);\" class=\"no_underline\">".$posts->lista[$i]."</a>
-						</li>
-						<li class=\"tabela_oculta\" id=\"topico_oculto$i\"> <!--safadeza_oculta-->
-							<ul>";
-									break;
+                                case "new_year":
+                                    $i += 1;// GAMBIARRAS 8D
+                                            // Ele incrementa em um tanto aqui quando na abaixo porque o new_algo não contem os dados do mes/ano. Precisa incrementar pra pegar ele.
+                                    echo "
+                        <li class=\"post_ano\">
+                            <a href=\"javascript:abre_topico($i);\" class=\"no_underline\">".$posts->lista[$i]."</a>
+                        </li>
+                        <li class=\"tabela_oculta\" id=\"topico_oculto$i\"> <!--safadeza_oculta-->
+                            <ul>";
+                                    break;
 
 
-								case "new_month":
-									$i += 1;
-									echo "
-								<li class=\"post_mes\">
-									<a href=\"javascript:abre_topico($i);\" class=\"no_underline\">" /*NOTE QUE TEM UM $i AO LADO DE abre_topico*/.getMonth($posts->lista[$i])."</a>
-								</li>
-								<li class=\"tabela_oculta\" id=\"topico_oculto$i\">
-									<ul>";
-									break;
-								}
-							} else {
-								$pingas = explode("\n", $posts->lista[$i]); // SnooPING AS usual, I see.
-								// Falando mais sério, é passado o id do post e o nome dele, separados por um \n, que a chamada acima divide em um array.
-								// pingas[0] = nome, [1] = id.
-								echo "
-										<li class=\"post_topico\">
-											<a name=\"".$pingas[1]."\" class=\"no_underline\">".$pingas[0]."</a>
-										</li>";
-							}
-						}?>
-					</ul>
-				</div>
-			</div>
-			<div id="arquivos" class="bloco">
-				<h1 ><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS</h1>
-				<!-- criar uma funcao no javascript para abrir a tela "formNovoArquivo" e esperar uma resposta.
-				Se arquivo criado no BD devolver uma resposta ao javascript para atualizar a pagina -->
-				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
-				<div class="bloqueia">
-					<ul class="sem_estilo" id="caixa_arq">
-					<?
-						global $tabela_arquivos;
-						$tipoPortfolio = TIPOPORTFOLIO;
-						$consulta = new conexao();
-						$consulta->solicitar("SELECT arquivo_id,titulo,nome FROM $tabela_arquivos WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
-						while($consulta->resultado)
-						{
-							$fileId = $consulta->resultado['arquivo_id'];
-							if(trim($consulta->resultado['titulo']) != ""){
-								$nomeArquivo = $consulta->resultado['titulo'];
-							}
-							else $nomeArquivo = $consulta->resultado['nome'];
-					?>
-							<li class="tabela_port" id="liFile<?=$fileId?>">
-								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-								<img src="../../images/botoes/bt_x.png" onclick="if (confirm('Tem certeza que deseja excluir este arquivo?')) { deleteFile(<?=$fileId?>);}; " align="right"/>
-							</li>
-					<?
-							$consulta->proximo();
-						}
-					?>
-					</ul>
-					<div style="clear:both"><!-- empty --></div>
-				</div>
-			</div>
-			<div id="links" class="bloco">
-				<h1 ><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
-				<div class="add" id="addLink" onclick="botaoAdicionar('addLinkDiv');">adicionar</div>
-				<div class="bloqueia">
-					<ul class="sem_estilo" id="caixa_link">
-					
-					
-					<div id="addLinkDiv" style="display:none;">
-						<li class="tabela_port">
-							<form name="addLinkForm" action="inserirLinkBd.php" method="post">
-								<input type="text" name="newLink" align="left"/>
-								<input type="hidden" name="projeto_id" value="<?=$projeto_id ?>" />
-								<input type="image" onClick="addLinkForm.submit()" src="../../images/botoes/bt_confirm.png" width="50%" height="50%" align="right"/>
-								<img onClick="hideDiv('addLinkDiv');" src="../../images/botoes/bt_cancelar.png" width="50%" height="50%" align="left"/>
-							</form>
-						</li>
-					</div>
-					<?
-						global $tabela_links;
-						$tipoPortfolio=TIPOPORTFOLIO;
-						$consulta = new conexao();
-						$consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
-						
-						for ($i=0 ; $i < count($consulta->itens) ; $i++){
-							$liId = $consulta->resultado['Id'];
-							
-							$titulo="";
-							if ($consulta->resultado['titulo'] == ""){
-								$titulo = $consulta->resultado['endereco'];
-							}
-							else $titulo = $consulta->resultado['titulo'];
-					?>
-							<li class="tabela_port" id=<?=("liLink".$liId)?> >
-								<a href="<?=$consulta->resultado['endereco']?>" target="_blank" align="left" ><?=$titulo?></a>
-								<img onclick="if (confirm('Tem certeza que deseja apagar este link?')){this.style.visibility = 'hidden';deleteBd('<?=$liId?>','<?=$tabela_links?>','Id')}" src="../../images/botoes/bt_x.png" align="right"/>
-							</li>
-					<?
-							$consulta->proximo();
-						}
-					?>
+                                case "new_month":
+                                    $i += 1;
+                                    echo "
+                                <li class=\"post_mes\">
+                                    <a href=\"javascript:abre_topico($i);\" class=\"no_underline\">" /*NOTE QUE TEM UM $i AO LADO DE abre_topico*/.getMonth($posts->lista[$i])."</a>
+                                </li>
+                                <li class=\"tabela_oculta\" id=\"topico_oculto$i\">
+                                    <ul>";
+                                    break;
+                                }
+                            } else {
+                                $pingas = explode("\n", $posts->lista[$i]); // SnooPING AS usual, I see.
+                                // Falando mais sério, é passado o id do post e o nome dele, separados por um \n, que a chamada acima divide em um array.
+                                // pingas[0] = nome, [1] = id.
+                                echo "
+                                        <li class=\"post_topico\">
+                                            <a name=\"".$pingas[1]."\" class=\"no_underline\">".$pingas[0]."</a>
+                                        </li>";
+                            }
+                        }?>
+                    </ul>
+                </div>
+            </div>
+            <div id="arquivos" class="bloco">
+                <h1 ><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS</h1>
+                <!-- criar uma funcao no javascript para abrir a tela "formNovoArquivo" e esperar uma resposta.
+                Se arquivo criado no BD devolver uma resposta ao javascript para atualizar a pagina -->
+                <div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
+                <div class="bloqueia">
+                    <ul class="sem_estilo" id="caixa_arq">
+                    <li id="addFileDiv" style="display:none">
+                        <form id="file_form" method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="submitFileForm(this);return false;">
+                            <input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+                            <div class="file_input" style="display:inline-block">
+                                <input name="userfile" type="file" id="procura_arquivo" class="upload_file" title="Procurar Arquivo" style="" required />
+                            </div>
+                            <div id="f_arquivo" style="display:inline-block;width: 80px;" class="falso_text">&nbsp;</div>
+                            <br>
+                            <button type="submit" class="submit" name="upload" value="Enviar" style="float:right">Enviar</button>
+                        </form>
+                            <script>
 
-					
-					
-					</ul>
-				</div>
-			</div>
-		</div>
-		<div id="dir">
-			<div id="posts" class="bloco" >
-				<h1 id="nome_projeto"><?=$titulo /*fullUpper($titulo)*/?></h1>
-				<?
-					global $tabela_portfolioPosts;
-					$consulta = new conexao();
-					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
-					
-					//print_r($consulta);
-					
-					for ($i = 0 ; $i < count($consulta->itens) ; $i++){
-						$postId = $consulta->resultado['id'];
-				?>
-				<div class="cor<?=alterna()?>" id="postDiv<?=$postId?>" >
-					<ul class="sem_estilo">
-						<li class="tabela_port">
-							<span class="titulo">
-								<div class="textitulo"><?=$consulta->resultado['titulo']?></div>
-								<img onclick="if (confirm('Tem certeza que deseja apagar este post?')){mataPost('postDiv<?=$postId?>');deleteBd('<?=$postId?>','<?=$tabela_portfolioPosts?>','id', '<?=$turma?>')}" src="../../images/botoes/bt_x.png" align="right"/>
-							</span>
-							<span class="data">
-								<?=$consulta->resultado['dataCriacao'] ?>
-							</span>
-						</li>
-						<li class="tabela_port">
-						<p>
-							<?=$consulta->resultado['texto']?>
-						</p> 
-						</li>
-						<li class="tabela_port">
-							<a id="abre_coment" onmousedown="abreComments('pid=<?=$postId?>&amp;turma=<?=$turma?>')">Ver comentários</a>
-						</li>
-					</ul>
-				</div>
-				<?
-						$consulta->proximo();
-					} //fim do for de geração de posts
-				?>
-			</div>
-		</div>
-		<div class="bts_baixo">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
-			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
-			</a>
-		</div>
-	</div><!-- Fecha Div conteudo -->
-	</div><!-- Fecha Div conteudo_meio -->
-	<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
-	</div><!-- fim da geral -->
-	<!-- loading -->
-	<div id="loading" style="display:none;">
-		<div class="spacer_50"><!-- empty --> </div>
-		<div class="loading_anim">
-			<h2>Processando</h2>
-		</div>
-	</div>
+
+    // -------------
+    var bt_arquivo = document.getElementById('procura_arquivo');
+    var f_arquivo = document.getElementById('f_arquivo');
+    
+
+    var change_file = function (){
+        f_arquivo.innerHTML = '&nbsp;';
+        for (i=0;i<bt_arquivo.files.length;i++){
+            f_arquivo.innerHTML = bt_arquivo.files[i].name + ' ';
+        }
+    };
+    bt_arquivo.onchange = change_file;
+    bt_arquivo.form.onreset = change_file;
+
+</script>
+                    </li>
+                    <?
+                        global $tabela_arquivos;
+                        $tipoPortfolio = TIPOPORTFOLIO;
+                        $consulta = new conexao();
+                        $consulta->solicitar("SELECT arquivo_id,titulo,nome FROM $tabela_arquivos WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
+                        while($consulta->resultado)
+                        {
+                            $fileId = $consulta->resultado['arquivo_id'];
+                            if(trim($consulta->resultado['titulo']) != ""){
+                                $nomeArquivo = $consulta->resultado['titulo'];
+                            }
+                            else $nomeArquivo = $consulta->resultado['nome'];
+                    ?>
+                            <li class="tabela_port" id="liFile<?=$fileId?>">
+                                <a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
+                                <img src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right"/>
+                            </li>
+                    <?
+                            $consulta->proximo();
+                        }
+                    ?>
+                    </ul>
+                    <div style="clear:both"><!-- empty --></div>
+                </div>
+            </div>
+            <div id="links" class="bloco">
+                <h1 ><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
+                <div class="add" id="addLink" onclick="botaoAdicionar('addLinkDiv');">adicionar</div>
+                <div class="bloqueia">
+                    <ul class="sem_estilo" id="caixa_link">
+                    <li id="addLinkLi" class="tabela_port" style="display:none;">
+                        <form name="addLinkForm" action="../../novo_link.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
+                            Novo Link: <input name="novoLink" id="novoLink" type="text"/>
+                            <input name="submit" type="submit" id="submit" value="Submit" />
+                        </form>
+                    </li>
+                    <?
+                        global $tabela_links;
+                        $tipoPortfolio=TIPOPORTFOLIO;
+                        $consulta = new conexao();
+                        $consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
+                        
+                        for ($i=0 ; $i < count($consulta->itens) ; $i++){
+                            $linkId = $consulta->resultado['Id'];
+                            
+                            $titulo="";
+                            if ($consulta->resultado['titulo'] == ""){
+                                $titulo = $consulta->resultado['endereco'];
+                            }
+                            else $titulo = $consulta->resultado['titulo'];
+                    ?>
+                            <li class="tabela_port" id=<?=("liLink".$linkId)?> >
+                                <a href="<?=$consulta->resultado['endereco']?>" target="_blank" align="left" ><?=$titulo?></a>
+                                <img onclick="if (confirm('Tem certeza que deseja apagar este link?')){this.style.visibility = 'hidden';deleteBd('<?=$linkId?>','<?=$tabela_links?>','Id')}" src="../../images/botoes/bt_x.png" align="right"/>
+                            </li>
+                    <?
+                            $consulta->proximo();
+                        }
+                    ?>
+
+                    
+                    
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="dir">
+            <div id="posts" class="bloco" >
+                <h1 id="nome_projeto"><?=$titulo /*fullUpper($titulo)*/?></h1>
+                <?
+                    global $tabela_portfolioPosts;
+                    $consulta = new conexao();
+                    $consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
+                    
+                    //print_r($consulta);
+                    
+                    for ($i = 0 ; $i < count($consulta->itens) ; $i++){
+                        $postId = $consulta->resultado['id'];
+                ?>
+                <div class="cor<?=alterna()?>" id="postDiv<?=$postId?>" >
+                    <ul class="sem_estilo">
+                        <li class="tabela_port">
+                            <span class="titulo">
+                                <div class="textitulo"><?=$consulta->resultado['titulo']?></div>
+                                <img onclick="if (confirm('Tem certeza que deseja apagar este post?')){mataPost('postDiv<?=$postId?>');deleteBd('<?=$postId?>','<?=$tabela_portfolioPosts?>','id', '<?=$turma?>')}" src="../../images/botoes/bt_x.png" align="right"/>
+                            </span>
+                            <span class="data">
+                                <?=$consulta->resultado['dataCriacao'] ?>
+                            </span>
+                        </li>
+                        <li class="tabela_port">
+                        <p>
+                            <?=$consulta->resultado['texto']?>
+                        </p> 
+                        </li>
+                        <li class="tabela_port">
+                            <a id="abre_coment" onmousedown="abreComments('pid=<?=$postId?>&amp;turma=<?=$turma?>')">Ver comentários</a>
+                        </li>
+                    </ul>
+                </div>
+                <?
+                        $consulta->proximo();
+                    } //fim do for de geração de posts
+                ?>
+            </div>
+        </div>
+        <div class="bts_baixo">
+            <a href="portfolio.php?turma=<?=$turma?>" align="left" >
+                <img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+            </a>
+            <a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
+                <img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+            </a>
+        </div>
+    </div><!-- Fecha Div conteudo -->
+    </div><!-- Fecha Div conteudo_meio -->
+    <div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
+    </div><!-- fim da geral -->
+    <!-- loading -->
+    <div id="loading" style="display:none;">
+        <div class="spacer_50"><!-- empty --> </div>
+        <div class="loading_anim">
+            <h2>Processando</h2>
+        </div>
+    </div>
 <iframe name="deletante" style="visibility: hidden;"></iframe>
 
 <script type="text/javascript" src="../../jquery.js"></script>
@@ -487,9 +563,9 @@ var deleteFile = (function () {
 
 <script language="javascript">
 function coment(){
-	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-		document.getElementById('ie_coments').style.width = 85 + '%';
-	}
+    if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+        document.getElementById('ie_coments').style.width = 85 + '%';
+    }
 }
 </script>
 </body>

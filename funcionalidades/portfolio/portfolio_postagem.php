@@ -25,6 +25,7 @@ session_start();
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="portfolio.js"></script>
+<script type="text/javascript" src="../../js/rooda.js"></script>
 <script type="text/javascript" src="../../js/ajax.js"></script>
 <script type="text/javascript" src="../../js/ajaxFileManager.js"></script>
 <script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
@@ -111,7 +112,7 @@ var uploadAttImage = (function () {
 			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
-			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
 			return;
 		}
 		if (t = this.responseText) {
@@ -120,10 +121,10 @@ var uploadAttImage = (function () {
 			}
 			catch (e) {
 				console.log("JSON: "+e.message+":\n"+t);
-				alert ("Algo de errado aconteceu.");
+				ROODA.ui.alert ("Algo de errado aconteceu.");
 			}
 			if(res.errors) {
-				alert(res.errors.join("\n"));
+				ROODA.ui.alert(res.errors.join("\n"));
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = imageHTML(res.file_id);
@@ -132,7 +133,7 @@ var uploadAttImage = (function () {
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
 			} else {
-				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+				ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
 			}
 		}
 	}
@@ -160,7 +161,7 @@ var uploadAttFile = (function() {
 			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
-			alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
 			return;
 		}
 		if (t = this.responseText) {
@@ -169,10 +170,10 @@ var uploadAttFile = (function() {
 			}
 			catch (e) {
 				console.log("JSON: "+e.message+":\n"+t);
-				alert ("Algo de errado aconteceu.");
+				ROODA.ui.alert ("Algo de errado aconteceu.");
 			}
 			if(res.errors) {
-				alert(res.errors.join("\n"));
+				ROODA.ui.alert(res.errors.join("\n"));
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = fileHTML(res.file_id,res.file_name);
@@ -181,7 +182,7 @@ var uploadAttFile = (function() {
 				abreFechaLB();
 				document.getElementById('troca_img3').onclick();
 			} else {
-				alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
+				ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
 			}
 		}
 	}

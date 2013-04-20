@@ -1,120 +1,130 @@
-
-if (!Object.create) {
-	Object.create = function (o) {
-		if (arguments.length > 1) {
-			throw new Error('Object.create implementation only accepts the first parameter.');
-		}
-		function F() {}
-		F.prototype = o;
-		return new F();
-	};
-};
-
-// Compatibilidade com IE 5 e IE 6
-if (typeof XMLHttpRequest === "undefined") {
-  XMLHttpRequest = function () {
-    try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); }
-    catch (e) {}
-    try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); }
-    catch (e) {}
-    try { return new ActiveXObject("Microsoft.XMLHTTP"); }
-    catch (e) {}
-    // Microsoft.XMLHTTP points to Msxml2.XMLHTTP and is redundant
-    throw new Error("This browser does not support XMLHttpRequest.");
-  };
-};
-
-
 var ROODA = {};
 
-ROODA.AjaxRequest = (function (url,handler,body) {
-	var AjaxRequest = {};
-	AjaxRequest.onresponse = handler;
-	
-	request = new XMLHttpRequest();
-	request.parent = AjaxRequest;
-	
-	request.onreadystatechange = function () {
-		if (this.readyState === 4) {
-			if (this.state === 200) {
-				this.parent.onresponse();
-				this.parent.responseDocument = null;
-			} else {
-			}
-		}
-	}
-	return AjaxRequest;
-});
+/*
+ * ROODA.dom
+ *    All the dom related functions are here.
+ */
+ROODA.dom = {};
 
-ROODA.AjaxForm = (function(form_id,handler,data_requested){
-// -- AjaxForm ---------------------------------------------------------------
-// 
-//   Usage example:
-//   var handler = function() {
-//			var str = this.response.value_id_1;
-//			str += this.responseDocument.getElementById('test').textContent;
-//   var my_form = ROODA.AjaxForm("form_id", function () { window.alert(this.response.value_id_1+this.responseDocument.getElementById('test'))} ,["value_id_1", "value_id_2"]);
-//
-// ---------------------------------------------------------------------------
-	var form = document.getElementById(form_id);
 
-	// VERIFYING PARAMETERS
-	if (!form || form.tagName !== "FORM") {
-		console.error("new AjaxForm(): invalid form_id (1st parameter)");
-		return null;
-	} else {
-		// PARAMETERS SEEMS OK
-		var iframe = document.createElement("iframe");
-		var AjaxForm = function () {
-			
-			// public variables/functions
-			this.data_requested = data_requested; // parameter
-			this.onResponse = handler || function() {};
-			// end of public variables
+/*
+ * ROODA.dom.walkTheDom(node,func)
+ * Desc: 
+ *    Applies function 'func' on DOM node 'node' and all its children.
+ * Params:
+ *    node: DOM node
+ *    func: function that will be called passing node and all its children.
+ */
+ROODA.dom.walkTheDOM = function(node, fun) {
+    'use strict';
+    fun(node);
+    node = node.firstChild;
+    while (node) {
+        ROODA.dom.walkTheDOM(node, fun);
+        node = node.nextSibling;
+    }
+};
 
-			// Dont mess with the proprieties below
-			iframe.parent = this;
-			
-			// Set iframe's name and form's target
-			iframe.name = form.id+"_AjaxTarget";
-			form.target = iframe.name;
-			
-			
-			iframe.onload = function (ev) {
-				
-				// Define the real 'onload' after first 'onload' since it will
-				// be triggered first when appended to the document.
-				// On firefox the event will be triggered even if you define it after appending to the DOM
-				// so you must define it before so it behaves alike in all browsers.
-				
-				this.onload = function (ev) {
-					
-					// Get all the data requested
-					this.parent.responseDocument = this.contentDocument;
-					
-					this.parent.response = {};
-					
-					for (var i=0; i<data_requested.length;i+=1) {
-						var data = data_requested[i];
-						var elem = this.contentDocument.getElementById(data);
-						
-						if(elem) {
-							this.parent.response[data] = elem.textContent;
-						} else {
-							this.parent.response[data] = false;
-						}
-					}
-					
-					// Trigger the user-defined event function
-					this.parent.onResponse();
-				};
-			}
-			
-			// Hide the iframe
-			iframe.style.display="none";
-			// Append the iframe to the document
-			document.body.appendChild(iframe);
-		}
-		return new AjaxForm();
-	}
-});
+
+/*
+ * ROODA.dom.purgeElement(node)
+ * Desc:
+ *    Remove all handlers from a node and all its children
+ *    and detach it from the document (if attached).
+ */
+ROODA.dom.purgeElement = function(node) {
+    'use strict';
+    ROODA.dom.walkTheDOM(node, function (e) {
+        var i, l;
+        if (e.attributes) {
+            l = e.attributes.length;
+            for (i = 0; i < l; i += 1) {
+                if (typeof e.attributes[i] === "function") {
+                    e.attributes[i] = null;
+                }
+            }
+        }
+    });
+    if (node.parentElement) {
+        node.parentElement.removeChild(node);
+    }
+};
+
+
+/*
+ * ROODA.ui
+ *    All user interface related functions are here.
+ */
+ROODA.ui = {};
+
+
+/* 
+ * ROODA.ui.alert(str)
+ * Desc:
+ *    A non-blocking javascript alert interface
+ * Params:
+ *    str: string message
+ */
+ROODA.ui.alert = function(str) {
+    'use strict';
+    var html = [], div = document.createElement("div");
+    div.onclick = function(e) {
+        // User clicked on the alert window!
+        e = e || event;
+        var target = e.target || e.srcElement;
+        if (target.classList.contains("alert_ok")) {
+            // User clicked "OK", remove the alert window.
+            ROODA.dom.purgeElement(this);
+        }
+    };
+    div.className = "alert";
+    html.push("<div class=\"spacer_50\"></div>");
+    html.push("<div class=\"alert_window\">");
+    html.push("<div class=\"alert_img\"></div>");
+    html.push("<p class=\"alert_text\">" + str + "</p>");
+    html.push("<button class=\"alert_ok\">OK</button>");
+    html.push("</div>");
+    div.innerHTML = html.join("\n");
+    document.body.appendChild(div);
+};
+
+
+/* 
+ * ROODA.ui.alert( str [, yes_func [, no_func ]] )
+ * Desc:
+ *    A non-blocking javascript confirm interface
+ * Params:
+ *    str: string message
+ *    yes_func: function to be executed if user click "ok" button
+ *    no_func: function to be executed if user click "no" button
+ */
+ROODA.ui.confirm = function(str, fun_yes, fun_no) {
+    'use strict';
+    var html = [], div = document.createElement("div");
+    div.onclick = function(e) {
+        // User clicked on the confirm window!
+        e = e || event;
+        var target = e.target || e.srcElement;
+        if (target.classList.contains("confirm_yes")) {
+            // User clicked "Yes", execute fun_yes
+            if (typeof fun_yes === "function") { fun_yes(); }
+            // and remove the confirm window
+            ROODA.dom.purgeElement(this);
+        } else if (target.classList.contains("confirm_no")) {
+            // User clicked "No", execute fun_no
+            if (typeof fun_no === "function") { fun_no(); }
+            // and remove the confirm window
+            ROODA.dom.purgeElement(this);
+        }
+    };
+    div.className = "confirm";
+    html.push("<div class=\"spacer_50\"></div>");
+    html.push("<div class=\"confirm_window\">");
+    html.push("<div class=\"confirm_img\"></div>");
+    html.push("<p class=\"confirm_text\">" + str + "</p>");
+    html.push("<button class=\"confirm_yes\">yes</button>");
+    html.push("<button class=\"confirm_no\">no</button>");
+    html.push("</div>");
+    div.innerHTML = html.join("\n");
+    document.body.appendChild(div);
+};
