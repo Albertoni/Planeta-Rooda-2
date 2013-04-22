@@ -17,8 +17,10 @@
 	$pesquisa1->solicitar("select * from $tabela_personagens where personagem_id='$personagem_id' limit 1");
 	$terreno_id = $pesquisa1->resultado['personagem_terreno_id'];
 	$pesquisa1->solicitar("select * from $tabela_terrenos where terreno_id='$terreno_id' limit 1");
-	//$grupo_id = $pesquisa1->resultado['terreno_grupo_id'];
-	//$_SESSION['SS_grupo_id']  = $grupo_id;  
+	$grupo_id = $pesquisa1->resultado['terreno_grupo_id'];
+	$_SESSION['SS_grupo_id']  = $grupo_id;  
+
+	
 ?>
 
 <!DOCTYPE html>
@@ -123,7 +125,7 @@
 			esconderFlash();
 			if(!colorBoxAberta){
 				colorBoxAberta = true;
-				$.colorbox({href: link, width:"80%", height:"85%", iframe:true, onCleanup:function(){ 
+				$.fn.colorbox({href: link, width:"80%", height:"85%", iframe:true, onCleanup:function(){ 
 					mostrarFlash();
 					colorBoxAberta = false;
 				}});

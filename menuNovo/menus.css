@@ -203,3 +203,54 @@ font-family: Tahoma, Verdana, Trebuchet MS;
 #botao_troca_professor:hover{background-image: url('images/lightboxes/h_prof.png');}
 
 #lista_funcionalidades{margin-left:28%;}
+
+/* coisas da troca de nivel */
+#light_box_dadosusuario * {margin-left:40px;}
+#light_box_dadosusuario form * {margin-left:0px;}
+.esconde_texto{
+	background-repeat: no-repeat;
+	overflow:hidden;
+	text-indent:-9999px;
+}
+#frase_cadastro{width: 330px; background-image: url('images/cadastro/cadastrousuario.png');}
+#cadastro_textoNome{
+	background-image: url('images/cadastro/nome.png');
+	width: 176px;
+	height: 37px;
+	position:absolute;
+	
+}
+#cadastro_textoApelido{
+	background-image: url('images/cadastro/apelido.png');
+	width: 176px;
+	height: 37px;
+}
+#cadastro_textoSexo{
+	background-image: url('images/cadastro/sexo.png');
+	width: 176px;
+	height: 37px;
+}
+#cadastro_textoSenha{
+	background-image: url('images/cadastro/senha.png');
+	width: 176px;
+	height: 37px;
+}
+#cadastro_textoEmail{
+	background-image: url('images/cadastro/email.png');
+	width: 176px;
+	height: 37px;
+}
+#cadastro_textoMasculino{
+	background-image: url('images/cadastro/masculino.png');
+	width: 86px;
+	height: 19px;
+}
+#cadastro_textoFeminino{
+	background-image: url('images/cadastro/feminino.png');
+	width: 77px;
+	height: 19px;
+}
+#lista_semEstilo{
+	list-style:none;
+}
+/* fim troca nivel */

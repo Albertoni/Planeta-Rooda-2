@@ -145,7 +145,7 @@
 				$consulta_ano = new conexao();
 				$consulta_ano->solicitar("SELECT * FROM $tabela_anos WHERE id=$idAno");
 				$ano = $consulta_ano->resultado['nome'];
-				
+	
 				$consulta_nomeprof->solicitar("SELECT * FROM $tabela_usuarios WHERE usuario_id = $codigoProfessor");
 				$professor = $consulta_nomeprof->resultado['usuario_nome'];
 				$maeProfessor = $consulta_nomeprof->resultado['usuario_nome_mae'];
@@ -160,7 +160,7 @@
 				if($numeroProfessores == ''){
 					$numeroProfessores = 0;
 				}
-				
+											
 				$consulta_monitores = new conexao();
 				$consulta_monitores->solicitar("SELECT U.usuario_nome AS nome
 											FROM TurmasUsuario AS TU, $tabela_usuarios AS U
@@ -213,6 +213,6 @@
 	}
 	$dados .= '&numDadosEncontrados='.$numDadosEncontrados; 
 
-	echo $dados;
+    echo $dados;	
 //A partir do fim do php, não escrever absolutamente nada. Nem código. &numDadosEncontrados receberá TUDO o que for escrito.
 ?>

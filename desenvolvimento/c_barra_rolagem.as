@@ -134,6 +134,7 @@ dynamic class c_barra_rolagem extends MovieClip {
 				//temp--;
 				if (this.barra_rolagem.posicaoScroll != temp) {
 					this.barra_rolagem.posicaoScroll = temp;
+					
 					if (this.barra_rolagem.tamanhoSubLista != undefined){
 					    this.barra_rolagem.scrollMoveu(this.barra_rolagem.posicaoScroll,
 					                                   this.barra_rolagem.posicaoScroll + this.barra_rolagem.tamanhoSubLista);
@@ -201,7 +202,7 @@ dynamic class c_barra_rolagem extends MovieClip {
 		var tamanhoParteEstatica:Number = this.fundo._height - this.track._height;
 		//2 aki foi utilizado como valor arbitrario. Talvez possa ser melhor pensado no futuro
 		if (novoTamanho < (2 * tamanhoParteEstatica)) {
-			//mp.fala.text = "iiiih";
+			mp.fala.text = "iiiih";
 			return false;
 		}
 		else {			

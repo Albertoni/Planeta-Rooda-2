@@ -122,29 +122,40 @@ var handlerCarteira = function(){
 // FIM FUNÇÕES CARTEIRA
 // TROCA DE NIVEL
 function dadosNivel(userId, turma){
-	this.userId = userid;
+	this.userId = userId;
 	this.turma = turma;
 }
 var dados = null; // usado para guardar os dados enquanto o usuário seleciona o nivel pretendido
 
 function preparaTrocaNivel(userId,turma){
-	dados = new dadosNivel(userId, Turma);
-	abreFechaLB("light_box_troca");
+	dados = new dadosNivel(userId, turma);
+	abreFechaLB("#light_box_dadosusuario");
 }
 function efetuaTrocaNivel(nivel){
 	if(dados == null){
 		alert('Desculpe, aconteceu um erro ao tentar trocar o nivel do aluno, por favor recarregue a página e tente novamente.');
 	}else{
 		var nivel = 0;
+		var erro = false;
 		switch(nivel){
 			case 'profe':
-			case 'aluno':
+				nivel=4;
+				break;
 			case 'monit':
+				nivel=8;
+				break;
+			case 'aluno':
+				nivel=16;
+				break;
 			default:
 				alert('Favor recarregar a página e tentar novamente, algum erro ocorreu.');
+				erro=true;
 		}
-		argumentos = "userId="+dados.userId+"&turma="+dados.turma+"&nivel="+nivel;
-		carregaHTML('trocaNivel.php',argumentos, handlerTrocaNivel);
+		
+		if(!erro){
+			argumentos = "userId="+dados.userId+"&turma="+dados.turma+"&nivel="+nivel;
+			carregaHTML('trocaNivel.php',argumentos, handlerTrocaNivel);
+		}
 	}
 	abreFechaLB('light_box_troca');
 }

@@ -11,6 +11,8 @@
 	$operacaoRealizadaComSucesso = true;
 	$mensagemDeErro = "";
 	
+	global $nivelProfessor;
+	
 //Dados para cadastro
 	$nome = $_POST['nome'];
 	$professor = $_POST['professor'];
@@ -152,7 +154,7 @@
 	if($operacaoRealizadaComSucesso){
 		$conexaoCadastro = new conexao();
 		$conexaoCadastro->solicitar($pesquisaCadastroSQL);
-		$mensagemDeErro="1";
+		//$mensagemDeErro="1";
 		if($conexaoCadastro->erro != ''){
 			$mensagemDeErro.="3";
 			$operacaoRealizadaComSucesso = false;
@@ -221,17 +223,12 @@
 			
 			$conexaoPlaneta->solicitar("SELECT * FROM Planetas WHERE Tipo=2 AND Nome='$nome' AND Terrenos=$idTerreno AND IdResponsavel=$idProfessor AND IdsPais=$idPlanetaAno");
 			$idPlaneta = $conexaoPlaneta->resultado["Id"];
-			$conexaoTerreno = new conexao();
 			$conexaoTerreno->solicitar("UPDATE terrenos SET terreno_grupo_id=$idPlaneta WHERE terreno_id=$idTerreno");
-			$conexaoTerreno = new conexao();
 			//$mensagemDeErro.= $conexaoPlaneta->erro;
 			//$mensagemDeErro.="\n";
 			//$mensagemDeErro.=$pesquisaPlanetaSQL;
 			//$mensagemDeErro.="\n";
-			//$mensagemDeErro.= "INSERT INTO TurmasUsuario (codTurma, codUsuario, associacao) VALUES ($idTurma, $idProfessor, $nivelProfessor)";
-			//$mensagemDeErro.= '('.$conexaoTerreno->erro.')';
-			//$mensagemDeErro.="\n";
-			
+		
 			$pesquisaEdicaoTurmas = new conexao();
 			if($operacaoRealizadaComSucesso){
 				$pesquisaEdicaoTurmas->solicitar("DELETE FROM TurmasUsuario 

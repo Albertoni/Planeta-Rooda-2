@@ -38,30 +38,34 @@ class Flash{
 	/*
 	* Função para chamar o flash!
 	* @param terrenoId_param O id no banco de dados do terreno para o qual o usuário irá.
+	* @param linkServidor_param Link absoluto para o servidor.
 	*/
-	public function chamar($terrenoId_param){
+	public function chamar($terrenoId_param, $linkServidor_param){
 		//<param name="flashID" value="loader.swf" />
 		//id="flashID"
 		$this->decidirAnimacao($terrenoId_param);
 		
-		echo "	<div id=\"conteudoFlash\">
-					<object id=\"flashId1\" name=\"flashName1\" classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\" width=\"100%\" height=\"100%\" align=\"middle\">
-						<param name=\"quality\" value=\"high\" />
-						<param name=\"allowScriptAccess\" value=\"always\"/>
-						<param name=\"wmode\" value=\"window\" />
+		echo '	<div id="conteudoFlash">
+					<object id="flashId1" name="flashName1" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="100%" height="100%" align="middle">
+						<param name="quality" value="high" />
+						<param name="allowScriptAccess" value="always"/>
+						<param name="wmode" value="window" />
 						<!--[if !IE]>-->
-						<embed id=\"flashID\" name=\"loader\" src=\"loader.swf\" quality=\"high\" bgcolor=\"#ffffff\" wmode=\"window\" 
-							width=\"100%\" height=\"100%\" align=\"middle\" allowScriptAccess=\"sameDomain\" allowFullScreen=\"true\" type=\"application/x-shockwave-flash\" 
-							pluginspage=\"http://www.macromedia.com/go/getflashplayer\" >
+						<embed id="flashID" name="loader" src="loader.swf" quality="high" bgcolor="#ffffff" wmode="window" 
+							flashvars = "animacao='.$this->animacao.'&direcaoAnimacao='.$this->direcaoAnimacao.'&fundoQuarto='.$this->fundoQuarto.'&linkServidor='.$linkServidor_param.'"
+							width="100%" height="100%"align="middle" allowScriptAccess="sameDomain" allowFullScreen="true" type="application/x-shockwave-flash" 
+							pluginspage="http://www.macromedia.com/go/getflashplayer" >
 						<!--<![endif]-->
+							<param name= "flashvars" value="animacao='.$this->animacao.'&direcaoAnimacao='.$this->direcaoAnimacao.'&fundoQuarto='.$this->fundoQuarto.'&linkServidor='.$linkServidor_param.'" />
+						</object>
 					</object>
 				</div>
-				<div id=\"conteudoScreenshot\" style=\"position:absolute; top: -10000px;\">
-					<img id=\"objetoScreenshot\" src=\"blank.gif\" style=\"margin: 0 auto; display:block;\" />
+				<div id="conteudoScreenshot" style="position:absolute; top: -10000px;">
+					<img id="objetoScreenshot" src="blank.gif" style="margin: 0 auto; display:block;" />
 				</div>
-				<script type=\"text/javascript\">
-					swfobject.registerObject(\"flashID\");
-				</script>";
+				<script type="text/javascript">
+					swfobject.registerObject("flashID");
+				</script>';
 				//<object name="flashName" id="flashID" type="application/x-shockwave-flash" data="loader.swf" width="100%" height="100%">
 	}
 	

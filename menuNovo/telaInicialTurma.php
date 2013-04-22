@@ -66,6 +66,26 @@ $alunos = $turma->getAlunos();
 			<div onclick="efetuaTrocaNivel('monit');" id="botao_troca_monitor" class="botao_troca"></div>
 			<div onclick="efetuaTrocaNivel('profe');" id="botao_troca_professor" class="botao_troca"></div>
 		</div>
+		<div id="light_box_dadosusuario" class="light_box">
+			<h2 class="esconde_texto" id="frase_cadastro">Cadastro de usuário</h2>
+			<form method="post" action="dadosUsuario.php">
+				<div class="esconde_texto" id="cadastro_textoNome">Nome Completo</div>
+				<input type="text" name="nomeUsuario" id="nomeUsuario">
+				<div class="esconde_texto" id="cadastro_textoApelido">Apelido / Login</div>
+				<input type="text" name="apelidoUsuario" id="apelidoUsuario">
+				<div class="esconde_texto" id="cadastro_textoSexo">Sexo</div>
+				<ul id="lista_semEstilo">
+					<li><input type="radio" name="cadastro_selecaoSexo" value="m"><div class="esconde_texto" id="cadastro_textoMasculino">Masculino</div>
+					<li><input type="radio" name="cadastro_selecaoSexo" value="f"><div class="esconde_texto" id="cadastro_textoFeminino">Feminino</div>
+				</ul>
+				<div class="esconde_texto" id="cadastro_textoSenha">Senha</div>
+				<input type="text" name="senhaUsuario" id="senhaUsuario">
+				<div class="esconde_texto" id="cadastro_textoEmail">Email</div>
+				<input type="text" name="emailUsuario" id="emailUsuario">
+			</form>
+			<div class="esconde_texto" id="cadastro_confirma" onclick="alert('faça isso funcionar')">Confirma</div>
+			<div class="esconde_texto" id="cadastro_cancelar" onclick="alert('faça isso funcionar')">Cancelar</div>
+		</div>
 		<div id="light_box_funcionalidades" class="light_box">
 			<h2 class="frase" id="frase_funcionalidade">Que funcionalidade deseja acessar?</h2>
 			<ul id="lista_funcionalidades">
@@ -91,7 +111,11 @@ $alunos = $turma->getAlunos();
 				</div>
 				<div id="listasMembrosTurma">
 					<div id="listaProfessores" class="listaMembros">
-						<div class="membroTurma comFundo" id="user414"><span id="nomeUser414">Juan Vizente</span><a class="botaoUsuario iconeDeletar" onclick="removeUsuario(414, 1081);"></a><a href="#" class="botaoUsuario iconeCarteira" onclick="mostraCarteira(414);"></a><a href="#" class="botaoUsuario iconePromocao" onclick="trocaNivel(414, 1081)"></a></div>
+					<div class="membroTurma" id="user414">
+					<span id="nomeUser414">$nome</span>
+					<a class="botaoUsuario iconeDeletar" onclick="removeUsuario(414, 1081);"></a>
+					<a href="#" class="botaoUsuario iconeCarteira" onclick="mostraCarteira(414);"></a>
+					<a href="#" class="botaoUsuario iconePromocao" onclick="preparaTrocaNivel(414, 1081)"></a></div>
 <?php
 imprimeListaUsuarios($professores);
 ?>

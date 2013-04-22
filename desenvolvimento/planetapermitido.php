@@ -31,9 +31,9 @@
 		}
 		$nivel_usuario = $pesquisa_usuario->resultado['usuario_nivel'];
 		$usuario_admin = (checa_nivel($nivel_usuario, $nivelAdmin) === 1) ? 1 : 0;
-		$usuario_coordenador = (checa_nivel($nivel_usuario, $nivelCoordenador) === 1) ? 1 : 0;
+		$usuario_coordenador = 0;//(checa_nivel($nivel_usuario, $nivelCoordenador) === 1) ? 1 : 0;
 		$usuario_professor = (checa_nivel($nivel_usuario, $nivelProfessor) === 1) ? 1 : 0;
-		$usuario_monitor = (checa_nivel($nivel_usuario, $nivelMonitor) === 1) ? 1 : 0;
+		$usuario_monitor = 0;//(checa_nivel($nivel_usuario, $nivelMonitor) === 1) ? 1 : 0;
 		$usuario_aluno = (checa_nivel($nivel_usuario, $nivelAluno) === 1) ? 1 : 0;
 		$usuario_visitante = (checa_nivel($nivel_usuario, $nivelVisitante) === 1) ? 1 : 0;
 			/*echo "nivel_usuario=".$nivel_usuario;

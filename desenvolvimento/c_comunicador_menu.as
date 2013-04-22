@@ -1,352 +1,371 @@
-﻿import mx.utils.Delegate;
-import mx.events.EventDispatcher;
-import flash.geom.Point;
+﻿/**
+ * ...
+ * @author ...
+ */
 
-/*
-* Menu do comunicador, que permite escolher chat visível, esconder balões e gerenciar chats ativos.
-*/
+import mx.utils.Delegate;
+ 
 dynamic class c_comunicador_menu extends MovieClip{
-//dados	
-	/*
-	* Link para símbolo na biblioteca.
-	*/
-	public static var LINK_BIBLIOTECA:String = "comunicadorMenu";
-
-	/*
-	* Eventos.
-	*/
-	public var addEventListener:Function;
-	public var removeEventListener:Function;
-	public var dispatchEvent:Function;
-
-	/*
-	* Botões que abrem as abas.
-	*/
-	private var btTerreno:MovieClip; //Aba que dá acesso a informações de personagens no mesmo terreno e ao chat do terreno.
-	private var btTurma:MovieClip; //Aba que dá acesso a informações de personagens das turmas do usuário e aos chats destas.
-	private var btAmigo:MovieClip; //Aba que dá acesso aos contatos do usuário e a chats com estes.
-
-	/*
-	* Botão para habilitar/desabilitar a visão de balões de conversa.
-	*/
-	private var btToggleVisibilidadeBaloes:MovieClip;
-
-	/*
-	* Aba de gerência do chat amigo.
-	*/
-	public var abaAmigo:MovieClip;
+	private var abaTerreno:MovieClip;
+	private var abaContato:MovieClip;
+	private var abaSistema:MovieClip;
+	private var espacoDireita:MovieClip;
+	private var espacoEsquerda:MovieClip;
+	private var addContato:TextField;
+	private var botaoAddContato:MovieClip;
+	private var novaMsg:Boolean;
+	private var desligarBaloes:MovieClip;
+	private var initObject:Object;
+	private var colunaDireitaTerreno:c_botoes_comunicador;
+	private var colunaDireitaSistemas:c_botoes_comunicador;
+	private var colunaEsquerdaSistemas:c_botoes_comunicador;
+	private var colunaDireitaContatos:c_botoes_comunicador;
 	
-	/*
-	* Variáveis de conexão com o servidor.
-	*/
-	private var enviaTerreno:LoadVars;
-	private var recebeTerreno:LoadVars;
-	private var enviaDadosTurmas:LoadVars;
-	private var recebeDadosTurmas:LoadVars;
+	private var listaContatos:Array;      //array de arrays de duas posicoes, onde a posicao 0 eh o nome e a posicao 1 eh o id
+	private var listaGrupos:Array;
 	
-	/*
-	* Abas que possui. Cada número determina uma aba.
-	*/
-	public static var ABA_TERRENO:Number = 1;
-	public static var ABA_TURMA:Number = 2;
-	public static var ABA_AMIGO:Number = 3;
-	public static var ABA_VAZIA:Number = 4;
+	//private var botoesContatos:c_botoes_comunicador;
+	//private var botoesSistemas:c_botoes_comunicador;
 	
-	/*
-	* Frames em que encontram-se as abas.
-	*/
-	public static var FRAME_ABA_TERRENO:Number = 1;
-	public static var FRAME_ABA_TURMA:Number = 2;
-	public static var FRAME_ABA_AMIGO:Number = 3;
-	public static var FRAME_ABA_VAZIA:Number = 4;
+	private var abaAtiva:Number = 1;     //o numero da aba(frame) que estah ativa no momento
 	
-	/*
-	* Menus do tipo c_select.
-	*/
-	private var menu_usuarios_terreno:c_select = undefined; //Menu da aba Terreno com os usuários logados no terreno em que está o usuário logado.
-	private var menu_turmas:c_select = undefined; //Menu da aba Turma com as turmas do usuário logado.
-	private var menu_usuarios_turmas:c_select = undefined; //Menu da aba Turma com os usuários pertencentes as turmas do usuário logado que estão online.
 	
-	/*
-	* Nomes de usuários no mesmo terreno do usuário logado.
-	*/
-	private var usuarios_terreno_recebidos:Array = new Array();
-	
-	/*
-	* Nomes de turmas recebidas do BD.
-	* É um array com nomes de turmas em que cada índice corresponde ao índice do array de nomes de alunos do array de alunos.
-	*/
-	private var turmas_recebidas:Array = new Array();
-	
-	/*
-	* Nomes de usuários que pertencem a turmas recebidas do BD.
-	* É um array de arrays em que cada índice corresponde a um array de usuários que estão na turma de mesmo índice no array de turmas.
-	*/
-	private var usuarios_turmas_recebidas:Array = new Array();
-	
-//métodos
-	/*
-	* Inicializa e permite configurar os chats que terão no terreno.
-	* @param ha_chatTerreno_param Booleano que determina se o chat de terreno está habilitado.
-	* @param ha_chatTurma_param Booleano que determina se o chat de turmas está habilitado.
-	* @param ha_chatAmigo_param Booleano que determina se o chat de amigos está habilitado.
-	*/
-	public function inicializar(ha_chatTerreno_param:Boolean, ha_chatTurma_param:Boolean, ha_chatAmigo_param:Boolean):Void{
-		mx.events.EventDispatcher.initialize(this);
+	function c_comunicador_menu() {
+		//this.colunaDireita._visible = false;
+		//this.colunaEsquerda._visible = false;
+		//this.opcoesInicializacao();
+		this.novaMsg = false;
+		this.guardarContatos();
+		this.guardarGrupos();		
 		
-		this['btToggleVisibilidadeBaloes'].onPress = function(){
-			if(_currentframe == 1){
-				gotoAndStop(2);
-			} else if(_currentframe == 2){
-				gotoAndStop(1);
-			}
-			_parent.dispatchEvent({target:this, type:"toggleVisibilidadeBaloes"});
-		};
+		this.attachMovie("botoesComunicador", "colunaDireitaTerreno", this.getNextHighestDepth())		
+		this.attachMovie("botoesComunicador", "colunaDireitaSistemas", this.getNextHighestDepth())
+		this.attachMovie("botoesComunicador", "colunaEsquerdaSistemas", this.getNextHighestDepth())
+		this.attachMovie("botoesComunicador", "colunaDireitaContatos", this.getNextHighestDepth())
 		
-		btTerreno.onPress = function(){ _parent.abrirAba(c_comunicador_menu.ABA_TERRENO);
-										_parent.dispatchEvent({target:this, type:"botaoPressionado", tipoAcao: c_fala_comunicador.ATALHO_VER_CHAT_TERRENO});}
-		btTurma.onPress = function(){ _parent.abrirAba(c_comunicador_menu.ABA_TURMA);
-									  _parent.dispatchEvent({target:this, type:"botaoPressionado", tipoAcao: c_fala_comunicador.ATALHO_VER_CHAT_TURMA});}
-		btAmigo.onPress = function(){ _parent.abrirAba(c_comunicador_menu.ABA_AMIGO);
-									  _parent.dispatchEvent({target:this, type:"botaoPressionado", tipoAcao: c_fala_comunicador.ATALHO_VER_CHAT_AMIGO});}
+		this.colunaDireitaTerreno._x      = this.espacoDireita._x;
+		this.colunaDireitaTerreno._y      = this.espacoDireita._y;
+		this.colunaDireitaTerreno._height = this.espacoDireita._height;
+		this.colunaDireitaTerreno._width  = this.espacoDireita._width;	
 		
-		if(!ha_chatTerreno_param){
-			btTerreno._visible = false;
-		}
-		if(!ha_chatTurma_param){
-			btTurma._visible = false;
-		}
-		if(!ha_chatAmigo_param){
-			btAmigo._visible = false;
-		}
+		this.colunaDireitaSistemas._x      = this.espacoDireita._x;
+		this.colunaDireitaSistemas._y      = this.espacoDireita._y;
+		this.colunaDireitaSistemas._height = this.espacoDireita._height;
+		this.colunaDireitaSistemas._width  = this.espacoDireita._width;		
 		
-		inicializarAbas();
+		this.colunaEsquerdaSistemas._x      = this.espacoEsquerda._x;
+		this.colunaEsquerdaSistemas._y      = this.espacoEsquerda._y;
+		this.colunaEsquerdaSistemas._height = this.espacoEsquerda._height;
+		this.colunaEsquerdaSistemas._width  = this.espacoEsquerda._width;
 		
-		abrirAba(ABA_VAZIA);
-	}
-	
-	/*
-	* Inicializações das abas.
-	*/
-	private function inicializarAbas():Void{
-		abrirAba(ABA_TERRENO);
-		attachMovie(c_select.LINK_BIBLIOTECA, "menu_usuarios_terreno_dummy", getNextHighestDepth(), {_x:this['espacoDireita']._x, _y:this['espacoDireita']._y});
-		menu_usuarios_terreno = this['menu_usuarios_terreno_dummy'];
-		menu_usuarios_terreno.inicializar(6, new Array(), "Planetários neste terreno");
-		menu_usuarios_terreno.setTipoInvisivel(true);
-		menu_usuarios_terreno.redimensionar(this['espacoDireita']._width, this['espacoDireita']._height);
-		menu_usuarios_terreno.addEventListener("botaoPressionado", Delegate.create(this, botaoDeSelectFoiPressionado));	
+		this.colunaDireitaContatos._x      = this.espacoDireita._x;
+		this.colunaDireitaContatos._y      = this.espacoDireita._y;
+		this.colunaDireitaContatos._height = this.espacoDireita._height;
+		this.colunaDireitaContatos._width  = this.espacoDireita._width;
 		
-		abrirAba(ABA_TURMA);
-		attachMovie(c_select.LINK_BIBLIOTECA, "menu_usuarios_turmas_dummy", getNextHighestDepth(), {_x:this['espacoEsquerda']._x, _y:this['espacoEsquerda']._y});
-		menu_usuarios_turmas = this['menu_usuarios_turmas_dummy'];
-		menu_usuarios_turmas.inicializar(6, new Array(), "Meus colegas online");
-		menu_usuarios_turmas.setTipoInvisivel(true);
-		menu_usuarios_turmas.redimensionar(this['espacoEsquerda']._width, this['espacoEsquerda']._height);
-		menu_usuarios_turmas.addEventListener("botaoPressionado", Delegate.create(this, botaoDeSelectFoiPressionado));	
-		attachMovie(c_select.LINK_BIBLIOTECA, "menu_turmas_dummy", getNextHighestDepth(), {_x:this['espacoDireita']._x, _y:this['espacoDireita']._y});
-		menu_turmas = this['menu_turmas_dummy'];
-		menu_turmas.inicializar(6, new Array(), "Minhas turmas");
-		menu_turmas.setTipoInvisivel(true);
-		menu_turmas.redimensionar(this['espacoDireita']._width, this['espacoDireita']._height);
-		menu_turmas.addEventListener("botaoPressionado", Delegate.create(this, botaoDeSelectFoiPressionado));	
+		//this.colunaDireitaTerreno.setListaContatos(lista);
+		//this.colunaDireitaTerreno.addEventListener("botaoClicado", Delegate.create(this, this.clickBotao));	
+		this._parent._parent.organizador_caixas_texto.addEventListener("recebidoChatconversa", Delegate.create(this, this.recebidoChat));
+		this._parent._parent.organizador_caixas_texto.addEventListener("recebidoChatcontato", Delegate.create(this, this.recebidoChat));
+		this._parent._parent.organizador_caixas_texto.addEventListener("recebidoChatgrupo", Delegate.create(this, this.recebidoChat));		
 		
-		abrirAba(ABA_AMIGO);
-		attachMovie(c_aba_amigo.LINK_BIBLIOTECA, "abaAmigo", getNextHighestDepth(), {_x:3});
-		abaAmigo = this['abaAmigo'];
-		abaAmigo.inicializar();
-		abaAmigo.addEventListener("botaoPressionado", Delegate.create(this, botaoFoiPressionado));
-	}
-	
-	/*
-	* Função que abre determinada aba, mostrando e escondendo a aba aberta, se houver.
-	* @param aba_param A aba a ser aberta, conforme definido nos dados desta classe.
-	*/
-	public function abrirAba(aba_param:Number):Void{
-		switch(_currentframe){
-			case FRAME_ABA_TERRENO: 
-						btTerreno.gotoAndStop(1);
-						if(menu_usuarios_terreno != undefined){
-							menu_usuarios_terreno._visible = false;
-						}
-				break;
-			case FRAME_ABA_TURMA: 
-						btTurma.gotoAndStop(1);
-						this['espacoEsquerda']._visible = false;
-						if(menu_turmas != undefined){
-							menu_turmas._visible = false;
-						}
-						if(menu_usuarios_turmas != undefined){
-							menu_usuarios_turmas._visible = false;
-						}
-				break;
-			case FRAME_ABA_AMIGO: 
-						this['espacoEsquerda']._visible = false;
-						btAmigo.gotoAndStop(1);
-						if(abaAmigo != undefined){
-							abaAmigo.fechar();
-						}		
-				break;
-			default: this['espacoEsquerda']._visible = false;
-				break;
-		}
-		switch(aba_param){
-			case ABA_TERRENO: 
-					btTerreno.gotoAndStop(2);
-					gotoAndStop(FRAME_ABA_TERRENO);
-					this['espacoEsquerda']._visible = false;
-					if(menu_usuarios_terreno != undefined){
-						menu_usuarios_terreno._visible = true;
-						atualizarUsuariosTerreno();
-					}
-				break;
-			case ABA_TURMA: 
-					btTurma.gotoAndStop(2);
-					this['espacoEsquerda']._visible = true;
-					gotoAndStop(FRAME_ABA_TURMA);
-					if(menu_turmas != undefined){
-						menu_turmas._visible = true;
-					}
-					if(menu_usuarios_turmas != undefined){
-						menu_usuarios_turmas._visible = true;
-						atualizarDadosTurmas();
-					}
-				break;
-			case ABA_AMIGO: 
-					this['espacoEsquerda']._visible = false;
-					this['espacoDireita']._visible = false;
-					btAmigo.gotoAndStop(2);
-					gotoAndStop(FRAME_ABA_AMIGO);
-					if(abaAmigo != undefined){
-						abaAmigo.abrir();
-					}
-				break;
-			case ABA_VAZIA:
-					this['espacoEsquerda']._visible = false;
-					this['espacoDireita']._visible = false;
-					gotoAndStop(FRAME_ABA_VAZIA);
-			default: fazNada();
-				break;
-		}
-	}
-	
-	/*
-	* Pede ao banco de dados os usuários que estão no terreno do usuário logado.
-	* Não é necessário enviar dados.
-	*/
-	private function atualizarUsuariosTerreno():Void{
-		enviaTerreno = new LoadVars();
-		recebeTerreno = new LoadVars();
-		recebeTerreno.onLoad = Delegate.create(this, usuariosTerrenoRecebidos);
-		enviaTerreno.sendAndLoad(c_banco_de_dados.ARQUIVO_PHP_PROCURAR_USUARIOS_TERRENO, recebeTerreno, "POST");
-	}
-	/*
-	* Executada ao receber os usuários com uma chamada de atualizarUsuariosTerreno .
-	*/
-	private function usuariosTerrenoRecebidos(success):Void{
-		if(success and recebeTerreno.erro == c_banco_de_dados.SEM_ERRO){
-			usuarios_terreno_recebidos = new Array();
-			for(var indice:Number=0; indice<recebeTerreno.numeroUsuariosRecebidos; indice++){
-				usuarios_terreno_recebidos.push(recebeTerreno['nomeUsuario'+indice]);
-			}
-			atualizarMenuTerreno();
-		}
-	}
-	
-	/*
-	* Pede ao banco de dados nomes de turmas do usuário logado e de usuários pertencentes a estas.
-	*/
-	private function atualizarDadosTurmas():Void{
-		enviaDadosTurmas = new LoadVars();
-		recebeDadosTurmas = new LoadVars();
-		recebeDadosTurmas.onLoad = Delegate.create(this, dadosTurmasRecebidos);
-		enviaDadosTurmas.sendAndLoad(c_banco_de_dados.ARQUIVO_PHP_PROCURAR_DADOS_TURMAS, recebeDadosTurmas, "POST");
-	}
-	/*
-	* Executada ao receber os usuários com uma chamada de atualizarUsuariosTurmasUsuario.
-	*/
-	private function dadosTurmasRecebidos(success):Void{
-		var usuarios_turma:Array;
-		if(success and recebeDadosTurmas.erro == c_banco_de_dados.SEM_ERRO){
-			turmas_recebidas = new Array();
-			usuarios_turmas_recebidas = new Array();
-			for(var indiceTurma:Number=0; indiceTurma < recebeDadosTurmas.numeroTurmas; indiceTurma++){
-				turmas_recebidas.push(recebeDadosTurmas['nomeTurma'+indiceTurma]);
-				usuarios_turma = new Array();
-				for(var indiceUsuario:Number=0; indiceUsuario < recebeDadosTurmas['numeroUsuariosTurma'+indiceTurma]-1; indiceUsuario++){
-					usuarios_turma.push(recebeDadosTurmas['nomeUsuario'+indiceTurma+','+indiceUsuario]);
+		this.colunaEsquerdaSistemas.tipo = 3;
+		this.colunaEsquerdaSistemas.setListaContatos(this.listaGrupos,"grupo");
+		this.colunaEsquerdaSistemas.addEventListener("botaoClicado", Delegate.create(this, this.clickBotao));		
+		
+		this.colunaDireitaContatos.tipo = 2;
+		this.colunaDireitaContatos.setListaContatos(this.listaContatos, "contato");
+        this.colunaDireitaContatos.addEventListener("botaoClicado", Delegate.create(this, this.clickBotao));		
+		
+		
+		this._parent.interval = -1;
+		
+		this.abaTerreno.nBotoesPiscando = 0;
+		this.abaTerreno.interval = -1;
+		this.abaSistema.nBotoesPiscando = 0;
+		
+		this.abaSistema.interval = -1;
+		this.abaContato.nBotoesPiscando = 0;
+		this.abaContato.interval = -1;
+		
+		this.setAbaAtiva(1);				
+		
+		this.abaTerreno["comunicador_menu"] = this;
+		this.abaTerreno.onRelease = function() {
+			this.comunicador_menu.setAbaAtiva(1);	
+			comunicador.organizador_caixas_texto.set_caixa_texto_ativa("conversa","conversa");
+		}	
+		
+		this.abaSistema["comunicador_menu"] = this;
+		this.abaSistema.onRelease = function() {		
+			this.comunicador_menu.setAbaAtiva(2);			
+		}	
+		
+		this.abaContato["comunicador_menu"] = this;
+		this.abaContato.onRelease = function() {
+			this.comunicador_menu.setAbaAtiva(3);
+			this.comunicador_menu.addContato["comunicador_menu"] = this.comunicador_menu;
+			Key.addListener(this.comunicador_menu.addContato);
+			this.comunicador_menu.addContato.onKeyDown = function(){
+				if ((Key.getCode() == Key.ENTER) and (Selection.getFocus() == targetPath(this))) {
+					this.comunicador_menu.adicionarContato(this.text, this.comunicador_menu.listaContatos, this.comunicador_menu.colunaDireitaContatos);													
+					this.text = "";
 				}
-				usuarios_turmas_recebidas.push(usuarios_turma);
 			}
-			atualizarMenuTurmas();
-			atualizarMenuUsuariosTurmas();
-		}
-	}
-	
-	/*
-	* As atualizações dos menus são feitas com base nos conteúdos dos arrays a seguir:
-	*	usuarios_terreno_recebidos	-	menu_usuarios_terreno
-	*	turmas_recebidas			-	menu_turmas
-	*	usuarios_turmas_recebidas	-	menu_usuarios_turmas
-	* Contanto que os arrays estejam atualizados, bastada chamar as atualizações e tudo dará certo!
-	*/
-	private function atualizarMenuTerreno():Void{
-		var tamanhoUsuariosTerrenoRecebidos:Number = usuarios_terreno_recebidos.length;
-		menu_usuarios_terreno.limparOpcoes();
-		for(var indice:Number=0; indice < tamanhoUsuariosTerrenoRecebidos; indice++){
-			menu_usuarios_terreno.inserirOpcao(usuarios_terreno_recebidos[indice]);
-		}
-	}
-	private function atualizarMenuTurmas():Void{
-		var tamanhoTurmasRecebidas:Number = turmas_recebidas.length;
-		menu_turmas.limparOpcoes();
-		for(var indiceTurma:Number=0; indiceTurma<tamanhoTurmasRecebidas; indiceTurma++){
-			menu_turmas.inserirOpcao(turmas_recebidas[indiceTurma]);
-		}
-	}
-	private function atualizarMenuUsuariosTurmas():Void{
-		var indiceArrayUsuarios:Number = menu_turmas.getIndiceOpcaoSelecionada();
-		var tamanhoUsuariosTurmasRecebidasNoIndiceArrayUsuarios:Number;
-		if(indiceArrayUsuarios == undefined){
-			indiceArrayUsuarios = 0;
-		}
-		tamanhoUsuariosTurmasRecebidasNoIndiceArrayUsuarios = usuarios_turmas_recebidas[indiceArrayUsuarios].length;
-		menu_usuarios_turmas.limparOpcoes();
-		for(var indiceUsuario:Number=0; indiceUsuario<tamanhoUsuariosTurmasRecebidasNoIndiceArrayUsuarios ; indiceUsuario++){
-			menu_usuarios_turmas.inserirOpcao(usuarios_turmas_recebidas[indiceArrayUsuarios][indiceUsuario]);
-		}
-	}
-	
-	/*
-	* Executada toda vez que um botão de algum select é pressionado.
-	* Recebe um evento com os seguintes atributos.
-	*	- posicaoTexto A posição na lista ordenada de opções da opção selecionada.
-	*	- nomeSelect O nome do menu que teve um botão pressionado.
-	* Dispara um evento com os seguintes atributos:
-	*	- tipoAcao O tipo de ação que se espera ao pressionar o botão.
-	*	- opcao O nome da opção que foi selecionada.
-	*/
-	private function botaoDeSelectFoiPressionado(evento_botao_pressionado:Object):Void{
-		var opcaoSelecionada:String
-		var tipoDeAcao:String;
-		if(evento_botao_pressionado.nomeSelect == menu_turmas._name){ atualizarMenuUsuariosTurmas(); }
+			this.comunicador_menu.botaoAddContato["comunicador_menu"] = this.comunicador_menu;
+			this.comunicador_menu.botaoAddContato.onRelease = function() {
+				this.comunicador_menu.adicionarContato(this.text, this.comunicador_menu.listaContatos, this.comunicador_menu.colunaDireitaContatos);													
+				this.text = "";
+			}
+		}		
 		
-		opcaoSelecionada = this[evento_botao_pressionado.nomeSelect].getOpcaoSelecionada();
-		switch(evento_botao_pressionado.nomeSelect){
-			case menu_usuarios_terreno._name: 
-			case menu_usuarios_turmas._name: 
-				tipoDeAcao = c_fala_comunicador.ATALHO_CHAT_PRIVADO;
-				break;
-			case menu_turmas._name: tipoDeAcao = c_fala_comunicador.ATALHO_CHAT_TURMA;
-				break;
-			default: tipoDeAcao = c_fala_comunicador.ATALHO_CHAT_PRIVADO;
-				break;
-		}
-		dispatchEvent({target:this, type:"botaoPressionado", tipoAcao: tipoDeAcao, opcao: opcaoSelecionada});
+		this.desligarBaloes.gotoAndStop(1);
+		this.desligarBaloes.hide = false;		
+		this.desligarBaloes.onPress = function() {
+			if (this.hide == false) {
+				this.hide = true;
+				this.gotoAndStop(2);
+				mp.fala._visible = false;
+				//chamar aki funcao que deixa invisivel baloes de todos ops				
+			}
+			else {
+				this.hide = false;
+				this.gotoAndStop(1);
+				mp.fala._visible = true;
+				//chamar aki funcao deixa visivel os baloes de todos ops
+			}
+		}		
 	}
 	
-	/*
-	* Não faz nada mesmo...
-	*/
-	private function fazNada():Void{}
+	
+	private function guardarGrupos(Void):Void {
+		var temp:Array = new Array();
+		temp = usuario_status.lista_grupos.split(",");								
+		this.listaGrupos = new Array();
+		
+		var I:Number;
+	    for (I = 0 ; I < temp.length ; I++) {
+			if (temp[I] != ""){
+			    this.listaGrupos.push(new Array(temp[I].substring(0, temp[I].indexOf("#")),
+			                                    temp[I].substring(temp[I].indexOf("#") + 1)
+					    						 )
+						    		   );
+			}			
+		}			
+	}
+	
+	private function guardarContatos(Void):Void {
+		var temp:Array = new Array();
+		//exemplo de usuario_status.lista_contatos:String
+		//           roger2#72,guto#15,gt#50,gabriel#73,Giovani#74,
+		
+		temp = usuario_status.lista_contatos.split(",");		
+		this.listaContatos = new Array();
+		
+		var I:Number;
+	    for (I = 0 ; I < temp.length ; I++) {
+			if (temp[I] != ""){
+			    this.listaContatos.push(new Array(temp[I].substring(0, temp[I].indexOf("#")),
+			                                      temp[I].substring(temp[I].indexOf("#") + 1)
+					    						 )
+						    		   );
+			}
+		}		
+	}	
+	
+	//alterna entre o frame 1 e o 2 de um Movieclip
+	//utilizado dar o efeito de piscada
+	private function alternar_frame(aba:MovieClip) {		
+		if (aba.interval != -1) {
+			if (aba._currentframe == 1) {
+				aba.gotoAndStop(2);
+			}
+			else {
+				aba.gotoAndStop(1);
+			}
+		}
+	}
+	
+	private function piscar_stop(aba:MovieClip) {	
+		if (aba.interval != -1){
+		    clearInterval(aba.interval);
+		    aba.interval = -1;
+		    aba.gotoAndStop(2); //pq assume-se que a aba soh parou de piscar pq foi clicada
+		}
+	}
+	
+	private function recebidoChat(evento:Object) {
+		var tempoIntervalo:Number = 1000;		
+		switch(evento.tipo) {
+			case "conversa":
+			    if (( this.abaAtiva != 1 ) and (this.abaTerreno.interval == -1)) {
+			        this.abaTerreno.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaTerreno);
+				}		        
+			break;
+			case "contato":
+			    if ((this.abaAtiva != 3) and (this.abaContato.interval == -1)){					
+				    this.abaContato.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaContato);
+				}			    
+			break;
+			case "grupo":
+			    if ((this.abaAtiva != 2) and (this.abaSistema.interval == -1)){
+					this.abaSistema.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaSistema);			    
+				}
+			break;
+		}
+		if ((this._parent._currentframe == 1) and (this._parent.botaoPrincipal.interval == -1)) {   // this._parent eh o header
+			this._parent.botaoPrincipal.interval = setInterval(this, "alternar_frame", tempoIntervalo, this._parent.botaoPrincipal);
+		}
+	}
+	
+	private function clickBotao(evento:Object) {		 
+		if (comunicador.organizador_caixas_texto.existe_caixa_texto(evento.nomeBotao,evento.tipo) == false) {			
+	        comunicador.organizador_caixas_texto.nova_caixa_texto(evento.nomeBotao, evento.id, evento.tipo);
+			comunicador.organizador_caixas_texto.set_caixa_texto_ativa(evento.nomeBotao, evento.tipo);
+	    }
+	    else {
+		    comunicador.organizador_caixas_texto.set_caixa_texto_ativa(evento.nomeBotao, evento.tipo);
+	    }		
+	}	
+	private function setAbaAtiva(aba:Number):Void {		
+		var tempoIntervalo:Number = 1000;
+		this.abaAtiva = aba;		
+		this.abaTerreno.gotoAndStop(1);		
+		this.abaContato.gotoAndStop(1);
+		this.abaSistema.gotoAndStop(1);
+		this.gotoAndStop(aba);
+		
+		switch(aba) {
+			case 1:
+			
+				this.piscar_stop(this.abaTerreno);
+				
+				if ((this.abaSistema.interval == -1) and (this.abaSistema.nBotoesPiscando > 0)){					
+				    this.abaSistema.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaSistema);
+				}
+				if ((this.abaContato.interval == -1) and (this.abaContato.nBotoesPiscando > 0)){					
+				    this.abaContato.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaContato);					
+				}
+				this.abaTerreno.gotoAndStop(2);				
+			    this.colunaDireitaTerreno._visible   = true;			
+			    this.colunaDireitaContatos._visible = false;
+		        this.colunaDireitaSistemas._visible = false;
+		        this.colunaEsquerdaSistemas._visible = false;
+				this.espacoDireita._visible = true;
+	            this.espacoEsquerda._visible = false;
+			break;
+			case 2:			    
+				this.piscar_stop(this.abaSistema);
+				if ((this.abaContato.interval == -1) and (this.abaContato.nBotoesPiscando > 0)){					
+				    this.abaContato.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaContato);
+				}
+				if ((this.abaTerreno.interval == -1) and (this.abaTerreno.nBotoesPiscando > 0)){					
+				    this.abaTerreno.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaTerreno);
+				}
+			    this.abaSistema.gotoAndStop(2);
+			    this.colunaDireitaSistemas._visible  = true;
+		        this.colunaEsquerdaSistemas._visible = true;			
+			    this.colunaDireitaTerreno._visible   = false;
+				this.colunaDireitaContatos._visible  = false;		        
+				this.espacoDireita._visible          = false;
+	            this.espacoEsquerda._visible         = false;
+			break;
+			case 3:
+			    this.piscar_stop(this.abaContato);
+				if ((this.abaTerreno.interval == -1) and (this.abaTerreno.nBotoesPiscando > 0)){					
+				    this.abaTerreno.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaTerreno);
+				}
+				if ((this.abaSistema.interval == -1) and (this.abaSistema.nBotoesPiscando > 0)){					
+				    this.abaSistema.interval = setInterval(this, "alternar_frame", tempoIntervalo, this.abaSistema);
+				}
+			    this.abaContato.gotoAndStop(2);
+			    this.colunaDireitaContatos._visible  = true;			
+			    
+			    this.colunaDireitaTerreno._visible   = false;				
+		        this.colunaDireitaSistemas._visible  = false;
+		        this.colunaEsquerdaSistemas._visible = false;
+				this.espacoDireita._visible          = false;
+	            this.espacoEsquerda._visible         = false;
+			break;
+		}
+		
+	}	
+	
+	private function initColuna(lado:String):Object {
+		var initObject:Object;
+		if (lado == "esquerda"){
+		    initObject = new Object ( { _x: this.espacoEsquerda._x,
+			                            _y: this.espacoEsquerda._y,
+										_height: this.espacoEsquerda._height,
+										_width: this.espacoEsquerda._width} );
+		}
+		else if (lado == "direita") {
+			initObject = new Object ( { _x: this.espacoDireita._x,
+			                            _y: this.espacoDireita._y,
+										_height: this.espacoDireita._height,
+										_width: this.espacoDireita._width } );
+			
+		}
+		
+		return initObject;
+	}
+	
+	//-----------------------------------------------------------------------------------------------------------
+	//  funcao que adiciona um contato na lista de contatos do comunicador
+	//-----------------------------------------------------------------------------------------------------------
+	private function adicionarContato(nomeContato:String, lista:Array, listaBotoes:c_botoes_comunicador):Void {
+		//	verifica se o contato jah nao esta presente na lista de contatos (lista)
+		//  se estiver devolve uma msg e sai da funcao
+		//  se nao estiver na lista procura no banco de dados o contato
+		//  se encontrar retorna o id do personagem e atualiza o bd constando o personagem como contato do usuario
+		//  guarda as informações na lista de contatos (organizar alfabeticamente no futuro)
+		//  chama o metodo da listaBotoes passada como parametro para reorganiza-la com a nova lista
+		
+		var I:Number;
+		for (I = 0 ; I < lista.length ; I++) {
+			if (lista[I][0] == nomeContato) {
+				mp.fala.text = "já possuo esse contato";	
+				return;
+			}
+		}	
+		
+		var envia:LoadVars = new LoadVars;
+		var recebe:LoadVars = new LoadVars;	
+		envia.action = "11";
+		envia.personagem_id = usuario_status.personagem_id;
+		envia.nomeContato = nomeContato;
+		
+		
+		//recebe.lengthAnterior = lista.length;
+		
+		recebe.lista = lista;
+		recebe.listaBotoes = listaBotoes;
+		recebe.onLoad = function(sucess) {
+			if (sucess) {				    			
+				if (this.usuario_personagem_id == "ERRO") { //nao encontrou usuario no banco de dados
+					
+				    var tempX: Number = usuNencontrado._x;
+	                var tempY: Number = usuNencontrado._y;
+					
+					function mover_movieClip(MC:MovieClip , x:Number , y:Number):Void {
+	                    MC._x = x;
+						MC._y = y;	
+						bloqMov = false;
+					}
+					
+					usuNencontrado._x = (Stage.width/2) - (usuNencontrado._width / 2);
+					usuNencontrado._y = (Stage.height / 2) - (usuNencontrado._height / 2);		
+					usuNencontrado.swapDepths(_root.getNextHighestDepth());
+					bloqMov = true;
+					setTimeout(mover_movieClip, 2000, usuNencontrado, tempX, tempY);//move mensagem "nao encontrei essa pessoa" para o centro da tela e tranca os comandos por 2 seg					
+ 				    return;
+			    }						
+		        this.lista.push(new Array(this.usuario_personagem_nome, this.usuario_personagem_id ));		    			
+				this.listaBotoes.setListaContatos(this.lista,this.listaBotoes.getTipoContatos());				
+		    }	
+	    }
+		envia.sendAndLoad("interface_bd_personagem.php", recebe, "POST");	
+    }
+
+	
 }
