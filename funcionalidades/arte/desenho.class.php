@@ -95,7 +95,7 @@ class Desenho {
 			$dados->solicitar("UPDATE $tabela_ArteDesenhos SET Arquivo='$arquivo', Titulo='$titulo', Palavras='$tags', Data = NOW()  WHERE CodDesenho = '$id' LIMIT 1" ); // Atualiza os dados do desenho no banco de dados
 		}else{ //se não tem id, salva num novo registro
 			$dados->solicitar("INSERT $tabela_ArteDesenhos (CodUsuario, CodTurma, Arquivo, Titulo, Palavras, Data) VALUES ($user_id, $turma, '$arquivo', '$titulo', '$tags', NOW())" ); // Cria novo desenho no banco de dados
-			$this->id = mysql_insert_id();
+			$this->id = $dados->ultimo_id();
 		}
 		$this->valido = true;
 	}

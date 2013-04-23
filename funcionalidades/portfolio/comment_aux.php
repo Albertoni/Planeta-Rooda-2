@@ -31,7 +31,7 @@ class comment { //estrutura para o item post do blog
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_portfolioComentarios);
-			$this->id = mysql_insert_id();
+			$this->id = $q->ultimo_id();
 		}else
 			echo "ERRO 0xB4DC0FEE";
 			// Tá dando esse erro porque a função abaixo nunca foi implementada já que teoricamente nunca seria usada

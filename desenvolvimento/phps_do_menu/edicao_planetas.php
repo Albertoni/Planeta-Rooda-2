@@ -50,7 +50,7 @@
 			$pesquisaChat->solicitar("SELECT id FROM Chats WHERE nome = '$nomeChat'");
 			$idChat = $pesquisaChat->resultado['id'];
 			$updateTerrenos->solicitar("INSERT INTO terrenos (terreno_grupo_id, terreno_nome, terreno_permissao_edicao, terreno_indice, chat_id) VALUES ($identificacao, '$nomesTerrenosParaEditar[$i]', '$edicaoAtual', $indice_terreno_no_planeta, $idChat)");
-			$idsTerrenosParaEditar[$i] = mysql_insert_id();
+			$idsTerrenosParaEditar[$i] = $updateTerrenos->ultimo_id();
 		}
 	}
 	$idsTerrenos = implode(",", $idsTerrenosParaEditar);

@@ -40,7 +40,7 @@ function montarMensagemDescricaoTerreno($id_planeta_param){
 	}
 }
 
-$action	= $_GET['action'];
+$action = isset($_GET['action']) ? $_GET['action'] : false;
 if(!$action)
 	$action = $_POST['action'];
 	
@@ -51,7 +51,7 @@ switch ($action) {
 	---------------------------------------------------*/  
 		$usuario_id		= $_SESSION['SS_usuario_id'];
 		$personagem_id	= $_SESSION['SS_personagem_id'];
-		$terreno_id		= $_SESSION['SS_terreno_id'];
+		$terreno_id		= isset($_SESSION['SS_terreno_id']) ? $_SESSION['SS_terreno_id'] : $_GET['terreno_id_tela_inicial_geral'];
 		
 		//$usuario = new Usuario();
 		//$usuario->OpenUsuario($usuario_id);
@@ -110,8 +110,9 @@ switch ($action) {
 		$personagem_chat_id = $pesquisa1->resultado['chat_id'];
 			
 		//procura dados dos terrenos vizinhos
-		$pesquisa2 = new conexao();	
-		$pesquisa2->solicitar("SELECT * FROM `$tabela_terrenos` WHERE ((terreno_grupo_id=$terreno_grupo_id) and (terreno_pai_id = $terreno_pai_id)) ORDER by terreno_indice");
+		$pesquisa2 = new conexao();
+		$pesquisa2->solicitar("SELECT * FROM `$tabela_terrenos` WHERE (terreno_grupo_id=$terreno_grupo_id) ORDER by terreno_indice");
+		
 	
 		$pesquisa2->ultimo();
 		$terreno_id_ultima = $pesquisa2->resultado['terreno_id'];
@@ -121,8 +122,9 @@ switch ($action) {
 		$terreno_id_primeira = $pesquisa2->resultado['terreno_id'];
 		$terreno_nome_primeira = $pesquisa2->resultado['terreno_nome'];
 	
-		for($q=0;$q<$pesquisa2->registros;$q++) {
-			if($pesquisa2->resultado['terreno_id'] == $terreno_id) {
+		for($q=0;$q<$pesquisa2->registros;$q++){
+			//print_r($pesquisa2->resultado);
+			if($pesquisa2->resultado['terreno_id'] == 5){/*$terreno_id) {*/
 				$pesquisa2->anterior();
 				$oeste = $pesquisa2->resultado['terreno_id'];
 				$nome_oeste = $pesquisa2->resultado['terreno_nome'];
@@ -145,10 +147,10 @@ switch ($action) {
 		}
 	
 		//procura todos os dados do personagem atual
-		$pesquisa4 = new conexao();	
+		$pesquisa4 = new conexao();
 		$pesquisa4->solicitar("SELECT * FROM `$tabela_usuarios` WHERE usuario_id ='$usuario_id'");
 		
-		$usuario_grupos = 1 //$pesquisa4->resultado['usuario_grupos'];
+		$usuario_grupos = 1; //$pesquisa4->resultado['usuario_grupos'];
 		$usuario_nivel = $pesquisa4->resultado['usuario_nivel'];
 		$usuario_grupo_base = 1; //$pesquisa4->resultado['usuario_grupo_base'];
 		$usuario_quarto_id = $pesquisa4->resultado['quarto_id'];
@@ -173,6 +175,7 @@ switch ($action) {
 															   JOIN $tabela_turmas AS TT ON TT.nomeTurma = P.Nome
 									WHERE T.terreno_id = $terreno_id");
 		$turma_id = $conexao_turma->resultado['codTurma'];
+		$nomeTurma = $conexao_turma->resultado['nomeTurma'];
 		
 		//permissões
 		$conexao_permissoes = new conexao();
@@ -181,14 +184,14 @@ switch ($action) {
 																   JOIN $tabela_turmas AS TT ON TT.nomeTurma = P.Nome
 																   JOIN FuncionalidadesTurma AS FT ON TT.codTurma = FT.codTurma
 										WHERE T.terreno_id = $terreno_id");
-		$permissao_batePapo 	   = ($conexao_permissoes->resultado['batePapo'] 		== 'd'? 'false' : 'true');
-		$permissao_biblioteca 	   = ($conexao_permissoes->resultado['biblioteca'] 		== 'd'? 'false' : 'true');
-		$permissao_blog 		   = ($conexao_permissoes->resultado['blog'] 			== 'd'? 'false' : 'true');
-		$permissao_portfolio 	   = ($conexao_permissoes->resultado['portfolio'] 		== 'd'? 'false' : 'true');
-		$permissao_forum 		   = ($conexao_permissoes->resultado['forum'] 			== 'd'? 'false' : 'true');
-		$permissao_planetaArte 	   = ($conexao_permissoes->resultado['planetaArte'] 	== 'd'? 'false' : 'true');
-		$permissao_planetaPergunta = ($conexao_permissoes->resultado['planetaPergunta'] == 'd'? 'false' : 'true');
-		$permissao_aulas 		   = ($conexao_permissoes->resultado['aulas'] 			== 'd'? 'false' : 'true');
+		$permissao_batePapo 	   = ($conexao_permissoes->resultado['batePapo']		== 'd'? 'false' : 'true');
+		$permissao_biblioteca 	   = ($conexao_permissoes->resultado['biblioteca']		== 'd'? 'false' : 'true');
+		$permissao_blog 		   = ($conexao_permissoes->resultado['blog']			== 'd'? 'false' : 'true');
+		$permissao_portfolio 	   = ($conexao_permissoes->resultado['portfolio']		== 'd'? 'false' : 'true');
+		$permissao_forum 		   = ($conexao_permissoes->resultado['forum']			== 'd'? 'false' : 'true');
+		$permissao_planetaArte 	   = ($conexao_permissoes->resultado['planetaArte']		== 'd'? 'false' : 'true');
+		$permissao_planetaPergunta = ($conexao_permissoes->resultado['planetaPergunta']	== 'd'? 'false' : 'true');
+		$permissao_aulas 		   = ($conexao_permissoes->resultado['aulas']			== 'd'? 'false' : 'true');
 		
 		$conexao_permissoes->solicitar("SELECT GT.* 
 										FROM $tabela_terrenos AS T JOIN Planetas AS P ON T.terreno_grupo_id=P.Id 
@@ -214,7 +217,10 @@ switch ($action) {
 		---------------------------------------------------*/
 		$now = comum_arrumar_data_hora($now);
 		
-		$dados_exportar = "&turma=".$turma;
+		// TODO: PEGAR NOME DO COLÉGIO
+		$colegio = "Colégio do Planeta Rooda 2"; // DEBUG!
+		
+		$dados_exportar = "&turma=".$nomeTurma;
 		$dados_exportar.= "&colegio=".$colegio;
 		$dados_exportar.= "&mensagemLocalizacao=".$mensagemLocalizacao;
 		
@@ -249,7 +255,7 @@ switch ($action) {
 		$dados_exportar.= "&personagem_avatar_1=".$personagem_avatar_1;
 		$dados_exportar.= "&personagem_linha_chat=".$personagem_linha_chat;
 		$dados_exportar.= "&personagem_fala=".$personagem_fala;
-		$dados_exportar.= "&personagem_contatos=".$contatos;
+		$dados_exportar.= "&personagem_contatos="."hm";//$contatos; // DEBUG
 		$dados_exportar.= "&personagem_animacao=".$personagem_animacao;
 		$dados_exportar.= "&personagem_cabelos=".$personagem_cabelos;
 		$dados_exportar.= "&personagem_olhos=".$personagem_olhos;
@@ -303,7 +309,7 @@ switch ($action) {
 
 		$pesquisaObjetosTerreno = new conexao();
 		for($k=0; $k<$pesquisaTerrenosVizinhos->registros; $k++){
-			if($pesquisaTerrenosVizinhos->resultado['terreno_id']==$terreno_personagem_id){
+			if($pesquisaTerrenosVizinhos->resultado['terreno_id'] == $terreno_personagem_id){
 				$indice_planeta_terreno_personagem = $k;
 			}
 			$terreno_id = $pesquisaTerrenosVizinhos->resultado['terreno_id'];
@@ -335,6 +341,7 @@ switch ($action) {
 			$terreno_chat 				= $pesquisaTerrenosVizinhos->resultado['chat_id'];
 			$terreno_permissaoEditar 	= $pesquisaTerrenosVizinhos->resultado['terreno_permissao_edicao'];
 			
+			$dados = "";
 			$dados .= '&numero_objetos_no_terreno'				.$k.'='.$pesquisaObjetosTerreno->registros; 
 			$dados .= '&terreno_id'								.$k.'='.$terreno_id; 
 			$dados .= '&terreno_nome'							.$k.'='.$terreno_nome; 
@@ -347,7 +354,7 @@ switch ($action) {
 
 		// impressão dos dados pesquisados
 		$objetosNoTerreno  = $pesquisaObjetosTerreno->registros;
-		$dados  = $dados . '&indice_planeta_terreno_personagem=' . $indice_planeta_terreno_personagem;
+		/*$dados  = $dados . '&indice_planeta_terreno_personagem=' . $indice_planeta_terreno_personagem;*/
 		$dados  = $dados . '&numeroTerrenos=' . $pesquisaTerrenosVizinhos->registros;
 		$dados  = $dados . '&mensagemLocalizacao=' . $mensagemLocalizacao;
 		echo "$dados";
@@ -381,7 +388,3 @@ switch ($action) {
 		$terrenoStatus->solicitar("UPDATE `$tabela_terrenos` SET terreno_status='ok' WHERE terreno_id='$terreno_id'");
 	break;
 }
-
-
-
-?>

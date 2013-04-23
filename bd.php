@@ -144,8 +144,8 @@ class conexao {
 	}
 
 	function ultimo(){
-		if($this->index!=($this->registros-1)){
-			$this->ir_para($this->registros-1);
+		if($this->index!=((int) ($this->registros)-1)){
+			$this->ir_para((int) ($this->registros) - 1);
 		}
 	}
 

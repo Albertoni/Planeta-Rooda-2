@@ -44,7 +44,7 @@ class Comment { //estrutura para o item post do blog
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_comentarios);
-			$this->id = mysql_insert_id();
+			$this->id = $q->ultimo_id();
 		} else
 			$q->atualizar($this->id,$this->toDBArray(),$tabela_comentarios);
 	}
@@ -150,7 +150,7 @@ class Post { //estrutura para o item post do blog
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_posts);
-			$this->id = mysql_insert_id();
+			$this->id = $q->ultimo_id();
 		} else {
 			$q->atualizar($this->id,$this->toDBArray(),$tabela_posts);
 		}
@@ -297,7 +297,7 @@ class Blog {
 			$this->setTipo(1);
 			$q = new conexao();
 			$q->inserir($this->toDBArray(),$tabela_blogs);
-			$this->setId(mysql_insert_id());
+			$this->setId($q->ultimo_id());
 		}
 		
 		$consulta = new conexao();

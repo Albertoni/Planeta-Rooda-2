@@ -74,9 +74,9 @@ $descricao_quest = $consulta->sanitizaString($descricao_quest);
 $consulta->solicitar("INSERT INTO $tabela_PerguntaQuestionarios
 					(titulo,			descricao,			datainicio,		datafim,	liberarGabarito, criador,	alunoInsere, turma) VALUES
 					('$titulo_quest', '$descricao_quest', '$datainicio',	'$datafim',	$liberar,		$userid,	$alquest,	$turma)");
-print_r($consulta);
+//print_r($consulta);
 
-$questId = mysql_insert_id(); // PUXA A ID DO QUESTIONARIO GERADO COM ESSA INSERÇÃO
+$questId = $consulta->ultimo_id(); // PUXA A ID DO QUESTIONARIO GERADO COM ESSA INSERÇÃO
 
 $i = 1; // Para o loop
 

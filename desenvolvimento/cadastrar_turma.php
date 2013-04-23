@@ -11,6 +11,8 @@
 	$operacaoRealizadaComSucesso = true;
 	$mensagemDeErro = "";
 	
+	global $nivelProfessor;
+	
 //Dados para cadastro
 	$nome = $_POST['nome'];
 	$professor = $_POST['professor'];
@@ -137,7 +139,7 @@
 	}
 	if($ano != null){
 		$pesquisaAno = new conexao();
-		$pesquisaAno->solicitar("SELECT * FROM $tabela_anos WHERE nome = '$ano'");
+		$pesquisaAno->solicitar("SELECT * FROM Anos WHERE nome = '$ano'");
 		
 		if($pesquisaAno->registros == 1){
 			$idAno = $pesquisaAno->resultado['id'];
@@ -152,7 +154,7 @@
 	if($operacaoRealizadaComSucesso){
 		$conexaoCadastro = new conexao();
 		$conexaoCadastro->solicitar($pesquisaCadastroSQL);
-		$mensagemDeErro="1";
+		//$mensagemDeErro="1";
 		if($conexaoCadastro->erro != ''){
 			$mensagemDeErro.="3";
 			$operacaoRealizadaComSucesso = false;
@@ -161,14 +163,14 @@
 			$mensagemDeErro = "Desculpe. Houve um erro no banco de dados.";
 		} else {
 			$mensagemDeErro.="2";
-			$idTurma = mysql_insert_id();
+			$idTurma = $conexaoCadastro->ultimo_id();
 			$conexaoTerreno = new conexao();
 			$pesquisaTerrenoSQL = "INSERT INTO $tabela_terrenos (terreno_nome) VALUES ('$nome')";
 			$conexaoTerreno->solicitar($pesquisaTerrenoSQL);
 			//$mensagemDeErro.= $conexaoTerreno->erro;
 			//$mensagemDeErro.="\n";
 			if($conexaoTerreno->erro == ''){
-				$idTerreno = mysql_insert_id();
+				$idTerreno = $conexaoCadastro->ultimo_id();
 			}
 			
 			$pesquisaChat = new conexao();
@@ -196,12 +198,12 @@
 						//$mensagemDeErro.="\nnao achou>";
 						//$mensagemDeErro.= '1='.$conexaoTerreno->erro;
 						//$mensagemDeErro.="\n";
-					$idTerreno = mysql_insert_id();
+					$idTerreno = $conexaoTerreno->ultimo_id();
 					
 					$conexaoPlanetaOutro->solicitar("INSERT INTO Planetas (Tipo, Nome, Terrenos, IdResponsavel, IdsPais) VALUES (1, 'Outro', '$idTerreno', 0, '')");
 						//$mensagemDeErro.= '2='.$conexaoPlanetaOutro->erro;
 						//$mensagemDeErro.="\n";
-					$idPlanetaAno = mysql_insert_id();
+					$idPlanetaAno = $conexaoPlanetaOutro->ultimo_id();
 						//$mensagemDeErro.="terreno=".$idTerreno."\n"."planeta=".$idPlanetaAno."\n";
 				} else {
 					//$mensagemDeErro.="\nachou>";
@@ -222,7 +224,6 @@
 			$conexaoPlaneta->solicitar("SELECT * FROM Planetas WHERE Tipo=2 AND Nome='$nome' AND Terrenos=$idTerreno AND IdResponsavel=$idProfessor AND IdsPais=$idPlanetaAno");
 			$idPlaneta = $conexaoPlaneta->resultado["Id"];
 			$conexaoTerreno->solicitar("UPDATE terrenos SET terreno_grupo_id=$idPlaneta WHERE terreno_id=$idTerreno");
-			$conexaoTerreno->solicitar("INSERT INTO TurmasUsuario (codTurma, codUsuario, associacao) VALUES ($idTurma, $idProfessor, $nivelProfessor)");
 			//$mensagemDeErro.= $conexaoPlaneta->erro;
 			//$mensagemDeErro.="\n";
 			//$mensagemDeErro.=$pesquisaPlanetaSQL;
@@ -234,6 +235,8 @@
 												WHERE codTurma = $idTurma
 													AND associacao = $nivelProfessor");
 			}
+			
+			$conexaoTerreno->solicitar("INSERT INTO TurmasUsuario (codTurma, codUsuario, associacao) VALUES ($idTurma, $idProfessor, $nivelProfessor)");
 			
 			if($operacaoRealizadaComSucesso and 0 < $numeroProfessores){
 				$sqlInsercaoProfessores = "INSERT INTO TurmasUsuario (codTurma, codUsuario, associacao) VALUES ";

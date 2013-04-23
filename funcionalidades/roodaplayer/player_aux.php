@@ -107,7 +107,7 @@ class video{
 				if($q->erro){
 					$this->setErro($q->erro);
 				}else{
-					$this->setId(mysql_insert_id());
+					$this->setId($q->ultimo_id());
 					$this->setTitulo($nome);
 					$this->setDescricao($descricao);
 					//$this->setVideoId($link);
@@ -272,7 +272,7 @@ class comment { //estrutura para o item post do blog
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_playerComentarios);
-			$this->id = mysql_insert_id();
+			$this->id = $q->ultimo_id();
 		} else
 			$q->atualizar($this->id,$this->toDBArray(),$tabela_playerComentarios);
 	}

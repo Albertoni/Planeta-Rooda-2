@@ -38,7 +38,7 @@
 	<script type="text/javascript" src="colorbox/jquery.colorbox.js"></script>-->
 	<link media="screen" rel="stylesheet" href="colorbox.css" />
 	<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="/../jquery.js"></script>
 	<script src="colorbox/jquery.colorbox.js"></script>
 <?
 	//ajuste da resolução					
