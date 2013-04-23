@@ -2,11 +2,10 @@
 /* 
  * inserirLink.php
  */
-require("../../cfg.php");
-require("../../bd.php");    
-require("../../usuarios.class.php");
-require("../../link.class.php");
-require("blog.class.php");
+require("cfg.php");
+require("bd.php");    
+require("usuarios.class.php");
+require("link.class.php");
 $json = array();
 $endereco = isset($_POST['novoLink']) ? trim($_POST['novoLink']) : '';
 $funcionalidade_tipo = isset($_GET['funcionalidade_tipo']) ? (int) $_GET['funcionalidade_tipo'] : 0;
@@ -25,6 +24,8 @@ if ($funcionalidade_id > 0 && $funcionalidade_tipo > 0)
         else
         {
             $json['ok'] = true;
+				$json['id'] = $link->getId();
+				$json['endereco'] = $link->getLink();
         }
     }
     else

@@ -118,9 +118,9 @@ var getFileListFunction = (function(handler, func_id, func_tipo, mime_type) {
     return (function () {
         var oAjaxReq = new XMLHttpRequest();
         var url = "../../fileList.php?funcionalidade_id=" + encodeURIComponent(func_id);
-        url += "&funcionalidade_tipo="+encodeURIComponent(func_tipo);
+        url += "&funcionalidade_tipo=" + encodeURIComponent(func_tipo);
         if (mime_type) {
-            url += "&arquivo_tipo="+encodeURIComponent(mime_type);
+            url += "&arquivo_tipo=" + encodeURIComponent(mime_type);
         }
         oAjaxReq.open("GET",url);
         oAjaxReq.onreadystatechange = handler;

@@ -1,4 +1,5 @@
 <?php
+header("Content-Type: application/json");
 session_start();
 require("cfg.php");
 require("bd.php");
@@ -39,7 +40,6 @@ if ($id_usuario > 0)
                 // ARQUIVO EXISTE
                 // TODO: verificar se usuario pode deletar arquivo baseado no usuario/funcionalidade/turma/etc
                 switch ($funcionalidade_tipo) {
-                    
                     case TIPOPORTFOLIO:
                         $verifica = new conexao();
                         $verifica->solicitar(
@@ -48,11 +48,11 @@ if ($id_usuario > 0)
                                 WHERE id = '$funcionalidade_id'"
                         );
                         $owner_id = (int) $verifica->resultado['owner_id'];
+								$turma = $verifica->resultado['turma'];
                         if ($owner_id === $id_usuario) {
                             // É dono do portfolio
                             $podeDeletar = true;
                         } else {
-                            $turma = $verificar->resultado['turma'];
                             $verifica = new conexao();
                             $verifica->solicitar(
                                 "SELECT associacao
@@ -60,13 +60,14 @@ if ($id_usuario > 0)
                                     WHERE codUsuario = '$id_usuario'
                                     AND codTurma = '$turma'"
                             );
-                            if( (int) $resultado['associacao'] <= 4) {
-                                // Professor da turma do portfolio
-                                $podeDeletar = true;
-                            }
+									 if ($verifica->registros === 1) {
+										 if($uploader_do_arquivo || ((int) $verifica->resultado['associacao'] <= 4)) {
+											  // Professor da turma do portfolio ou dono do arquivo
+											  $podeDeletar = true;
+										 }
+									 }
                         }
                         break;
-                    
                     case TIPOBLOG:
                         $verifica = new conexao();
                         $verifica->solicitar(
@@ -86,7 +87,7 @@ if ($id_usuario > 0)
                         }
                         break;
                 }
-                if(podeDeletar) {
+                if($podeDeletar) {
                     $deleta = new conexao();
                     $deleta->solicitar(
                         "DELETE FROM $tabela_arquivos WHERE arquivo_id = $id"
