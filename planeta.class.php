@@ -48,11 +48,10 @@ class Planeta{
 		$conexaoDadosPlaneta = new conexao();
 		$conexaoDadosPlaneta->solicitar("SELECT * FROM Planetas WHERE Id=".($this->id));
 		
-		$terrenos = $conexaoDadosPlaneta->resultado['Terrenos'];
-		$terrenos = explode(",", $terrenos);
+		$this->idTerrenoPrincipal = $conexaoDadosPlaneta->resultado['IdTerrenoPrincipal'];
+		$this->idTerrenoPatio = $conexaoDadosPlaneta->resultado['IdTerrenoPatio'];
 		
 		$this->nome = $conexaoDadosPlaneta->resultado['Nome'];
-		$this->idTerrenoPrincipal = $terrenos[0];
 		$this->aparencia = $conexaoDadosPlaneta->resultado['Aparencia'];
 	}
 	
@@ -74,7 +73,3 @@ class Planeta{
 	
 	
 }
-
-
-
-?>

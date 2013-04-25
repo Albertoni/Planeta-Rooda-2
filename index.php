@@ -57,7 +57,7 @@
 		}
 		$pesquisa1->proximo();
 	}
-	
+	echo "255" & (int)"4";
 ?>
 <!DOCTYPE html>
 <html>
