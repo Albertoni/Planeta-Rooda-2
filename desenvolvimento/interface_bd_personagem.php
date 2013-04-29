@@ -288,7 +288,7 @@ switch ($action) {
 	*	Envia as principais variaveis do sistema para a inicialização -  segunda parte - posições dos objetos
 	---------------------------------------------------*/
 		$terreno_personagem_id=$_SESSION['SS_terreno_id'];
-		$personagem_id = $_POST['personagem_id'];
+		$personagem_id = $_SESSION['SS_personagem_id'];
 		$personagem_animacao	= "default";
 
 		//atualiza a animação de entrada do personagem - Diogo - 02.08.11

@@ -73,12 +73,7 @@ class Usuario { //estrutura para o item post do blog
 	private function setEmail($email)				{$this->email = $email;}
 	private function setPersonagemId($personagemId)	{$this->personagemId = $personagemId;}
 	private function setNivelAbsoluto($nivel)		{$this->nivelAbsoluto = $nivel;}
-	private function setNivel($turma, $valor){
-		if(!isset($this->nivel[$turma])){
-			$this->nivel[$turma] = array();
-		}
-		array_push($this->nivel[$turma], $valor);
-	}
+	private function setNivel($turma, $valor)		{$this->nivel[$turma] = $valor;}
 	private function setGosto($gosto){$this->gosto = $gosto;}
 	private function setNaoGosto($desgosto){$this->naoGosto = $desgosto;}
 
@@ -89,7 +84,7 @@ class Usuario { //estrutura para o item post do blog
 	public function getName()		{return $this->name;}
 	public function getEmail()		{return $this->email;}
 	public function getPersonagemId(){return $this->personagemId;}
-	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : array($this->getNivelAbsoluto());} // $turma é o id da turma no banco de dados
+	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
 	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}
@@ -168,6 +163,8 @@ class Usuario { //estrutura para o item post do blog
 										FROM TurmasUsuario AS TU JOIN Planetas AS P ON P.Turma = TU.codTurma
 										WHERE TU.codUsuario = ".($this->id)."
 										GROUP BY P.Nome");
+		
+		//print_r($conexaoIdsPlanetas);
 		$planetasInseridos = 0;
 		for($i=0; $i<$conexaoIdsPlanetas->registros; $i++){
 			$planeta = Planeta::getPorId($conexaoIdsPlanetas->resultado['Id']);
@@ -239,16 +236,14 @@ class Usuario { //estrutura para o item post do blog
 
 	public function podeAcessar($cutoff, $turma){ // cutoff = ponto de corte, o bitmap de niveis que podem acessar
 		$temPermissao = false;
-		if ($this->isAdmin()){
-			return true;
-		}
-		$niveisNaTurma = $this->getNivel($turma);
+		/*if ($this->isAdmin()){
+			return true; // ISSO NÃO DEVE NUNCA MAIS SER USADO
+		}*/
+		
+		$niveisTurma = $this->getNivel($turma);
 		$cutoff = (int) $cutoff;
-		for($i=0; $i<count($niveisNaTurma); $i++){
-			$nivelTurma = (int) $niveisNaTurma[$i];
-			$temPermissao = $temPermissao || (0 < ($nivelTurma & $cutoff));
-		}
-		return $temPermissao;
+		
+		return !!($niveisTurma & $cutoff);
 	}
 	public function isAdmin(){return $this->getNivelAbsoluto() & 1;}
 
