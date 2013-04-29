@@ -273,7 +273,7 @@ function arquivoInsert(){
 			_name = null;
 			if (arq[i].checked) {
 				_id = arq[i].value;
-				_name = document.getElementById("fileN"+_id).innerText;
+				_name = document.getElementById("fileN"+_id).innerHTML;
 				console.log(_name);
 				arquivos.push([_id, _name]);
 			}

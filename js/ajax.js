@@ -139,11 +139,11 @@ var AJAXSubmit = (function () {
  
 })();
 
-var AJAXOpen = (function(){
-	return function (url,handler,body) {
-		var oAjaxReq = new XMLHttpRequest();
-		oAjaxReq.onload = handler;
-		oAjaxReq.open("GET",url);
-		oAjaxReq.send(body);
+var AJAXOpen = function (url,handler) {
+	var oAjaxReq = new XMLHttpRequest();
+	if (typeof handler === "function") {
+		oAjaxReq.onreadystatechange = handler;
 	}
-})();
+	oAjaxReq.open("GET",url);
+	oAjaxReq.send();
+};

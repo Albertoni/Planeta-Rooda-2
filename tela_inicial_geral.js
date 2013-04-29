@@ -5,9 +5,10 @@
 */
 function redirecionarParaDesenvolvimento(_idPlanetaDestino){
 	if(0 < arguments.length){
-		document.location = 'desenvolvimento/index.php?terreno_id_tela_inicial_geral='+_idPlanetaDestino;
+		document.location = 'listaFuncionalidades.php?terreno='+_idPlanetaDestino;
+		//document.location = 'desenvolvimento/index.php?terreno_id_tela_inicial_geral='+_idPlanetaDestino;
 	} else {
-		document.location = 'desenvolvimento/index.php';
+		//document.location = 'desenvolvimento/index.php';
 	}
 }
 

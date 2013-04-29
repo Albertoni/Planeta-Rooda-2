@@ -1,14 +1,15 @@
 <?php
 session_start();
-
+header('Content-type: text/html; charset=utf-8');
 require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
 require("lista_posts.php");
 require("../../usuarios.class.php");
 require("../../reguaNavegacao.class.php");
-
 $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
+$funcionalidade_tipo = TIPOPORTFOLIO;
+$funcionalidade_id = $projeto_id;
 
 // print_r(get_defined_constants()); // Descomente isso para rir.
 
@@ -24,10 +25,6 @@ if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 $user = new Usuario();
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
-
-$funcionalidade_tipo = TIPOPORTFOLIO;
-$funcionalidade_id = $projeto_id;
-
 if($perm === false){
     die("Desculpe, mas o Portf&oacute;lio esta desabilitado para esta turma.");
 }
@@ -38,207 +35,6 @@ if($perm === false){
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
-<script src="../../js/compatibility.js"></script>
-<script src="../../js/rooda.js"></script>
-<script src="../../js/ajax.js"></script>
-<script src="../../js/ajaxFileManager.js"></script>
-<script>
-/* link template */
-var linkHTML = function (id,url) {
-    return "<li class=\"tabela_port\" id=\"liLink"+id+"\"><a href=\""+url+"\" target=\"_blank\" align=\"left\">"+url+"</a><img onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink("+id+");});\" src=\"../../images/botoes/bt_x.png\" align=\"right\"/></li>";
-}
-/* ADD LINK AJAX */
-var submitLinkForm = (function () {
-    function handler() {
-        var loading, link_box;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        // Fim do request, remover tela de loading
-        if (loading = document.getElementById('loading')) {
-            loading.style.display = 'none';
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        if(t = this.responseText) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
-                console.log("JSON: " + e.message + ":\n"+t);
-                return;
-            }
-            if (res.errors) {
-                ROODA.ui.alert(res.errors.join("\n"));
-            } else if (res.ok) {
-                link_box = document.getElementById("caixa_link");
-                if (link_box) {
-                    link_box.innerHTML += linkHTML(res.id,res.endereco);
-                }
-            }
-        } else {
-            console.log("Sem resposta do servidor.");
-        }
-    }
-    var submitForm = submitFormFunction(handler);
-    return (function (f) {
-        var e = document.getElementById('loading');
-        if (e) {
-            e.style.display = 'block';
-        }
-        submitForm(f);
-    });
-}());
-/* UPLOAD FILE AJAX */
-var submitFileForm = (function () {
-    function uploadFormHandler(){
-        var loading, file_list, t, res, newfile;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        // Fim do request, remover tela de loading
-        if (loading = document.getElementById('loading')) {
-            loading.style.display = 'none';
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        file_list = document.getElementById("caixa_arq");
-        if(t = this.responseText) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                ROODA.ui.alert("Erro desconhecido (0xTTYLGB");
-                console.log("JSON: " + e.message + ":\n"+t);
-                return;
-            }
-            if (res.errors) {
-                ROODA.ui.alert(res.errors.join("\n"));
-            } else if (res.file_id && res.file_name) {
-                newfile = document.createElement("li");
-                newfile.id = "liFile" + res.file_id;
-                newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-                    '<img align="right" src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){deleteFile(' + res.file_id + ');});" />';
-                file_list.appendChild(newfile);
-            } else {
-                ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-            }
-        } else {
-            console.log("Sem resposta");
-        }
-    }
-    submitForm = submitFormFunction(uploadFormHandler);
-    return (function (f) {
-        var e = document.getElementById('loading');
-        if (e) {
-            e.style.display = 'block';
-        }
-        submitForm(f);
-    });
-}());
-
-// DELETE FILE AJAX
-var deleteLink = (function() {
-	function deleteLinkHandler() {
-        var t, res, e;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-                return
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        t = this.responseText;
-        if (t) {
-            try {
-                res = JSON.parse(t);
-            }
-			catch (e) {
-                console.log("JSON: " + e.message);
-                ROODA.ui.alert("Algo de errado aconteceu");
-                return;
-            }
-            if (res.ok) {
-                elem = document.getElementById("liLink" + res.id);
-                if (elem) {
-                    ROODA.dom.purgeElement(elem);
-                }
-            } else {
-                if (res.errors) {
-                    ROODA.ui.alert(res.errors.join("<br>\n"));
-                }
-                ROODA.ui.alert("Não deu certo.");
-            }
-        }
-    };
-    return deleteLinkFunction(deleteLinkHandler);
-}());
-var deleteFile = (function () {
-    function deleteFileHandler() {
-        var t, res, e, elem;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        t = this.responseText;
-        if (t) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                console.log("JSON: " + e.message);
-                ROODA.ui.alert("Algo de errado aconteceu.");
-                return;
-            }
-            if (res.ok) {
-                elem = document.getElementById("liFile" + res.id);
-                if (elem) {
-                    ROODA.dom.purgeElement(elem);
-                }
-            } else {
-                if(res.error) {
-                    ROODA.ui.alert(res.error);
-                } else {
-                    ROODA.ui.alert("Nao deu certo.");
-                }
-            }
-        }
-    };
-    return deleteFileFunction(deleteFileHandler);
-}());
-</script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();coment();">
@@ -500,7 +296,8 @@ var deleteFile = (function () {
                     ?>
                             <li class="tabela_port" id="liFile<?=$fileId?>">
                                 <a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-                                <img src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right"/>
+                                <!--<img src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right"/> -->
+                                <button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right">excluir</button>
                             </li>
                     <?
                             $consulta->proximo();
@@ -511,46 +308,44 @@ var deleteFile = (function () {
                 </div>
             </div>
             <div id="links" class="bloco">
-                <h1 ><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
+                <h1><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
                 <div class="add" id="addLink" onclick="botaoAdicionar('addLinkLi');">adicionar</div>
                 <div class="bloqueia">
                     <ul class="sem_estilo" id="caixa_link">
                     <li id="addLinkLi" class="tabela_port" style="display:none;">
                         <form name="addLinkForm" action="../../inserirLink.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
-                            Novo Link: <input name="novoLink" id="novoLink" type="text"/>
+                            Novo Link: <br><input name="novoLink" id="novoLink" type="text"/><br>
                             <input name="submit" type="submit" id="submit" value="Submit" />
                         </form>
                     </li>
-                    <?
-                        global $tabela_links;
-                        $tipoPortfolio=TIPOPORTFOLIO;
+<?php
                         $consulta = new conexao();
-                        $consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$tipoPortfolio' AND funcionalidade_id = '$projeto_id'");
-                        
+                        $consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
                         while ($consulta->resultado){
                             $linkId = $consulta->resultado['Id'];
-                            
-                            $titulo="";
-                            if ($consulta->resultado['titulo'] == ""){
-                                $titulo = $consulta->resultado['endereco'];
-                            }
-                            else $titulo = $consulta->resultado['titulo'];
-                    ?>
-                            <li class="tabela_port" id=<?=("liLink".$linkId)?> >
-                                <a href="<?=$consulta->resultado['endereco']?>" target="_blank" align="left" ><?=$titulo?></a>
-										  <img onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" src="../../images/botoes/bt_x.png" align="right"/>
-                            </li>
-                    <?
-                            $consulta->proximo();
-                        }
-                    ?>
+                            $endereco = $consulta->resultado['endereco'];
+                            $titulo = trim($consulta->resultado['titulo']);
+                            if ($titulo === "") { 
+										 $titulo = $endereco;
+									 } else {
+										 $titulo = $consulta->resultado['titulo'];
+									 }
+?>
+								 <li class="tabela_port" id=liLink<?=$linkId?>>
+                             <a href="<?=$endereco?>" target="_blank" align="left" ><?=$titulo?></a>
+                             <button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" align="right"></button>
+                         </li>
+<?
+									 $consulta->proximo();
+								}
+?>
                     </ul>
                 </div>
             </div>
         </div>
         <div id="dir">
             <div id="posts" class="bloco" >
-                <h1 id="nome_projeto"><?=$titulo /*fullUpper($titulo)*/?></h1>
+                <h1 id="nome_projeto"><?=$titulo?></h1>
                 <?
                     global $tabela_portfolioPosts;
                     $consulta = new conexao();
@@ -566,10 +361,10 @@ var deleteFile = (function () {
                         <li class="tabela_port">
                             <span class="titulo">
                                 <div class="textitulo"><?=$consulta->resultado['titulo']?></div>
-                                <img onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { mataPost('postDiv<?=$postId?>'); deleteBd('<?=$postId?>','<?=$tabela_portfolioPosts?>','id', '<?=$turma?>');});" src="../../images/botoes/bt_x.png" align="right"/>
                             </span>
                             <span class="data">
                                 <?=$consulta->resultado['dataCriacao'] ?>
+                                <button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(<?=$postId?>); });">Excluir</button>
                             </span>
                         </li>
                         <li class="tabela_port">
@@ -608,17 +403,20 @@ var deleteFile = (function () {
         </div>
     </div>
 <iframe name="deletante" style="visibility: hidden;"></iframe>
-
-<script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="portfolio.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
+<script src="../../js/compatibility.js"></script>
+<script src="../../js/rooda.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../../js/ajaxFileManager.js"></script>
+<script src="portfolio_ajax.js"></script>
+<script src="../../jquery.js"></script>
+<script src="../../planeta.js"></script>
+<script src="portfolio.js"></script>
+<script src="../lightbox.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
-<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
-
-<script language="javascript">
+<script src="../../postagem_wysiwyg.js"></script>
+<script>
 function coment(){
     if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
         document.getElementById('ie_coments').style.width = 85 + '%';

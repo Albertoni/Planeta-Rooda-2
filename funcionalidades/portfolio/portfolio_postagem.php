@@ -64,7 +64,6 @@ var refreshImageList = (function() {
 			// requisição em andamento, nao fazer nada.
 			return;
 		}
-		
 		if (this.status !== 200) {
 			return;
 		}
@@ -112,7 +111,11 @@ var uploadAttImage = (function () {
 			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
-			ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			if (this.status >= 500) {
+				ROODA.ui.alert("Problema no servidor");
+			} else {
+				ROODA.ui.alert("Não foi possivel contatar o servidor.<br>\nVerifique sua conexão com a internet.");
+			}
 			return;
 		}
 		if (t = this.responseText) {
@@ -124,7 +127,7 @@ var uploadAttImage = (function () {
 				ROODA.ui.alert ("Algo de errado aconteceu.");
 			}
 			if(res.errors) {
-				ROODA.ui.alert(res.errors.join("\n"));
+				ROODA.ui.alert(res.errors.join("<br>\n"));
 			} else if (res.file_id && res.file_name) {
 				// SUCCESS
 				html = imageHTML(res.file_id);
@@ -157,14 +160,20 @@ var uploadAttFile = (function() {
 			return;
 		}
 		// Fim do request, remover tela de loading
-		if (loading = document.getElementById('loading')) {
+		loading = document.getElementById('loading');
+		if (loading) {
 			loading.style.display = 'none';
 		}
 		if (this.status !== 200) {
-			ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			if (this.status >= 500) {
+				ROODA.ui.alert("Problema no servidor");
+			} else {
+				ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			}
 			return;
 		}
-		if (t = this.responseText) {
+		t = this.responseText;
+		if (t) {
 			try {
 				res = JSON.parse(t);
 			}

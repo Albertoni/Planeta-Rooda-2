@@ -11,7 +11,7 @@ require("../../reguaNavegacao.class.php");
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
-$turma = isset($_GET['turma'])?$_GET['turma']:0;
+$turma = isset($_GET['turma'])?(int)$_GET['turma']:0;
 $ARTE = new Arte($user_id, $turma);
 
 

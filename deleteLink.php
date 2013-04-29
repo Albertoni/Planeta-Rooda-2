@@ -32,7 +32,7 @@ if ($id_usuario <= 0) {
 					$json['errors'][] = 'Erro de consulta 3528';
 				} else {
 					$podeDeletar = false;
-					// VERIFICAR SE USUARIO REALMENTE PODE APAGAR O LINK
+					// VERIFICAR SE USUARIO REALMENTE PODE APAGAR O LINK (TODO)
 					$podeDeletar = true;
 					// Fim da verificação
 					if(!$podeDeletar) {

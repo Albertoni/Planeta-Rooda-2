@@ -33,6 +33,8 @@ var submitFormFunction = (function (handler) {
     });
 });
 
+
+// Function that generates a function to delete a file with a custom handler
 var deleteFileFunction = (function (handler) {
     var handler = handler || function () {
         if (this.readyState !== this.DONE) {
@@ -50,29 +52,27 @@ var deleteFileFunction = (function (handler) {
             catch (e)
             {
                 console.log("JSON: " + e.message + ":\n"+t);
-                alert("Ocorreu um problema");
+                //alert("Ocorreu um problema");
                 return;
             }
             if (res.ok) {
                 alert("Arquivo excluído com sucesso.");
             } else {
                 if(res.error) {
-                    alert(res.error);
+                    //alert(res.error);
                 } else {
-                    alert("Não deu certo: " + res.error);
+                    //alert("Não deu certo: " + res.error);
                 }
             }
         }
     }
     return (function (id) {
-        var oAjaxReq = new XMLHttpRequest();
-        oAjaxReq.fileId = id;
-        oAjaxReq.open("GET","../../deleteFile.php?id=" + encodeURIComponent(id));
-        oAjaxReq.onload = handler;
-        oAjaxReq.send();
+        var url = "../../deleteFile.php?id=" + encodeURIComponent(id);
+        AJAXOpen(url,handler);
     });
 });
 
+// Function that generates a function to delete a link with a custom handler
 var deleteLinkFunction = (function (handler) {
     var handler = handler || function () {
         if (this.readyState !== this.DONE) {
@@ -105,25 +105,20 @@ var deleteLinkFunction = (function (handler) {
         }
     }
     return (function (id) {
-        var oAjaxReq = new XMLHttpRequest();
-        oAjaxReq.linkId = id;
-        oAjaxReq.open("GET","../../deleteLink.php?id=" + encodeURIComponent(id));
-        oAjaxReq.onreadystatechange = handler;
-        oAjaxReq.send();
+		  var url = "../../deleteLink.php?id=" + encodeURIComponent(id);
+        AJAXOpen(url,handler);
     });
 });
 
+// Function that generates a function to get a list of files.
 var getFileListFunction = (function(handler, func_id, func_tipo, mime_type) {
-    var getFileListHandler = handler || function () {};
+    var handler = handler || function () {};
     return (function () {
-        var oAjaxReq = new XMLHttpRequest();
         var url = "../../fileList.php?funcionalidade_id=" + encodeURIComponent(func_id);
         url += "&funcionalidade_tipo=" + encodeURIComponent(func_tipo);
         if (mime_type) {
             url += "&arquivo_tipo=" + encodeURIComponent(mime_type);
         }
-        oAjaxReq.open("GET",url);
-        oAjaxReq.onreadystatechange = handler;
-        oAjaxReq.send();
+        AJAXOpen(url,handler);
     });
 });

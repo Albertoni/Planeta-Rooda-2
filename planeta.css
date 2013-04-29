@@ -252,4 +252,27 @@ font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
 	height: 50%;
 	width: 100%;
 }
-
+ul.listaFun {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.listaFun li {
+	font-size: 20px;
+	padding: 5px 0 5px 40px;
+}
+ul.listaFun li a {
+	text-decoration: none;
+}
+.bt_excluir {
+	background: transparent url('images/botoes/bt_x.png') no-repeat top left;
+	display: inline-block;
+	float: right;
+	width: 10px;
+	height: 17px;
+	border: 0 none;
+	margin: 0 0 0 5px;
+	padding: 0;
+	overflow: hidden;
+	text-indent: 20px;
+}

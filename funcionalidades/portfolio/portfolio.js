@@ -224,9 +224,9 @@ function validaForm(){
 	if (erros.length != 0) {alert(erros); return false;} else return true;
 }
 
-function deleteBd(id, tabela, coluna, turma) {
+/* function deleteBd(id, tabela, coluna, turma) {
 	window.frames["deletante"].location = "deleteBd.php?id="+id+"&tabela="+tabela+"&coluna="+coluna+"&turma="+turma;
-}
+}*/
 
 function fechaProjeto(id, indiceFeedback){
 	var a = newAjax();

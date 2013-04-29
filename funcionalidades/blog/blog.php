@@ -65,33 +65,37 @@
 <script type="text/javascript" src="../lightbox.js"></script>
 
 <script>
-var linkHTML = function (link) {
-    return "<li class=\"tabela_blog\"><a href=\""+link+"\" target=\"_blank\">"+link+"</a><div class=\"bts_caixa\"><img class=\"apagar\" src=\"../../images/botoes/bt_x.png\" /></div>";
+/* link template */
+var linkHTML = function (id,url) {
+    return "<li class=\"tabela_blog\" id=\"liLink"+id+"\"><a href=\""+url+"\" target=\"_blank\" align=\"left\">"+url+"</a><img onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink("+id+");});\" src=\"../../images/botoes/bt_x.png\" align=\"right\"/></li>";
 }
-
+/* ADD LINK AJAX */
 var submitLinkForm = (function () {
     function handler() {
-        var loading, link_box;
+        var loading, t, res, e, link_box;
         if (this.readyState !== this.DONE) {
             // requisição em andamento, não fazer nada.
             return;
         }
-        
         // Fim do request, remover tela de loading
         if (loading = document.getElementById('loading')) {
             loading.style.display = 'none';
         }
-
         if (this.status !== 200) {
-            ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            }
             return;
         }
-        if(t = this.responseText) {
+		  t = this.responseText;
+        if(t) {
             try {
                 res = JSON.parse(t);
             }
             catch (e) {
-                ROODA.ui.alert("Erro desconhecido (0xTTYLGB");
+                ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
                 console.log("JSON: " + e.message + ":\n"+t);
                 return;
             }
@@ -100,14 +104,13 @@ var submitLinkForm = (function () {
             } else if (res.ok) {
                 link_box = document.getElementById("caixa_link");
                 if (link_box) {
-                    link_box.innerHTML += linkHTML(res.endereco);
+                    link_box.innerHTML += linkHTML(res.id,res.endereco);
                 }
             }
         } else {
             console.log("Sem resposta do servidor.");
         }
     }
-
     var submitForm = submitFormFunction(handler);
     return (function (f) {
         var e = document.getElementById('loading');
@@ -117,7 +120,49 @@ var submitLinkForm = (function () {
         submitForm(f);
     });
 }());
-
+// DELETE LINK AJAX
+var deleteLink = (function () {
+	function deleteLinkHandler() {
+        var t, res, e;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        if (this.status !== 200) {
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+                return
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            }
+            return;
+        }
+        // OK
+        t = this.responseText;
+        if (t) {
+            try {
+                res = JSON.parse(t);
+            }
+			catch (e) {
+                console.log("JSON: " + e.message);
+                ROODA.ui.alert("Algo de errado aconteceu");
+                return;
+            }
+            if (res.ok) {
+                elem = document.getElementById("liLink" + res.id);
+                if (elem) {
+                    ROODA.dom.purgeElement(elem);
+                }
+            } else {
+                if (res.errors) {
+                    ROODA.ui.alert(res.errors.join("<br>\n"));
+                }
+                ROODA.ui.alert("Não deu certo.");
+            }
+        }
+    };
+    return deleteLinkFunction(deleteLinkHandler);
+}());
 /* UPLOAD FILE AJAX */
 var submitFileForm = (function () {
     function uploadFormHandler(){
@@ -127,16 +172,22 @@ var submitFileForm = (function () {
             return;
         }
         // Fim do request, remover tela de loading
-        if (loading = document.getElementById('loading')) {
+		  loading = document.getElementById('loading');
+        if (loading) {
             loading.style.display = 'none';
         }
         if (this.status !== 200) {
-            ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            }
             return;
         }
         // OK
         file_list = document.getElementById("caixa_arq");
-        if(t = this.responseText) {
+		  t = this.responseText;
+        if(t) {
             try {
                 res = JSON.parse(t);
             }
@@ -151,13 +202,16 @@ var submitFileForm = (function () {
                 newfile = document.createElement("li");
                 newfile.id = "liFile" + res.file_id;
                 newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-                    '<img align="right" src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){ deleteFile(' + res.file_id + ') });" />';
-                file_list.appendChild(newfile);
+                    '<img align="right" src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){deleteFile(' + res.file_id + ');});" />';
+					 if (file_list) {
+						 file_list.appendChild(newfile);
+					 }
+					 newfile = null;
             } else {
                 ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
             }
         } else {
-            console.log("Sem resposta do servidor.");
+            console.log("Sem resposta");
         }
     }
     var submitForm = submitFormFunction(uploadFormHandler);
@@ -168,22 +222,28 @@ var submitFileForm = (function () {
         }
         submitForm(f);
     });
-})();
-
+}());
 // DELETE FILE AJAX
 var deleteFile = (function () {
     function deleteFileHandler() {
+        var t, res, e, elem;
         if (this.readyState !== this.DONE) {
             // requisição em andamento, não fazer nada.
             return;
         }
         if (this.status !== 200) {
-            ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            }
             return;
         }
-        if (t = this.responseText) {
+        // OK
+        t = this.responseText;
+        if (t) {
             try {
-                res = JSON.parse(t)
+                res = JSON.parse(t);
             }
             catch (e) {
                 console.log("JSON: " + e.message);
@@ -191,57 +251,21 @@ var deleteFile = (function () {
                 return;
             }
             if (res.ok) {
-                if(elem = document.getElementById("liFile" + this.fileId)) {
-                    elem.parentElement.removeChild(elem);
+                elem = document.getElementById("liFile" + res.id);
+                if (elem) {
+                    ROODA.dom.purgeElement(elem);
                 }
             } else {
                 if(res.error) {
                     ROODA.ui.alert(res.error);
                 } else {
-                    ROODA.ui.alert("Nao deu certo");
+                    ROODA.ui.alert("Nao deu certo.");
                 }
             }
         }
     };
-    var deleteFile = deleteFileFunction(deleteFileHandler);
-    return (function (id) {
-        deleteFile(id);
-    });
-})();
-
-// DELETE LINK AJAX
-var deleteFile = (function () {
-    function deleteFileHandler() {
-        if (t = this.responseText) {
-            try {
-                res = JSON.parse(t)
-            }
-            catch (e) {
-                console.log("JSON: " + e.message);
-                ROODA.ui.alert("Algo de errado aconteceu.");
-                return;
-            }
-            if (res.ok) {
-                if(elem = document.getElementById("liLink" + this.linkId)) {
-                    elem.parentElement.removeChild(elem);
-                }
-            } else {
-                if(res.error) {
-                    ROODA.ui.alert(res.error);
-                } else {
-                    ROODA.ui.alert("Nao deu certo");
-                }
-            }
-        }
-    };
-    var deleteFile = deleteFileFunction(deleteFileHandler);
-    return (function (id) {
-        deleteFile(id);
-    });
-})();
-</script>
-<script language="javascript">
-
+    return deleteFileFunction(deleteFileHandler);
+}());
 function coment(){
     if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
         document.getElementById('ie_coments').style.width = 85 + '%';
@@ -420,44 +444,37 @@ imprimeListaPosts($blog->getId(), $turma);
                     </ul>
                 </div>
             </div>
-            <div class="bloco" id="link">
-<?php
-                    $novo_link = "novo_link.php";
-                    $novo_link.= "?funcionalidade_tipo=".TIPOBLOG;
-                    $novo_link.= "&funcionalidade_id=".$blog->getId();
-                    $novo_link = "javascript:window.open('$novo_link');";
-                ?>
+            <div id="links" class="bloco">
                 <h1><a class="toggle" id="toggle_link">▼</a> LINKS</h1>
-                <div class="add" onclick="botaoAdicionar('addLinkLi');">adicionar</div>
+                <div class="add" id="addLink" onclick="botaoAdicionar('addLinkLi');">adicionar</div>
                 <div class="bloqueia">
                     <ul class="sem_estilo" id="caixa_link">
                     <li id="addLinkLi" class="tabela_port" style="display:none;">
-                        <form name="addLinkForm" action="../../novo_link.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
-                            Novo Link: <input name="novoLink" id="novoLink" type="text"/>
+                        <form name="addLinkForm" action="../../inserirLink.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
+                            Novo Link: <br><input name="novoLink" id="novoLink" type="text"/><br>
                             <input name="submit" type="submit" id="submit" value="Submit" />
                         </form>
                     </li>
 <?php
-                            $funcionalidade_tipo= $tipoBlog;
-                            $funcionalidade_id= $id;
-                            
-                            $consulta = new xonexao();
-                            $consulta->solicitar("SELECT Id,titulo,endereco FROM $tabela_links WHERE funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
-                            
-                            while($consulta->resultado) {
-                                $id = $consulta->resultado['Id'];
-                                $endereco = $consulta->resultado['endereco'];
-                                $titulo = trim($consulta->resultado['titulo']);
-                                if ($titulo === "") { 
-                                    $titulo = $endereco;
-                                }
-                                echo "
-                        <li class=\"tabela_blog\">
-                            <a href=\"$endereco\" target=\"_blank\">$titulo</a>
-                            <div class=\"bts_caixa\"><img class=\"apagar\" src=\"../../images/botoes/bt_x.png\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteLink($id);};);\" /></div>
-                        </li>";
-                                $consulta->proximo();
-                            }
+                        $consulta = new conexao();
+                        $consulta->solicitar("SELECT * FROM $tabela_links WHERE funcionalidade_tipo = '$funcionalidade_tipo' AND funcionalidade_id = '$funcionalidade_id'");
+                        while ($consulta->resultado){
+                            $linkId = $consulta->resultado['Id'];
+                            $endereco = $consulta->resultado['endereco'];
+                            $titulo = trim($consulta->resultado['titulo']);
+									 if ($titulo === "") { 
+										 $titulo = $endereco;
+									 } else {
+										 $titulo = $consulta->resultado['titulo'];
+									 }
+?>
+								 <li class="tabela_blog" id=liLink<?=$linkId?>>
+                             <a href="<?=$endereco?>" target="_blank" align="left" ><?=$titulo?></a>
+                             <img onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" src="../../images/botoes/bt_x.png" align="right"/>
+                         </li>
+<?
+									 $consulta->proximo();
+								}
 ?>
                     </ul>
                 </div>
