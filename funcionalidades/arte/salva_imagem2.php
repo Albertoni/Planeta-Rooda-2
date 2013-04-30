@@ -1,6 +1,5 @@
 <?php
 
-	session_start();
 
 	require("../../cfg.php");
 	require("../../bd.php");
@@ -8,8 +7,12 @@
 	require("../../usuarios.class.php");
 	require("desenho.class.php");
 
+	session_start();
+
 	header('Expires: 0');
-	header('Pragma: no-cache');	
+	header('Pragma: no-cache');
+
+	$DESENHO = null;
 
 	$user_id = $_SESSION['SS_usuario_id'];
 	if ( isset($_POST['imagem']) ){
@@ -43,7 +46,7 @@
 		$titulo		= $_POST['titulo'];
 		$turma		= $_POST['turma'];
 		$existente	= $_POST['existente'];
-		
+
 		if ($existente == 0){	// novo desenho
 			$DESENHO = new Desenho(0, $user_id, $turma, "", $titulo);
 		}else{				// desenho já existente

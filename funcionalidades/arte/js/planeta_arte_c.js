@@ -221,7 +221,7 @@ function salvarEmPartes(){
 		if(http_salvar.readyState == 4 && http_salvar.status == 200) {
 			id_do_desenho = http_salvar.responseText;
 			ImagemEnviada.id = id_do_desenho;
-//			console.log("id:"+id_do_desenho);
+			console.log("id:"+id_do_desenho);
 			salvaProximaParte();
 		}
 	}
@@ -256,7 +256,7 @@ function salvaProximaParte() {
 			ImagemEnviada.progressBar.style.width = percentual + "%";
 //			console.log(ImagemEnviada.progressBar.style.width);
 //			console.log(percentual + "%");
-
+console.log(http_salvar.responseText);
 			if ( ( http_salvar.responseText == "0" ) && ( !fim ) ){
 //			if ( !fim ){
 //				console.log("WOOOWWW!!");

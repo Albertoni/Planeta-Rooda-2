@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
@@ -8,6 +6,8 @@ require("../../usuarios.class.php");
 require("comentario.class.php");
 require("desenho.class.php");
 require("../../reguaNavegacao.class.php");
+
+session_start();
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
@@ -21,7 +21,7 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 	$limite = new conexao();
 	global $tabela_ArteDesenhos;
 	$limite->solicitar("SELECT DISTINCT DATE_FORMAT(Data, '%Y') AS Data FROM $tabela_ArteDesenhos");
-	
+
 	for ($i=0; $i < $limite->registros; $i++){
 		$ano = $limite->resultado['Data'];
 		echo "								<option value=\"$ano\">$ano</option>\n";
@@ -29,7 +29,10 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 	}
 }
 
-?><!DOCTYPE html>
+//print_r($_SESSION);
+//echo $user_id.":";
+?>
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -81,13 +84,15 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 	</div>
 </div>
 
-
 <div id="topo">
 	<div id="centraliza_topo">
-		<?php 
+		<?php
+
 			$regua = new reguaNavegacao();
 			$regua->adicionarNivel("Arte");
 			$regua->imprimir();
+
+
 		?>
 		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
 	</div>
@@ -125,8 +130,8 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 					<div class="abas_port aberto" id="aba_andamento"> MEUS DESENHOS</div>
 					<div class="abas_port fechado" id="aba_encerrado"> DESENHOS DOS COLEGAS</div>
 				</h1>
-				
-				
+
+
 				<div id="proj_andamento">
 <?php
 $ARTE->meusDesenhos();
@@ -162,9 +167,9 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 }
 ?>
 				</div><!-- fim da div proj_andamento -->
-				
-				
-				
+
+
+
 				<div id="proj_encerrados">
 <?php
 $ARTE->desenhosDosColegas();
@@ -206,7 +211,7 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 		</div><!-- fim da div projetos -->
 	</div>
 	</div><!-- Fecha Div conteudo -->
-	</div><!-- Fecha Div conteudo_meio -->	
+	</div><!-- Fecha Div conteudo_meio -->
 	<div id="conteudo_base">
 	</div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
