@@ -11,7 +11,7 @@ require("../../reguaNavegacao.class.php");
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
-$turma = isset($_GET['turma'])?(int)$_GET['turma']:0;
+$turma = isset($_GET['turma'])?$_GET['turma']:0;
 $ARTE = new Arte($user_id, $turma);
 
 
@@ -147,8 +147,7 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 	<ul class="sem_estilo">
 		<a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><div id="imagem" class="lista_imagem">
 		<?php
-		  //<div id="imagem" class="lista_imagem"></div>
-		  echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
+			echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
 		?>
 		</div>
 		</a>

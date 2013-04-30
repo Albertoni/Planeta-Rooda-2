@@ -124,7 +124,7 @@ class Arte {
 
 		//salva o desenho do meliante
 		$pesquisa1->solicitar("insert into $tabela_arte (usuarioId, turmaId, titulo, descricao, dados) VALUES ($usuario,$turma,$titulo,$descricao,$dados)");
-		$idDoDesenho = $pesquisa1->ultimo_id();
+		$idDoDesenho = mysql_insert_id();
 		return $idDoDesenho;
 	}
 	
@@ -144,9 +144,8 @@ class Arte {
 		$usuario = $this->usuario;
 
 		//salva o desenho do meliante
-		//não, cara, meliante é um termo "rude", usa malandro
 		$pesquisa1->solicitar("UPDATE $tabela_arte SET titulo= '$titulo', descricao = '$descricao', dados= '$dados' WHERE id = '$id'");
-		$idDoDesenho = $pesquisa1->ultimo_id();
+		$idDoDesenho = mysql_insert_id();
 		return true;
 	}	
 }

@@ -76,26 +76,26 @@ class Desenho {
 			$this->desenho = $desenho;
 			$this->titulo = $titulo;
 			$this->palavras = $tags;
-			$this->turma = $turma;		
+			$this->turma = $turma;
 		}
 	}
 	
 	function salvar(){
-		global $tabela_ArteDesenhos;	
+		global $tabela_ArteDesenhos;
 
 		$id = $this->id;
 		$user_id = $this->criador->id;
 		$arquivo = $this->desenho;
 		$titulo = $this->titulo;
 		$tags = $this->palavras;
-		$turma = $this->turma;				
+		$turma = $this->turma;
 		
 		$dados = new conexao();
 		if ($this->id != 0){ // Se tem id, é para salvar num já existente.	
 			$dados->solicitar("UPDATE $tabela_ArteDesenhos SET Arquivo='$arquivo', Titulo='$titulo', Palavras='$tags', Data = NOW()  WHERE CodDesenho = '$id' LIMIT 1" ); // Atualiza os dados do desenho no banco de dados
 		}else{ //se não tem id, salva num novo registro
 			$dados->solicitar("INSERT $tabela_ArteDesenhos (CodUsuario, CodTurma, Arquivo, Titulo, Palavras, Data) VALUES ($user_id, $turma, '$arquivo', '$titulo', '$tags', NOW())" ); // Cria novo desenho no banco de dados
-			$this->id = $dados->ultimo_id();
+			$this->id = mysql_insert_id();
 		}
 		$this->valido = true;
 	}
