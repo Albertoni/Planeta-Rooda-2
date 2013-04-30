@@ -39,7 +39,6 @@ class Usuario { //estrutura para o item post do blog
 	public function openUsuario($param , $param2="") {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
-		$niveis = new conexao();
 
 		$id = (int) $param;
 		$q->solicitar("SELECT *
@@ -50,16 +49,6 @@ class Usuario { //estrutura para o item post do blog
 			return "Usuario inexistente (Id=$id)" ;
 
 		$this->popular($q->resultado);
-
-		// Agora preparamos para setar o nível
-
-		$this->nivel = array();
-
-		$niveis->solicitar("SELECT codTurma,associacao FROM $tabela_turmasUsuario WHERE codUsuario = ".$q->itens[0]['usuario_id']);
-		for($i=0; $i < $niveis->registros; $i++){
-			$this->setNivel($niveis->itens[$i]['codTurma'], $niveis->itens[$i]['associacao'] != 0 ? $niveis->itens[$i]['associacao'] : $this->getNivelAbsoluto());
-		}
-		return false;
 	}
 
 	/**
@@ -105,6 +94,19 @@ class Usuario { //estrutura para o item post do blog
 		$this->setPersonagemId($resultadoBD['usuario_personagem_id']);
 		$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
 		//$this->dataUltimoLogin = $resultadoBD['personagem_ultimo_acesso'];
+		
+		
+		// Agora preparamos para setar o nível
+		
+		$this->nivel = array();
+		$niveis = new conexao(); global $tabela_turmasUsuario;
+		
+		$niveis->solicitar("SELECT codTurma,associacao FROM $tabela_turmasUsuario WHERE codUsuario = ".$resultadoBD['usuario_id']);
+		for($i=0; $i < $niveis->registros; $i++){
+			$this->setNivel($niveis->resultado['codTurma'], $niveis->resultado['associacao']);
+			$niveis->proximo();
+		}
+		return false;
 		
 		
 		// DEBUG REMOVER ARROBAS E TESTAR ISSO CORRETAMENTE MAIS TARDE
@@ -243,7 +245,7 @@ class Usuario { //estrutura para o item post do blog
 		$niveisTurma = $this->getNivel($turma);
 		$cutoff = (int) $cutoff;
 		
-		return !!($niveisTurma & $cutoff);
+		return $niveisTurma & $cutoff;
 	}
 	public function isAdmin(){return $this->getNivelAbsoluto() & 1;}
 

@@ -46,7 +46,7 @@
 		<div id="ajuda_meio">
 			<div id="ajudante">
 				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-				<div id="rel"><p id="balao">Aqui, você pode encontra um espaço que foi mencionado no vidadeprogramador.com.br</p></div>
+				<div id="rel"><p id="balao">Aqui, você pode editar a aparencia do seu personagem!<b><center><h2>TEXTO OFICIAL NECESSARIO</h2></center></b></p></div>
 			</div>
 		</div>
 		<div id="ajuda_base"></div>
@@ -291,7 +291,7 @@
 	</div><!-- fim da div tabelas -->
 	
 	<div class="bts_baixo">
-		<form name="salvar_BD" method="post" action="salvar_personagem.php?id_char_php=<?=$id_char_php?>">
+		<form name="salvar_BD" method="post" action="salvar_personagem.php">
 			<input type="hidden" id="cabelo_js" name="cabelo_php"/>
 			<input type="hidden" id="olhos_js" name="olhos_php"/>
 			<input type="hidden" id="cor_pele_js" name="cor_pele_php"/>

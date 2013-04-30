@@ -116,7 +116,7 @@ function excluir(fid,tid,dtipo){
 }
 
 function editar(fid,tid){
-	document.location = "forum_cria_topico.php?fid="+fid+"&tid="+tid;
+	document.location = "forum_cria_topico.php?turma="+fid+"&tid="+tid;
 }
 
 function colore(elemento){

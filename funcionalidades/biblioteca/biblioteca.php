@@ -236,7 +236,7 @@ function imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dat
 				<li><div class='enviar' align='right'>";
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_editarMateriais'], $turma)){
-		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'a');document.getElementById('arquivos_enviados').removeChild(document.getElementById('file$idFile'));\"/>";
+		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'a');\"/>";
 	}
 	if($usuario->podeAcessar($permissoes['biblioteca_excluirArquivos'], $turma)){
 		echo "					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$nome\", \"$tags\", \"a\");' />";
@@ -265,7 +265,7 @@ function imprime_link($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHo
 				<li><div class='enviar' align='right'>";
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_excluirArquivos'], $turma)){
-		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'l');document.getElementById('arquivos_enviados').removeChild(document.getElementById('file$idFile'));\"/>";
+		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'l');\"/>";
 	}
 	if($usuario->podeAcessar($permissoes['biblioteca_editarMateriais'], $turma)){
 		echo"					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$endereco\", \"$tags\", \"l\");' />";
@@ -311,7 +311,7 @@ function imprimeMaterial($arrayDados, $numComentarios, $usuario, $permissoes){
 	}
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_excluirArquivos'], $turma)){
-		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'l');document.getElementById('arquivos_enviados').removeChild(document.getElementById('file$idFile'));\"/>";
+		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'l');\"/>";
 	}
 	if($usuario->podeAcessar($permissoes['biblioteca_editarMateriais'], $turma)){
 		echo"					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$endereco\", \"$tags\", \"l\");' />";

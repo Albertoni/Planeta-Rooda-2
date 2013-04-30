@@ -34,16 +34,15 @@ if ($pai == '-1'){
 	$link = "forum_arvore.php?turma=$FORUM_ID&pagina=1&topico=".$pai;
 }
 
-
+$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
 $cria = false;
 if ($topico == "-1"){ //-1 significa que está criando tópico
 	$cria = true;
 	$atualiza = false;
-	$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
 }else{
 	if($pesquisa1->erro == ""){
 		$uid = $pesquisa1->resultado['msg_usuario'];
-		if (permissao($uid)){
+		if (permissao($uid, $topico, 'forum_responderTopico')){
 			$cria = true;
 			$atualiza = ($pesquisa1->registros > 0);
 		}
@@ -87,7 +86,7 @@ if ($cria){
 }else{
 ?>
 	<div id="bloco_mensagens" class="bloco">
-		<h1>MENSAGENS</h1><?php	mostraAviso(6);?>
+		<h1>MENSAGENS</h1>Você pode não ter permissão para fazer isso.
 	</div><!-- fim da div topicos --><br />
 <?php
 }

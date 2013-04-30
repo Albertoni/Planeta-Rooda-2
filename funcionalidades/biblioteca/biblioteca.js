@@ -178,6 +178,7 @@ function excluirFile(idFile, tipo){
 				var retorno = http_file.responseText;
 				if (retorno == '1'){
 					alert('Arquivo excluido com sucesso');
+					document.getElementById('arquivos_enviados').removeChild(document.getElementById('file'+idFile));
 				}
 				else alert(retorno);
 			}

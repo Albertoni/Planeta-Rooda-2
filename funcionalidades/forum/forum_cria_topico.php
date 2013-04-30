@@ -13,6 +13,7 @@
 	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma']))?$_GET['turma']:die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
 	
 	$perm = checa_permissoes(TIPOFORUM, $turma);
+	
 	if($user->podeAcessar($perm['forum_criarTopico'], $turma)){
 		$topico = (isset($_GET['tid']) and is_numeric($_GET['tid'])) ? $_GET['tid']:'-1'; // TID = TÓPICO ID
 		$editar = ($topico != '-1');
@@ -21,7 +22,7 @@
 		
 		$pai = "-1";
 		if ($editar){
-			if($user->podeAcessar($perm['forum_editaTopico'], $turma)){
+			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
 				$pesquisa1 = new conexao();
 				$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
 				$pai = $pesquisa1->resultado['msg_pai'];
@@ -30,11 +31,13 @@
 				$criador = $pesquisa1->resultado['msg_usuario'];
 				$conteudo = str_replace("<br>", "\n", $conteudo);
 			}else{
-				die("Você não tem permissões para editar tópicos.");
+				die("Voce nao tem permissao para editar topicos.");
 			}
 		}else{
 			$criador = -1;
 		}
+	}else{
+		die("Voce nao tem permissao para criar topicos.");
 	}
 ?>
 <!DOCTYPE html>
@@ -112,7 +115,7 @@ else // senão, tá criando.
 <?php
 	if ($editar){
 		echo "<h1>EDITAR TÓPICO</h1>";
- 	}else{
+	}else{
 		echo "<h1>CRIAR TÓPICO</h1>";
 	}?>
 			<ul class="sem_estilo">
