@@ -230,7 +230,7 @@ function Init() {
 }
 </script>
 </head>
-<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img(); Init(); fakeFile('botao_upload_frame', 'arquivo_frame', 'falso_frame'); fakeFile('botao_upload_frame_ins','arquivo_frame_ins', 'falso_frame_ins');">
+<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img(); Init(); /*fakeFile('botao_upload_frame', 'arquivo_frame', 'falso_frame'); fakeFile('botao_upload_frame_ins','arquivo_frame_ins', 'falso_frame_ins');*/">
 	<div id="descricao"></div>
 	<div id="fundo_lbox"></div>
 	<div id="light_box" class="bloco">

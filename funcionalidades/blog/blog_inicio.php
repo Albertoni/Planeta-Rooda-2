@@ -5,8 +5,12 @@
 	require_once("../../funcoes_aux.php");
 	
 	session_start();
+	$usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
 	
-	$BLOG_ID = $_SESSION['SS_usuario_id'];
+	if ($usuario_id == 0){
+		die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
+	}
+	//$BLOG_ID = $_SESSION['SS_usuario_id'];
 	
 	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 	$permissoes = checa_permissoes(TIPOBLOG, $turma);

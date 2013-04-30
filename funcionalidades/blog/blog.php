@@ -1,7 +1,5 @@
-    <?php
-    session_start();
-    header('Content-type: text/html; charset=utf-8');
-    
+<?php
+	 session_start();
     require("../../cfg.php");
     require("../../bd.php");
     require("../../funcoes_aux.php");
@@ -13,7 +11,8 @@
     require("../../link.class.php");
 //  require("visualizacao_blog.php");
     require("../../reguaNavegacao.class.php");
-    $usuario_id = $_SESSION['SS_usuario_id'];
+    header('Content-type: text/html; charset=utf-8');
+    $usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
     
     $blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die("não foi fornecido id de blog");
     $blog_id = ($blog_id == "meu_blog") ? getMeuBlog() : $_GET['blog_id'];
@@ -53,230 +52,6 @@
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
-<script type="text/javascript" src="../../jquery.js"></script>
-<script src="../../js/compatibility.js"></script>
-<script src="../../js/rooda.js"></script>
-<script src="../../js/ajax.js"></script>
-<script src="../../js/ajaxFileManager.js"></script>
-<script type="text/javascript" src="../../postagem_wysiwyg.js"></script><!--para o mostraDescri()-->
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="blog.js"></script>
-<script type="text/javascript" src="blog_ajax.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
-
-<script>
-/* link template */
-var linkHTML = function (id,url) {
-    return "<li class=\"tabela_blog\" id=\"liLink"+id+"\"><a href=\""+url+"\" target=\"_blank\" align=\"left\">"+url+"</a><img onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink("+id+");});\" src=\"../../images/botoes/bt_x.png\" align=\"right\"/></li>";
-}
-/* ADD LINK AJAX */
-var submitLinkForm = (function () {
-    function handler() {
-        var loading, t, res, e, link_box;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        // Fim do request, remover tela de loading
-        if (loading = document.getElementById('loading')) {
-            loading.style.display = 'none';
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-		  t = this.responseText;
-        if(t) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
-                console.log("JSON: " + e.message + ":\n"+t);
-                return;
-            }
-            if (res.errors) {
-                ROODA.ui.alert(res.errors.join("\n"));
-            } else if (res.ok) {
-                link_box = document.getElementById("caixa_link");
-                if (link_box) {
-                    link_box.innerHTML += linkHTML(res.id,res.endereco);
-                }
-            }
-        } else {
-            console.log("Sem resposta do servidor.");
-        }
-    }
-    var submitForm = submitFormFunction(handler);
-    return (function (f) {
-        var e = document.getElementById('loading');
-        if (e) {
-            e.style.display = 'block';
-        }
-        submitForm(f);
-    });
-}());
-// DELETE LINK AJAX
-var deleteLink = (function () {
-	function deleteLinkHandler() {
-        var t, res, e;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-                return
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        t = this.responseText;
-        if (t) {
-            try {
-                res = JSON.parse(t);
-            }
-			catch (e) {
-                console.log("JSON: " + e.message);
-                ROODA.ui.alert("Algo de errado aconteceu");
-                return;
-            }
-            if (res.ok) {
-                elem = document.getElementById("liLink" + res.id);
-                if (elem) {
-                    ROODA.dom.purgeElement(elem);
-                }
-            } else {
-                if (res.errors) {
-                    ROODA.ui.alert(res.errors.join("<br>\n"));
-                }
-                ROODA.ui.alert("Não deu certo.");
-            }
-        }
-    };
-    return deleteLinkFunction(deleteLinkHandler);
-}());
-/* UPLOAD FILE AJAX */
-var submitFileForm = (function () {
-    function uploadFormHandler(){
-        var loading, file_list, t, res, newfile;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        // Fim do request, remover tela de loading
-		  loading = document.getElementById('loading');
-        if (loading) {
-            loading.style.display = 'none';
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        file_list = document.getElementById("caixa_arq");
-		  t = this.responseText;
-        if(t) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                ROODA.ui.alert("Erro desconhecido (0xTTYLGB");
-                console.log("JSON: " + e.message + ":\n"+t);
-                return;
-            }
-            if (res.errors) {
-                ROODA.ui.alert(res.errors.join("\n"));
-            } else if (res.file_id && res.file_name) {
-                newfile = document.createElement("li");
-                newfile.id = "liFile" + res.file_id;
-                newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +"</a>" +
-                    '<img align="right" src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){deleteFile(' + res.file_id + ');});" />';
-					 if (file_list) {
-						 file_list.appendChild(newfile);
-					 }
-					 newfile = null;
-            } else {
-                ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-            }
-        } else {
-            console.log("Sem resposta");
-        }
-    }
-    var submitForm = submitFormFunction(uploadFormHandler);
-    return (function (f) {
-        var e = document.getElementById('loading');
-        if (e) {
-            e.style.display = 'block';
-        }
-        submitForm(f);
-    });
-}());
-// DELETE FILE AJAX
-var deleteFile = (function () {
-    function deleteFileHandler() {
-        var t, res, e, elem;
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        if (this.status !== 200) {
-            if (this.status >= 500) {
-                ROODA.ui.alert("Problema no servidor");
-            } else {
-                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            }
-            return;
-        }
-        // OK
-        t = this.responseText;
-        if (t) {
-            try {
-                res = JSON.parse(t);
-            }
-            catch (e) {
-                console.log("JSON: " + e.message);
-                ROODA.ui.alert("Algo de errado aconteceu.");
-                return;
-            }
-            if (res.ok) {
-                elem = document.getElementById("liFile" + res.id);
-                if (elem) {
-                    ROODA.dom.purgeElement(elem);
-                }
-            } else {
-                if(res.error) {
-                    ROODA.ui.alert(res.error);
-                } else {
-                    ROODA.ui.alert("Nao deu certo.");
-                }
-            }
-        }
-    };
-    return deleteFileFunction(deleteFileHandler);
-}());
-function coment(){
-    if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-        document.getElementById('ie_coments').style.width = 85 + '%';
-        $('.bloqueia ul').css('margin-right','17px');
-    }
-};
-</script>
-
-<!--[if IE 6]>
-<script type="text/javascript" src="planeta_ie6.js"></script>
-<![endif]-->
 
 </head>
 
@@ -524,6 +299,20 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
         </div>
     </div>
 
+<script src="../../jquery.js"></script>
+<script src="../../js/compatibility.js"></script>
+<script src="../../js/rooda.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../../js/ajaxFileManager.js"></script>
+<script src="../../postagem_wysiwyg.js"></script><!--para o mostraDescri()-->
+<script src="../../planeta.js"></script>
+<script src="blog.js"></script>
+<script src="blog_ajax.js"></script>
+<script src="../lightbox.js"></script>
+<script src="blog_ajax2.js"></script>
+<!--[if IE 6]>
+<script type="text/javascript" src="planeta_ie6.js"></script>
+<![endif]-->
 </body>
 </html>
 
