@@ -70,7 +70,7 @@ class reguaNavegacao {
 		//$this->adicionarNivel($nomeTerreno, "http://sideshowbob/asd/desenvolvimento/");
 		
 		// TODO: DEBUG: REMOVER APOS O CURSO
-		$this->adicionarNivel($nomeTerreno, "http://http://www.nuted.ufrgs.br/planeta2/listaFuncionalidades.php?terreno=$idTerreno");
+		$this->adicionarNivel($nomeTerreno, "http://www.nuted.ufrgs.br/planeta2/listaFuncionalidades.php?terreno=$idTerreno");
 	}
 	
 	/*
