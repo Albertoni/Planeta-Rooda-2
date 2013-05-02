@@ -1,0 +1,108 @@
+<?
+session_start();
+header('Content-type: text/html; charset=utf-8');
+require_once("cfg.php");
+require_once("bd.php");
+require_once("funcoes_aux.php");
+
+if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
+	die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
+}
+$terreno = isset($_GET['terreno']) ? (int) $_GET['terreno'] : 0;
+if ($terreno <= 0) {
+	die("Turma não encontrada. <a href=\"index.php\">Voltar</a> 1");
+}
+$consulta = new conexao();
+$consulta->solicitar(
+	"SELECT Turma FROM Planetas AS P INNER JOIN terrenos AS T ON P.IdTerrenoPrincipal = T.terreno_id WHERE terreno_id = '$terreno'"
+);
+if ($consulta->registros !== 1) {
+	die("Turma não encontrada. <a href=\"index.php\">Voltar</a> 2 ".$consulta->registros);
+}
+$turma = $consulta->resultado['Turma'];
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Planeta Rooda - Funcionalidades</title>
+		<link href="planeta.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+	<div id="geral">
+		<!-- **************************
+						cabecalho
+		***************************** -->
+		<div id="cabecalho">
+			 <div id="ajuda">
+				  <div id="ajuda_meio">
+						<div id="ajudante">
+							 <div id="personagem"><img src="images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
+							 <div id="rel"><p id="balao">Aqui você pode acessar todas as funcionalidades habilitadas na sua turma.</p></div>
+						</div>
+				  </div>
+				  <div id="ajuda_base"></div>
+			 </div>
+		</div><!-- fim do cabecalho -->
+		<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+		<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+			<div id="conteudo" style="position:relative;margin-top:0;"><!-- tem que estar dentro da div 'conteudo_meio' -->
+				<ul class="listaFun">
+<?
+// Biblioteca
+if(checa_permissoes(TIPOBIBLIOTECA, $turma)) { 
+?>
+					<li><a href="funcionalidades/biblioteca/biblioteca.php?turma=<?=$turma?>">Biblioteca</a></li>
+<?
+}	
+// Blog
+if(checa_permissoes(TIPOBLOG, $turma)) { 
+?>
+					<li><a href="funcionalidades/blog/blog_inicio.php?turma=<?=$turma?>">Blog</a></li>
+<?
+}	
+// Forum
+if(checa_permissoes(TIPOFORUM, $turma)) { 
+?>
+					<li><a href="funcionalidades/forum/forum.php?turma=<?=$turma?>">Forum</a></li>
+<?
+}	
+// Portfolio
+if(checa_permissoes(TIPOPORTFOLIO, $turma)) { 
+?>
+					<li><a href="funcionalidades/portfolio/portfolio.php?turma=<?=$turma?>">Portfolio</a></li>
+<?
+}
+// Arte
+if(checa_permissoes(TIPOARTE, $turma)) { 
+?>
+					<li><a href="funcionalidades/arte/planeta_arte2.php?turma=<?=$turma?>">Arte</a></li>
+<?
+}
+// Pergunta
+if(checa_permissoes(TIPOPERGUNTA, $turma)) { 
+?>
+					<li><a href="funcionalidades/pergunta/planeta_pergunta.php?turma=<?=$turma?>">Pergunta</a></li>
+<?
+}
+// Aulas
+if(checa_permissoes(TIPOAULAS, $turma)) { 
+?>
+					<li><a href="funcionalidades/aulas/planeta_aulas.php?turma=<?=$turma?>">Aulas</a></li>
+<?
+}
+// Player
+if(checa_permissoes(TIPOPLAYER, $turma)) { 
+?>
+					<li><a href="funcionalidades/roodaplayer/index.php?turma=<?=$turma?>">Player</a></li>
+<?
+}
+?>
+				</ul>
+			</div>
+		</div>
+		<div id="conteudo_base">
+		</div><!-- para a imagem de fundo da base -->
+	</div>
+	</body>
+</html>
