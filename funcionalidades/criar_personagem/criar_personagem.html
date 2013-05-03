@@ -1,226 +1,113 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Planeta ROODA 2.0</title>
-<link type="text/css" rel="stylesheet" href="planeta.css" />
-<link type="text/css" rel="stylesheet" href="criar.css" />
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
-<script type="text/javascript" src="planeta.js"></script>
-<script type="text/javascript" src="raphael.js"></script>
-<script type="text/javascript" src="criar.js"></script>
-<!--[if IE 6]>
-<script type="text/javascript" src="planeta_ie6.js"></script>
-<![endif]-->
-
-</head>
-
-<body onload="atualiza('ajusta()');inicia();">
-<!--
-<div id="topo">
-	<div id="centraliza_topo">
-        <p id="hist"><a href="#">Planeta ROODA</a> > <a href="#">Professor Fulaninho de Tal</a> > <a href="#">Biblioteca</a></p>
-        <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
-    </div>
-</div>
--->
-<div id="geral">
-
-<!-- **************************
-			cabecalho
-***************************** -->
-<div id="cabecalho">
-    <div id="ajuda">
-        <div id="ajuda_meio">
-            <div id="ajudante" >
-                <div id="rel"><p id="balao" style="width:95%">Bem vindo ao Planeta ROODA! <br />Antes de começar sua viagem intergaláctica, escolha a aparência do seu personagem.</p></div>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>huehuehue</title>
+        <link type="text/css" rel="stylesheet" href="../../planeta.css" />
+        <link type="text/css" rel="stylesheet" href="criar.css" />
+    </head>
+    <body>
+        <div id="topo">
+            <div id="centraliza_topo">
+                <!-- regua -->
+                <p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
             </div>
         </div>
-        <div id="ajuda_base"></div>
-    </div>
-</div><!-- fim do cabecalho -->
-    
-    
-<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
-<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
-
-<!-- **************************
-			conteudo
-***************************** -->
-    <div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
-    <form>
-    
-    <div id="criar_personagem" class="bloco">
-        <h1>CRIAR PERSONAGEM</h1>
-            <ul class="sem_estilo">
-            	<div id="prever_custom">
-                	<div id="mp_limpo"></div>
-                	<div id="pele"></div>
-                	<div id="bota_luva"></div>
-                	<div id="acessorios"></div>
-                    <div id="troca_cabelo"></div>
-                    <div id="troca_olho"></div>
+        <div id="geral">
+            <div id="cabecalho">
+                <div id="ajuda">
+                    <div id="ajuda_meio">
+                        <div id="ajudante">
+                            <div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
+                            <div id="rel"><p id="balao">Aqui, você pode editar a aparencia do seu personagem!<b><center><h2>TEXTO OFICIAL NECESSARIO</h2></center></b></p></div>
+                        </div>
+                    </div>
+                    <div id="ajuda_base"></div>
                 </div>
-                
-                <div id="botoes_custom">
-                	<div class="botoes_custom_unidade" id="cabelo_bt"></div>
-                	<div class="botoes_custom_unidade" id="olhos_bt"></div>
-                	<div class="botoes_custom_unidade" id="pele_bt"></div>
-                	<div class="botoes_custom_unidade" id="acessorios_bt"></div>
-                	<div class="botoes_custom_unidade" id="botaeluva_bt"></div>
-                </div>
-                
-                <div id="tabelas">
-                <center>
-                <table class="amostras" id="cores_roupas" border="0" cellpadding="0" cellspacing="2">
-                <tbody>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #EAC1C1;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #E29696"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #DD8080"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #CE3E3E"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #AA4B4B"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #F2D2B1"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #E2AD81"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #DD945E"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #BC794B"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #966645"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #EAE9BB"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #DBD36E"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #E2D44D"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #CEBB30"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #A5942B"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #C9DDAC"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #B9D882"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #A0BF4C"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #88A02D"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #61721C"><!-- --></div></td>
-                    </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #B6D8D4"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #8DC9C0"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #68AFA3"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #469183"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #287768"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #B4CCDB"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #94B2D3"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #6296C4"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #467BA3"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #225C7F"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #C8B6DB"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #B69CD8"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #9675CC"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #7454A3"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #50327F"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #bbbbbb"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #999999"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #777777"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #666666"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #333333"><!-- --></div></td>
-                </tr>
-                </tbody></table>
-                
-                <table class="amostras" id="cores_pele" border="0" cellpadding="0" cellspacing="2">
-                <tbody>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #CCB27F;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #C99A56;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #AD6E2B;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #CC9F5E;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #BF9364;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #C29169;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #9D692F;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #6C4D30;"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #EDCCA1;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #BE8A3E;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #906C54;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #3D2A19;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #D0A147;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #D18D49;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #E5C892;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #E0CDAA;"><!-- --></div></td>
-                </tr>
-                <tr>
-                    <td><div class="amostra amostra_cor" style="background-color: #C8CE5C;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #9BA2CC;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #DB947A;"><!-- --></div></td>
-                    <td><div class="amostra amostra_cor" style="background-color: #CE9CCC;"><!-- --></div></td>
-                </tr>
-                </tbody></table>
-                
-                <div class="amostras" id="cabelos" border="0" cellpadding="0" cellspacing="2">
-                	<ul>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo1.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo3.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo2.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo4.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo5.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo6.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo7.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo8.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo9.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo10.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo11.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo12.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo13.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo14.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo15.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo16.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo17.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo18.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo19.png" /></div></li>
-                        <li><div class="amostra amostra_cabelo castanhos"><img src="images/desenhos/cabelos/cabelo20.png" /></div></li>
-                    	<!--<li><div id="mudacor" style="height:30px; width:30px; background-color:#006"></div></li>-->
-                    </ul>
-                </div>
-                
-                <div class="amostras" id="olhos" border="0" cellpadding="0" cellspacing="2">
-                	<ul>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho1.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho2.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho3.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho4.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho5.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho6.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho7.png" /></div></li>
-                    	<li><div class="amostra amostra_olho"><img src="images/desenhos/olhos/olho8.png" /></div></li>
-                	</ul>
-                </div>
-                </center>
-                </div>
-                
-			</ul>
-        
-	</div><!-- fim da div criar_topicos -->
-    
-    <div class="bts_baixo">
-    	<input type="image" src="images/botoes/bt_cancelar.png" align="left"/>
-    	<input type="image" src="images/botoes/bt_confirm.png" align="right" />
-    </div>
-    </form>
-    </div>
-    <!-- fim do conteudo -->
-
-</div> <!-- fim do conteudo_meio -->  
-<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
-
-
-</div><!-- fim da geral -->
-
-</body>
+            </div><!-- fim do cabecalho -->
+            <div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
+            <div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
+                <!-- **************************
+                            conteudo
+                    ***************************** -->
+                <div id="conteudo" style="position:relative;top:0;left:0;margin:0 auto;"> <!-- tem que estar dentro da div 'conteudo_meio' -->
+                    <div id="criar_personagem" class="bloco">
+                        <canvas id="canvas_personagem" width="167" height="355"></canvas>
+                        <ul id="menu_criar_personagem">
+                            <li id="bt_cabelo" class="selected">Cabelo</li>
+                            <li id="bt_olhos">Olhos</li>
+                            <li id="bt_pele">Pele</li>
+                            <li id="bt_acessorios">Acessorios</li>
+                            <li id="bt_botaseluvas">Botas e Luva</li>
+                        </ul>
+                        <ul id="opcoes_criar_personagem">
+                            <li id="opcoes_cabelo">
+                                <ul id="cabelo_estilo" class="castanho">
+                                    <li id="cabelo1"><span class="img">Cabelo 1</span></li>
+                                    <li id="cabelo2"><span class="img">Cabelo 2</span></li>
+                                    <li id="cabelo3"><span class="img">Cabelo 3</span></li>
+                                    <li id="cabelo4"><span class="img">Cabelo 4</span></li>
+                                    <li id="cabelo5"><span class="img">Cabelo 5</span></li>
+                                    <li id="cabelo6"><span class="img">Cabelo 6</span></li>
+                                    <li id="cabelo7"><span class="img">Cabelo 7</span></li>
+                                    <li id="cabelo8"><span class="img">Cabelo 8</span></li>
+                                    <li id="cabelo9"><span class="img">Cabelo 9</span></li>
+                                    <li id="cabelo10"><span class="img">Cabelo 10</span></li>
+                                    <li id="cabelo11"><span class="img">Cabelo 11</span></li>
+                                    <li id="cabelo12"><span class="img">Cabelo 12</span></li>
+                                    <li id="cabelo13"><span class="img">Cabelo 13</span></li>
+                                    <li id="cabelo14"><span class="img">Cabelo 14</span></li>
+                                    <li id="cabelo15"><span class="img">Cabelo 15</span></li>
+                                    <li id="cabelo16"><span class="img">Cabelo 16</span></li>
+                                    <li id="cabelo17"><span class="img">Cabelo 17</span></li>
+                                    <li id="cabelo18"><span class="img">Cabelo 18</span></li>
+                                    <li id="cabelo19"><span class="img">Cabelo 19</span></li>
+                                    <li id="cabelo20"><span class="img">Cabelo 20</span></li>
+                                </ul>
+                                <ul id="cabelo_cor">
+                                    <li id="cabelo_castanho">Castanho</li>
+                                    <li id="cabelo_preto">Preto</li>
+                                    <li id="cabelo_loiro">Loiro</li>
+                                    <li id="cabelo_ruivo">Ruivo</li>
+                                </ul>
+                            </li>
+                            <li id="opcoes_olhos">
+                                <ul>
+                                    <li id="olho1">Olho 1</li>
+                                    <li id="olho2">Olho 2</li>
+                                    <li id="olho3">Olho 3</li>
+                                    <li id="olho4">Olho 4</li>
+                                    <li id="olho5">Olho 5</li>
+                                    <li id="olho6">Olho 6</li>
+                                    <li id="olho7">Olho 7</li>
+                                    <li id="olho8">Olho 8</li>
+                                </ul>
+                            </li>
+                            <li id="opcoes_pele">
+                            </li>
+                            <li id="opcoes_acessorio">
+                            </li>
+                            <li id="opcoes_botaseluvas">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bts_baixo">
+                        <form name="salvar_BD" method="post" action="salvar_personagem.php">
+                            <input type="hidden" id="cabelo_js" name="cabelo_php"/>
+                            <input type="hidden" id="olhos_js" name="olhos_php"/>
+                            <input type="hidden" id="cor_pele_js" name="cor_pele_php"/>
+                            <input type="hidden" id="cor_cinto_js" name="cor_cinto_php"/> 
+                            <input type="hidden" id="cor_luvas_js" name="cor_luvas_php"/> 
+                            <input type="hidden" id="corCabeloSelecionada_js" name="corCabeloSelecionada_php"/> 
+                            <a href="../../tela_inicial_geral.php"><img src="images/botoes/bt_cancelar.png"/></a>
+                            <input type="image" src="images/botoes/bt_confirm.png" align="right"/>
+                        </form>
+                    </div>
+                </div><!-- fim do conteudo -->
+                <br style="clear: both;" />
+            </div> <!-- fim do conteudo_meio -->  
+            <div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
+        </div><!-- fim da geral -->
+        <script src="criar_personagem.js"></script>
+    </body>
 </html>

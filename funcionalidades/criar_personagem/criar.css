@@ -1,5 +1,5 @@
+/* -/ 
 #criar_personagem {float:left; width:100%; min-height:400px}
-
 #prever_custom { width:167px; height:354px; margin-left:30px; float:left}
 #mp_limpo { z-index:10; width:167px; height:354px; background-image:url(images/desenhos/personagem_limpo.png); position:absolute}
 #pele { position:absolute; width:133px; height:110px; z-index:1; top:90px; left:72px}
@@ -32,3 +32,212 @@
 .amostra_olho img {width:50px; height:18px;; margin-top:16px}
 
 #cores_pele {opacity:0}
+/* ===== */
+#opcoes_cabelo {
+    display: block;
+}
+#opcoes_olhos {
+    display: none;
+}
+#opcoes_pele {
+    display: none;
+}
+#opcoes_acessorios {
+    display: none;
+}
+#opcoes_pele {
+    display: none;
+}
+#canvas_personagem {
+	background: #ffffff;
+	vertical-align: middle;
+    margin: 0 20px;
+}
+#menu_criar_personagem {
+	vertical-align: middle;
+	display: inline-block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#menu_criar_personagem > li {
+	background-image: url("images/botoes/personagem_botoes.png");
+	display: block;
+	text-indent: -9999px;
+	overflow: hidden;
+	width: 65px;
+	height: 49px;
+	padding: 0;
+	margin: 15px 20px 15px 20px;
+}
+#menu_criar_personagem > li.selected {
+    background-position-x: -153px;
+	margin: 15px 0px 15px 40px;
+}
+#opcoes_criar_personagem {
+    background-color: #ffffff;
+    border: 1px solid #D0DBDB;
+    display: inline-block;
+    vertical-align: middle;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+}
+#bt_cabelo{ background-position: 0px 0px; }
+#bt_cabelo:hover { background-position: -76px 0px; }
+#bt_olhos { background-position: 0px -60px; }
+#bt_olhos:hover { background-position: -76px -60px; }
+#bt_pele { background-position: 0px -120px; }
+#bt_pele:hover { background-position: -76px -120px; }
+#bt_acessorios { background-position: 0px -180px; }
+#bt_acessorios:hover { background-position: -76px -180px; }
+#bt_botaseluvas { background-position: 0px -240px; }
+#bt_botaseluvas:hover { background-position: -76px -240px; }
+
+/* -- CABELO -- */
+#cabelo_cor {
+    clear: both;
+    display: block;
+    list-style: none;
+    text-align: center;
+    padding: 10px 0 0;
+}
+#cabelo_cor > li {
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    text-indent: -999px;
+    overflow: hidden;
+    padding: 0;
+    margin: 10px 5px 0;
+}
+
+#cabelo_castanho {
+    background-image: url('images/desenhos/cabelos/castanho/cabelo2.png');
+}
+#cabelo_preto {
+    background-image: url('images/desenhos/cabelos/preto/cabelo2.png');
+}
+#cabelo_loiro {
+    background-image: url('images/desenhos/cabelos/loiro/cabelo2.png');
+}
+#cabelo_ruivo {
+    background-image: url('images/desenhos/cabelos/ruivo/cabelo2.png');
+}
+
+#cabelo_estilo {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#cabelo_estilo > li {
+    background-image: url('images/desenhos/cabelos/fundo_cabelos.png');
+    background-size: 100% 100%;
+    border: 1px solid #aaaaaa;
+    display: block;
+    float: left;
+    margin: 4px;
+    padding: 0px;
+    width: 50px;
+    height: 50px;
+}
+#cabelo_estilo > li > .img {
+    background-size: 100% 100%;
+    display: block;
+    width: 50px;
+    height: 50px;
+    text-indent: -999px;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+}
+
+/* castanho */
+.castanho > #cabelo1 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo1.png'); }
+.castanho > #cabelo2 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo2.png'); }
+.castanho > #cabelo3 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo3.png'); }
+.castanho > #cabelo4 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo4.png'); }
+.castanho > #cabelo5 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo5.png'); }
+.castanho > #cabelo6 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo6.png'); }
+.castanho > #cabelo7 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo7.png'); }
+.castanho > #cabelo8 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo8.png'); }
+.castanho > #cabelo9 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo9.png'); }
+.castanho > #cabelo10 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo10.png'); }
+.castanho > #cabelo11 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo11.png'); }
+.castanho > #cabelo12 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo12.png'); }
+.castanho > #cabelo13 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo13.png'); }
+.castanho > #cabelo14 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo14.png'); }
+.castanho > #cabelo15 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo15.png'); }
+.castanho > #cabelo16 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo16.png'); }
+.castanho > #cabelo17 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo17.png'); }
+.castanho > #cabelo18 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo18.png'); }
+.castanho > #cabelo19 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo19.png'); }
+.castanho > #cabelo20 > .img { background-image: url('images/desenhos/cabelos/castanho/cabelo20.png'); }
+
+/* preto */
+.preto > #cabelo1 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo1.png'); }
+.preto > #cabelo2 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo2.png'); }
+.preto > #cabelo3 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo3.png'); }
+.preto > #cabelo4 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo4.png'); }
+.preto > #cabelo5 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo5.png'); }
+.preto > #cabelo6 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo6.png'); }
+.preto > #cabelo7 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo7.png'); }
+.preto > #cabelo8 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo8.png'); }
+.preto > #cabelo9 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo9.png'); }
+.preto > #cabelo10 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo10.png'); }
+.preto > #cabelo11 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo11.png'); }
+.preto > #cabelo12 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo12.png'); }
+.preto > #cabelo13 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo13.png'); }
+.preto > #cabelo14 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo14.png'); }
+.preto > #cabelo15 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo15.png'); }
+.preto > #cabelo16 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo16.png'); }
+.preto > #cabelo17 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo17.png'); }
+.preto > #cabelo18 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo18.png'); }
+.preto > #cabelo19 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo19.png'); }
+.preto > #cabelo20 > .img { background-image: url('images/desenhos/cabelos/preto/cabelo20.png'); }
+
+/* loiro */
+.loiro > #cabelo1 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo1.png'); }
+.loiro > #cabelo2 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo2.png'); }
+.loiro > #cabelo3 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo3.png'); }
+.loiro > #cabelo4 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo4.png'); }
+.loiro > #cabelo5 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo5.png'); }
+.loiro > #cabelo6 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo6.png'); }
+.loiro > #cabelo7 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo7.png'); }
+.loiro > #cabelo8 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo8.png'); }
+.loiro > #cabelo9 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo9.png'); }
+.loiro > #cabelo10 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo10.png'); }
+.loiro > #cabelo11 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo11.png'); }
+.loiro > #cabelo12 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo12.png'); }
+.loiro > #cabelo13 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo13.png'); }
+.loiro > #cabelo14 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo14.png'); }
+.loiro > #cabelo15 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo15.png'); }
+.loiro > #cabelo16 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo16.png'); }
+.loiro > #cabelo17 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo17.png'); }
+.loiro > #cabelo18 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo18.png'); }
+.loiro > #cabelo19 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo19.png'); }
+.loiro > #cabelo20 > .img { background-image: url('images/desenhos/cabelos/loiro/cabelo20.png'); }
+
+/* ruivo */
+.ruivo > #cabelo1 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo1.png'); }
+.ruivo > #cabelo2 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo2.png'); }
+.ruivo > #cabelo3 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo3.png'); }
+.ruivo > #cabelo4 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo4.png'); }
+.ruivo > #cabelo5 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo5.png'); }
+.ruivo > #cabelo6 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo6.png'); }
+.ruivo > #cabelo7 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo7.png'); }
+.ruivo > #cabelo8 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo8.png'); }
+.ruivo > #cabelo9 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo9.png'); }
+.ruivo > #cabelo10 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo10.png'); }
+.ruivo > #cabelo11 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo11.png'); }
+.ruivo > #cabelo12 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo12.png'); }
+.ruivo > #cabelo13 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo13.png'); }
+.ruivo > #cabelo14 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo14.png'); }
+.ruivo > #cabelo15 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo15.png'); }
+.ruivo > #cabelo16 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo16.png'); }
+.ruivo > #cabelo17 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo17.png'); }
+.ruivo > #cabelo18 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo18.png'); }
+.ruivo > #cabelo19 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo19.png'); }
+.ruivo > #cabelo20 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo20.png'); }

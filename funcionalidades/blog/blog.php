@@ -13,18 +13,16 @@
     require("../../reguaNavegacao.class.php");
     header('Content-type: text/html; charset=utf-8');
     $usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
+    if ($usuario_id == 0){
+        die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
+    }
     
     $blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die("não foi fornecido id de blog");
     $blog_id = ($blog_id == "meu_blog") ? getMeuBlog() : $_GET['blog_id'];
     
     // Eu amo a linha de código abaixo.
+	 // Re: Se você acha que usar expressoes lógicas como statements é algo bom, boa sorte.
     true == (is_numeric($blog_id)) or die('A id do blog precisa ser num&eacute;rica!'); // Sabe SQL injection?
-    
-    
-    global $usuario_id;
-    if ($usuario_id == 0){
-        die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
-    }
     
     $blog = new Blog($blog_id);
     if(!$blog->getExiste())
