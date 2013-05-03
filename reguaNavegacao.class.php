@@ -63,10 +63,14 @@ class reguaNavegacao {
 															 JOIN $tabela_terrenos ON terreno_id=personagem_terreno_id
 									WHERE usuario_id=$idUsuario");
 		$nomeTerreno = $conexaoTerreno->resultado['terreno_nome'];
+		$idTerreno = $conexaoTerreno->resultado['terreno_id'];
 		if($nomeTerreno == ''){
 			$nomeTerreno = 'Terreno sem nome';
 		}
-		$this->adicionarNivel($nomeTerreno, "http://sideshowbob/asd/desenvolvimento/");
+		//$this->adicionarNivel($nomeTerreno, "http://sideshowbob/asd/desenvolvimento/");
+		
+		// TODO: DEBUG: REMOVER APOS O CURSO
+		$this->adicionarNivel($nomeTerreno, "http://www.nuted.ufrgs.br/planeta2/listaFuncionalidades.php?terreno=$idTerreno");
 	}
 	
 	/*
