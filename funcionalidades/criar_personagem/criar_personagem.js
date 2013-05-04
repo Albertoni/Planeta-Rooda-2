@@ -26,8 +26,7 @@ var CRIAR_PESONAGEM = function () {
         var sibling, container, opcao;
         e = e || event;
         opcao = e.target.id.substr(3);
-        if (menuBotoes.indexOf(opcao) !== -1)
-        {
+        if (menuBotoes.indexOf(opcao) !== -1) {
             container = dom[opcao];
             if (container) {
                 container.style.display = "block";
@@ -51,8 +50,7 @@ var CRIAR_PESONAGEM = function () {
         var element, id, number;
         e = e || event;
         element = e.target;
-        if (element.className === 'img')
-        {
+        if (element.className === 'img') {
             element = element.parentElement;
         }
         id = element.id;
@@ -71,4 +69,16 @@ var CRIAR_PESONAGEM = function () {
             form.cabeloCor.value = cor;
         }
     };
+    dom.olhos.onclick = function (e) {
+        var element, num;
+        e = e || event;
+        element = e.target;
+        if (element.id) {
+            num = parseInt(element.id.substr(4),10);
+            if (num > 0) {
+                form.olhos.value = num;
+            }
+        }
+    };
 }();
+// vim: sts=4 ts=4 sw=4 expandtab

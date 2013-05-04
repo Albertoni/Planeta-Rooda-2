@@ -33,6 +33,35 @@
 
 #cores_pele {opacity:0}
 /* ===== */
+
+#canvas_personagem {
+	background: #ffffff;
+	vertical-align: middle;
+    margin: 10px 25px;
+}
+
+/* ============== MENU ============== */
+
+#menu_criar_personagem {
+    vertical-align: middle;
+    display: inline-block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#menu_criar_personagem > li {
+    background-image: url("images/botoes/personagem_botoes.png");
+    display: block;
+    text-indent: -9999px;
+    overflow: hidden;
+    width: 65px;
+    height: 49px;
+    padding: 0;
+    margin: 15px 20px 15px 20px;
+}
+#menu_criar_personagem > li.selected {
+    margin: 15px 0px 15px 40px;
+}
 #opcoes_cabelo {
     display: block;
 }
@@ -48,53 +77,32 @@
 #opcoes_pele {
     display: none;
 }
-#canvas_personagem {
-	background: #ffffff;
-	vertical-align: middle;
-    margin: 0 20px;
-}
-#menu_criar_personagem {
-	vertical-align: middle;
-	display: inline-block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-#menu_criar_personagem > li {
-	background-image: url("images/botoes/personagem_botoes.png");
-	display: block;
-	text-indent: -9999px;
-	overflow: hidden;
-	width: 65px;
-	height: 49px;
-	padding: 0;
-	margin: 15px 20px 15px 20px;
-}
-#menu_criar_personagem > li.selected {
-    background-position-x: -153px;
-	margin: 15px 0px 15px 40px;
-}
 #opcoes_criar_personagem {
     background-color: #ffffff;
     border: 1px solid #D0DBDB;
     display: inline-block;
     vertical-align: middle;
     width: 300px;
-    margin: 10px;
+    margin: 0px 10px 0px 0;
     padding: 10px;
 }
 #bt_cabelo{ background-position: 0px 0px; }
 #bt_cabelo:hover { background-position: -76px 0px; }
+#bt_cabelo.selected { background-position: -153px 0px; }
 #bt_olhos { background-position: 0px -60px; }
 #bt_olhos:hover { background-position: -76px -60px; }
+#bt_olhos.selected { background-position: -153px -60px; }
 #bt_pele { background-position: 0px -120px; }
 #bt_pele:hover { background-position: -76px -120px; }
+#bt_pele.selected { background-position: -153px -120px; }
 #bt_acessorios { background-position: 0px -180px; }
 #bt_acessorios:hover { background-position: -76px -180px; }
+#bt_acessorios.selected { background-position: -153px -180px; }
 #bt_botaseluvas { background-position: 0px -240px; }
 #bt_botaseluvas:hover { background-position: -76px -240px; }
+#bt_botaseluvas.selected { background-position: -153px -240px; }
 
-/* -- CABELO -- */
+/* ============== CABELO ============== */
 #cabelo_cor {
     clear: both;
     display: block;
@@ -241,3 +249,32 @@
 .ruivo > #cabelo18 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo18.png'); }
 .ruivo > #cabelo19 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo19.png'); }
 .ruivo > #cabelo20 > .img { background-image: url('images/desenhos/cabelos/ruivo/cabelo20.png'); }
+
+
+/* ============== OLHOS ============== */
+#opcoes_olhos > ul {
+    display: block;
+    text-align: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#opcoes_olhos > ul > li {
+    display: inline-block;
+    text-indent: -999px;
+    overflow: hidden;
+    width: 92px;
+    height: 31px;
+    margin: 20px 15px;
+    padding: 0px;
+}
+#olho1 { background-image: url('images/desenhos/olhos/olho1.png'); }
+#olho2 { background-image: url('images/desenhos/olhos/olho2.png'); }
+#olho3 { background-image: url('images/desenhos/olhos/olho3.png'); }
+#olho4 { background-image: url('images/desenhos/olhos/olho4.png'); }
+#olho5 { background-image: url('images/desenhos/olhos/olho5.png'); }
+#olho6 { background-image: url('images/desenhos/olhos/olho6.png'); }
+#olho7 { background-image: url('images/desenhos/olhos/olho7.png'); }
+#olho8 { background-image: url('images/desenhos/olhos/olho8.png'); }
+
+/* vim: ts=4 sts=4 sw=4 expandtab
