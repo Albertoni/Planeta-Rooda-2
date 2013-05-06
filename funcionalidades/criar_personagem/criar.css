@@ -52,7 +52,7 @@
 #menu_criar_personagem > li {
     background-image: url("images/botoes/personagem_botoes.png");
     display: block;
-    text-indent: -9999px;
+    text-indent: -999px;
     overflow: hidden;
     width: 65px;
     height: 49px;
