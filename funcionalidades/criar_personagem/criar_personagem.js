@@ -1,14 +1,32 @@
-var CRIAR_PESONAGEM = (function () {
-    var dom = {};
-    var form = {};
-    var persongagem = {};
-    var menuBotoes = [ 'cabelo', 'olhos', 'pele', 'acessorios', 'botaseluvas' ];
-    var cabeloCores = [ 'castanho', 'preto', 'loiro', 'ruivo' ];
-    var imgs = { 'cabelos' : {}, 'olhos' : [] };
-    var ctx;
-
+(function () {
+    'use strict';
+    var atualiza = function () {},
+        dom = {}, form = {}, ctx,
+        menuBotoes = [ 'cabelo', 'olhos', 'pele', 'acessorios', 'botaseluvas' ],
+        cabeloCores = [ 'castanho', 'preto', 'loiro', 'ruivo' ],
+        imgs = { 'cabelos' : {}, 'olhos' : [] },
+        getImageData = function (img) {
+	        var canvas = document.createElement("canvas");
+	        var ctx = canvas.getContext('2d');
+	        canvas.width = img.width;
+	        canvas.height = img.height;
+	        ctx.drawImage(img,0,0);
+	        return ctx.getImageData(0, 0, canvas.width, canvas.height);
+        },
+        colorAllPixels = function(img_data,hex) {
+            var r = parseInt(hex.substr(0,2),16),
+                g = parseInt(hex.substr(2,2),16),
+                b = parseInt(hex.substr(4,2),16),
+	            i, j, n = img_data.data.length / 4;
+            for (i = 0; i < n; i+=1) {
+                img_data.data[i * 4 + 0] = r;
+                img_data.data[i * 4 + 1] = g;
+                img_data.data[i * 4 + 2] = b;
+            }
+        };
     // DOM INTERFACE
     dom.canvas = document.getElementById('canvas_personagem');
+    ctx = dom.canvas.getContext('2d');
     dom.menu = document.getElementById('menu_criar_personagem');
     dom.cabelo = document.getElementById('opcoes_cabelo');
     dom.cabeloEstilo = document.getElementById('cabelo_estilo');
@@ -17,59 +35,104 @@ var CRIAR_PESONAGEM = (function () {
     dom.pele = document.getElementById('opcoes_pele');
     dom.acessorios = document.getElementById('opcoes_acessorios');
     dom.botaseluvas = document.getElementById('opcoes_botaseluvas');
-
     // DATA FORM
     form.cabeloEstilo = document.getElementById('cabelo_js');
-    form.cabeloCor = document.getElementById('corCabeloSelecionada_js');
+    form.cabeloCor = document.getElementById('cor_cabelo_js');
     form.olhos = document.getElementById('olhos_js');
-    form.pele = document.getElementById('pele_js');
-    form.cinto = document.getElementById('cinto_js');
-    form.luvas = document.getElementById('luvas_js');
+    form.cor_pele = document.getElementById('cor_pele_js');
+    form.cor_cinto = document.getElementById('cor_cinto_js');
+    form.cor_luvas = document.getElementById('cor_luvas_js');
     form.form = document.getElementById('form_personagem');
-
-    ;(function () {
-        var i, j, n = cabeloCores.length, m = 20;
-
-        // carregando cabelos
-        for (i=0;i<n;i+=1) {
-            imgs.cabelos[cabeloCores[i]] = Array(m);
-            for (j=0;j<m;j+=1) {
+    // Função que atualiza a visualização do personagem.
+    // É atribuida a "atualiza" quando todas as imagens terminam de ser carregadas.
+    function atualiza_c () {
+        var corpo = imgs.corpo,
+            olhos = imgs.olhos[parseInt(form.olhos.value, 10) - 1],
+            cabeloCor = form.cabeloCor.value,
+            cabeloEstilo = parseInt(form.cabeloEstilo.value, 10) - 1,
+            cabelo = imgs.cabelos[cabeloCor][cabeloEstilo],
+            corPeleHex = form.cor_pele.value, pele_r, pele_g, pele_b;
+        // limpa o canvas
+        ctx.clearRect(0, 0, dom.canvas.width, dom.canvas.height);
+        if (corPeleHex.length === 6) {
+            ctx.putImageData(imgs.mapaPele,0,0);
+        }
+        ctx.drawImage(corpo, 0, 0);
+        if (olhos) {
+            ctx.drawImage(olhos, 37, 84);
+        }
+        if (cabelo) {
+            ctx.drawImage(cabelo, 5, 11);
+        }
+    }
+    // CARREGANDO IMAGENS
+    (function () {
+        var i, j, 
+            n_cores = cabeloCores.length, 
+            n_estilos = 20, // 20 estilos de cabelo por cor
+            n_olhos = 8,
+            completo = 0,  // quantidade de imagens já carregadas
+            total = (n_cores * n_estilos) + n_olhos + 2; // total de imagens p/ carregar (cabelos + olhos + corpo)
+        // BARRA DE LOADING
+        var desenhaBarra = function() {
+            var margem = 40,
+                border = 3,
+                largura = dom.canvas.width-margem*2,
+                altura = dom.canvas.height-margem*2,
+                progresso = completo/total;
+            ctx.clearRect(0, 0, dom.canvas.width, dom.canvas.height);
+            ctx.fillStyle = "rgb(83, 104, 111)";
+            ctx.fillRect(margem, margem, largura, altura);
+            ctx.fillStyle = "rgb(238, 245, 245)";
+            ctx.fillRect(margem, margem, largura, altura-altura*progresso);
+            ctx.fillStyle = "rgb(5,5,5)";
+            ctx.strokeRect(margem,margem,largura,altura);
+            if (completo === total) {
+                imgs.mapaPele = getImageData(imgs.mapaPeleImg);
+                colorAllPixels(imgs.mapaPele, form.cor_pele.value);
+                //imgs.mapaBotas = getImageData(imgs.mapaBotasImg);
+                //imgs.mapaAcessorios = getImageData(imgs.mapaAcessoriosImg);
+                atualiza = atualiza_c;
+                atualiza();
+            }
+        };
+        desenhaBarra();
+        var carregou = function () {
+            // limpa o canvas
+            completo += 1;
+            desenhaBarra();
+        }
+        for (i = 0; i < n_cores; i += 1) {
+            // para cada cor de cabelo
+            imgs.cabelos[cabeloCores[i]] = []; // new Array(m);
+            for (j = 0; j < n_estilos; j += 1) {
+                // carregar a imagem de cada um dos 20 estilos
                 imgs.cabelos[cabeloCores[i]][j] = new Image();
-                imgs.cabelos[cabeloCores[i]][j].src = "images/desenhos/cabelos/"+cabeloCores[i]+"/cabelo"+(j+1).toString(10)+".png";
-                console.log(j.toString()+imgs.cabelos[cabeloCores[i]][j].src);
+                imgs.cabelos[cabeloCores[i]][j].onload = carregou;
+                imgs.cabelos[cabeloCores[i]][j].src = "images/desenhos/cabelos/" + cabeloCores[i] + "/cabelo" + (j + 1).toString(10) + ".png";
             }
         }
-
         // carregando olhos
-        n = 8;
-        imgs.olhos = Array(n);
-
-        for (i=0;i<n;i+=1) {
+        imgs.olhos = []; // new Array(n);
+        for (i = 0; i < n_olhos; i += 1) {
             imgs.olhos[i] = new Image();
-            imgs.olhos[i].src = "images/desenhos/olhos/olho"+(i+1).toString(10)+".png";
-            console.log(imgs.olhos[i].src);
+            imgs.olhos[i].onload = carregou;
+            imgs.olhos[i].src = "images/desenhos/olhos/olho" + (i + 1).toString(10) + ".png";
         }
-
         imgs.corpo = new Image();
+        imgs.corpo.onload = carregou;
+        imgs.mapaPeleImg = new Image();
+        imgs.mapaPeleImg.onload = carregou;
+        //imgs.mapaLuvasImg = new Image();
+        //imgs.mapaLuvasImg.onload = carregou;
+        //imgs.mapaCintoImg = new Image();
+        //imgs.mapaCintoImg.onload = carregou;
         imgs.corpo.src = "images/desenhos/personagem_limpo.png";
+        imgs.mapaPeleImg.src = "images/desenhos/mapa_pele.png";
+        //imgs.mapaLuvasImg.src = "images/desenhos/mapa_luvas.png";
+        //imgs.mapaCintoImg.src = "images/desenhos/mapa_cinto.png";
     }());
-
-    ctx = dom.canvas.getContext('2d');
-    
-    function atualiza() {
-        var corpo = imgs.corpo;
-        var olhos = imgs.olhos[parseInt(form.olhos.value,10)-1];
-        var cabeloCor = form.cabeloCor.value;
-        var cabeloEstilo = parseInt(form.cabeloEstilo.value,10)-1;
-        var cabelo = imgs.cabelos[cabeloCor][cabeloEstilo];
-        ctx.clearRect(0,0,dom.canvas.width,dom.canvas.height);
-        ctx.drawImage(corpo,0,0);
-        if (olhos)
-            ctx.drawImage(olhos,37,80);
-        if (cabelo)
-            ctx.drawImage(cabelo,5,11);
-    }
-
+    // FIM CARREGAR IMAGENS
     // Menu Handler
     dom.menu.onclick = function (e) {
         var sibling, container, opcao;
@@ -93,7 +156,7 @@ var CRIAR_PESONAGEM = (function () {
                 sibling = sibling.nextElementSibling;
             }
         }
-    }
+    };
     // HairStyle Handler
     dom.cabeloEstilo.onclick = function (e) {
         var element, id, number;
@@ -103,7 +166,7 @@ var CRIAR_PESONAGEM = (function () {
             element = element.parentElement;
         }
         id = element.id;
-        number = parseInt(id.substr(6),10);
+        number = parseInt(id.substr(6), 10);
         if (number > 0 && number <= 20) {
             form.cabeloEstilo.value = number;
             atualiza();
@@ -125,12 +188,23 @@ var CRIAR_PESONAGEM = (function () {
         e = e || event;
         element = e.target;
         if (element.id) {
-            num = parseInt(element.id.substr(4),10);
+            num = parseInt(element.id.substr(4), 10);
             if (num > 0) {
                 form.olhos.value = num;
                 atualiza();
             }
         }
     };
+    dom.pele.onclick = function (e) {
+        var element;
+        e = e || event;
+        element = e.target;
+        if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
+            form.cor_pele.value = element.textContent;
+            if (imgs.mapaPele) {
+                colorAllPixels(imgs.mapaPele, element.textContent);
+            }
+            atualiza();
+        }
+    }
 }());
-// vim: sts=4 ts=4 sw=4 expandtab

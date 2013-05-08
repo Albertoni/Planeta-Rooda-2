@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <title>Planeta Rooda 3.0</title>
         <link type="text/css" rel="stylesheet" href="../../planeta.css" />
-        <link type="text/css" rel="stylesheet" href="criar.css" />
+        <link type="text/css" rel="stylesheet" href="criar_personagem.css" />
     </head>
     <body>
         <div id="topo">
@@ -84,6 +84,29 @@
                                 </ul>
                             </li>
                             <li id="opcoes_pele">
+                                <ul>
+                                    <li style="background-color: #CCB27F;">CCB27F</li>
+                                    <li style="background-color: #C99A56;">C99A56</li>
+                                    <li style="background-color: #AD6E2B;">AD6E2B</li>
+                                    <li style="background-color: #CC9F5E;">CC9F5E</li>
+                                    <li style="background-color: #BF9364;">BF9364</li>
+                                    <li style="background-color: #C29169;">C29169</li>
+                                    <li style="background-color: #9D692F;">9D692F</li>
+                                    <li style="background-color: #6C4D30;">6C4D30</li>
+                                    <li style="background-color: #EDCCA1;">EDCCA1</li>
+                                    <li style="background-color: #BE8A3E;">BE8A3E</li>
+                                    <li style="background-color: #906C54;">906C54</li>
+                                    <li style="background-color: #3D2A19;">3D2A19</li>
+                                    <li style="background-color: #D0A147;">D0A147</li>
+                                    <li style="background-color: #D18D49;">D18D49</li>
+                                    <li style="background-color: #E5C892;">E5C892</li>
+                                    <li style="background-color: #E0CDAA;">E0CDAA</li>
+                                    <li style="background-color: #C8CE5C;">C8CE5C</li>
+                                    <li style="background-color: #9BA2CC;">9BA2CC</li>
+                                    <li style="background-color: #DB947A;">DB947A</li>
+                                    <li style="background-color: #CE9CCC;">CE9CCC</li>
+                                    <br style="clear:both">
+                                </ul>
                             </li>
                             <li id="opcoes_acessorio">
                             </li>
@@ -94,11 +117,11 @@
                     <div class="bts_baixo">
                         <form id="form_personagem" name="salvar_BD" method="post" action="salvar_personagem.php">
                             <input type="hidden" id="cabelo_js" name="cabelo_php" />
+                            <input type="hidden" id="cor_cabelo_js" name="corCabeloSelecionada_php" value="castanho" /> 
                             <input type="hidden" id="olhos_js" name="olhos_php" />
-                            <input type="hidden" id="cor_pele_js" name="cor_pele_php" />
+                            <input type="hidden" id="cor_pele_js" name="cor_pele_php" value="999944" />
                             <input type="hidden" id="cor_cinto_js" name="cor_cinto_php" /> 
                             <input type="hidden" id="cor_luvas_js" name="cor_luvas_php" /> 
-                            <input type="hidden" id="corCabeloSelecionada_js" name="corCabeloSelecionada_php" value="castanho" /> 
                             <a href="../../tela_inicial_geral.php"><img src="images/botoes/bt_cancelar.png"/></a>
                             <input type="image" src="images/botoes/bt_confirm.png" align="right"/>
                         </form>
