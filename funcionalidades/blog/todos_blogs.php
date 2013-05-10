@@ -23,6 +23,7 @@
 <script type="text/javascript" src="planeta.js"></script>
 <script type="text/javascript" src="blog.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
+<script src="../../js/thumbnailImages.js"></script>
 
 <script>
 function coment(){
@@ -39,7 +40,7 @@ function coment(){
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();">
+<body onload="thumbnailImgsFromClass('lista_dir',250,300);atualiza('ajusta()');inicia();">
 	<div id="topo">
 		<div id="centraliza_topo">
 			<?php 
