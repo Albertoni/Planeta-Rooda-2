@@ -23,7 +23,7 @@
 <script type="text/javascript" src="planeta.js"></script>
 <script type="text/javascript" src="blog.js"></script>	
 <script type="text/javascript" src="../lightbox.js"></script>
-
+<script src="../../js/thumbnailImages.js"></script>
 <script type="text/javascript" language="javascript">
 
 function coment(){
@@ -31,6 +31,10 @@ function coment(){
 		document.getElementById('ie_coments').style.width = 85 + '%';
 		$('.bloqueia ul').css('margin-right','17px');
 	}
+}
+
+function thumbImgs() {
+    thumbnailImgsFromClass("lista_dir",300,300);
 }
 </script>
 
@@ -40,7 +44,7 @@ function coment(){
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();">
+<body onload="thumbImgs();atualiza('ajusta()');inicia();">
 	<div id="topo">
 		<div id="centraliza_topo">
 			<?php 
@@ -130,6 +134,5 @@ foreach($bd->itens as $b) {
 	<div id="conteudo_base">
 	</div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
-
 </body>
 </html>
