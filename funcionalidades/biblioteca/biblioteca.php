@@ -231,7 +231,7 @@ function imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dat
 				<li class='tabela'><span class='dados'>Nome&nbsp;do&nbsp;Arquivo:</span><span class='valor' id='nome$idFile'>$nome</span></li>
 				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idFile'>$tags</span></li>
 				<li><span class='dados'>Data:</span><span class='valor'>$dataHora</span></li>
-				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?fileId=$idFile' target='_blank' >$nome</a></span></li>
+				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?id=$idFile' target='_blank' >$nome</a></span></li>
 				<li><span class='numcomentarios' onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idFile');abreFechaLB()\">$numComentarios Comentários</span></li>
 				<li><div class='enviar' align='right'>";
 	
@@ -303,7 +303,7 @@ function imprimeMaterial($arrayDados, $numComentarios, $usuario, $permissoes){
 		echo "				<li class='tabela'><span class='dados'>Nome&nbsp;do&nbsp;Arquivo:</span><span class='valor' id='nome$idFile'>$nome</span></li>
 				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idFile'>$tags</span></li>
 				<li><span class='dados'>Data:</span><span class='valor'>$dataHora</span></li>
-				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?fileId=$idFile' target='_blank' >$nome</a></span></li>";
+				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?id=$idFile' target='_blank' >$nome</a></span></li>";
 	}else{
 		echo "				<li class='tabela'><span class='dados'>Endereço:</span><span class='valor' id='nome$idFile'><a href=\"$nome\">$nome</a></span></li>
 				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idFile'>$tags</span></li>
