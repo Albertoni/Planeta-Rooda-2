@@ -10,22 +10,21 @@
 	require("../../link.class.php");
 	require("../../reguaNavegacao.class.php");
 	$usuario_id = $_SESSION['SS_usuario_id'];
+	
+	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="planeta.js"></script>
-<script type="text/javascript" src="blog.js"></script>	
+<script type="text/javascript" src="blog.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 
-<script type="text/javascript" language="javascript">
-
+<script>
 function coment(){
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
 		document.getElementById('ie_coments').style.width = 85 + '%';
@@ -83,12 +82,11 @@ function coment(){
 			</div>
 			<div id="meus_coletivos" class="bloco">
 				<h1>MEUS BLOGS COLETIVOS</h1>
-<?
-global $tabela_blogs;
+<?php
 $bd = new conexao();
-$bd->connect();
-unset($blogs_coletivos);
-$bd->solicitar("SELECT Id FROM $tabela_blogs");
+$bd->solicitar("SELECT * FROM blogblogs AS Bl INNER JOIN TurmasUsuario AS Tu
+				ON Bl.OwnersIds = Tu.codUsuario
+				WHERE codTurma = $turma");
 
 $i = 0; // Para a classe da cor.
 
