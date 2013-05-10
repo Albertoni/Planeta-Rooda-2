@@ -68,7 +68,7 @@ if (!$user->podeAcessar($permissoes['player_inserirVideos'], $codTurma)){
 		<div id="ajuda_meio">
 			<div id="ajudante">
 				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-				<div id="rel"><p id="balao">Aqui, você pode encontra um espaço que foi mencionado no vidadeprogramador.com.br</p></div>
+				<div id="rel"><p id="balao">Aqui, você encontra um espaço onde pode visualizar e compartilhar videos.</p></div>
 			</div>
 		</div>
 		<div id="ajuda_base"></div>
