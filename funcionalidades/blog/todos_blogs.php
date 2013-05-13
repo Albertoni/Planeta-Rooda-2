@@ -77,8 +77,8 @@ function coment(){
 		
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bts_cima">
-				<a href="blog_inicio.php"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
-				<a href="criar_blog_coletivo.php"><img id="responder_topico" src="../../images/botoes/bt_criar_coletivo.png" align="right"/></a>
+				<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
+				<a href="criar_blog_coletivo.php?turma=<?=$turma?>"><img id="responder_topico" src="../../images/botoes/bt_criar_coletivo.png" align="right"/></a>
 			</div>
 			<div id="meus_coletivos" class="bloco">
 				<h1>MEUS BLOGS COLETIVOS</h1>
@@ -98,13 +98,13 @@ foreach($bd->itens as $b) {
 					<div class="lista_esq">
 						<div class="imagem"></div> <!--IMAGEM DO CRIADOR DO BROGUI VAI AQUI GENTE BOA-->
 						<ul>
-							<li><a href="blog.php?blog_id=<?=$b->getId()?>"><?=$b->getTitle()?></a></li>
+							<li><a href="blog.php?blog_id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=$b->getTitle()?></a></li>
 							<li class="mensagens"><?=numeroMensagens($b->getSize())?></li>
 						</ul>
 					</div>
 					<div class="lista_dir">
 						<ul>
-							<li><a href="blog.php?blog_id=<?=$b->getId()?>"><?=getTextSample($b->getId())?></a></li>
+							<li><a href="blog.php?blog_id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=getTextSample($b->getId())?></a></li>
 							<li class="criado_por">Criado Por: <?=getPrintableOwners($b->getId())?></li>
 							<li>
 								<div align="right">
