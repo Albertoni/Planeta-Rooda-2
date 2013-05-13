@@ -222,7 +222,7 @@ imprimeListaPosts($blog->getId(), $turma);
                 <div class="add" id="addLink" onclick="botaoAdicionar('addLinkLi');">adicionar</div>
                 <div class="bloqueia">
                     <ul class="sem_estilo" id="caixa_link">
-                    <li id="addLinkLi" class="tabela_port" style="display:none;">
+                    <li id="addLinkLi" class="tabela_blog" style="display:none;">
                         <form name="addLinkForm" action="../../inserirLink.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
                             Novo Link: <br><input name="novoLink" id="novoLink" type="text"/><br>
                             <input name="submit" type="submit" id="submit" value="Submit" />

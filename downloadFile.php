@@ -73,7 +73,7 @@ if ($id_usuario > 0)
 				break;
 			case TIPOPERGUNDA:	// TODO
 			case TIPOFORUM:		// TODO
-			case TIPOAULAS:		// TODO
+			case TIPOAULA:		// TODO
 				$podeBaixar = true;
 				break;
 		}

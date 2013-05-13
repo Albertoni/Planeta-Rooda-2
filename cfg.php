@@ -37,7 +37,6 @@ define("TIPOAULA",5);
 define("TIPOCOMUNICADOR",6);
 define("TIPOFORUM",7);
 define("TIPOARTE",8);
-define("TIPOAULAS",9);
 define("TIPOPLAYER",10);
 
 //tipos de planetas - a ordem eh importante - na arvore de planetas, os tipos deles sao crescentes na ordem da raiz para as folhas - planeta-pai nunca pode ter tipo menor ou igual ao do filho	
