@@ -53,7 +53,7 @@
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();coment();">
+<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);atualiza('ajusta()');inicia();coment();">
 
 <div id="descricao"></div>
 
@@ -308,6 +308,7 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 <script src="blog_ajax.js"></script>
 <script src="../lightbox.js"></script>
 <script src="blog_ajax2.js"></script>
+<script src="../../js/thumbnailImages.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
