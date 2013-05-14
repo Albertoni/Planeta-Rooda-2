@@ -18,6 +18,8 @@ else
 
 // IMPORTANTE: TODO: NÃO PRECISA DE PERMISSÃO PRA RESPONDER UM QUESTIONÁRIO
 
+$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Voce precisa de uma id de turma para acessar essa pagina. Por favor avise os desenvolvedores.");
+
 $p = new conexao(); // perguntas
 $q = new conexao(); // questionario
 $q->solicitar("SELECT * FROM $tabela_PerguntaQuestionarios WHERE id = $id");
@@ -273,7 +275,7 @@ for($i=0 ; $i < count($p->itens) ;$i++) {
 }
 ?>
 	<div class="bts_cima">
-		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_cancelar.png" align="left" style="margin-top:20px"/></a>
+		<a href="planeta_pergunta.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_cancelar.png" align="left" style="margin-top:20px"/></a>
 		<input type="image" src="../../images/botoes/bt_confirm.png" align="right" style="margin-top:20px"/>
 	</div>
 	<input type="hidden" name="idquest" value="<?=$id?>">

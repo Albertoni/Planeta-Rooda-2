@@ -413,7 +413,6 @@ function resultado_procura(){
 		// Agora se faz a consulta
 		$consulta->solicitar("$consultaBase AND $condicaoConsulta");
 		
-		//echo "numeroItens:".count($consulta->itens).NL;
 		$alterna_cor='1';
 		for ($i=0 ; $i< $consulta->registros ; $i++){
 			$idFile	=	$consulta->resultado['refMaterial'];
@@ -429,7 +428,7 @@ function resultado_procura(){
 			
 			$numComentarios = getNumeroComentarios($idFile);
 			
-			imprimeMaterial($consulta->resultado, $numComentarios, $usuario, $permissoes);
+			//imprimeMaterial($consulta->resultado, $numComentarios, $usuario, $permissoes);
 			
 			if ($tipo == "a"){
 				$nomeDono = getNomeDono($id_dono, MODO_ARQUIVO);
@@ -468,8 +467,8 @@ function resultado_procura(){
 		for ($i=0; $i < $consulta->registros; $i++){
 			if ($i != 0) {echo "<hr>";}
 			
-			$idFile = $consulta->resultado['codMaterial'];
-			$referencia = $consulta->resultado['refMaterial'];
+			$idMaterial = $consulta->resultado['codMaterial'];
+			$idFile= $consulta->resultado['refMaterial'];
 			
 			$id_dono= $consulta->resultado['codUsuario'];
 			$autor	= $consulta->resultado['autor']			? $consulta->resultado['autor']		: "Autor não especificado";

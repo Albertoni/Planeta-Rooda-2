@@ -181,6 +181,10 @@ class conexao {
 	function sanitizaString($string){
 		return $this->socketMysqli->real_escape_string($string);
 	}
+	
+	function ultimoId(){
+		return $this->socketMysqli->insert_id;
+	}
 }
 }
 ?>

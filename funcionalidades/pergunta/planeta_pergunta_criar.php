@@ -96,7 +96,7 @@ if(!$usuario->podeAcessar($permissoes['pergunta_criarQuestionario'], $turma)){
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
 	<div class="bts_cima">
-		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+		<a href="planeta_pergunta.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
 		<img src="../../images/botoes/bt_confirm.png" align="right" style="cursor:pointer" onclick="document.gambiform.submit()"/>
 	</div>
 <?php
@@ -254,7 +254,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 			</div><!-- fim da div criar_topicos -->
 
 	<div class="bts_baixo">
-		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+		<a href="planeta_pergunta.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
 		<input type="image" src="../../images/botoes/bt_confirm.png" align="right" />
 	</div>
 	</form>

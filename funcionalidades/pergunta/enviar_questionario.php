@@ -74,9 +74,8 @@ $descricao_quest = $consulta->sanitizaString($descricao_quest);
 $consulta->solicitar("INSERT INTO $tabela_PerguntaQuestionarios
 					(titulo,			descricao,			datainicio,		datafim,	liberarGabarito, criador,	alunoInsere, turma) VALUES
 					('$titulo_quest', '$descricao_quest', '$datainicio',	'$datafim',	$liberar,		$userid,	$alquest,	$turma)");
-//print_r($consulta);
 
-$questId = $consulta->ultimo_id(); // PUXA A ID DO QUESTIONARIO GERADO COM ESSA INSERÇÃO
+$questId = $consulta->ultimoId(); // PUXA A ID DO QUESTIONARIO GERADO COM ESSA INSERÇÃO
 
 $i = 1; // Para o loop
 
@@ -150,5 +149,5 @@ while (isset($_POST['tipo_'.$i])) {
 ?>
 </pre>
 <script>
-	window.location = "planeta_pergunta.php";
+	//window.location = "planeta_pergunta.php?turma=<?=$turma?>";
 </script>
