@@ -217,7 +217,7 @@ resultado_procura();
 
 
 <?
-function imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado){
+function imprime_arquivo($idMaterial, $idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado){
 	if($materialAprovado == 0){
 		echo "			<ul class='naoAprovado' id='file$idFile'>";
 	}else{
@@ -226,23 +226,23 @@ function imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dat
 	
 	
 	echo "				<li><span class='dados'>Enviado&nbsp;Por:</span><span class='valor'>$nomeDono</span></li>
-				<li class='tabela' ><span class='dados'>Autor:</span><span class='valor' id='autor$idFile' >$autor</span></li>
-				<li class='tabela'><span class='dados'>Título&nbsp;do&nbsp;Material:</span><span class='valor' id='titulo$idFile'>$titulo</span></li>
-				<li class='tabela'><span class='dados'>Nome&nbsp;do&nbsp;Arquivo:</span><span class='valor' id='nome$idFile'>$nome</span></li>
-				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idFile'>$tags</span></li>
+				<li class='tabela' ><span class='dados'>Autor:</span><span class='valor' id='autor$idMaterial' >$autor</span></li>
+				<li class='tabela'><span class='dados'>Título&nbsp;do&nbsp;Material:</span><span class='valor' id='titulo$idMaterial'>$titulo</span></li>
+				<li class='tabela'><span class='dados'>Nome&nbsp;do&nbsp;Arquivo:</span><span class='valor' id='nome$idMaterial'>$nome</span></li>
+				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idMaterial'>$tags</span></li>
 				<li><span class='dados'>Data:</span><span class='valor'>$dataHora</span></li>
 				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?id=$idFile' target='_blank' >$nome</a></span></li>
-				<li><span class='numcomentarios' onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idFile');abreFechaLB()\">$numComentarios Comentários</span></li>
+				<li><span class='numcomentarios' onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idMaterial');abreFechaLB()\">$numComentarios Comentários</span></li>
 				<li><div class='enviar' align='right'>";
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_editarMateriais'], $turma)){
-		echo "					<input type='image' id='botao_esquerdo$idFile' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idFile, 'a');\"/>";
+		echo "					<input type='image' id='botao_esquerdo$idMaterial' src='../../images/botoes/bt_excluir.png' onclick=\"excluirFile($idMaterial, 'a');\"/>";
 	}
 	if($usuario->podeAcessar($permissoes['biblioteca_excluirArquivos'], $turma)){
-		echo "					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$nome\", \"$tags\", \"a\");' />";
+		echo "					<input type='image' id='botao_direito$idMaterial' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idMaterial\",\"$autor\",\"$titulo\", \"$nome\", \"$tags\", \"a\");' />";
 	}
 	if(($materialAprovado == 0) and ($usuario->podeAcessar($permissoes['biblioteca_aprovarMateriais'], $turma))){
-		echo "					<input type='image' id='botao_aprovar$idFile' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idFile\");' />";
+		echo "					<input type='image' id='botao_aprovar$idMaterial' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idMaterial\");' />";
 	}
 	echo "					</div>
 				</ul>";
@@ -415,7 +415,8 @@ function resultado_procura(){
 		
 		$alterna_cor='1';
 		for ($i=0 ; $i< $consulta->registros ; $i++){
-			$idFile	=	$consulta->resultado['refMaterial'];
+			$idMaterial = $consulta->resultado['codMaterial'];
+			$idFile	= $consulta->resultado['refMaterial'];
 			$tipo	=	$consulta->resultado['tipoMaterial'];
 			
 			$id_dono= $consulta->resultado['codUsuario'];
@@ -432,10 +433,10 @@ function resultado_procura(){
 			
 			if ($tipo == "a"){
 				$nomeDono = getNomeDono($id_dono, MODO_ARQUIVO);
-				imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
+				imprime_arquivo($idMaterial, $idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
 			}else{
 				$nomeDono = getNomeDono($id_dono, MODO_LINK);
-				imprime_link($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
+				imprime_link($idMaterial, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
 			}
 			$consulta->proximo();
 			
@@ -482,7 +483,7 @@ function resultado_procura(){
 			
 			$numComentarios = getNumeroComentarios($idFile);
 			
-			imprime_arquivo($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
+			imprime_arquivo($idMaterial, $idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
 			
 			$consulta->proximo();
 		}
@@ -500,7 +501,7 @@ function resultado_procura(){
 		for ($i=0; $i < $consulta->registros; $i++){
 			if ($i != 0) {echo "<hr>";}
 			
-			$idFile		= $consulta->resultado['codMaterial'];
+			$iMaterial	= $consulta->resultado['codMaterial'];
 			$id_dono	= $consulta->resultado['codUsuario'];
 			$autor		= $consulta->resultado['autor'];
 			$titulo		= $consulta->resultado['titulo'];
@@ -515,7 +516,7 @@ function resultado_procura(){
 			
 			$numComentarios = getNumeroComentarios($idFile);
 			
-			imprime_link($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
+			imprime_link($idMaterial, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado);
 			
 			$consulta->proximo();
 		}

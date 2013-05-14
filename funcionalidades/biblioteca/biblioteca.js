@@ -168,17 +168,17 @@ function edicaoCancel(){
 }
 
 
-function excluirFile(idFile, tipo){
+function excluirFile(idMaterial, tipo){
 	http_file.abort();
 	var r=confirm("Voce tem certeza que deseja excluir esse arquivo?");
 	if (r==true){
-		http_file.open("GET", "excluirFile.php?idFile="+idFile+"&t="+tipo, true);
+		http_file.open("GET", "excluirFile.php?idFile="+idMaterial+"&t="+tipo, true);
 		http_file.onreadystatechange=function() {
 			if ((http_file.readyState == 4) && (http_file.status == 200 )) {
 				var retorno = http_file.responseText;
 				if (retorno == '1'){
 					alert('Arquivo excluido com sucesso');
-					document.getElementById('arquivos_enviados').removeChild(document.getElementById('file'+idFile));
+					document.getElementById('arquivos_enviados').removeChild(document.getElementById('file'+idMaterial));
 				}
 				else alert(retorno);
 			}
@@ -189,19 +189,19 @@ function excluirFile(idFile, tipo){
 
 
 
-function aprovarMaterial(idFile){
+function aprovarMaterial(idMaterial){
 	http_file.abort();
 	var r=confirm("Voce tem certeza que deseja aprovar esse arquivo?");
 	if (r==true){
-		http_file.open("GET", "aprovarMaterial.php?idFile="+idFile, true);
+		http_file.open("GET", "aprovarMaterial.php?idFile="+idMaterial, true);
 		http_file.onreadystatechange=function() {
 			if ((http_file.readyState == 4) && (http_file.status == 200 )) {
 				var retorno = http_file.responseText;
 				if (retorno == '1'){
 					alert('Arquivo aprovado com sucesso.');
-					ulAprovado = document.getElementById("file"+idFile);
+					ulAprovado = document.getElementById("file"+idMaterial);
 					ulAprovado.className = "";
-					botao = document.getElementById("botao_aprovar"+idFile);
+					botao = document.getElementById("botao_aprovar"+idMaterial);
 					botao.style.display = "none";
 				}
 				else alert(retorno);
