@@ -271,7 +271,7 @@ function imprime_link($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHo
 		echo"					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$endereco\", \"$tags\", \"l\");' />";
 	}
 	if(($materialAprovado == 0) and ($usuario->podeAcessar($permissoes['biblioteca_aprovarMateriais'], $turma))){
-		echo "					<input type='image' id='botao_aprovar$idFile' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idFile\";' />";
+		echo "					<input type='image' id='botao_aprovar$idFile' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idFile\");' />";
 	}
 	echo '				</div>
 			</ul>';
@@ -317,7 +317,7 @@ function imprimeMaterial($arrayDados, $numComentarios, $usuario, $permissoes){
 		echo"					<input type='image' id='botao_direito$idFile' src='../../images/botoes/bt_editar.png' onclick='editarFile(\"$idFile\",\"$autor\",\"$titulo\", \"$endereco\", \"$tags\", \"l\");' />";
 	}
 	if(($materialAprovado == 0) and ($usuario->podeAcessar($permissoes['biblioteca_aprovarMateriais'], $turma))){
-		echo "					<input type='image' id='botao_aprovar$idFile' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idFile\";' />";
+		echo "					<input type='image' id='botao_aprovar$idFile' src='../../images/botoes/bt_aprovar.png' onclick='aprovarMaterial(\"$idFile\");' />";
 	}
 	echo '				</div>
 			</ul>';
@@ -501,7 +501,7 @@ function resultado_procura(){
 		for ($i=0; $i < $consulta->registros; $i++){
 			if ($i != 0) {echo "<hr>";}
 			
-			$iMaterial	= $consulta->resultado['codMaterial'];
+			$idMaterial	= $consulta->resultado['codMaterial'];
 			$id_dono	= $consulta->resultado['codUsuario'];
 			$autor		= $consulta->resultado['autor'];
 			$titulo		= $consulta->resultado['titulo'];
