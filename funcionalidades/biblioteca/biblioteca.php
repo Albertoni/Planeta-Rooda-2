@@ -232,7 +232,7 @@ function imprime_arquivo($idMaterial, $idFile, $nomeDono, $autor, $titulo, $nome
 				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idMaterial'>$tags</span></li>
 				<li><span class='dados'>Data:</span><span class='valor'>$dataHora</span></li>
 				<li class='tabela'><span class='valor'><a href='../../downloadFile.php?id=$idFile' target='_blank' >$nome</a></span></li>
-				<li><span class='numcomentarios' onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idMaterial');abreFechaLB()\">$numComentarios Comentários</span></li>
+				<li class='numcomentarios'><span onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idMaterial');abreFechaLB()\">$numComentarios Comentários</span></li>
 				<li><div class='enviar' align='right'>";
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_editarMateriais'], $turma)){
@@ -261,7 +261,7 @@ function imprime_link($idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHo
 				<li class='tabela'><span class='dados'>Endereço:</span><span class='valor' id='nome$idFile'><a href=\"$endereco\">$endereco</a></span></li>
 				<li class='tabela'><span class='dados'>Palavras&nbsp;do&nbsp;Material:</span><span class='valor' id='tags$idFile'>$tags</span></li>
 				<li><p class='pedreiragem'>&nbsp;</p></li>
-				<li><span class='numcomentarios' onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idFile');abreFechaLB()\">$numComentarios Comentários</span></li>
+				<li class='numcomentarios'><span onclick=\"loadComentarios('light_box', 'comentarios.php', 'post_id=$idFile');abreFechaLB()\">$numComentarios Comentários</span></li>
 				<li><div class='enviar' align='right'>";
 	
 	if($usuario->podeAcessar($permissoes['biblioteca_excluirArquivos'], $turma)){

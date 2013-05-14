@@ -106,7 +106,7 @@ a:active {
 .numcomentarios{
 	font-size: 12px;
 	text-decoration: underline;
-	padding-top: 10px;
+	margin-top: 10px;
 	cursor: pointer;
 }
 
