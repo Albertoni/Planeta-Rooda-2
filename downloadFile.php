@@ -67,7 +67,7 @@ if ($id_usuario > 0)
 				if ($verifica->erro != ""){
 					die($verifica->erro);
 				}
-				else if ($verificar->registros > 0) {
+				else if ($verifica->registros > 0) {
 					$podeBaixar = true;
 				}
 				break;

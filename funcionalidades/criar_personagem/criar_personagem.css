@@ -1,5 +1,4 @@
 #canvas_personagem {
-    background-color: #999999;
     vertical-align: middle;
     margin: 10px 25px;
 }
@@ -242,7 +241,9 @@
 #olho8 { background-image: url('images/desenhos/olhos/olho8.png'); }
 
 /* ============== PELE ============== */
-#opcoes_pele > ul {
+#opcoes_pele > ul,
+#opcoes_cinto > ul,
+#opcoes_luvas > ul {
     display: block;
     list-style: none;
 }
@@ -250,12 +251,23 @@
     border: 1px solid #aaaaaa;
     display: inline-block;
     float: left;
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
     text-indent: -9999px;
     overflow: hidden;
     padding: 0;
     margin: 3px;
 }
-
+#opcoes_cinto > ul > li,
+#opcoes_luvas > ul > li {
+    border: 1px solid #aaaaaa;
+    display: inline-block;
+    float: left;
+    width: 52px;
+    height: 30px;
+    text-indent: -9999px;
+    overflow: hidden;
+    padding: 0;
+    margin: 3px;
+}
 /* vim: ts=4 sts=4 sw=4 expandtab

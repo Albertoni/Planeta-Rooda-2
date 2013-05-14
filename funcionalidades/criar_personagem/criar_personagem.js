@@ -1,28 +1,33 @@
-(function () {
+;(function () {
     'use strict';
     var atualiza = function () {}, // função que desenha personagem (definida apos todas as imagems terem sido carregadas)
         dom = {}, form = {}, ctx,
         menuBotoes = [ 'cabelo', 'olhos', 'pele', 'cinto', 'luvas' ],
         cabeloCores = [ 'castanho', 'preto', 'loiro', 'ruivo' ],
         imgs = { 'cabelos' : {}, 'olhos' : [] },
-        getImageData = function (img) {
-	        var canvas = document.createElement("canvas");
-	        var ctx = canvas.getContext('2d');
-	        canvas.width = img.width;
-	        canvas.height = img.height;
-	        ctx.drawImage(img,0,0);
-	        return ctx.getImageData(0, 0, canvas.width, canvas.height);
+        getImageContext = function (img) {
+	         var canvas = document.createElement("canvas");
+	         var ctx = canvas.getContext('2d');
+	         canvas.width = img.width;
+	         canvas.height = img.height;
+	         ctx.drawImage(img,0,0);
+	         return ctx;//.getImageData(0, 0, canvas.width, canvas.height);
         },
-        colorAllPixels = function(img_data,hex) {
+        colorAllPixels = function(ctx,hex) {
             var r = parseInt(hex.slice(0,2),16),
                 g = parseInt(hex.slice(2,4),16),
                 b = parseInt(hex.slice(4,6),16),
-	            i, j, n = img_data.data.length / 4;
+                imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height),
+                i, j, n = imgData.data.length / 4;
             for (i = 0; i < n; i+=1) {
-                img_data.data[i * 4 + 0] = r;
-                img_data.data[i * 4 + 1] = g;
-                img_data.data[i * 4 + 2] = b;
+                imgData.data[i * 4 + 0] = r;
+                imgData.data[i * 4 + 1] = g;
+                imgData.data[i * 4 + 2] = b;
             }
+            ctx.putImageData(imgData, 0, 0);
+        },
+        drawContext = function (ctx, imgData, x, y){
+            ctx.drawImage(imgData.canvas, x, y);
         };
     // DOM INTERFACE
     dom.canvas = document.getElementById('canvas_personagem');
@@ -57,21 +62,20 @@
         // limpa o canvas
         ctx.clearRect(0, 0, dom.canvas.width, dom.canvas.height);
         if (peleCor.length === 6) {
-            ctx.putImageData(imgs.mapaPele,17,41);
+            drawContext(ctx, imgs.mapaPele,17,41);
         }
         if(luvasCor.length === 6) {
-            ctx.putImageData(imgs.mapaLuvas,21,214);
+            drawContext(ctx, imgs.mapaLuvas,21,214);
         }
         if (cintoCor.length === 6) {
-            console.log(cintoCor);
-            ctx.putImageData(imgs.mapaCinto,30,173);
+            drawContext(ctx, imgs.mapaCinto,30,173);
         }
-        //ctx.drawImage(corpo, 0, 0);
+        ctx.drawImage(corpo, 0, 0);
         if (olhos) {
-            //ctx.drawImage(olhos, 37, 84);
+            ctx.drawImage(olhos, 37, 84);
         }
         if (cabelo) {
-            //ctx.drawImage(cabelo, 5, 11);
+            ctx.drawImage(cabelo, 5, 11);
         }
     }
     // CARREGANDO IMAGENS
@@ -84,7 +88,7 @@
             total = (n_cores * n_estilos) + n_olhos + 4; // total de imagens p/ carregar (cabelos + olhos + corpo)
         // BARRA DE LOADING
         var desenhaBarra = function() {
-            var margem = 40,
+            var margem = 40.5,
                 border = 3,
                 largura = dom.canvas.width-margem*2,
                 altura = dom.canvas.height-margem*2,
@@ -103,15 +107,16 @@
             completo += 1;
             desenhaBarra();
             if (completo === total) {
-                imgs.mapaPele = getImageData(imgs.mapaPeleImg);
-                imgs.mapaLuvas = getImageData(imgs.mapaLuvasImg);
-                imgs.mapaCinto = getImageData(imgs.mapaCintoImg);
+                imgs.mapaPele = getImageContext(imgs.mapaPeleImg);
+                imgs.mapaLuvas = getImageContext(imgs.mapaLuvasImg);
+                imgs.mapaCinto = getImageContext(imgs.mapaCintoImg);
                 colorAllPixels(imgs.mapaPele, form.cor_pele.value);
                 colorAllPixels(imgs.mapaCinto, form.cor_cinto.value);
                 colorAllPixels(imgs.mapaLuvas, form.cor_luvas.value);
                 atualiza = atualiza_c;
                 atualiza();
             }
+				this.onload = null;
         }
         for (i = 0; i < n_cores; i += 1) {
             // para cada cor de cabelo
@@ -218,5 +223,29 @@
             atualiza();
         }
     }
-    dom.cinto.onclick
+    dom.cinto.onclick = function (e) {
+        var element;
+        e = e || event;
+        element = e.target;
+        if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
+            form.cor_cinto.value = element.textContent;
+            if (imgs.mapaCinto) {
+                colorAllPixels(imgs.mapaCinto, element.textContent);
+            }
+            atualiza();
+        }
+    }
+    dom.luvas.onclick = function (e) {
+        var element;
+        e = e || event;
+        element = e.target;
+        if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
+            form.cor_luvas.value = element.textContent;
+            if (imgs.mapaLuvas) {
+                colorAllPixels(imgs.mapaLuvas, element.textContent);
+            }
+            atualiza();
+        }
+    }
 }());
+// vim: ts=4 sts=4 sw=4 expandtab
