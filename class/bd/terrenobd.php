@@ -74,7 +74,7 @@ class TerrenoBD extends ObjetoBD{
 		if($conexao->erro != ""){
 			throw new Exception($conexao->erro);
 		} else {
-			$this->Id = mysql_insert_id();
+			$this->Id = $conexao->ultimoId();
 		}
 	}
 	

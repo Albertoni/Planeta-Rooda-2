@@ -6,7 +6,7 @@ require("../../usuarios.class.php");
 
 session_start();
 
-print_r($_POST);
+//print_r($_POST);
 
 $turma = is_numeric($_POST['turma']) ? $_POST['turma'] : die("Um identificador de turma inv&aacute;lido foi enviado para essa p&aacute;gina.");
 
@@ -38,7 +38,7 @@ $consulta->solicitar("INSERT INTO $tabela_portfolioProjetos
 (titulo,		autor,		descricao,		objetivos,		conteudosAbordados,		metodologia,		publicoAlvo,		tags,		dataCriacao,	owner_id,		turma) VALUES
 ('$titulo',		'$autor',	'$descricao',	'$objetivos',	'$conteudos',			'$metodologia',		'$publicoAlvo',		'$tags',	NOW(),			$usuario_id,	$turma)");
 
-$projeto_id = mysql_insert_id();
+$projeto_id = $consulta->ultimoId();
 
 $consulta->solicitar("INSERT INTO $tabela_portfolioPosts
 (projeto_id,		titulo,			tags,		texto,		user_id,		dataCriacao) VALUES

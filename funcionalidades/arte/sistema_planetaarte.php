@@ -124,7 +124,7 @@ class Arte {
 
 		//salva o desenho do meliante
 		$pesquisa1->solicitar("insert into $tabela_arte (usuarioId, turmaId, titulo, descricao, dados) VALUES ($usuario,$turma,$titulo,$descricao,$dados)");
-		$idDoDesenho = mysql_insert_id();
+		$idDoDesenho = $pesquisa1->ultimoId();
 		return $idDoDesenho;
 	}
 	
@@ -145,7 +145,7 @@ class Arte {
 
 		//salva o desenho do meliante
 		$pesquisa1->solicitar("UPDATE $tabela_arte SET titulo= '$titulo', descricao = '$descricao', dados= '$dados' WHERE id = '$id'");
-		$idDoDesenho = mysql_insert_id();
+		$idDoDesenho = $pesquisa1->ultimoId();
 		return true;
 	}	
 }

@@ -31,7 +31,7 @@ class Comment {
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_ArteComentarios);
-			$this->id = mysql_insert_id();
+			$this->id = $q->ultimoId();
 		} else
 			$q->atualizar($this->id,$this->toDBArray(),$tabela_ArteComentarios);
 	}
