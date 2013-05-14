@@ -267,7 +267,7 @@
 				case TIPOARTE:
 					$o_que_precisa_ser_selecionado = "arte_criarDesenho,arte_comentarDesenho";
 					break;
-				case TIPOAULAS:
+				case TIPOAULA:
 					$o_que_precisa_ser_selecionado = "aulas_criarAulas, aulas_editarAulas, aulas_importarAulas";
 					break;
 				case TIPOPLAYER:

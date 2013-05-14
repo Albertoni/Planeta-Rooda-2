@@ -86,7 +86,7 @@ if(checa_permissoes(TIPOPERGUNTA, $turma)) {
 <?
 }
 // Aulas
-if(checa_permissoes(TIPOAULAS, $turma)) { 
+if(checa_permissoes(TIPOAULA, $turma)) { 
 ?>
 					<li><a href="funcionalidades/aulas/planeta_aulas.php?turma=<?=$turma?>">Aulas</a></li>
 <?

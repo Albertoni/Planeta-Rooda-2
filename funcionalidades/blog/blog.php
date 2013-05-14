@@ -53,7 +53,7 @@
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();coment();">
+<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);atualiza('ajusta()');inicia();coment();">
 
 <div id="descricao"></div>
 
@@ -222,7 +222,7 @@ imprimeListaPosts($blog->getId(), $turma);
                 <div class="add" id="addLink" onclick="botaoAdicionar('addLinkLi');">adicionar</div>
                 <div class="bloqueia">
                     <ul class="sem_estilo" id="caixa_link">
-                    <li id="addLinkLi" class="tabela_port" style="display:none;">
+                    <li id="addLinkLi" class="tabela_blog" style="display:none;">
                         <form name="addLinkForm" action="../../inserirLink.php?funcionalidade_tipo=<?=$funcionalidade_tipo?>&amp;funcionalidade_id=<?=$funcionalidade_id?>" onsubmit="submitLinkForm(this);return false;" method="post">
                             Novo Link: <br><input name="novoLink" id="novoLink" type="text"/><br>
                             <input name="submit" type="submit" id="submit" value="Submit" />
@@ -308,6 +308,7 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 <script src="blog_ajax.js"></script>
 <script src="../lightbox.js"></script>
 <script src="blog_ajax2.js"></script>
+<script src="../../js/thumbnailImages.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
