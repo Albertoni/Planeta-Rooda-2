@@ -20,7 +20,6 @@
 		global $tabela_forum; global $tabela_usuarios;
 		
 		$FORUM = new forum($FORUM_ID);
-		$FORUM->configBD($tabela_forum,$tabela_usuarios);
 		$FORUM->topicos($pagina);
 		
 		$paginas = array();
@@ -43,7 +42,6 @@
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <script type="text/javascript">
@@ -99,10 +97,11 @@
 	
 	<div class="bts_cima">
 <?php
-$linkcria = "forum_cria_topico.php?fid=$FORUM_ID&amp;turma=$turma";
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>';
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)){
+	echo "<a href=\"forum_cria_topico.php?fid=$FORUM_ID&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+};
 ?>
-	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
+	<a href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	<div id="dinamica">

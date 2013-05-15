@@ -48,7 +48,6 @@
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="forum.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>

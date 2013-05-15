@@ -19,7 +19,6 @@
 	
 	if (($VERIFICA_USER_ERRO_ID == 0)&&($consulta = string2consulta($tipo, $consulta))) {
 		$FORUM = new forum($FORUM_ID);
-		$FORUM->configBD($BD_host1,$BD_base1,$BD_user1,$BD_pass1,$tabela_forum,$tabela_usuarios);
 		$FORUM->pesquisa($pagina, $tipo, $consulta);
 		
 		$paginas = array();

@@ -108,15 +108,12 @@ class forum { //estrutura para o item post do forum, chamado de mensagem
 	var $mensagem = array();
 	var $titulo = 'MENSAGENS';
 	var $contador = 0;
-	var $BD_forum_tab = '';
-	var $BD_user_tab = '';
 	var $erro = '';
 	var $topico = -1;
 	
 	/*\
 	 *Funções:
 	 *contaPáginas()
-	 *configBD($BDforum,$BDuser)
 	 *pesquisa($pg, $tipo, $consulta)
 	 *topicos($pg)
 	 *
@@ -130,10 +127,6 @@ class forum { //estrutura para o item post do forum, chamado de mensagem
 		return ceil($this->contador /10); // Auto-explicativa
 	}
 	
-	function configBD($BDforum,$BDuser){ // Auto-explicativa 
-		$this->BD_forum_tab = $BDforum;
-		$this->BD_user_tab = $BDuser;
-	}
 	
 	function pesquisa($pg, $tipo, $consulta){
 		global $tabela_usuarios, $tabela_forum;

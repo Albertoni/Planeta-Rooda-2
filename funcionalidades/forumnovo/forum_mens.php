@@ -12,7 +12,6 @@
 	$pagina = (isset($_GET['pagina']))? stripslashes($_GET['pagina']) : 1;
 	if ($VERIFICA_USER_ERRO_ID == 0) {
 		$FORUM = new forum($FORUM_ID);
-		$FORUM->configBD($BD_host1,$BD_base1,$BD_user1,$BD_pass1,$tabela_forum,$tabela_usuarios);
 		$FORUM->mensagens($topico,$pagina);
 		
 		$paginas = array();

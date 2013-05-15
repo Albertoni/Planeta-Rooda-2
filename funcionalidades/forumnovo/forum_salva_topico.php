@@ -51,7 +51,6 @@ if ($topico == "-1"){ //-1 significa que está criando tópico
 
 if ($cria){
 	$FORUM = new forum($FORUM_ID);
-	$FORUM->configBD($tabela_forum,$tabela_usuarios);
 	if (($atualiza && $criador != 0) and $user->podeAcessar('forum_editarTopico', $turma)){
 		$FORUM->salvaMensagem(false, $topico, $criador, $titulo, $conteudo); // sistema_forum.php
 	}else if ($user->podeAcessar($permissoes['forum_responderTopico'], $turma)){

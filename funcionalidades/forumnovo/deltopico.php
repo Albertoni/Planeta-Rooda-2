@@ -28,7 +28,6 @@
 			$consulta = string2consulta($tipo, $consulta);
 		}
 		$FORUM = new forum($FORUM_ID);
-		$FORUM->configBD($BD_host1,$BD_base1,$BD_user1,$BD_pass1,$tabela_forum,$tabela_usuarios);
 
 		if ($FORUM->pegaDadosDaMensagem($topico)){
 			if ($FORUM->mensagem[0]->msgEditavel){
