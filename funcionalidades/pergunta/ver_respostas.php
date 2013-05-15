@@ -7,15 +7,21 @@ require("../../funcoes_aux.php");
 require("../../usuarios.class.php");
 require("../../reguaNavegacao.class.php");
 
-$uid= $_GET['user'];
-$id = $_GET['quest'];
+$uid= (isset($_GET['user']) and is_numeric($_GET['user'])) ? $_GET['user'] : die("Volte e tente novamente, id do usuário cujas respostas voce deseja ver nao foi passada corretamente.");
+$id = (isset($_GET['quest']) and is_numeric($_GET['quest'])) ? $_GET['quest'] : die("Volte e tente novamente, id do questionario cujas respostas voce deseja ver nao foi passada corretamente.");
+$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Volte e tente novamente, id da turma cujas respostas voce deseja ver nao foi passada corretamente.");
+$usuario = new Usuario();
+$usuario->openUsuario($_SESSION['SS_usuario_id']);
+
+$permissoes = checa_permissoes(TIPOPERGUNTA, $turma);
+if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 $q = new conexao(); // questionario
 $q->solicitar("SELECT * FROM $tabela_PerguntaQuestionarios WHERE id = $id");
 
 if ($q->resultado['liberarGabarito'] == 0){
 	if(!$usuario->podeAcessar($permissoes['pergunta_editarQuestionario'], $turma)){
-		die("Voce precisa ter permissoes de professor para acessar esta pagina.");
+		die("Voce nao tem permissoes para acessar esta pagina.");
 	}
 }else{
 	$datalibera = explode("-", $consulta->resultado['datainicio']); // Separa pra array
@@ -76,16 +82,15 @@ function VFbonitinho($aluno, $correta){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////q
 
-function resposta($modo, $i){ // Boa sorte a quem tiver que manter essa função.
+function resposta($p, $i){ // Boa sorte a quem tiver que manter essa função.
 
-global $p;
 global $respostas;
 
-switch ($modo){
+switch ($p->resultado['tipo']){
 	case 1: // MURTIPRA ESCOIA
 	/* Explanação rápida:
-	Sempre vai ter UMA opção. Portanto, o while é da segunda em diante e começa no 1.
-	Não, não precisa ter duas opções. */
+	//Sempre vai ter UMA opção. Portanto, o while é da segunda em diante e começa no 1.
+	//Não, não precisa ter duas opções. */
 
 $lista_respostas_questao = explode("¦", $p->resultado['respostas']); // Faz um array das respostas
 $numops = count($lista_respostas_questao);
@@ -141,8 +146,8 @@ $numops = count($lista_respostas_questao);
 		break;
 	case 3: // fake or not fake
 	/* Explanação rápida:
-	Sempre vai ter UMA opção. Portanto, o while é da segunda em diante e começa no 1.
-	Não, não precisa ter duas opções. */
+	//Sempre vai ter UMA opção. Portanto, o while é da segunda em diante e começa no 1.
+	//Não, não precisa ter duas opções. */
 
 $lista_respostas_questao = explode("¦", $p->resultado['respostas']); // Faz um array das respostas
 $numops = count($lista_respostas_questao);
@@ -280,7 +285,7 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 
 	<div class="bts_cima">
-		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_voltar.png" align="left" style="margin-top:20px"/></a>
+		<a href="planeta_pergunta.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left" style="margin-top:20px"/></a>
 	</div>
 
 	<div id="bloco_mensagens" class="bloco">
@@ -304,13 +309,13 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 	<p class="pedreiragem">&nbsp;</p>
 <?php
 for($i=0 ; $i < count($p->itens) ;$i++) {
-	resposta($p->resultado['tipo'], $i+1); // mostra a questão com sua resposta
+	resposta($p, $i+1); // mostra a questão com sua resposta
 	echo "<p class=\"pedreiragem\">&nbsp;</p>\n"; // cospe um separador
 	$p->proximo();
 }
 ?>
 	<div class="bts_cima">
-		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_voltar.png" align="left" style="margin-top:20px"/></a>
+		<a href="planeta_pergunta.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left" style="margin-top:20px"/></a>
 	</div>
 	</div>
 	<!-- fim do conteudo -->

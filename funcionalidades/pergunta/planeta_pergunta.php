@@ -174,7 +174,7 @@ if(checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelProfessor) == true){
 		}
 	
 	echo "	</select>
-	<a class=\"data\" onclick=\"verRespostas($i)\"><b>Ver respostas do aluno selecionado</b></a>";
+	<a class=\"data\" onclick=\"verRespostas($i, $turma)\"><b>Ver respostas do aluno selecionado</b></a>";
 	} else {
 		echo "Nenhum aluno respondeu o questionário ainda!";
 	}

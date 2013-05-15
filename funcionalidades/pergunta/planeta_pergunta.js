@@ -340,7 +340,7 @@ function previewArquivo(falha, file_id, id) {
 	}
 }
 
-function verRespostas(idsel) {
+function verRespostas(idsel, turma) {
 	select = document.getElementById("lista_alunos_"+idsel);
 	var valor = 1;
 	
@@ -363,7 +363,7 @@ function verRespostas(idsel) {
 	id = valor[0];
 	quest = valor[1];
 	
-	window.location.href = "ver_respostas.php?user="+id+"&quest="+quest;
+	window.location.href = "ver_respostas.php?user="+id+"&quest="+quest+"&turma="+turma;
 }
 
 function insere_video(id){
