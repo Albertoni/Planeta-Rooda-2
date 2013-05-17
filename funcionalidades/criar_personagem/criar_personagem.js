@@ -18,11 +18,11 @@
                 g = parseInt(hex.slice(2,4),16),
                 b = parseInt(hex.slice(4,6),16),
                 imgData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height),
-                i, j, n = imgData.data.length / 4;
-            for (i = 0; i < n; i+=1) {
-                imgData.data[i * 4 + 0] = r;
-                imgData.data[i * 4 + 1] = g;
-                imgData.data[i * 4 + 2] = b;
+                i, j, n = imgData.data.length;
+            for (i = 0; i < n; i+=4) {
+                imgData.data[i + 0] = r;
+                imgData.data[i + 1] = g;
+                imgData.data[i + 2] = b;
             }
             ctx.putImageData(imgData, 0, 0);
         },
