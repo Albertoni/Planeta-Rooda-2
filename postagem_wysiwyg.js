@@ -465,6 +465,7 @@ $(document).ready(function(){
 		$('#imagem_lbox').css('display','none');
 		$('#link_lbox').css('display','none');
 		$('#arquivo_lbox').css('display','none');
+        $('#customHTML_lbox').css('display','none');
 	}
 	
 	
