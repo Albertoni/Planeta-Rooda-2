@@ -71,14 +71,21 @@ class aula{
 	
 	// Salva as mudanças
 	function edita($id_da_aula){
-		$titulo		= $this->titulo;
-		$data		= $this->data;
-		$desc		= $this->desc;
-		$material	= isset($this->material['name']) ? $this->material['name'] : $this->material; // pega arquivos e não-arquivos numa tacada só
-		$fundo		= $this->fundo;
-		
 		$q = new conexao(); global $tabela_Aulas;
-		$q->solicitar("UPDATE $tabela_Aulas SET titulo='$titulo', data='$data', descricao='$desc', textoAula='$material', fundo=$fundo WHERE id=$id_da_aula");
+		
+		$titulo		= $q->sanitizaString($this->titulo);
+		$data		= $q->sanitizaString($this->data);
+		$desc		= $q->sanitizaString($this->desc);
+		$material	= $q->sanitizaString(is_array($this->material) ? $this->material['name'] : $this->material); // pega arquivos e não-arquivos numa tacada só
+		$fundo		= (int) $this->fundo;
+		
+		print_r($this);
+		
+		$query = "UPDATE $tabela_Aulas 
+		SET titulo='$titulo', data='$data', descricao='$desc', 
+		textoAula='$material', fundo=$fundo WHERE id=$id_da_aula";
+		echo $query;
+		$q->solicitar($query);
 	}
 	
 	// Cadastra no BD
@@ -88,21 +95,19 @@ class aula{
 		$maxTurma = $q->registros != 0 ? $q->resultado['maximal'] + 1 : 1; // Se existirem aulas, adiciona um ao número, senão seta como 1.
 		// Isso é feito pra aula ser inserida como se fosse a ultima aula
 
-
 		switch($this->tipo){
 			case 1:
-				$turma		= $this->turma;
-				$titulo		= $this->titulo;
-				$data		= $this->data;
-				$desc		= $this->desc;
-				$material	= $this->material;
-				$fundo		= $this->fundo;
-				$user		= $this->autor;
+				$turma		= (int) $this->turma;
+				$titulo		= $q->sanitizaString($this->titulo);
+				$data		= $q->sanitizaString($this->data);
+				$desc		= $q->sanitizaString($this->desc);
+				$material	= $q->sanitizaString($this->material);
+				$fundo		= (int) $this->fundo;
+				$user		= (int) $this->autor;
 				
 				$q->solicitar("INSERT INTO $tabela_Aulas
 		(turma,		titulo,		data,		descricao,	textoAula,		fundo, idPoster, ordem, tipoAula) VALUES
 		($turma,	'$titulo',	'$data',	'$desc',	'$material',	$fundo, $user, $maxTurma, 1)");
-				
 				
 				break;
 

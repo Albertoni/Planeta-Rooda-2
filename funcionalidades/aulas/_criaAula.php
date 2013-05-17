@@ -30,7 +30,7 @@ if( ! (isset($_POST['data'])))	{die("Favor voltar e preencher a data corretament
 if( ! (isset($_POST['desc'])))	{die("Favor voltar e preencher a descricao corretamente");}
 if( ! (isset($_POST['titulo']))){die("Favor voltar e preencher o titulo corretamente");}
 
-//print_r($_POST); // DEBUGAGEM
+print_r($_POST); // DEBUGAGEM
 
 $q = new conexao(); global $tabela_Aulas;
 
@@ -54,10 +54,11 @@ if ($aula_a_editar != 0){
 		break;
 	}
 	
-	if ($a->temErro())
-		{$_SESSION['erroAulas'] = $a->getErro();}
-	else
-		{$a->edita($aula_a_editar);}
+	if ($a->temErro()){
+		$_SESSION['erroAulas'] = $a->getErro();
+	}else{
+		$a->edita($aula_a_editar);
+	}
 	
 } else switch($_POST['tipo']){
 case 1:
@@ -65,10 +66,11 @@ case 1:
 	if($_POST['text'] == "") die("Favor voltar e preencher a aula");
 	
 	$a = new aula($turma, $titulo, $data, $desc, $_POST['text'], $fundo, $_POST['tipo']);
-	if ($a->temErro())
-		{$_SESSION['erroAulas'] = $a->getErro();}
-	else
-		{$a->registra();}
+	if ($a->temErro()){
+		$_SESSION['erroAulas'] = $a->getErro();
+	}else{
+		$a->registra();
+	}
 	
 	if(isset($_POST['forum']) and $_POST['forum'] == "sim"){// Aqui cria um tópico no fórum para discutir a aula
 		require("../forum/sistema_forum.php");
