@@ -9,7 +9,6 @@ require("../../funcoes_aux.php");
 require("../../usuarios.class.php");
 require("aula.class.php");
 
-session_start();
 $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
 $turma = $_GET['turma'];
@@ -132,5 +131,5 @@ default:
 }
 ?>
 <script>
-	window.location = "ver_aulas.php?turma=<?=$turma?>";
+	//window.location = "ver_aulas.php?turma=<?=$turma?>";
 </script>
