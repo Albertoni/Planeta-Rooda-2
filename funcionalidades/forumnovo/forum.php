@@ -1,38 +1,39 @@
 <?php
+	error_reporting(E_ALL);
+	
 	require("../../cfg.php");
 	require("../../bd.php");
 	require("../../funcoes_aux.php");
-
-	//require("../../usuarios.class.php");
+	require("../../usuarios.class.php");
 	
 	session_start();
 	
 	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 	
-	require("verifica_user.php");
+	
+	
+	//require("verifica_user.php");
 	require("sistema_forum.php");
-	require("visualizacao_forum.php");
+	//require("visualizacao_forum.php");
 	require("../../reguaNavegacao.class.php");
 	
 	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
 	
-	if ($VERIFICA_USER_ERRO_ID == 0) {
-		global $tabela_forum; global $tabela_usuarios;
-		
-		$FORUM = new forum($FORUM_ID);
-		$FORUM->topicos($pagina);
-		
-		$paginas = array();
-		$paginas = $FORUM->paginas($pagina,10);
-	}
+	$forum = new dadosForum($turma);
+	$forum->carregaTopicos();
 	
-	$permissoes = checa_permissoes(TIPOFORUM, $FORUM_ID);
+	//$paginas = array();
+	//$paginas = $FORUM->paginas($pagina,10);
+	
+	$permissoes = checa_permissoes(TIPOFORUM, $turma);
 	if($permissoes === false){
 		die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
 	}
 	
 	$user = new Usuario();
 	$user->openUsuario($_SESSION['SS_usuario_id']);
+
+/*
 ?>
 <!DOCTYPE html>
 <html>
