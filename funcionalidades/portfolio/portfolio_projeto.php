@@ -37,7 +37,7 @@ if($perm === false){
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
 </head>
 
-<body onload="atualiza('ajusta()');inicia();coment();">
+<body onload="thumbnailImgsFromClass('postagem',150,380,true);atualiza('ajusta()');inicia();coment();">
 
 <?
 		global $tabela_portfolioProjetos;
@@ -51,6 +51,7 @@ if($perm === false){
 		$publicoAlvo = $consulta->resultado['publicoAlvo'];
 ?>
 	<div id="fundo_lbox"></div>
+<!--
 	<div id="light_box" class="bloco">
 		<h1>TÍTULO DA POSTAGEM</h1>
 		<img src="../../images/botoes/bt_fechar.png" id="abre_coment" class="fechar_coments" onmousedown="abreFechaLB()" />
@@ -81,7 +82,7 @@ if($perm === false){
 		</ul>
 		</div>
 	</div>
-
+-->
 <div id="topo">
 	<div id="centraliza_topo">
 		<?php 
@@ -365,14 +366,16 @@ if($perm === false){
 								<button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(<?=$postId?>); });">Excluir</button>
 							</span>
 						</li>
-						<li class="tabela_port">
+						<li class="tabela_port postagem">
 						<p>
 							<?=$consulta->resultado['texto']?>
 						</p>
 						</li>
+<!--
 						<li class="tabela_port">
 							<a id="abre_coment" onmousedown="abreComments('pid=<?=$postId?>&amp;turma=<?=$turma?>')">Ver comentários</a>
 						</li>
+-->
 					</ul>
 				</div>
 				<?
@@ -414,6 +417,7 @@ if($perm === false){
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
 <script src="../../postagem_wysiwyg.js"></script>
+<script src="../../js/thumbnailImages.js"></script>
 <script>
 function coment(){
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
