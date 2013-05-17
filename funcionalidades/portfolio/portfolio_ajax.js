@@ -26,7 +26,9 @@ var deletePost = (function () {
 				return;
 			}
 			if (res.ok) {
+                // pega o elemento do post que foi apagado
 				post_div = document.getElementById("postDiv"+res.id);
+                // se ele existir, apaga do DOM.
 				if (post_div) {
 					ROODA.dom.purgeElement(post_div);
 					post_div = null;
@@ -45,8 +47,49 @@ var deletePost = (function () {
 		AJAXOpen(url,handler);
 	};
 }());
-
-
+/* ajax para comentarios [wip] 
+var comentarios_postagem = function () {
+};
+var sendComment = (function () {
+    function handler() { 
+		var t, res, e, post_div;
+		if (this.readyState !== this.DONE) {
+			// requisição em andamento, não fazer nada.
+			return;
+		}
+		if (this.status !== 200) {
+			if (this.status >= 500) {
+				ROODA.ui.alert("Problema no servidor");
+				return;
+			} else {
+				ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+			}
+			return;
+		}
+		// OK
+		t = this.responseText;
+        if (t) {
+            try {
+                res = JSON.parse(t);
+            }
+            catch (e) {
+                ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
+                console.log("JSON: " + e.message + ":\n" + t);
+                return;
+            }
+            if (res.ok) {
+                var comment_container = document.getElementById("");
+            } else {
+                if (res.errors) {
+                    ROODA.ui.alert(res.errors.join("<br>\n"));
+                } else {
+                    ROODA.ui.alert("Não deu certo.");
+                }
+            }
+        }
+    }
+}());
+*/
 /* link template */
 var linkHTML = function (id,url) {
     return "<li class=\"tabela_port\" id=\"liLink"+id+"\"><a href=\""+url+"\" target=\"_blank\" align=\"left\">"+url+"</a><button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink("+id+");});\" align=\"right\"></button></li>";
