@@ -4,12 +4,12 @@ session_start();
 require_once('../../cfg.php');
 require_once('../../bd.php');
 $id_usuario = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+$json = array('id' => $id, 'ok' => false);
 if ($id_usuario <= 0) {
 	$json['errors'][] = 'Sua sessão expirou.';
 	$json['errors'][] = 'Volte para a tela de login.';
 } else {
-	$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
-	$json = array('id' => $id, 'ok' => false);
 	if ($id <= 0) {
 		$json['errors'][] = 'Parametros inválidos';
 	} else {
