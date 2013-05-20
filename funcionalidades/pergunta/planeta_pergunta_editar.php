@@ -332,7 +332,7 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 			conteudo
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
-	<form action="editar_questionario.php" method="post">
+	<form action="editar_questionario.php?turma=<?=$turma?>" method="post">
 	<div class="bts_cima">
 		<a href="planeta_pergunta.php"><input type="image" src="../../images/botoes/bt_cancelar.png" align="left"/></a>
 		<input type="image" src="../../images/botoes/bt_confirm.png" align="right" />
