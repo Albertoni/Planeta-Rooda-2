@@ -24,12 +24,9 @@
 	 // Re: Se você acha que usar expressoes lógicas como statements é algo bom, boa sorte.
 	true == (is_numeric($blog_id)) or die('A id do blog precisa ser num&eacute;rica!'); // Sabe SQL injection?
 	
-	$blog = new Blog($blog_id);
-	if(!$blog->getExiste())
-		if($blog_id == $usuario_id)
-			$blog->save(); // caso o blog não exista, isso salva ele
-		else
-			die("Blog inexistente");
+	$blog = new Blog($blog_id); // se não existe, isso cria o blog
+	
+	
 	$ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
 	$ini = $ini < 0 ? 0 : $ini;
 	$ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$blog->getPaginacao() : $ini;
