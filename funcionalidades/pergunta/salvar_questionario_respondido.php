@@ -11,8 +11,14 @@ require("../../funcoes_aux.php");
 $q = new conexao(); global $tabela_PerguntaRespostas;
 
 $questionario = (int) $_POST['idquest'];
+$turma = (int) $_POST['turma'];
 $usuario = $_SESSION['SS_usuario_id'];
 
+$usuario = new Usuario();
+$usuario->openUsuario($_SESSION['SS_usuario_id']);
+
+$permissoes = checa_permissoes(TIPOPERGUNTA, $turma);
+if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 $check = new conexao();
 $check->solicitar("SELECT id FROM $tabela_PerguntaRespostas WHERE (questionario = $questionario AND usuario = $usuario)");
@@ -50,5 +56,4 @@ $respostas = rtrim($respostas, "¦"); // remove o negóciozinho ai do fim
 
 $q->solicitar("INSERT INTO $tabela_PerguntaRespostas (usuario, resposta, questionario) VALUES (".$_SESSION['SS_usuario_id'].", '$respostas', '$questionario')");
 
-magic_redirect("planeta_pergunta.php");
-?>
+magic_redirect("planeta_pergunta.php?turma=$turma");

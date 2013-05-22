@@ -171,7 +171,7 @@ if(!$_SESSION['user']->podeAcessar($perm['pergunta_editarQuestionario'], $turma)
 ?>
 </pre>
 <script>
-	window.location = "planeta_pergunta.php";
+	window.location = "planeta_pergunta.php?turma=<?=$turma?>";
 </script><?php
 } else {
 	die("Algo de errado aconteceu. Provavelmente voce tentou acessar essa pagina sem estar editando um questionario. Por favor, <a href=\"planeta_pergunta.php\">volte</a> e tente novamente.");
