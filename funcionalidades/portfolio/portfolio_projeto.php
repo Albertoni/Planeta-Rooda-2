@@ -1,12 +1,12 @@
 <?php
 session_start();
 header('Content-type: text/html; charset=utf-8');
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("lista_posts.php");
-require("../../usuarios.class.php");
-require("../../reguaNavegacao.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("lista_posts.php");
+require_once("../../usuarios.class.php");
+require_once("../../reguaNavegacao.class.php");
 $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
@@ -50,39 +50,11 @@ if($perm === false){
 		$metodologia = $consulta->resultado['metodologia'];
 		$publicoAlvo = $consulta->resultado['publicoAlvo'];
 ?>
-	<div id="fundo_lbox"></div>
-<!--
-	<div id="light_box" class="bloco">
-		<h1>TÍTULO DA POSTAGEM</h1>
-		<img src="../../images/botoes/bt_fechar.png" id="abre_coment" class="fechar_coments" onmousedown="abreFechaLB()" />
-		<div class="recebe_coments">
-		<ul class="sem_estilo" id="ie_coments">
-			<ul>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-			<li class="tabela_blog">
-				FULANO DE TAL - Donec dignissim purus sit amet ligula lobortis quis congue sem pulvinar. Ut velit diam, pretium non varius vitae, placerat sit amet libero. Nam ornare condimentum est ac tincidunt. Mauris vitae ligula tellus. Sed orci diam, tempus nec accumsan non, facilisis in nisl. Curabitur dictum magna non mi interdum nec auctor massa feugiat. Sed sed lacus ac nisl sagittis tincidunt vitae nec mi.
-			</li>
-		</ul>
-			<li id="novo_coment">
-				POSTAR NOVO COMENTÁRIO
-			</li>
-			<li>
-				<textarea class="msg_dimensao" rows="10"></textarea>
-			</li>
-			<li>
-				<div class="enviar" align="right">
-					<input type="image" src="../../images/botoes/bt_confir_pq.png" />
-				</div>
-			</li>
-		</ul>
-		</div>
-	</div>
--->
+<div id="box_comentarios">
+	<ul id="container_comentarios">
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+	</ul>
+</div>
 <div id="topo">
 	<div id="centraliza_topo">
 		<?php 
@@ -295,7 +267,6 @@ if($perm === false){
 					?>
 							<li class="tabela_port" id="liFile<?=$fileId?>">
 								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
-								<!--<img src="../../images/botoes/bt_x.png" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right"/> -->
 								<button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right">excluir</button>
 							</li>
 					<?
@@ -334,7 +305,7 @@ if($perm === false){
 							 <a href="<?=$endereco?>" target="_blank" align="left" ><?=$titulo?></a>
 							 <button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" align="right"></button>
 						 </li>
-<?
+<?php
 									 $consulta->proximo();
 								}
 ?>
@@ -352,7 +323,7 @@ if($perm === false){
 					
 					//print_r($consulta);
 					
-					for ($i = 0 ; $i < count($consulta->itens) ; $i++){
+					for ($i = 0 ; $i < $consulta->registros; $i++){
 						$postId = $consulta->resultado['id'];
 				?>
 				<div class="cor<?=alterna()?>" id="postDiv<?=$postId?>" >
@@ -371,11 +342,9 @@ if($perm === false){
 							<?=$consulta->resultado['texto']?>
 						</p>
 						</li>
-<!--
 						<li class="tabela_port">
-							<a id="abre_coment" onmousedown="abreComments('pid=<?=$postId?>&amp;turma=<?=$turma?>')">Ver comentários</a>
+							<a class="bt_abre_coment" onclick="abreComentarios(<?=$postId?>)" id="abre_coment_<?=$postId?>">Ver comentários</a>
 						</li>
--->
 					</ul>
 				</div>
 				<?
@@ -398,7 +367,7 @@ if($perm === false){
 	</div><!-- fim da geral -->
 	<!-- loading -->
 	<div id="loading" style="display:none;">
-		<div class="spacer_50"><!-- empty --> </div>
+		<div class="spacer_50"><!-- empty --></div>
 		<div class="loading_anim">
 			<h2>Processando</h2>
 		</div>
@@ -419,7 +388,7 @@ if($perm === false){
 <script src="../../postagem_wysiwyg.js"></script>
 <script src="../../js/thumbnailImages.js"></script>
 <script>
-function coment(){
+function coment() {
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
 		document.getElementById('ie_coments').style.width = 85 + '%';
 	}
