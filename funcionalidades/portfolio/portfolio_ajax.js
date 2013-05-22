@@ -47,29 +47,115 @@ var deletePost = (function () {
 		AJAXOpen(url,handler);
 	};
 }());
-
+var submitComentarioForm = (function () {
+    var loading_screen = document.getElementById('loading');
+    function ajaxHandler() {
+        console.log("nao implementado");
+        loading_screen.style.display = 'none';
+    }
+    var submitForm = submitFormFunction(ajaxHandler);
+    return (function (formElement) {
+        if (loading_screen) {
+            loading_screen.style.display = 'block';
+        }
+        submitForm(formElement);
+    });
+    return function (codPost,mensagem){}
+}());
+var apagaComentario = (function () {
+    function ajaxHandler() {
+        var t, res, e, post_div;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        if (this.status !== 200) {
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+                return;
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.<br>\nVerifique sua conexão com a internet.");
+            }
+            return;
+        }
+        // OK
+        t = this.responseText;
+        if (t) {
+            try {
+                res = JSON.parse(t);
+            }
+            catch (e) {
+                ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
+                console.log("JSON: " + e.message + ":\n"+t);
+                return;
+            }
+            if (res.ok) {
+                // pega o elemento do post que foi apagado
+                comentario_element = document.getElementById("comentario_" + res.codComentario.toString());
+                // se ele existir, apaga do DOM.
+                if (comentario_element) {
+                    ROODA.dom.purgeElement(comentario_element);
+                    comentario_element = null;
+                }
+            } else {
+                if (res.errors) {
+                    ROODA.ui.alert(res.errors.join("<br>\n"));
+                } else {
+                    ROODA.ui.alert("Não deu certo.");
+                }
+            }
+        }
+    }
+    return function (codComentario) {
+        var url = "apagaComentario.php?comentario=" + codComentario;
+        console.log(codComentario);
+        AJAXOpen(url,ajaxHandler);
+    };
+}());
 var abreComentarios = (function () {
     var comentarios = {};
     var box_comentarios = document.getElementById('box_comentarios'); // toda a caixa de comentarios, incluindo formulario
     var container_comentarios = document.getElementById('container_comentarios'); // ul contendo comentarios
+    var container_titulo = document.getElementById('tituloComentarios');
     var loading_screen = document.getElementById('loading');
-    box_comentarios.style.display = "none";
+    box_comentarios.onclick = function (e) {
+        e = e || event;
+        if (e.target.className === "bt_fechar") {
+            box_comentarios.style.display = "none";
+        }
+    };
+    //box_comentarios.style.display = "none";
+
+    // mensagemToElement: -> HTMLElement
+    // Deve ser executada como metodo no objeto de mensagem
+    // ex: mensageToElement.apply(mensagem);
     function mensagemToElement() {
         var elem = document.createElement("li");
-        var that = this; // closure
+        var that = this; // dat closure
         elem.id = "comentario_" + (this.codComentario).toString();
         elem.className = "postComentario";
-        elem.innerHTML = this.nomeUsuario + " - " + this.texto;
+        elem.innerHTML = this.nomeUsuario.bold() + " - " + this.texto;
         if (this.podeApagar) {
             elem.innerHTML += '<button type="button" class="bt_excluir">excluir</button>';
             elem.onclick = function (e) {
                 e = e || event;
                 if (e.target.className === "bt_excluir") {
-                    // TODO
+                    apagaComentario(that.codComentario); // dat closure
                 }
             }
         }
         return elem;
+    }
+    function colocaMensagens(post) {
+        var i = container_comentarios.childNodes.length - 1;
+        container_titulo.innerHTML = post.tituloPost;
+        for(; i>=0; i -= 1){
+            ROODA.dom.purgeElement(container_comentarios.childNodes[i]);
+        }
+        post.mensagens.forEach(function(mensagem){
+            container_comentarios.appendChild(mensagemToElement.apply(mensagem));
+        });
+        box_comentarios.style.display = "block";
     }
     function ajaxHandler() {
         var t, res, e;
@@ -100,22 +186,24 @@ var abreComentarios = (function () {
         }
         if (res.ok) {
             comentarios[res.codPost] = res;
+            colocaMensagens(res);
+            box_comentarios.style.display = "block";
             return;
         }
         if (res.errors) {
             ROODA.ui.alert(res.errors.join("\n"));
         }
     } // fim do ajaxHandler
-    return function (id) {
-        var url = "carregaComentarios.php?post=" + encodeURIComponent(id);
-        if (parseInt(id) === id) {
-            if(!comentarios[id]) {
+    return function (codPost) {
+        var url = "carregaComentarios.php?post=" + encodeURIComponent(codPost);
+        if (parseInt(codPost) === codPost) {
+            if(!comentarios[codPost]) {
                 if (loading_screen) {
                     loading_screen.style.display = 'block';
                 }
                 AJAXOpen(url,ajaxHandler);
             } else {
-                comentarios[id].mensagens.forEach(function(mensagem){mensagemToElement.apply(mensagem)})
+                colocaMensagens(comentarios[codPost]);
             }
         }
     };

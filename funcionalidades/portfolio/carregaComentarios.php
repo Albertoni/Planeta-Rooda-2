@@ -24,7 +24,8 @@ else
 		$bd->solicitar(
 			"SELECT Post.user_id AS codAutorPost,
 			        Proj.owner_id AS codDonoProjeto,
-			        Turma.associacao AS nivelUsuario
+			        Turma.associacao AS nivelUsuario,
+			        Post.titulo AS tituloPost
 			FROM $tabela_portfolioPosts AS Post
 				INNER JOIN $tabela_portfolioProjetos AS Proj
 				ON Proj.id = Post.projeto_id
@@ -49,6 +50,7 @@ else
 			}
 			else
 			{
+				$json['tituloPost'] = $bd->resultado['tituloPost'];
 				$podeApagarQualquer = false;
 				$podeApagarQualquer = $podeApagarQualquer || ($codUsuario === $bd->resultado['codAutorPost']);
 				$podeApagarQualquer = $podeApagarQualquer || ($codUsuario === $bd->resultado['codDonoProjeto']);

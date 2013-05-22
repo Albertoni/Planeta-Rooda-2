@@ -50,10 +50,26 @@ if($perm === false){
 		$metodologia = $consulta->resultado['metodologia'];
 		$publicoAlvo = $consulta->resultado['publicoAlvo'];
 ?>
-<div id="box_comentarios">
+<div id="box_comentarios" style="display:none;">
+	<h1><span id="tituloComentarios">Titulo do post</span><button type="button" class="bt_fechar">fechar</button></h1>
 	<ul id="container_comentarios">
+		<li class="postComentario">Fulano - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dolor nisi, elementum fringilla erat. Donec sagittis volutpat pharetra. Nunc bibendum nulla sit amet dui malesuada semper. Mauris erat lacus, faucibus et rhoncus ac, tincidunt non metus. Etiam suscipit bibendum mi, quis ultrices sem sollicitudin ac. Nunc sollicitudin ligula id odio porta ac gravida quam molestie. Vestibulum a quam ut nisl ornare consectetur sed eget libero. <button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
+		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
 		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
 	</ul>
+	<div class="form_container">
+		<form action="insereComentario.php" method="POST" onsubmit="submitComentarioForm(this);return false;">
+			<input type="hidden" id="formComentarioCodPost" name="codPost" value="0"/>
+			<input type="text" id="formComentarioMensagem" name="mensagem" placeholder="Digite sua mensagem." required />
+			<button type="submit" class="submit" name="upload" value="Enviar">Enviar</button>
+		</form>
+	</div>
 </div>
 <div id="topo">
 	<div id="centraliza_topo">

@@ -264,15 +264,17 @@ ul.listaFun li {
 ul.listaFun li a {
 	text-decoration: none;
 }
+.bt_fechar,
 .bt_excluir {
 	background: transparent url('images/botoes/bt_x.png') no-repeat top left;
+	border: 0 none;
 	display: inline-block;
 	float: right;
 	width: 10px;
-	height: 17px;
-	border: 0 none;
-	margin: 0 0 0 5px;
+	height: 10px;
+	margin: 2px 0 2px 5px;
 	padding: 0;
 	overflow: hidden;
-	text-indent: 20px;
+	text-indent: -999px;
+	vertical-align: middle;
 }
