@@ -79,12 +79,11 @@ else
 					$json['mensagens'] = array();
 					while($bd->resultado)
 					{
-						$data = new DateTime($bd->resultado['data']);
 						$json['mensagens'][] = array(
 							'codComentario' => (int) $bd->resultado['codComentario'],
 							'codUsuario' => (int) $bd->resultado['codUsuario'],
 							'nomeUsuario' => $bd->resultado['nomeUsuario'],
-							'data' => $data->format("H:i - d/m/Y"),
+							'data' => $bd->resultado['data'],
 							'texto' => $bd->resultado['texto'],
 							'podeApagar' => $podeApagarQualquer || ($codUsuario === (int) $bd->resultado['codUsuario'])
 						);

@@ -74,7 +74,6 @@ else
 					}
 					else
 					{
-						$data = $dateTime->format("H:i - d/m/Y");
 						// comentário inserido com sucesso
 						$json['mensagem']['codComentario'] = $bd->ultimo_id();
 						$json['mensagem']['data'] = $data;
