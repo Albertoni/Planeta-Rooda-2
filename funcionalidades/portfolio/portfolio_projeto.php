@@ -31,7 +31,7 @@ if($perm === false){
 ?><!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
@@ -58,16 +58,12 @@ if($perm === false){
 		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
 		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
 		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
 	</ul>
 	<div class="form_container">
-		<form action="insereComentario.php" method="POST" onsubmit="submitComentarioForm(this);return false;">
+		<form id="formComentario">
 			<input type="hidden" id="formComentarioCodPost" name="codPost" value="0"/>
-			<input type="text" id="formComentarioMensagem" name="mensagem" placeholder="Digite sua mensagem." required />
-			<button type="submit" class="submit" name="upload" value="Enviar">Enviar</button>
+			<textarea id="formComentarioMensagem" name="mensagem" placeholder="Digite sua mensagem."></textarea>
+			<button type="button" id="formComentarioBotaoEnviar" class="submit" name="upload" value="Enviar">Enviar</button>
 		</form>
 	</div>
 </div>

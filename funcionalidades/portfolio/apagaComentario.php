@@ -50,6 +50,7 @@ else
 			}
 			else
 			{
+				$json['codPost'] = $bd->resultado['codPost'];
 				$donoProjeto = $bd->resultado['codDonoProjeto'];
 				$autorComentario = $bd->resultado['codAutorComentario'];
 				$autorPost = $bd->resultado['codAutorPost'];

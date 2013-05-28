@@ -147,3 +147,22 @@ var AJAXOpen = function (url,handler) {
 	oAjaxReq.open("GET",url);
 	oAjaxReq.send();
 };
+var AJAXGet = AJAXOpen;
+
+var AJAXPost = function(url,handler,dataObject) {
+  var i, values = [], body = "", oAjaxReq = new XMLHttpRequest();
+  if (typeof handler === "function") {
+    oAjaxReq.onreadystatechange = handler;
+  }
+  if (typeof dataObject === "object") {
+    for (i in dataObject) {
+      if (dataObject.hasOwnProperty(i)) {
+        values.push(encodeURIComponent(i) + "=" + encodeURIComponent(dataObject[i]));
+      }
+    }
+  }
+  body = values.join("&");
+  oAjaxReq.open("POST",url);
+  oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  oAjaxReq.send(body);
+}
