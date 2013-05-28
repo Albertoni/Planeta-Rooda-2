@@ -1,39 +1,38 @@
 <?php
-	error_reporting(E_ALL);
-	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");
-	
-	session_start();
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-	
-	
-	
-	//require("verifica_user.php");
-	require("sistema_forum.php");
-	//require("visualizacao_forum.php");
-	require("../../reguaNavegacao.class.php");
-	
-	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
-	
-	$forum = new dadosForum($turma);
-	$forum->carregaTopicos();
-	
-	//$paginas = array();
-	//$paginas = $FORUM->paginas($pagina,10);
-	
-	$permissoes = checa_permissoes(TIPOFORUM, $turma);
-	if($permissoes === false){
-		die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
-	}
-	
-	$user = new Usuario();
-	$user->openUsuario($_SESSION['SS_usuario_id']);
+error_reporting(E_ALL);
 
-/*
+require("../../cfg.php");
+require("../../bd.php");
+require("../../funcoes_aux.php");
+require("../../usuarios.class.php");
+
+session_start();
+
+$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+
+
+
+//require("verifica_user.php");
+require("sistema_forum.php");
+//require("visualizacao_forum.php");
+require("../../reguaNavegacao.class.php");
+
+$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+
+$forum = new dadosForum($turma);
+$forum->carregaTopicos();
+
+//$paginas = array();
+//$paginas = $FORUM->paginas($pagina,10);
+
+$permissoes = checa_permissoes(TIPOFORUM, $turma);
+if($permissoes === false){
+	die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
+}
+
+$user = new Usuario();
+$user->openUsuario($_SESSION['SS_usuario_id']);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,8 +97,8 @@
 	
 	<div class="bts_cima">
 <?php
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)){
-	echo "<a href=\"forum_cria_topico.php?fid=$FORUM_ID&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
+	echo "<a href=\"forum_cria_topico.php?fid=$turma&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
 };
 ?>
 	<a href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
@@ -109,7 +108,7 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)){
 <?php
 		if ($VERIFICA_USER_ERRO_ID == 0) {
 			if ($FORUM->contador > 0){
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$FORUM_ID");
+				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$turma");
 ?>
 
 	<div id="topicos" class="bloco">
@@ -122,7 +121,7 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)){
 ?>
 	</div><!-- fim da div topicos -->
 <?php			
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$FORUM_ID");
+				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$turma");
 
 			}else{
 ?>
@@ -144,8 +143,8 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)){
 	
 	<div class="bts_baixo">
 <?php
-$linkcria = "forum_cria_topico.php?turma=$FORUM_ID";
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
+$linkcria = "forum_cria_topico.php?turma=$turma";
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
 	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
 	</div>
 	
