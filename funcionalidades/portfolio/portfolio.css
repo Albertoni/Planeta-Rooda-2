@@ -102,8 +102,13 @@ text-decoration:none; color:#666666; outline:none}
 	bottom: 0;
 	left: 0;
 }
+#box_comentarios .form_container #formComentarioMensagem {
+	height:43px;
+	padding: 1px;
+	margin: 1px 0;
+}
 ul#container_comentarios {
-	height: 290px;
+	height: 260px;
 	overflow-y: auto;
 	list-style: none;
 	margin: 0;
@@ -114,6 +119,7 @@ ul#container_comentarios li {
 	border-radius: 4px;
 	padding: 10px;
 	margin: 10px;
+	overflow: hidden;
 }
 #info_post {width:100%; float:left}
 
