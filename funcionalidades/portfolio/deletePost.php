@@ -11,7 +11,7 @@ if ($id_usuario <= 0) {
 	$json['errors'][] = 'Volte para a tela de login.';
 } else {
 	if ($id <= 0) {
-		$json['errors'][] = 'Parametros inválidos';
+		$json['errors'][] = 'Parametros inválidos.';
 	} else {
 		$consulta = new conexao();
 		$consulta->solicitar(

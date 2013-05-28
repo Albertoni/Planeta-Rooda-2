@@ -1,31 +1,69 @@
 <?php
-require_once('../../cfg.php');
-require_once('../../bd.php');
-class Comentarios {
-    private $_nComentarios = 0;
-    private $_postId;
-    private $mensagens;
-
-    function __construct($postId = 0) {
-        if ($post > 0) {
-            $q = new conexao();
-            $q->solicitar(
-                "SELECT C.codUsuario as codUsuario, 
-                        U.usuario_nome as nomeUsuario, 
-                        C.codComentario as codComentario,
-                        C.data as dataComentario,
-                        C.texto as textoComentario
-                FROM $tabela_portfolioComentarios AS C
-                    INNER JOIN $tabela_usuarios AS U
-                    ON C.codUsuario = U.usuario_id
-                WHERE codPost = '$postId'
-                ORDER BY C.codComentario ASC"
-            );
+class Comentario {
+    private $codPost;
+    private $codComentario;
+    private $codAutor;
+    private $texto;
+    private $data;
+    private $erro = "";
+    function __construct($cod = 0) 
+    {
+        if(is_int($cod))
+        {
+            if($cod > 0)
+            {
+                $bd = new conexao();
+                $bd->solicitar(
+                    "SELECT C.codUsuario AS codUsuario, 
+                            U.usuario_nome AS nomeUsuario, 
+                            C.codComentario AS codComentario,
+                            C.data AS dataComentario,
+                            C.texto AS textoComentario
+                    FROM $tabela_portfolioComentarios AS C
+                        INNER JOIN $tabela_usuarios AS U
+                        ON C.codUsuario = U.usuario_id
+                    WHERE codComentario = '$cod'"
+                );
+                $this->erro = $bd->erro;
+                if (!$this->erro) {
+                    $this->codComentario = $cod;
+                    $this->codPost       = $bd->resultado['codPost'];
+                    $this->codAutor      = $bd->resultado['codAutor'];
+                    $this->texto         = $bd->resultado['textoComentario'];
+                    $this->data          = $bd->resultado['dataComentario'];
+                }
+            }
         }
     }
-    function inserirComentario($codUsuario, $codPost, $texto) {
-        if ($codUsuario >= 0 && $codPost >= 0) {
+    public function inserirComentario($codUsuario, $codPost, $texto)
+    {
+        if ($codUsuario >= 0 && $codPost >= 0) 
+        {
             $q = new conexao();
+        }
+    }
+    function carregarComentarios($postId)
+    {
+        if (is_int($post))
+        {
+            $q = new conexao();
+            $q->solicitar(
+                ""
+            );
+            $this->error = $q->erro;
+            if ($q->registros > 0)
+            {
+                $this->mensagens = $q->itens;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 }

@@ -47,38 +47,56 @@ var deletePost = (function () {
 		AJAXOpen(url,handler);
 	};
 }());
-/* ajax para comentarios [wip] 
-var comentarios_postagem = function () {
-};
-var sendComment = (function () {
-    function handler() { 
-		var t, res, e, post_div;
-		if (this.readyState !== this.DONE) {
-			// requisição em andamento, não fazer nada.
-			return;
-		}
-		if (this.status !== 200) {
-			if (this.status >= 500) {
-				ROODA.ui.alert("Problema no servidor");
-				return;
-			} else {
-				ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-			}
-			return;
-		}
-		// OK
-		t = this.responseText;
+var submitComentarioForm = (function () {
+    var loading_screen = document.getElementById('loading');
+    function ajaxHandler() {
+        console.log("nao implementado");
+        loading_screen.style.display = 'none';
+    }
+    var submitForm = submitFormFunction(ajaxHandler);
+    return (function (formElement) {
+        if (loading_screen) {
+            loading_screen.style.display = 'block';
+        }
+        submitForm(formElement);
+    });
+    return function (codPost,mensagem){}
+}());
+var apagaComentario = (function () {
+    function ajaxHandler() {
+        var t, res, e, post_div;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        if (this.status !== 200) {
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+                return;
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.<br>\nVerifique sua conexão com a internet.");
+            }
+            return;
+        }
+        // OK
+        t = this.responseText;
         if (t) {
             try {
                 res = JSON.parse(t);
             }
             catch (e) {
                 ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
-                console.log("JSON: " + e.message + ":\n" + t);
+                console.log("JSON: " + e.message + ":\n"+t);
                 return;
             }
             if (res.ok) {
-                var comment_container = document.getElementById("");
+                // pega o elemento do post que foi apagado
+                comentario_element = document.getElementById("comentario_" + res.codComentario.toString());
+                // se ele existir, apaga do DOM.
+                if (comentario_element) {
+                    ROODA.dom.purgeElement(comentario_element);
+                    comentario_element = null;
+                }
             } else {
                 if (res.errors) {
                     ROODA.ui.alert(res.errors.join("<br>\n"));
@@ -88,8 +106,108 @@ var sendComment = (function () {
             }
         }
     }
+    return function (codComentario) {
+        var url = "apagaComentario.php?comentario=" + codComentario;
+        console.log(codComentario);
+        AJAXOpen(url,ajaxHandler);
+    };
 }());
-*/
+var abreComentarios = (function () {
+    var comentarios = {};
+    var box_comentarios = document.getElementById('box_comentarios'); // toda a caixa de comentarios, incluindo formulario
+    var container_comentarios = document.getElementById('container_comentarios'); // ul contendo comentarios
+    var container_titulo = document.getElementById('tituloComentarios');
+    var loading_screen = document.getElementById('loading');
+    box_comentarios.onclick = function (e) {
+        e = e || event;
+        if (e.target.className === "bt_fechar") {
+            box_comentarios.style.display = "none";
+        }
+    };
+    //box_comentarios.style.display = "none";
+
+    // mensagemToElement: -> HTMLElement
+    // Deve ser executada como metodo no objeto de mensagem
+    // ex: mensageToElement.apply(mensagem);
+    function mensagemToElement() {
+        var elem = document.createElement("li");
+        var that = this; // dat closure
+        elem.id = "comentario_" + (this.codComentario).toString();
+        elem.className = "postComentario";
+        elem.innerHTML = this.nomeUsuario.bold() + " - " + this.texto;
+        if (this.podeApagar) {
+            elem.innerHTML += '<button type="button" class="bt_excluir">excluir</button>';
+            elem.onclick = function (e) {
+                e = e || event;
+                if (e.target.className === "bt_excluir") {
+                    apagaComentario(that.codComentario); // dat closure
+                }
+            }
+        }
+        return elem;
+    }
+    function colocaMensagens(post) {
+        var i = container_comentarios.childNodes.length - 1;
+        container_titulo.innerHTML = post.tituloPost;
+        for(; i>=0; i -= 1){
+            ROODA.dom.purgeElement(container_comentarios.childNodes[i]);
+        }
+        post.mensagens.forEach(function(mensagem){
+            container_comentarios.appendChild(mensagemToElement.apply(mensagem));
+        });
+        box_comentarios.style.display = "block";
+    }
+    function ajaxHandler() {
+        var t, res, e;
+        if (this.readyState !== this.DONE) {
+            // requisição em andamento, não fazer nada.
+            return;
+        }
+        // Fim do request, remover tela de loading
+        if (loading_screen) {
+            loading_screen.style.display = 'none';
+        }
+        if (this.status !== 200) {
+            if (this.status >= 500) {
+                ROODA.ui.alert("Problema no servidor");
+            } else {
+                ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
+            }
+            return;
+        }
+        t = this.responseText;
+        try {
+            res = JSON.parse(t);
+        }
+        catch (e) {
+            ROODA.ui.alert("Erro desconhecido (0xTTYLGB)");
+            console.log("JSON: " + e.message + ":\n"+t);
+            return;
+        }
+        if (res.ok) {
+            comentarios[res.codPost] = res;
+            colocaMensagens(res);
+            box_comentarios.style.display = "block";
+            return;
+        }
+        if (res.errors) {
+            ROODA.ui.alert(res.errors.join("\n"));
+        }
+    } // fim do ajaxHandler
+    return function (codPost) {
+        var url = "carregaComentarios.php?post=" + encodeURIComponent(codPost);
+        if (parseInt(codPost) === codPost) {
+            if(!comentarios[codPost]) {
+                if (loading_screen) {
+                    loading_screen.style.display = 'block';
+                }
+                AJAXOpen(url,ajaxHandler);
+            } else {
+                colocaMensagens(comentarios[codPost]);
+            }
+        }
+    };
+}()); // fim do abreCometarios
 /* link template */
 var linkHTML = function (id,url) {
     return "<li class=\"tabela_port\" id=\"liLink"+id+"\"><a href=\""+url+"\" target=\"_blank\" align=\"left\">"+url+"</a><button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink("+id+");});\" align=\"right\"></button></li>";
@@ -114,7 +232,7 @@ var submitLinkForm = (function () {
             }
             return;
         }
-		  t = this.responseText;
+        t = this.responseText;
         if(t) {
             try {
                 res = JSON.parse(t);
@@ -147,7 +265,7 @@ var submitLinkForm = (function () {
 }());
 // DELETE LINK AJAX
 var deleteLink = (function () {
-	function deleteLinkHandler() {
+    function deleteLinkHandler() {
         var t, res, e;
         if (this.readyState !== this.DONE) {
             // requisição em andamento, não fazer nada.
@@ -167,7 +285,7 @@ var deleteLink = (function () {
             try {
                 res = JSON.parse(t);
             }
-			catch (e) {
+            catch (e) {
                 console.log("JSON: " + e.message);
                 ROODA.ui.alert("Algo de errado aconteceu");
                 return;
@@ -182,7 +300,7 @@ var deleteLink = (function () {
                     ROODA.ui.alert(res.errors.join("<br>\n"));
                 } else {
                     ROODA.ui.alert("Não deu certo.");
-					 }
+                }
             }
         }
     };
@@ -197,7 +315,7 @@ var submitFileForm = (function () {
             return;
         }
         // Fim do request, remover tela de loading
-		  loading = document.getElementById('loading');
+        loading = document.getElementById('loading');
         if (loading) {
             loading.style.display = 'none';
         }
@@ -211,7 +329,7 @@ var submitFileForm = (function () {
         }
         // OK
         file_list = document.getElementById("caixa_arq");
-		  t = this.responseText;
+        t = this.responseText;
         if(t) {
             try {
                 res = JSON.parse(t);
@@ -227,10 +345,10 @@ var submitFileForm = (function () {
                 newfile = document.createElement("li");
                 newfile.id = "liFile" + res.file_id;
                 newfile.innerHTML = "<a href=\"../../downloadFile.php?id=" + res.file_id + "\">" + res.file_name +'</a><button type="button" class="bt_excluir" onclick="ROODA.ui.confirm(\'Tem certeza que deseja excluir este arquivo?\',function(){deleteFile(' + res.file_id + ');});"></button>';
-					 if (file_list) {
-						 file_list.appendChild(newfile);
-					 }
-					 newfile = null;
+                if (file_list) {
+                    file_list.appendChild(newfile);
+                }
+                newfile = null;
             } else {
                 ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
             }
@@ -239,12 +357,12 @@ var submitFileForm = (function () {
         }
     }
     var submitForm = submitFormFunction(uploadFormHandler);
-    return (function (f) {
+    return (function (formElement) {
         var e = document.getElementById('loading');
         if (e) {
             e.style.display = 'block';
         }
-        submitForm(f);
+        submitForm(formElement);
     });
 }());
 // DELETE FILE AJAX

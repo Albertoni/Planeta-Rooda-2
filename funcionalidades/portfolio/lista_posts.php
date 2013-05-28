@@ -2,11 +2,6 @@
 class lista_posts{
 	var $lista = array();
 	var $tamanho_lista = 0;
-	
-	function lista_posts($id, $tabela){
-		return __construct($id, $tabela); // Caso os caras estejam usando PHP 5.2 ou alguma coisa assim, isso dá backwards compatibility
-	}
-	
 	function __construct($id, $tabela_posts){
 		$consulta = new conexao();
 		$this->lista = array();
