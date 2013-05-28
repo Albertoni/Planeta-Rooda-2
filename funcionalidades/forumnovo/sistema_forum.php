@@ -69,40 +69,6 @@ function string2consulta($t, $str){ // Usado em pesquisa_forum pra repassar pro 
 	}
 }
 
-function troca(&$v1, &$v2){ // Eu acho que troca o valor de v1 com o de v2. Sinceramente espero que faça isso, pelo menos.
-	$vaux = $v1;
-	$v1 = $v2;
-	$v2 = $vaux;
-}
-
-
-//ordena
-function quicksort(&$vet, $ini, $fim){
-	if ($ini < $fim){
-		$k = divide($vet, $ini, $fim);
-		quicksort($vet, $ini, $k-1);
-		quicksort($vet, $k+1, $fim);
-	}
-}		//divide o array em dois
-function divide(&$vet, $ini, $fim){
-	$i = $ini;
-	$j = $fim;
-	$dir = 1;
-
-	while ($i < $j){
-		if ($vet[$i]->msgId > $vet[$j]->msgId){
-			troca($vet[$i], $vet[$j]);
-			$dir = - $dir;
-		}
-		if ($dir == 1) {
-			$j--;
-		}else{
-			$i++;
-		}
-	}
-	return $i;
-}
-
 class topico{
 	private $idTopico;
 	private $idTurma;
@@ -137,7 +103,7 @@ class topico{
 }
 
 
-class dadosForum {
+class forum {
 	/*\
 	 * 
 	 * Classe voltada SOMENTE a CARREGAR ou SALVAR os dados.
@@ -156,10 +122,10 @@ class dadosForum {
 	
 	public $idTurma;
 	private $listaTopicos = array();
+	public $numPaginas;
 	
 	function __construct($idTurma){
 		$this->idTurma = (int) $idTurma;
-		
 	}
 	
 	function carregaTopicos(){
@@ -167,11 +133,22 @@ class dadosForum {
 			$idTurma = $this->idTurma;
 			$q = new conexao();
 			$q->solicitar("SELECT * FROM ForumTopico WHERE idTurma = $idTurma");
-			
-		for($i=0; $i < ($q->registros); $i+=1){
 
-		}
+			$numPaginas = floor($q->registros / 10); // 1 pagina por 10 topicos, COMEÇA NO ZERO
 			
+			for($i=0; $i < ($q->registros); $i+=1){
+				$idTopico = $q->resultado['idTopico'];
+				$idTurma = $q->resultado['idTurma'];
+				$idUsuario = $q->resultado['idUsuario'];
+				$titulo = $q->resultado['titulo'];
+				$date = $q->resultado['date'];
+
+				$topicoLoop = new topico($idTopico, $idTurma, $idUsuario, $titulo, $date);
+				$listaTopicos[] = $topicoLoop; // appends
+			}
+			
+			return $this->listaTopicos;
+
 		}else{
 			return $this->listaTopicos;
 		}
@@ -179,4 +156,20 @@ class dadosForum {
 }
 
 
-?>
+class visualizacaoForum extends forum{
+
+	function imprimeTopicos(){
+		if(empty($this->listaTopicos)){
+			return "ops ops ops ops osp osposposp ospo pso sp opsopsospopsosp";
+		}else{
+			$html = "";
+			foreach ($this->listaTopicos as $indice => $topico) {
+				
+			}
+		}
+	}
+
+	function imprimePaginas(){
+
+	}
+}

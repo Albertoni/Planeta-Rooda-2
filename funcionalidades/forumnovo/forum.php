@@ -19,7 +19,7 @@ require("../../reguaNavegacao.class.php");
 
 $pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
 
-$forum = new dadosForum($turma);
+$forum = new visualizacaoForum($turma);
 $forum->carregaTopicos();
 
 //$paginas = array();
@@ -99,43 +99,21 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 <?php
 if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 	echo "<a href=\"forum_cria_topico.php?fid=$turma&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
-};
+}
 ?>
 	<a href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	<div id="dinamica">
 <?php
-		if ($VERIFICA_USER_ERRO_ID == 0) {
-			if ($FORUM->contador > 0){
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$turma");
-?>
+		if ($forum->numPaginas > 0){
+			$forum->imprimePaginas();
+		}
 
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1> <?php
-				$forum_msg_cont = count($FORUM->mensagem);
-				for ($i=0; $i<$forum_msg_cont; $i++){
-					$topico = $FORUM->mensagem[$i];
-					mostraTopicos($topico->msgId,$topico->msgUserName,$topico->msgTitulo,$topico->msgTexto,$topico->msgData,$topico->msgQntFilhos,($i % 2), $topico->msgUserId);
-				}
-?>
-	</div><!-- fim da div topicos -->
-<?php			
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$turma");
+		$forum->imprimeTopicos();
 
-			}else{
-?>
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1><?php mostraAviso(5);?>
-	</div><!-- fim da div topicos -->
-<?php
-			}
-		}else{
-?>
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1><?php mostraAviso($VERIFICA_USER_ERRO_ID);?>
-	</div><!-- fim da div topicos -->
-<?php
+		if ($forum->numPaginas > 0){
+			$forum->imprimePaginas();
 		}
 ?>
 	
