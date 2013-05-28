@@ -84,27 +84,56 @@ function quicksort(&$vet, $ini, $fim){
 		quicksort($vet, $k+1, $fim);
 	}
 }		//divide o array em dois
-		function divide(&$vet, $ini, $fim){
-			$i = $ini;
-			$j = $fim;
-			$dir = 1;
+function divide(&$vet, $ini, $fim){
+	$i = $ini;
+	$j = $fim;
+	$dir = 1;
 
-			while ($i < $j){
-				if ($vet[$i]->msgId > $vet[$j]->msgId){
-					troca($vet[$i], $vet[$j]);
-					$dir = - $dir;
-				}
-				if ($dir == 1) {
-					$j--;
-				}else{
-					$i++;
-				}
-			}
-			return $i;
+	while ($i < $j){
+		if ($vet[$i]->msgId > $vet[$j]->msgId){
+			troca($vet[$i], $vet[$j]);
+			$dir = - $dir;
 		}
+		if ($dir == 1) {
+			$j--;
+		}else{
+			$i++;
+		}
+	}
+	return $i;
+}
 
-class topico {
+class topico{
+	private $idTopico;
+	private $idTurma;
+	private $idUsuario;
+	private $titulo;
+	private $date;
 	
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
+		if($idTurma === NULL){// o cara que mandar a porra da id de turma que for === null que se vire
+			$this->loadTopico($idTopico);
+		}else{
+			$this->idTopico	= $idTopico;
+			$this->idTurma	= $idTurma;
+			$this->idUsuario= $idUsuario;
+			$this->titulo	= $titulo;
+			$this->date		= $date;
+		}
+	}
+
+	function loadTopico($id){
+		$q = new conexao();
+		$q->solicitar("SELECT * FROM ForumTopico WHERE idTopico = $idTopico");
+
+		if($q->erro == ""){
+			$this->idTopico	= $q->resultado['idTopico'];
+			$this->idTurma	= $q->resultado['idTurma'];
+			$this->idUsuario= $q->resultado['idUsuario'];
+			$this->titulo	= $q->resultado['titulo'];
+			$this->date		= $q->resultado['date'];
+		}
+	}
 }
 
 
@@ -139,7 +168,9 @@ class dadosForum {
 			$q = new conexao();
 			$q->solicitar("SELECT * FROM ForumTopico WHERE idTurma = $idTurma");
 			
-			print_r($q);
+		for($i=0; $i < ($q->registros); $i+=1){
+
+		}
 			
 		}else{
 			return $this->listaTopicos;
