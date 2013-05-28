@@ -65,7 +65,8 @@ else
 					FROM $tabela_portfolioComentarios AS C
 						INNER JOIN $tabela_usuarios AS U
 						ON U.usuario_id = C.codUsuario
-					WHERE codPost = '$codPost'"
+					WHERE codPost = '$codPost'
+					ORDER BY codComentario ASC"
 				);
 				if ($bd->erro)
 				{
@@ -78,13 +79,14 @@ else
 					$json['mensagens'] = array();
 					while($bd->resultado)
 					{
+						$data = new DateTime($bd->resultado['data']);
 						$json['mensagens'][] = array(
-							'codComentario' => $bd->resultado['codComentario'],
-							'codUsuario' => $bd->resultado['codUsuario'],
+							'codComentario' => (int) $bd->resultado['codComentario'],
+							'codUsuario' => (int) $bd->resultado['codUsuario'],
 							'nomeUsuario' => $bd->resultado['nomeUsuario'],
-							'data' => $bd->resultado['data'],
+							'data' => $data->format("H:i - d/m/Y"),
 							'texto' => $bd->resultado['texto'],
-							'podeApagar' => $podeApagarQualquer || ($codUsuario === $bd->resultado['codUsuario'])
+							'podeApagar' => $podeApagarQualquer || ($codUsuario === (int) $bd->resultado['codUsuario'])
 						);
 						$bd->proximo();
 					}
