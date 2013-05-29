@@ -106,15 +106,9 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 	
 	<div id="dinamica">
 <?php
-		if ($forum->numPaginas > 0){
-			$forum->imprimePaginas();
-		}
+		$forum->imprimeNumTopicos();
 
 		$forum->imprimeTopicos();
-
-		if ($forum->numPaginas > 0){
-			$forum->imprimePaginas();
-		}
 ?>
 	
 	</div>

@@ -70,11 +70,11 @@ function string2consulta($t, $str){ // Usado em pesquisa_forum pra repassar pro 
 }
 
 class topico{
-	private $idTopico;
-	private $idTurma;
-	private $idUsuario;
-	private $titulo;
-	private $date;
+	private $idTopico;	function getIdTopico(){return $this->idTopico;}
+	private $idTurma;	function getIdTurma(){return $this->idTurma;}
+	private $idUsuario;	function getIdUsuario(){return $this->idUsuario;}
+	private $titulo;	function getTitulo(){return $this->titulo;}
+	private $date;		function getDate(){return $this->date;}
 	
 	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
 		if($idTurma === NULL){// o cara que mandar a porra da id de turma que for === null que se vire
@@ -164,7 +164,37 @@ class visualizacaoForum extends forum{
 		}else{
 			$html = "";
 			foreach ($this->listaTopicos as $indice => $topico) {
-				
+				$idTopico = $topico->getIdTopico();
+				$idTurma = $topico->getIdTurma();
+				$idUsuario = $topico->getIdUsuario();
+				$date = $topico->getDate();
+				$titulo = $topico->getTitulo();
+				$link = "forum_arvore.php?turma=$idTurma&amp;topico=$idTopico";
+
+				$html .= "
+<span><div class=\"cor1\" id=\"t$idTopico\">
+	<div class=\"esq\">
+	<div class=\"imagem\"><img src=\"img_output.php?id=$idUsuario\"></div>
+
+	<ul>
+		<li><a href=\"$link\" id=\"ta$idTopico\">$titulo</a></li>
+		<li class=\"mensagens\">".$topico->getPrintableMessageNumber()."</li>
+		</ul>
+		</div>
+		<div class=\"dir\">
+		<ul>
+		<li>
+		<div class=\"limite_topico\">
+		<div style=\"height:70px; overflow:hidden;\"><a href=\"$link\" id=\"tm518\">hue</a></div>
+		</div>
+		</li>
+		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">joao teste</span> em <span style=\"color:#C60;\">29/4/2013</span> às  <span style=\"color:#C60;\">17h 4min</span></li>
+		<li><div align=\"right\" class=\"enviar\">
+		</div></li>
+	</ul>
+	</div>
+</div></span>
+";
 			}
 		}
 	}
