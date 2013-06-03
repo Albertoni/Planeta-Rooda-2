@@ -18,9 +18,9 @@ if(!$_SESSION['user']->podeAcessar($perm['pergunta_editarQuestionario'], $turma)
 	die("Desculpe, voce nao pode editar questionários nessa turma.");
 }
 
-	echo "<pre>";
+	/*echo "<pre>";
 	print_r($_POST);
-	print_r($_SESSION);
+	print_r($_SESSION);*/
 
 	function validaData($ano, $mes, $dia){
 		switch ($mes){
@@ -50,7 +50,7 @@ if(!$_SESSION['user']->podeAcessar($perm['pergunta_editarQuestionario'], $turma)
 
 	$titulo_quest = conversor_pergunta($_POST['titulo'], "Título em branco.");
 	$descricao_quest = conversor_pergunta($_POST['descrição'], "Descrição em branco.");
-	$alquest = $_POST['alquest'];
+	$alquest = (isset($_POST['alquest']) and $_POST['alquest'] != "") ? 1 : 0;
 	$questId = $_POST['id'];
 
 
@@ -86,7 +86,7 @@ if(!$_SESSION['user']->podeAcessar($perm['pergunta_editarQuestionario'], $turma)
 				}
 			
 				$resposta_parseada = implode("¦", $respostas); // Junta tudo numa só delimitada por ¦
-				//print_r($respostas);
+			
 			
 				
 				$query = "UPDATE $tabela_PerguntaPerguntas SET
@@ -128,9 +128,6 @@ if(!$_SESSION['user']->podeAcessar($perm['pergunta_editarQuestionario'], $turma)
 				$query .= " WHERE id = $pergId"; // finaliza a query
 				
 				$consulta->solicitar($query);
-				
-				//print_r($consulta);
-				echo "$query";
 				break;
 			case 3:
 				$questao	= conversor_pergunta($_POST['pergvf_'.$i], "Pergunta em Branco");
