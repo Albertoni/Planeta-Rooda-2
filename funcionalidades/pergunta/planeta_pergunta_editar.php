@@ -126,7 +126,7 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 }
 ?>
 
-			<tr style="background-color:#E7C7ED" id="bala_de_cocacola">
+			<tr style="background-color:#E7C7ED" id="bala_de_cocacola<?=$id?>">
 				<td>
 					<a onclick="maisPerguntasME(<?=$id?>, 1)"><b>Mais opções</b></a>
 				</td>
@@ -237,7 +237,7 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 	$j++;
 }
 ?>
-				<tr style="background-color:#E7C7ED" id="bala_de_canela">
+				<tr style="background-color:#E7C7ED" id="bala_de_canela<?=$id?>">
 					<td>
 						<a onclick="maisPerguntasVF(<?=$id?>, 1)"><b>Mais opções</b></a>
 					</td>
