@@ -337,31 +337,31 @@ function turmaFuncionalidade($funcionalidade_tipo, $funcionalidade_id)
 			$query = "SELECT turma FROM $tabela_portfolioProjetos WHERE id = $funcionalidade_id";
 			break;
 		case TIPOBIBLIOTECA:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT codTurma AS turma FROM $tabela_Materiais WHERE codMaterial = $funcionalidade_id";
 			break;
 		case TIPOPERGUNTA:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOAULA:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOCOMUNICADOR:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOFORUM:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOARTE:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOAULA:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOPLAYER:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		default:
-			$query = "SELECT 0 AS turma";
+			$query = "SELECT 0 AS turma"; // TODO
 	}
 	$bd = new conexao();
 	$bd->solicitar($query);
