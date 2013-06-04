@@ -134,7 +134,7 @@ class forum {
 			$q = new conexao();
 			$q->solicitar("SELECT * FROM ForumTopico WHERE idTurma = $idTurma");
 
-			$numPaginas = floor($q->registros / 10); // 1 pagina por 10 topicos, COMEÇA NO ZERO
+			$this->numTopicos = $q->registros;
 			
 			for($i=0; $i < ($q->registros); $i+=1){
 				$idTopico = $q->resultado['idTopico'];
@@ -160,7 +160,7 @@ class visualizacaoForum extends forum{
 
 	function imprimeTopicos(){
 		if(empty($this->listaTopicos)){
-			return "ops ops ops ops osp osposposp ospo pso sp opsopsospopsosp";
+			return "Não existem tópicos nessa turma.";
 		}else{
 			$html = "";
 			foreach ($this->listaTopicos as $indice => $topico) {
@@ -201,5 +201,17 @@ class visualizacaoForum extends forum{
 
 	function imprimePaginas(){
 
+	}
+
+	function imprimeNumTopicos(){
+		$frase = ($this->numTopicos == 1) ? "Existe 1 tópico nesse forum." : "Existem $this->numTopicos tópicos nesse forum.";
+		
+		echo "		<div class=\"troca_paginas\">
+			<div class=\"paginas_padding\">
+				$frase
+			</div>
+		</div>";
+
+		
 	}
 }

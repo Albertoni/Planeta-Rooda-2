@@ -29,9 +29,7 @@ float:left; margin-right:15px; display:table-cell}
 
 .resposta {width:636px; padding:22px; clear:both;}
 
-#procurar_topico { width:100%; margin-bottom:22px; float:left}
-#procurar_topico input[type=text] {width:100%; margin-bottom:5px}
-#procurar_topico input[type=image] {margin-left:22px;}
+.botao_procurar {float:right}
 
 #box_procurar {padding-top:10px;}
 
@@ -76,6 +74,10 @@ float:left; margin-right:15px; display:table-cell}
 	width:100%;
 	margin-top : 5px;
 	margin-bottom : 5px;
+}
+
+.troca_paginas{
+	text-align: center;
 }
 
 

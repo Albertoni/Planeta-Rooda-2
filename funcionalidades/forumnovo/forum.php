@@ -98,10 +98,10 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 	<div class="bts_cima">
 <?php
 if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
-	echo "<a href=\"forum_cria_topico.php?fid=$turma&amp;turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+	echo "<a href=\"forum_cria_topico.php?turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
 }
 ?>
-	<a href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
+	<a class="botao_procurar" href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	<div id="dinamica">
@@ -115,9 +115,11 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 	
 	<div class="bts_baixo">
 <?php
-$linkcria = "forum_cria_topico.php?turma=$turma";
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
-	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
+	echo "<a href=\"forum_cria_topico.php?turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+}
+?>
+	<a class="botao_procurar" href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	</div>
