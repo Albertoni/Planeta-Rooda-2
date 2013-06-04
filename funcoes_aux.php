@@ -308,11 +308,11 @@ function cospeSelectDeTurmas($t=0){
 	$turmas = $usuario->getTurmas();
 	/*foreach($_SESSION['SS_turmas'] as $turma){*/
 	foreach($turmas as $turma){
-		$nome->solicitar("SELECT nomeTurma FROM $tabela_turmas WHERE codTurma = $turma");
-		if ($turma == $t){
-			echo "\n					<option selected value=\"$turma\">".$nome->resultado['nomeTurma']."</option>";
+		//$nome->solicitar("SELECT nomeTurma FROM $tabela_turmas WHERE codTurma = $turma");
+		if ($turma['codTurma'] == $t){
+			echo "\n					<option selected value=\"$turma\">".$turma['nomeTurma']."</option>";
 		}else{
-			echo "\n					<option value=\"$turma\">".$nome->resultado['nomeTurma']."</option>";
+			echo "\n					<option value=\"$turma\">".$turma['nomeTurma']."</option>";
 		}
 	}
 }
@@ -324,4 +324,46 @@ function usuarioPertenceTurma($usuario,$turma)
 	$con->solicitar("SELECT '1' FROM TurmasUsuario WHERE codUsuario='$usuario' AND codTurma='$turma'");
 	return ($con->registros > 0);
 }
-?>
+function turmaFuncionalidade($funcionalidade_tipo, $funcionalidade_id)
+{
+	$funcionalidade_tipo = (int) $funcionalidade_tipo;
+	$funcionalidade_id = (int) $funcionalidade_id;
+	switch ($funcionalidade)
+	{
+		case TIPOBLOG:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOPORTFOLIO:
+			$query = "SELECT turma FROM $tabela_portfolioProjetos WHERE id = $funcionalidade_id";
+			break;
+		case TIPOBIBLIOTECA:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOPERGUNTA:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOAULA:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOCOMUNICADOR:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOFORUM:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOARTE:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOAULA:
+			$query = "SELECT 0 AS turma";
+			break;
+		case TIPOPLAYER:
+			$query = "SELECT 0 AS turma";
+			break;
+		default:
+			$query = "SELECT 0 AS turma";
+	}
+	$bd = new conexao();
+	$bd->solicitar($query);
+	return $bd->resultado['turma'];
+}

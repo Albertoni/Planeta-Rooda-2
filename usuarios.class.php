@@ -136,26 +136,40 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	/**
-	* @return as ids no BD de todas as turmas deste usuário em um array.
+	* @return array associativo com os indices 'codTurma' e 'nomeTurma'
+	*         das turmas que o usuário pertence.
 	*/
 	public function getTurmas(){
+		$idUsuario = $this->id;
 		$turmas = array();
 		$conexaoTurmas = new conexao();
-		$conexaoTurmas->solicitar("SELECT TU.codTurma, T.codTurma
-									FROM TurmasUsuario AS TU, Turmas AS T
-									WHERE TU.codUsuario = '".($this->id)."'
-										OR T.profResponsavel = '".($this->id)."'");
+
+		$conexaoTurmas->solicitar(
+			"SELECT T.codTurma as codTurma, T.nomeTurma as nomeTurma
+			FROM Turmas AS T 
+			INNER JOIN TurmasUsuario AS TU 
+				ON T.codTurma = TU.codTurma
+			WHERE codUsuario = $idUsuario
+			   OR T.profResponsavel = $idUsuario"
+		);
+			// "SELECT TU.codTurma, T.codTurma
+			// FROM TurmasUsuario AS TU, Turmas AS T
+			// WHERE TU.codUsuario = '".($this->id)."'
+			// 	OR T.profResponsavel = '".($this->id)."'"
+
 		for($i=0; $i<$conexaoTurmas->registros; $i++){
-			$turmas[$i] = $conexaoTurmas->resultado['codTurma'];
+			$turmas[$i]['codTurma'] = $conexaoTurmas->resultado['codTurma'];
+			$turmas[$i]['nomeTurma'] = $conexaoTurmas->resultado['nomeTurma'];
 			$conexaoTurmas->proximo();
 		}
 
-		$turmasSemDuplicatas = array_unique($turmas);
+		// $turmasSemDuplicatas = array_unique($turmas);
 
-		return $turmasSemDuplicatas;
+		return $turmas;
+		// return $turmasSemDuplicatas;
 	}
 
-	/*
+	/**
 	* @return Todos os planetas que o usuário pode acessar, em um array com objetos da classe Planeta.
 	*/
 	public function getPlanetasQuePodeAcessar(){
