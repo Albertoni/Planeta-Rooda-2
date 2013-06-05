@@ -182,10 +182,10 @@ if($usuario->podeAcessar($permissoes['biblioteca_enviarMateriais'], $turma)){
 					</div></li>
 					<div id="tipo_mensagem" style="display: block">Selecione um tipo de material:</div>
 					<li>
-						<input type="radio" name="e_material" value="link" onclick="tipoMaterial('tipoLink');" />
-						Link
-						<input type="radio" name="e_material" value="arquivo" onclick="tipoMaterial('tipoArquivo');" />
-						Arquivo
+						<label><input type="radio" name="e_material" value="link" onclick="tipoMaterial('tipoLink');" />
+						Link</label>
+						<label><input type="radio" name="e_material" value="arquivo" onclick="tipoMaterial('tipoArquivo');" />
+						Arquivo</label>
 					</li>
 					<li><div class="enviar" align="right">
 							<input name="botao_enviar" type="image" onClick="enviar_material.submit();" src="../../images/botoes/bt_enviar.png"/>

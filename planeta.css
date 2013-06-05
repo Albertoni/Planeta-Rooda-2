@@ -44,6 +44,11 @@ input.submit {
 	width: 100px;
 	height: 37px;
 }
+button.confirmar {
+	background-image: url('images/botoes/bt_confir_pq.png');
+	height: 38px;
+	width: 129px;
+}
 textarea {border:solid 1px #74d3ed;}
 textarea:hover {background-color:#74d3ed}
 

@@ -4,7 +4,35 @@ body,td,th {
 	background-image: url("../../images/fundos/fundo7.png");
 	background-color: #A9ABC8 !important;
 }
-
+fieldset {
+	border: 1px solid #AAAAAA;
+	border-radius: 5px;
+}
+fieldset legend {
+	color: #222;
+	font-weight: bold;
+}
+div#enviar_material {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+}
+.material_material {
+	margin: 15px;
+	padding: 15px;
+	position: relative;
+}
+.material_material input {
+	width: 250px;
+}
+.tipo_material {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	text-align: center;
+	padding: 10px;
+}
+/*
 h1,h2,h3,h4,h5,h6 {
 	font-family: Arial, Helvetica, sans-serif;
 }
@@ -118,3 +146,4 @@ a:active {
 .naoAprovado{background-color:#FAA;}
 
 hr{margin:0;}
+*/
