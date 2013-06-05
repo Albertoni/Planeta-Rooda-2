@@ -57,7 +57,6 @@ $tabela_ArteComentarios			= "ArtesComentarios";
 $tabela_ArteDesenhos			= "ArtesDesenhos";
 $tabela_Aulas					= "Aulas";
 $tabela_avatares				= "avatar_usuario";
-$tabela_biblio					= "Biblioteca";
 $tabela_biblioComentarios		= "BibliotecaComentarios";
 $tabela_Materiais				= "BibliotecaMateriais";
 $tabela_blogs					= "blogblogs";

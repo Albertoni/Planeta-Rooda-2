@@ -258,6 +258,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 		<input type="image" src="../../images/botoes/bt_confirm.png" align="right" />
 	</div>
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

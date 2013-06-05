@@ -263,6 +263,7 @@ $datainicio = $arraydata[2]."/".$arraydata[1]."/".$arraydata[0]; // Monta a data
 	<input type="hidden" name="idquest" value="<?=$id?>">
 	<input type="hidden" name="numops" value="<?=count($p->itens)?>">
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

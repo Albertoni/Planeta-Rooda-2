@@ -289,6 +289,7 @@ while (isset($_POST['quest'.$i])) {
 	
 	<input type="hidden" name="turma" value="<?=$turma?>"/>
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

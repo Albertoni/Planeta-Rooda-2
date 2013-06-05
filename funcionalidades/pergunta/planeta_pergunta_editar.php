@@ -490,6 +490,7 @@ if($usuario->podeAcessar($permissoes['pergunta_editarQuestionario'], $turma) and
 	<input type="hidden" name="editar" value="1"/>
 	<input type="hidden" name="id" value="<?=$id?>"/>
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

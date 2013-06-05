@@ -390,6 +390,7 @@ if($perm === false){
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script src="portfolio_ajax.js"></script>
+<script src="comentarios.js"></script>
 <script src="../../jquery.js"></script>
 <script src="../../planeta.js"></script>
 <script src="portfolio.js"></script>

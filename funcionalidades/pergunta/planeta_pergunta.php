@@ -199,6 +199,7 @@ if($usuario->podeAcessar($permissoes['pergunta_criarQuestionario'], $turma)){
 ?>
 	</div>
 	</div>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

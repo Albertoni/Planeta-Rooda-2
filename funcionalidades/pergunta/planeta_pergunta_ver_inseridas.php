@@ -323,6 +323,7 @@ for($i=0 ; $i < count($p->itens) ;$i++) {
 	<div class="bts_cima">
 		<a href="planeta_pergunta.php"><img src="../../images/botoes/bt_voltar.png" align="left" style="margin-top:20px"/></a>
 	</div>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

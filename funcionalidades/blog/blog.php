@@ -274,11 +274,11 @@ foreach ($blog->tags as $tag){
 			<a href="blog_inicio.php"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
 <?php
 if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
-	echo "		  <a href=\"blog_postagem.php?blog_id=$blog_id&turma=$turma\"><img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\" align=\"right\"/></a>";
+	echo "		  <a href=\"blog_postagem.php?blog_id=$blog_id&turma=$turma\" class=\"right\"><img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\" align=\"right\"/></a>";
 }
 ?>
 		</div>
-	
+	<div style="clear:both;"></div>
 	</div><!-- Fecha Div conteudo -->
 	
 	</div><!-- Fecha Div conteudo_meio -->   

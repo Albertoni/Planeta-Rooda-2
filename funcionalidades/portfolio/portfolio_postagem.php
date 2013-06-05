@@ -443,6 +443,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 				<input type="image" onClick="postForm.submit()" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 		</form>
+		<div style="clear:both;"></div>
 		</div><!-- Fecha Div conteudo -->
 		</div><!-- Fecha Div conteudo_meio -->
 		<div id="conteudo_base">

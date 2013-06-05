@@ -281,6 +281,7 @@ for($i=0 ; $i < count($p->itens) ;$i++) {
 	<input type="hidden" name="idquest" value="<?=$id?>">
 	<input type="hidden" name="numops" value="<?=count($p->itens)?>">
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

@@ -56,7 +56,7 @@ class reguaNavegacao {
 		$this->fecharColorboxNiveis = array();
 		$this->adicionarNivel("Planeta ROODA", "http://sideshowbob/asd/");
 		
-		$idUsuario = $_SESSION['SS_usuario_id'];
+		$idUsuario = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
 		$conexaoTerreno = new conexao();
 		$conexaoTerreno->solicitar("SELECT *
 									FROM $tabela_personagens JOIN $tabela_usuarios ON usuario_personagem_id=personagem_id

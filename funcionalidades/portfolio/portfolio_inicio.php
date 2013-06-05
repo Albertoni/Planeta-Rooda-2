@@ -82,7 +82,7 @@ require("../../reguaNavegacao.class.php");
 					</ul>
 				</div>
 			</div> 
-   
+			<div style="clear:both;"></div>
 		</div><!-- Fecha Div conteudo -->
 	
 	</div><!-- Fecha Div conteudo_meio -->   

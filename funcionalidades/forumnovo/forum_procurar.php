@@ -120,7 +120,7 @@
 	<div class="bts_baixo">
 		<input type="image" src="../../images/botoes/bt_voltar.png" onclick="document.location = '<?php echo $link_voltar ?>'"/>
 	</div>
-	
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

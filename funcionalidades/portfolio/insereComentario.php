@@ -34,52 +34,47 @@ else
 			$json['errors'][] = 'Mensagem vazia.';
 		} else
 		{
+			// PEGA ID DA TURMA
 			$bd = new conexao();
 			$bd->solicitar(
-				"SELECT COUNT(Turma.codUsuario) as numero
+				"SELECT Proj.turma as turma
 				FROM $tabela_portfolioPosts AS Post
 					INNER JOIN $tabela_portfolioProjetos AS Proj
 					ON Proj.id = Post.projeto_id
-						INNER JOIN $tabela_turmasUsuario AS Turma
-						ON Turma.codTurma = Proj.turma
-				WHERE Post.id = '$codPost'
-				  AND Turma.codUsuario = '$codUsuario'"
+				WHERE Post.id = '$codPost'"
 			);
 			if ($bd->erro) {
 				$json['errors'][] = $bd->erro;
 			}
-			else
+			// ID DA TURMA:
+			$turma = $bd->resultado['turma'];
+			// pegando permissão do usuario para inserir comentário
+			$perm = checa_permissoes(TIPOPORTFOLIO, $turma);
+			$perm = $user->podeAcessar($perm['portfolio_inserirComentarios'],$turma);
+			if (!$perm) {
+				$json['errors'][] = "Você não tem permissão para comentar neste post.";
+			}
+			else 
 			{
-				$perm = false;
-				if ($bd->registros === 1)
-				{
-					$perm = true;
+				$bd = new conexao();
+				$dateTime = new DateTime();
+				$data = $bd->sanitizaString($dateTime->format("Y-m-d H:i:s"));
+				$mensagem = $bd->sanitizaString($mensagem);
+				$bd->solicitar(
+					"INSERT INTO $tabela_portfolioComentarios
+					       (  codPost,   codUsuario,   data,   texto)
+					VALUES ('$codPost','$codUsuario','$data','$mensagem')"
+				);
+				if ($bd->erro) {
+					$json['errors'][] = $bd->erro;
 				}
-				if (!$perm) {
-					$json['errors'][] = "Você não tem permissão para comentar neste post.";
-				}
-				else 
+				else
 				{
-					$dateTime = new DateTime();
-					$data = $bd->sanitizaString($dateTime->format("Y-m-d H:i:s"));
-					$bd = new conexao();
-					$mensagem = $bd->sanitizaString($mensagem);
-					$bd->solicitar(
-						"INSERT INTO $tabela_portfolioComentarios
-						       (  codPost,   codUsuario,   data,   texto)
-						VALUES ('$codPost','$codUsuario','$data','$mensagem')"
-					);
-					if ($bd->erro) {
-						$json['errors'][] = $bd->erro;
-					}
-					else
-					{
-						// comentário inserido com sucesso
-						$json['mensagem']['codComentario'] = $bd->ultimo_id();
-						$json['mensagem']['data'] = $data;
-						$json['mensagem']['podeApagar'] = true;
-						$json['ok'] = true;
-					}
+					// comentário inserido com sucesso
+					$json['mensagem']['codComentario'] = $bd->ultimo_id();
+					$json['mensagem']['data'] = $data;
+					$json['mensagem']['podeApagar'] = true;
+					$json['ok'] = true;
 				}
 			}
 		}

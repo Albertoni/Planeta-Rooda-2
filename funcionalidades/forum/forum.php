@@ -148,7 +148,7 @@ $linkcria = "forum_cria_topico.php?turma=$FORUM_ID";
 if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
 	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
 	</div>
-	
+	<div style="clear:both;"></div>
 	</div>
 
 	<!-- fim do conteudo -->

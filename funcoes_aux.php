@@ -328,7 +328,7 @@ function turmaFuncionalidade($funcionalidade_tipo, $funcionalidade_id)
 {
 	$funcionalidade_tipo = (int) $funcionalidade_tipo;
 	$funcionalidade_id = (int) $funcionalidade_id;
-	switch ($funcionalidade)
+	switch ($funcionalidade_tipo)
 	{
 		case TIPOBLOG:
 			$query = "SELECT 0 AS turma";
@@ -340,10 +340,10 @@ function turmaFuncionalidade($funcionalidade_tipo, $funcionalidade_id)
 			$query = "SELECT codTurma AS turma FROM $tabela_Materiais WHERE codMaterial = $funcionalidade_id";
 			break;
 		case TIPOPERGUNTA:
-			$query = "SELECT 0 AS turma"; // TODO
+			$query = "SELECT turma FROM $tabela_PerguntaQuestionarios WHERE id = $funcionalidade_id"; // TODO
 			break;
 		case TIPOAULA:
-			$query = "SELECT 0 AS turma"; // TODO
+			$query = "SELECT turma FROM $tabela_Aulas WHERE id = $funcionalidade_id"; // TODO
 			break;
 		case TIPOCOMUNICADOR:
 			$query = "SELECT 0 AS turma"; // TODO

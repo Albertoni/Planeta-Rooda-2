@@ -160,7 +160,7 @@
 	<div class="bts_baixo">
 	<a href="<?php echo $link_voltar; ?>"><img src="../../images/botoes/bt_voltar.png"/></a>
 	</div>
-
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

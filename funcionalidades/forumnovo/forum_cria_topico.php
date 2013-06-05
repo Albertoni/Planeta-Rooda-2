@@ -148,6 +148,7 @@ else // senão, tá criando.
 	</div>
 	
 	</form>
+	<div style="clear:both;"></div>
 	</div>
 	<!-- fim do conteudo -->
 

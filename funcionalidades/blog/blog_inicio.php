@@ -15,14 +15,13 @@
 	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 	$permissoes = checa_permissoes(TIPOBLOG, $turma);
 	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>
-<link type="text/css" rel="stylesheet" href="planeta.css" />
+<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
@@ -36,7 +35,7 @@
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();">
+<body onload="atualiza(ajusta);inicia();">
 	<div id="topo">
 		<div id="centraliza_topo">
 			<?php 
@@ -94,6 +93,7 @@
 				</ul>
 
 			</div>
+			<div style="clear:both;"></div>
 		</div><!-- Fecha Div conteudo -->
 		</div><!-- Fecha Div conteudo_meio -->
 		<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->

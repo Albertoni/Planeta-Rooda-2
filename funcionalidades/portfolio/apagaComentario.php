@@ -50,22 +50,22 @@ else
 			}
 			else
 			{
-				$json['codPost'] = $bd->resultado['codPost'];
-				$donoProjeto = $bd->resultado['codDonoProjeto'];
-				$autorComentario = $bd->resultado['codAutorComentario'];
-				$autorPost = $bd->resultado['codAutorPost'];
-				$codTurma = $bd->resultado['codTurma'];
+				$json['codPost'] = (int) $bd->resultado['codPost'];
+				$donoProjeto = (int) $bd->resultado['codDonoProjeto'];
+				$autorComentario = (int) $bd->resultado['codAutorComentario'];
+				$autorPost = (int) $bd->resultado['codAutorPost'];
+				$codTurma = (int) $bd->resultado['codTurma'];
 				$perm = false;
-				if (!$perm && $donoProjeto === $codUsuario)
-				{
-					// é dono do projeto
-					$perm = true;
-				}
-				if (!$perm && $autorPost === $codUsuario)
-				{
-					// é autor do post
-					$perm = true;
-				}
+				// if (!$perm && $donoProjeto === $codUsuario)
+				// {
+				// 	// é dono do projeto
+				// 	$perm = true;
+				// }
+				// if (!$perm && $autorPost === $codUsuario)
+				// {
+				// 	// é autor do post
+				// 	$perm = true;
+				// }
 				if (!$perm && $autorComentario === $codUsuario)
 				{
 					// é autor do comentário
@@ -90,6 +90,7 @@ else
 						if ($bd->registros === 1)
 						{
 							$nivel = $bd->resultado['nivel'];
+							$json['nivel'] = $nivel;
 							if ($nivel >= $nivelAdmin && $nivel < $nivelAluno)
 							{
 								$perm = true;

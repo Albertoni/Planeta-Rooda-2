@@ -6,6 +6,21 @@ html {margin:0; height:100%}
 
 .sem_estilo {padding:22px;}
 
+div.aviso {
+	background: #fff3aa; /* Old browsers */
+	background: -moz-linear-gradient(top,  #fff3aa 0%, #f1da36 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff3aa), color-stop(100%,#f1da36)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #fff3aa 0%,#f1da36 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #fff3aa 0%,#f1da36 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #fff3aa 0%,#f1da36 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #fff3aa 0%,#f1da36 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff3aa', endColorstr='#f1da36',GradientType=0 ); /* IE6-9 */
+	border: 1px solid #333;
+	border-radius: 8px;
+	padding: 6px 10px;
+	margin: 10px;
+}
+
 img{border:0;}
 
 a{color:#333333; cursor:pointer; border:none;}
@@ -62,10 +77,14 @@ width:100%; position:relative; z-index:100}
 #conteudo_base {background-image:url(images/fundos/corpo_base.png); background-repeat: no-repeat; 
 width:100%; height:59px; position:relative}
 
-#conteudo {width:680px; margin-left:47px; margin-right:47px; margin-top:-10px; position:absolute}
+#conteudo {width:680px; margin-left:47px; margin-right:47px; /*margin-top:-10px; position:absolute */ }
 
 .bts_cima {width:100%; float:left; margin-bottom:22px}
-.bts_baixo {width:100%; float:left; margin-top:22px}
+.bts_baixo {width:100%; clear:both; margin-top:22px}
+.bts_cima a,
+.bts_baixo a { display: inline-block; }
+.bts_cima a.right,
+.bts_baixo a.right { float: right; }
 
 .bloco {background-color:#EEF5F5; border-top:25px solid #53686F; border-left:1px solid #aaaaaa;
 border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; min-height:20px}
@@ -102,7 +121,7 @@ filter: alpha(opacity=50); display:none; z-index:500; position:absolute;}
 
 .fechar_coments {float:right; display:table-cell; margin-top:-25px; position:relative; cursor:pointer; z-index:1337}
 
-.troca_paginas {background-color:#EEF5F5; width:100%; float:left}
+.troca_paginas {background-color:#EEF5F5; width:100%; clear: both;}
 .troca_paginas a {margin-left:3px; margin-right:3px; text-decoration:none; color:#000000; 
 font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
 .troca_paginas a:hover {color:#C60;}
