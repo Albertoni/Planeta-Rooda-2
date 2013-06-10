@@ -12,7 +12,7 @@ $usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id
 if ($usuario_id >= 0)
 {
 	$usuario = new Usuario();
-	$usuario->openUsuario($usuario_id);	
+	$usuario->openUsuario($usuario_id);
 }
 ?>
 <!DOCTYPE html>
@@ -87,8 +87,8 @@ if (count($turmasDoUsuario) > 0) {
 					<!-- FIM DA SELEÇÂO DE TURMA -->
 					<div class="bloco" id="materiais">
 						<h1>TURMA</h1>
-						<button type="button">Enviar material</button>
-						<button type="button">Buscar materiais</button>
+						<button type="button" id="botao_enviar_material">Enviar material</button>
+						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
 					<div class="bloco" id="buscar_materiais">
 						<h1>BUSCAR MATERIAIS</h1>
@@ -123,5 +123,13 @@ if (count($turmasDoUsuario) > 0) {
 			</div><!-- fim do conteudo -->
 			<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 		</div>
+		<script>
+		;(function () {
+			var botao_enviar_material  = document.getElementById("botao_enviar_material");
+			var botao_buscar_materiais = document.getElementById("botao_buscar_materiais");
+			var enviar_material  = document.getElementById("enviar_material");
+			var buscar_materiais = document.getElementById("buscar_materiais");
+		}());
+		</script>
 	</body>
 </html>

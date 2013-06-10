@@ -1,8 +1,7 @@
 <?php
 /*
-*	Sistema do blog
-*
-*/
+ * usuarios.class.php
+ */
 //$tabela_usuarios = "usuarios";
 require_once("funcoes_aux.php");
 require_once("cfg.php");
@@ -150,7 +149,7 @@ class Usuario { //estrutura para o item post do blog
 			INNER JOIN TurmasUsuario AS TU 
 				ON T.codTurma = TU.codTurma
 			WHERE codUsuario = $idUsuario
-			   OR T.profResponsavel = $idUsuario"
+				OR T.profResponsavel = $idUsuario"
 		);
 			// "SELECT TU.codTurma, T.codTurma
 			// FROM TurmasUsuario AS TU, Turmas AS T
@@ -268,109 +267,28 @@ class Usuario { //estrutura para o item post do blog
 	*/
 	public function getCorLuva(){
 		global $tabela_personagens; global $tabela_usuarios;
+		$personagem_id = $this->personagemId;
 		$q = new conexao();
-		$q->solicitar("SELECT personagem_cor_luvas_botas FROM $tabela_personagens
-						WHERE personagem_id=(
-							SELECT usuario_personagem_id FROM $tabela_usuarios
-							WHERE usuario_id=".$this->getId().")");
-		switch($q->resultado['personagem_cor_luvas_botas']){
-			case 1:
-				return '#EAC1C1';
-			case 2:
-				return '#E29696';
-			case 3:
-				return '#DD8080';
-			case 4:
-				return '#CE3E3E';
-			case 5:
-				return '#AA4B4B';
-			case 6:
-				return '#F2D2B1';
-			case 7:
-				return '#E2AD81';
-			case 8:
-				return '#DD945E';
-			case 9:
-				return '#BC794B';
-			case 10:
-				return '#966645';
-			case 11:
-				return '#EAE9BB';
-			case 12:
-				return '#DBD36E';
-			case 13:
-				return '#E2D44D';
-			case 14:
-				return '#CEBB30';
-			case 15:
-				return '#A5942B';
-			case 16:
-				return '#C9DDAC';
-			case 17:
-				return '#B9D882';
-			case 18:
-				return '#A0BF4C';
-			case 19:
-				return '#88A02D';
-			case 20:
-				return '#61721C';
-			case 21:
-				return '#B6D8D4';
-			case 22:
-				return '#8DC9C0';
-			case 23:
-				return '#68AFA3';
-			case 24:
-				return '#469183';
-			case 25:
-				return '#287768';
-			case 26:
-				return '#B4CCDB';
-			case 27:
-				return '#94B2D3';
-			case 28:
-				return '#6296C4';
-			case 29:
-				return '#467BA3';
-			case 30:
-				return '#225C7F';
-			case 31:
-				return '#C8B6DB';
-			case 32:
-				return '#B69CD8';
-			case 33:
-				return '#9675CC';
-			case 34:
-				return '#7454A3';
-			case 35:
-				return '#50327F';
-			case 36:
-				return '#BBB';
-			case 37:
-				return '#999';
-			case 38:
-				return '#777';
-			case 39:
-				return '#666';
-			case 40:
-				return '#333';
-			default:
-				return '#7F06FF'; // go go saints row
-		}
+		$q->solicitar(
+			"SELECT personagem_cor_luvas_botas FROM $tabela_personagens
+			WHERE personagem_id = $personagem_id"
+		);
+		return $q->resultado['personagem_cor_luvas_botas'] ? $q->resultado['personagem_cor_luvas_botas'] : false;
 	}
 	
 	public function printListaTurmas(){
+		$id = $this->id;
 		$conexaoNomes = new conexao();
-		$conexaoNomes->solicitar("SELECT T.nomeTurma
-									FROM TurmasUsuario AS TU, Turmas AS T
-									WHERE TU.codUsuario = '".($this->id)."'
-										OR T.profResponsavel = '".($this->id)."'");
-		
-		$buffer = $conexaoNomes->resultado['nomeTurma'];
-		for($i = 1; $i < $conexaoTurmas->registros; $i++){
-			$buffer .= ", ".$conexaoNomes->resultado['nomeTurma'];
+		$conexaoNomes->solicitar(
+			"SELECT T.nomeTurma
+			FROM TurmasUsuario AS TU, Turmas AS T
+			WHERE TU.codUsuario = '$id'
+			OR T.profResponsavel = '$id'"
+		);
+		while ($conexaoNomes->resultado) {
+			$buffer = $conexaoNomes->resultado['nomeTurma'];
+			$conexaoNomes->proximo();
 		}
-		
-		echo $buffer;
+		echo implode(", ", $buffer);
 	}
 }

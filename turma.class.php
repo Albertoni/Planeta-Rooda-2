@@ -121,14 +121,17 @@ class turma{
 	public function openTurma($id_param){
 		$id_param = (int) $id_param;
 		$conexao = new conexao();
-		$conexao->solicitar("SELECT *
-							 FROM Turmas
-							 WHERE codTurma=$id_param");
-		
-		$this->setId($id_param);
-		$this->setNome($conexao->resultado['nomeTurma']);
-		$this->setIdProfessorResponsavel($conexao->resultado['profResponsavel']);
-		$this->setDescricao($conexao->resultado['descricao']);
+		$conexao->solicitar(
+			"SELECT *
+			 FROM Turmas
+			 WHERE codTurma=$id_param"
+		);
+		if ($conexao->resultado) {
+			$this->setId($id_param);
+			$this->setNome($conexao->resultado['nomeTurma']);
+			$this->setIdProfessorResponsavel($conexao->resultado['profResponsavel']);
+			$this->setDescricao($conexao->resultado['descricao']);
+		}
 	}
 	
 	/*
