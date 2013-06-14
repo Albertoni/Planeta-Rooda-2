@@ -114,6 +114,21 @@ class Arquivo {
 		return $this->idUploader;
 	}
 	// METODOS RELACIONSADOS A UPLOAD
+	public function salvar() {
+		if ($this->upload && !$this->download) {
+			// novo arquivo
+			$bd = new conexao();
+			$bd->solicitar(
+				"INSERT INTO
+				$tabela_arquivos (nome, )"
+			);
+		} else if ($this->download && !$this->upload) {
+			// arquivo editado
+		} else {
+			$this->erros[] = "Este arquivo não pode ser enviado";
+			return false;
+		}
+	}
 	public function setFuncionalidade($tipo, $id) {
 		if ($upload === true) {
 			$tipo = (int) $tipo;
@@ -146,6 +161,9 @@ class Arquivo {
 			$this->setTipo($FILE['type']);
 		}
 		return $this;
+	}
+	public function setConteudo($conteudo) {
+		$this->conteudo = $conteudo;
 	}
 	public function setTitulo($titulo) {
 		$titulo = trim($titulo);
