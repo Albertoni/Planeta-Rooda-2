@@ -1,4 +1,5 @@
 <?php
+require_once("cfg.php");
 //---------------------------------------------------------------
 //Funções Comuns
 //---------------------------------------------------------------
@@ -324,44 +325,64 @@ function usuarioPertenceTurma($usuario,$turma)
 	$con->solicitar("SELECT '1' FROM TurmasUsuario WHERE codUsuario='$usuario' AND codTurma='$turma'");
 	return ($con->registros > 0);
 }
-function turmaFuncionalidade($funcionalidade_tipo, $funcionalidade_id)
+/* turmaFuncionalidade($tipo,$id);
+ * O que $id representa para cada funcionalidade:
+ *   TIPOARTE        : indefinido
+ *   TIPOAULA        : id da aula
+ *   TIPOBIBLIOTECA  : id do material
+ *   TIPOBLOG        : indefinido
+ *   TIPOCOMUNICADOR : indefinido
+ *   TIPOPORTFOLIO   : id do projeto
+ *   TIPOFORUM       : id da mensagem
+ *   TIPOPERGUNTA    : id do questionario
+ *   TIPOPLAYER      : indefinido
+ */
+function turmaFuncionalidade($tipo, $id)
 {
-	$funcionalidade_tipo = (int) $funcionalidade_tipo;
-	$funcionalidade_id = (int) $funcionalidade_id;
-	switch ($funcionalidade_tipo)
+	global $tabela_Aulas;
+	global $tabela_forumMensagem;
+	global $tabela_forumTopico;
+	global $tabela_Materiais;
+	global $tabela_PerguntaQuestionarios;
+	global $tabela_portfolioProjetos;
+	$tipo = (int) $tipo;
+	$id = (int) $id;
+	switch ($tipo)
 	{
-		case TIPOBLOG:
-			$query = "SELECT 0 AS turma";
-			break;
-		case TIPOPORTFOLIO:
-			$query = "SELECT turma FROM $tabela_portfolioProjetos WHERE id = $funcionalidade_id";
-			break;
-		case TIPOBIBLIOTECA:
-			$query = "SELECT codTurma AS turma FROM $tabela_Materiais WHERE codMaterial = $funcionalidade_id";
-			break;
-		case TIPOPERGUNTA:
-			$query = "SELECT turma FROM $tabela_PerguntaQuestionarios WHERE id = $funcionalidade_id"; // TODO
+		case TIPOARTE:
+			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOAULA:
-			$query = "SELECT turma FROM $tabela_Aulas WHERE id = $funcionalidade_id"; // TODO
+			$query = "SELECT turma FROM $tabela_Aulas WHERE id = $id"; // TODO
+			break;
+		case TIPOBIBLIOTECA:
+			$query = "SELECT codTurma AS turma FROM $tabela_Materiais WHERE codMaterial = $id";
+			break;
+		case TIPOBLOG:
+			$query = "SELECT 0 AS turma";
 			break;
 		case TIPOCOMUNICADOR:
 			$query = "SELECT 0 AS turma"; // TODO
 			break;
 		case TIPOFORUM:
-			$query = "SELECT 0 AS turma"; // TODO
+			$query = "SELECT FT.idTurma AS turma
+			FROM $tabela_forumMensagem AS FM
+			INNER JOIN $tabela_forumTopico AS FT
+				ON FT.idTopico = FM.idTopico
+			WHERE FM.idMensagem = $id"; // TODO
 			break;
-		case TIPOARTE:
-			$query = "SELECT 0 AS turma"; // TODO
-			break;
-		case TIPOAULA:
-			$query = "SELECT 0 AS turma"; // TODO
+		case TIPOPERGUNTA:
+			$query = "SELECT turma FROM $tabela_PerguntaQuestionarios WHERE id = $id"; // TODO
 			break;
 		case TIPOPLAYER:
 			$query = "SELECT 0 AS turma"; // TODO
 			break;
+		case TIPOPORTFOLIO:
+			$query = "SELECT turma FROM $tabela_portfolioProjetos WHERE id = $id";
+			break;
 		default:
 			$query = "SELECT 0 AS turma"; // TODO
+			break;
 	}
 	$bd = new conexao();
 	$bd->solicitar($query);
