@@ -29,17 +29,17 @@ class Arquivo {
 			$bd = new conexao();
 			$bd->solicitar(
 				"SELECT
-				'titulo' AS 'titulo',
-				'nome' AS 'nome',
-				'autor' AS 'autor',
-				'tipo' AS 'tipo',
-				'tamanho' AS 'tamanho',
-				'arquivo' AS 'conteudo',
-				'tags' AS 'tags',
-				'dataUpload' AS 'data',
-				'funcionalidade_tipo' AS 'tipoFuncionalidade',
-				'funcionalidade_id' AS 'idFuncionalidade',
-				'uploader_id' AS 'idUploader'
+				titulo AS 'titulo',
+				nome AS 'nome',
+				autor AS 'autor',
+				tipo AS 'tipo',
+				tamanho AS 'tamanho',
+				arquivo AS 'conteudo',
+				tags AS 'tags',
+				dataUpload AS 'data',
+				funcionalidade_tipo AS 'tipoFuncionalidade',
+				funcionalidade_id AS 'idFuncionalidade',
+				uploader_id AS 'idUploader'
 				FROM $tabela_arquivos
 				WHERE arquivo_id = '$id'"
 			);
@@ -52,7 +52,7 @@ class Arquivo {
 				$this->popular($bd->resultado);
 				$download = true;
 			} else {
-				$this->erros[] = "Arquivo não encontrado";
+				$this->erros[] = "Arquivo n&atilde;o encontrado";
 			}
 		}
 	}
@@ -68,6 +68,9 @@ class Arquivo {
 		$this->tipoFuncionalidade = $resultadoBd['tipoFuncionalidade'];
 		$this->idFuncionalidade = $resultadoBd['idFuncionalidade'];
 		$this->idUploader = $resultadoBd['idUploader'];
+	}
+	public function getId() {
+		return $this->id;
 	}
 	public function getConteudo() {
 		return $this->conteudo;
@@ -100,6 +103,9 @@ class Arquivo {
 			$erros[] = $value;
 		}
 		return $erros;
+	}
+	public function temErros() {
+		return (0 !== count($this->erros));
 	}
 	public function getData() {
 		return $this->data;
@@ -144,7 +150,7 @@ class Arquivo {
 					break;
 
 				default:
-					$this->erros[] = "Esta funcionalidade não suporta arquivos.";
+					$this->erros[] = "Esta funcionalidade n&atilde;o suporta arquivos.";
 					break;
 			}
 		}
@@ -152,7 +158,7 @@ class Arquivo {
 	}
 	public function setArquivo($FILE) {
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name']) {
-			$this->erros[] = "Parametro inválido (Arquivo::setArquivo($FILE))";
+			$this->erros[] = "Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
 		} else {
 			$this->tamanho = $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
@@ -198,8 +204,8 @@ class Arquivo {
 		return $this;
 	}
 }
-
-$arquivo = new Arquivo(33);
+/* /
+$arquivo = new Arquivo(222);
 $erros = $arquivo->getErros();
 if (sizeof($erros) === 0) {
 	header("Content-length: {$arquivo->getTamanho()}");
@@ -210,4 +216,4 @@ if (sizeof($erros) === 0) {
 	echo '<html><head><meta charset="utf-8"></head><body><ul><li>';
 	echo implode("</li><li>", $erros);
 	echo '</li></body></html>';
-}
+}/* */
