@@ -1,117 +1,81 @@
 <?php
 session_start();
-require("cfg.php");
-require("bd.php");
+require_once("arquivo.class.php");
+require_once("usuarios.class.php");
+require_once("funcoes_aux.php");
 
 global $tabela_arquivos;
 
-$id_usuario = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
+$idUsuario = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
 $nome_usuario = isset($_SESSION['SS_usuario_nome']) ? $_SESSION['SS_usuario_nome'] : "";
 
-if ($id_usuario > 0)
+// VERIFICANDO AUTENTICAÇÃO DO USUÁRIO
+if ($idUsuario <= 0)
 {
-	if (isset($_GET['id']) and is_numeric($_GET['id'])){
-		$id = $_GET['id'];
-	}else{
-		die("N&atilde;o sei o que deu errado, mas n&atilde;o se preocupe. Nossa equipe de macacos altamente treinados est&aacute; tentando resolver o problema.");
-	}
+	die("Voc&ecirc; n&atilde;o est&aacute; autenticado.");
+}
 
-	$consulta = new conexao();
-	$consulta->solicitar("SELECT * FROM $tabela_arquivos WHERE arquivo_id = $id");
+$usuario = new Usuario();
+$usuario->openUsuario($idUsuario);
 
-	if($consulta->registros === 1){
+$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-		$podeBaixar = false;
-		switch ($consulta->resultado['funcionalidade_tipo']) 
-		{
-			case TIPOBLOG:
-				// QUALQUER USUARIO CADASTRADO PODE BAIXAR DE QUALQUER BLOG
-				$podeBaixar = true;
-				break;
+// CARREGANDO ARQUIVO
+$arquivo = new Arquivo($id);
 
-			case TIPOPORTFOLIO:
-				// VERIFICAR SE ALUNO PERTENCE A TURMA DO PROJETO
-				
-				$id_portfolio = $consulta->resultado['funcionalidade_id'];
-				
-				$verifica = new conexao();
-				$verifica->solicitar(
-					"SELECT T.codUsuario 
-					FROM $tabela_turmasUsuario as T 
-					INNER JOIN $tabela_portfolioProjetos as P 
-					ON T.codTurma = P.turma 
-					WHERE T.codUsuario = '$id_usuario' 
-					AND P.id = '$id_portfolio'"
-				);
-				if ($verifica->erro != "")
-				{
-					die("Erro: ".$verifica->erro);
-				}
-				if ($verifica->registros > 0)
-				{
-					$podeBaixar = true; // aluno pertence a turma do projeto
-				}
-				break;
+if ($arquivo->temErros()) {
+	$erros = $arquivo->getErros();
+	echo "<!DOCTYPE html>\n<html><head><meta charset=\"utf-8\"</head><body><ul><li>";
+	echo implode('</li><li>', $erros);
+	echo "</li></ul></body></html>";
+	die();
+}
 
-			case TIPOBIBLIOTECA:
-				// VERIFICAR SE ALUNO PERTENCE A TURMA DA BIBLIOTECA
-				$verifica = new conexao();
-				$verifica->solicitar(
-					"SELECT T.codUsuario as id_usuario
-					FROM $tabela_turmasUsuario as T 
-					INNER JOIN $tabela_Materiais as B 
-					ON T.codTurma = B.codTurma 
-					WHERE B.refMaterial = '$id' 
-					AND T.codUsuario = '$id_usuario'"
-				);
-				if ($verifica->erro != ""){
-					die($verifica->erro);
-				}
-				else if ($verifica->registros > 0) {
-					$podeBaixar = true;
-				}
-				break;
-			case TIPOPERGUNDA:	// TODO
-			case TIPOFORUM:		// TODO
-			case TIPOAULA:		// TODO
-				$podeBaixar = true;
-				break;
-		}
+$podeBaixar = false;
+$tipoFuncionalidade = $arquivo->getTipoFuncionalidade();
+$idFuncionalidade = $arquivo->getIdFuncionalidade();
+switch ($tipoFuncionalidade)
+{
+	// VERIFICAR SE ALUNO PERTENCE A TURMA DESSAS FUNCIONALIDADES
+	case TIPOAULA:
+	case TIPOBIBLIOTECA:
+	case TIPOFORUM:
+	case TIPOPERGUNTA:
+	case TIPOPORTFOLIO:
+		$idTurma    = turmaFuncionalidade($tipoFuncionalidade,$idFuncionalidade);
+		$podeBaixar = usuarioPertenceTurma($idUsuario,$idTurma);
+		break;
+	// DEIXAR QUALQUER USUARIO REGISTRADO A BAIXAR QUALQUER ARQUIVO DE 
+	// QUALQUER FUNCIONALIDADE QUE NAO FOI DEFINIDA ACIMA.
+	default:
+		$podeBaixar = true;
+		break;
+}
 
-		if (!$podeBaixar)
-		{
-			die("Voc&ecirc; nao pode baixar este arquivo");
-		}
-		else
-		{
-			$fileContent = $consulta->resultado["arquivo"];
-			$nome = $consulta->resultado["nome"];
-			$tipo = $consulta->resultado["tipo"];
-			$tamanho = $consulta->resultado["tamanho"];
-
-			if ($consulta->erro != "")
-			{
-				die("ERRO - \"".$consulta->erro."\"");
-			}
-			else
-			{
-				// registra download
-				$registra = new conexao();
-				$registra->solicitar("INSERT INTO $tabela_usuario_download (usuario_id,arquivo_id) VALUES ('$id_usuario','$id')");
-
-				header("Content-length: $tamanho");
-				header("Content-type: $tipo");
-				header("Content-Disposition: attachment; filename=$nome");
-				die($fileContent);
-			}
-		}
-	}
-	else
-	{
-		die("Arquivo n&atilde;o encontrado.");
-	}
+if (!$podeBaixar)
+{
+	die("Voc&ecirc; nao pode baixar este arquivo");
 }
 else
 {
-	die("Voc&ecirc; n&atilde;o est&aacute; autenticado.");
+	$conteudo = $arquivo->getConteudo();
+	$nome     = $arquivo->getNome();
+	$tipo     = $arquivo->getTipo();
+	$tamanho  = $arquivo->getTamanho();
+
+	if ($consulta->erro != "")
+	{
+		die("ERRO - \"".$consulta->erro."\"");
+	}
+	else
+	{
+		// registra download
+		$registra = new conexao();
+		$registra->solicitar("INSERT INTO $tabela_usuario_download (usuario_id,arquivo_id) VALUES ('$idUsuario','$id')");
+
+		header("Content-length: {$arquivo->getTamanho()}");
+		header("Content-type: {$arquivo->getTipo()}");
+		header("Content-Disposition: attachment; filename={$arquivo->getNome()}");
+		exit($arquivo->getConteudo());
+	}
 }
