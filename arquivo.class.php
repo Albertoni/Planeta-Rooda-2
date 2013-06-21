@@ -124,9 +124,33 @@ class Arquivo {
 		if ($this->upload && !$this->download) {
 			// novo arquivo
 			$bd = new conexao();
+			
+			$campos[]  = 'titulo';
+			$valores[] = $bd->sanitizaString($this->titulo);
+			$campos[]  = 'nome';
+			$valores[] = $bd->sanitizaString($this->nome);
+			$campos[]  = 'autor';
+			$valores[] = $bd->sanitizaString($this->autor);
+			$campos[]  = 'tipo';
+			$valores[] = $bd->sanitizaString($this->tipo);
+			$campos[]  = 'tamanho';
+			$valores[] = $bd->sanitizaString($this->tamanho);
+			$campos[]  = 'arquivo';
+			$valores[] = $bd->sanitizaString($this->arquivo);
+			$campos[]  = 'tags';
+			$valores[] = $bd->sanitizaString(implode(",", $this->tags));
+			$campos[]  = 'dataUpload';
+			$valores[] = $bd->sanitizaString($this->data);
+			$campos[]  = 'funcionalidade_tipo';
+			$valores[] = $bd->sanitizaString($this->tipoFuncionalidade);
+			$campos[]  = 'funcionalidade_id';
+			$valores[] = $bd->sanitizaString($this->idFuncionalidade);
+			$campos[]  = 'uploader_id';
+			$valores[] = $bd->sanitizaString($this->idUploader);
+
 			$bd->solicitar(
-				"INSERT INTO
-				$tabela_arquivos (nome, )"
+				"INSERT INTO $tabela_arquivos (".implode(", ", $campos).")
+				VALUES ('".implode("', '", $valores)."')"
 			);
 		} else if ($this->download && !$this->upload) {
 			// arquivo editado
@@ -135,6 +159,10 @@ class Arquivo {
 			return false;
 		}
 	}
+	// public function atualizar() {
+	// 	if ($this->download && !$this->upload) {
+	// 	}
+	// }
 	public function setFuncionalidade($tipo, $id) {
 		if ($upload === true) {
 			$tipo = (int) $tipo;
@@ -145,8 +173,8 @@ class Arquivo {
 				case TIPOBIBLIOTECA:
 				case TIPOAULA:
 				case TIPOFORUM:
-					$this->tipo = $tipo;
-					$this->id = $id;
+					$this->tipoFuncionalidade = $tipo;
+					$this->idFuncionalidade   = $id;
 					break;
 
 				default:
@@ -156,9 +184,20 @@ class Arquivo {
 		}
 		return $this;
 	}
+	public function setIdUploader($id) {
+		$id = (int) $id;
+		if ($id === 0) {
+			$this->erros[] = "Id inválido (nulo)";
+		} else {
+			$this->idUploader = $id;
+		}
+		return $this;
+	}
 	public function setArquivo($FILE) {
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name']) {
 			$this->erros[] = "Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
+		} if (!filesize($FILE['tmp_name'])) {
+			$this->erros[] = "Arquivo vazio.";
 		} else {
 			$this->tamanho = $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
