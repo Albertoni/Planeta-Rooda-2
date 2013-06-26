@@ -6,7 +6,7 @@
 
 
 
-class itemMsg { //estrutura para o item post do forum, chamado de mensagem
+class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	var $msgId = 0;
 	var $msgPai = 0;
 	var $msgData = '';
@@ -18,7 +18,7 @@ class itemMsg { //estrutura para o item post do forum, chamado de mensagem
 	var $msgLink = '';
 	var $msgGrau = 0;
 	
-	function itemMsg($id, $uid, $uname, $pai, $qnt, $data, $conteudo, $grau,$titulo=''){
+	function __construct($id, $uid, $uname, $pai, $qnt, $data, $conteudo, $grau,$titulo=''){
 		$this->msgId = $id;
 		$this->msgPai = $pai;
 		$this->msgData = $data;
@@ -104,7 +104,8 @@ class topico{
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
-					array_push($this->mensagens, $q->resultado);
+					$mensagem = new mensagem();
+					array_push($this->mensagem, $mensagem);
 					$q->proximo();
 				}
 			}

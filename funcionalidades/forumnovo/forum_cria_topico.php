@@ -2,7 +2,6 @@
 	require("../../cfg.php");
 	require("../../bd.php");
 	require("../../funcoes_aux.php");
-	require("verifica_user.php");
 	
 	session_start();
 	
@@ -18,12 +17,17 @@
 		$topico = (isset($_GET['tid']) and is_numeric($_GET['tid'])) ? $_GET['tid']:'-1'; // TID = TÓPICO ID
 		$editar = ($topico != '-1');
 		$titulo = '';
-		$conteudo = '';
+		$texto = '';
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
 				$topico = new topico($topico);
-				$texto = str_replace("<br>", "\n", $conteudo);
+				$idTurma = $topico->getIdTurma();
+				$idUsuario = $topico->getIdUsuario();
+				$titulo = $topico->getTitulo();
+				$textoHTML = $topico->getMensagens()[0]->getTexto();
+				$idMensagem = $topico->getMensagens()[0]->getId();
+				$texto = str_replace("<br>", "\n", $textoHTML);
 			}else{
 				die("Voce nao tem permissao para editar topicos.");
 			}
@@ -37,7 +41,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
@@ -98,7 +102,7 @@ else // senão, tá criando.
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
 	
-	<form name="criatop" action="forum_salva_topico.php?turma=<?=$turma?>" method="post">
+	<form name="criatop" action="forum_salva_topico.php" method="post">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
 		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="document.criatop.submit();" />
@@ -110,29 +114,27 @@ else // senão, tá criando.
 		echo "<h1>EDITAR TÓPICO</h1>";
 	}else{
 		echo "<h1>CRIAR TÓPICO</h1>";
-	}?>
+}?>
 			<ul class="sem_estilo">
 			
 				<li class="tabela">
-<?php if ($pai == "-1"){ ?>
 					<div class="box_dados">
 						Título do Tópico
-						<input type="text" name="msg_titulo" value="<?php echo $titulo?>"/>
-					</div>
-<?php } ?>				
-					<div class="bts_dir" align="right">
+						<input type="text" name="titulo" value="<?php echo $titulo?>">
 					</div>
 				</li>
 				
 				<li class="espaco_linhas">Mensagem
-					<textarea name="msg_conteudo" rows="15" class="msg_dimensao"><?php echo $conteudo?></textarea>
+					<textarea name="texto" rows="15" class="msg_dimensao"><?php echo $texto?></textarea>
 				</li>
 			</ul>
-			<input type="hidden" name="topico" value="<?php echo $topico?>" />
-			<input type="hidden" name="fid" value="<?php echo $FORUM_ID?>" />
-			<input type="hidden" name="criador" value="<?php echo $criador?>" />
-			<input type="hidden" name="pai" value="<?php echo $pai?>" />
-			<input type="hidden" name="turma" value="<?php echo $turma?>" />
+			<input type="hidden" name="idTopico" value="<?php echo $topico?>" />
+			<input type="hidden" name="idTurma" value="<?php echo $turma?>" />
+<?php
+	if($editar){
+		echo "			<input type=\"hidden\" name=\"idMensagem\" value=\"$idMensagem\">";
+	}
+?>
 
 	</div><!-- fim da div criar_topicos -->
 

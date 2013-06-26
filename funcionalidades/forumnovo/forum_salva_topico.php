@@ -5,35 +5,44 @@ require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
 require("sistema_forum.php");
-require("verifica_user.php");
 require("visualizacao_forum.php");
 
-$user = new Usuario();
-$user->openUsuario($_SESSION['SS_usuario_id']);
+$user=$_SESSION['user'];
 
-$turma = (int) $_POST['turma'];
+$turma = (int) $_POST['idTurma'];
 
 $permissoes = checa_permissoes(TIPOFORUM, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 $pesquisa1 = new conexao();
-$pesquisa2 = new conexao();
 
-$ajax = $pesquisa1->sanitizaString((isset($_POST['ajax'])) ? $_POST['ajax'] : 0);
-$titulo = $pesquisa1->sanitizaString((isset($_POST['msg_titulo'])) ? $_POST['msg_titulo'] : "");
-$topico = $pesquisa1->sanitizaString($_POST['topico']);
-$pai = $pesquisa1->sanitizaString($_POST['pai']);
-$criador = isset($_POST['criador'])?$pesquisa1->sanitizaString($_POST['criador']):0;	// Possibilita edição de pessoas diferentes.
-$conteudo = str_replace("\n", "<br>", $pesquisa1->sanitizaString($_POST['msg_conteudo']));
+$titulo = isset($_POST['titulo']) ? $pesquisa1->sanitizaString($_POST['titulo']) : die("Precisa de um titulo para criar um topico!");
+$idTopico = (isset($_POST['idTopico']) and is_numeric($_POST['idTopico'])) ? $pesquisa1->sanitizaString($_POST['idTopico']) : NULL;
+$conteudo = str_replace("\n", "<br>", $pesquisa1->sanitizaString($_POST['texto']));
+$idMensagem = (isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $pesquisa1->sanitizaString($_POST['idMensagem']) : false;
+$editar = ($idMensagem !== false);
+$acaoSendoEfetuada =  $editar ? "forum_editarTopico" : "forum_criarTopico";
+$userId = $_SESSION['SS_usuario_id'];
 
 // ESPECIFICA ONDE REDIRECIONARÁ
 
-if ($pai == '-1'){
+/*if ($pai == '-1'){
 	$link = "forum.php?turma=$FORUM_ID&pg=0&turma=$turma";
 }else{
 	$link = "forum_arvore.php?turma=$FORUM_ID&pagina=1&topico=".$pai;
+}*/
+($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
+if($user->podeAcessar($acaoSendoEfetuada, $turma)){
+	if(!$editar){ // CRIAÇÃO
+		$topico = new topico(NULL, $turma, $userId, $titulo,)
+	}else{ // EDIÇÃO
+		$topico = new topico($idTopico);
+	}
+}else{
+	die("Voce nao tem permissao para fazer isso");
 }
 
+/*
 $pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
 $cria = false;
 if ($topico == "-1"){ //-1 significa que está criando tópico
@@ -88,5 +97,5 @@ if ($cria){
 		<h1>MENSAGENS</h1>Você pode não ter permissão para fazer isso.
 	</div><!-- fim da div topicos --><br />
 <?php
-}
+}*/
 ?>
