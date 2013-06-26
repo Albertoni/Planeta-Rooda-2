@@ -20,16 +20,10 @@
 		$titulo = '';
 		$conteudo = '';
 		
-		$pai = "-1";
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
-				$pesquisa1 = new conexao();
-				$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$FORUM_ID' LIMIT 1");
-				$pai = $pesquisa1->resultado['msg_pai'];
-				$titulo = $pesquisa1->resultado['msg_titulo'];
-				$conteudo = $pesquisa1->resultado['msg_conteudo'];
-				$criador = $pesquisa1->resultado['msg_usuario'];
-				$conteudo = str_replace("<br>", "\n", $conteudo);
+				$topico = new topico($topico);
+				$texto = str_replace("<br>", "\n", $conteudo);
 			}else{
 				die("Voce nao tem permissao para editar topicos.");
 			}
@@ -43,7 +37,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />

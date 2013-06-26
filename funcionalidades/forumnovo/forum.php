@@ -37,7 +37,7 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
@@ -45,7 +45,6 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <script type="text/javascript">
-	var forum_pg = <?php echo $pagina; ?>;
 	var deltipo = 0;
 </script>
 <script type="text/javascript" src="forum.js"></script>
@@ -119,7 +118,6 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 	echo "<a href=\"forum_cria_topico.php?turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
 }
 ?>
-	<a class="botao_procurar" href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	</div>

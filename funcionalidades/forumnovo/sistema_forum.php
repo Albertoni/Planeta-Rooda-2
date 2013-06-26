@@ -75,9 +75,10 @@ class topico{
 	private $idUsuario;	function getIdUsuario(){return $this->idUsuario;}
 	private $titulo;	function getTitulo(){return $this->titulo;}
 	private $date;		function getDate(){return $this->date;}
+	private $mensagens;	function getMensagens(){return $this->mensagens;}
 	
 	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
-		if($idTurma === NULL){// o cara que mandar a porra da id de turma que for === null que se vire
+		if($idTurma === NULL){// se mandar só a id do topico, abre ele
 			$this->loadTopico($idTopico);
 		}else{
 			$this->idTopico	= $idTopico;
@@ -98,6 +99,15 @@ class topico{
 			$this->idUsuario= $q->resultado['idUsuario'];
 			$this->titulo	= $q->resultado['titulo'];
 			$this->date		= $q->resultado['date'];
+
+			$q->solicitar("SELECT * FROM ForumMensagens WHERE idTopico = $this->idTopico ORDER BY idMensagem");
+			if($q->erro == ""){
+				$this->mensagens = array();
+				for ($i=0; $i < $q->registros; $i++){
+					array_push($this->mensagens, $q->resultado);
+					$q->proximo();
+				}
+			}
 		}
 	}
 }
@@ -169,7 +179,7 @@ class visualizacaoForum extends forum{
 				$idUsuario = $topico->getIdUsuario();
 				$date = $topico->getDate();
 				$titulo = $topico->getTitulo();
-				$link = "forum_arvore.php?turma=$idTurma&amp;topico=$idTopico";
+				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
 
 				$html .= "
 <span><div class=\"cor1\" id=\"t$idTopico\">
