@@ -19,10 +19,10 @@ class Arquivo {
 	private $upload = false;
 	private $download = false;
 
-	public function Arquivo($id = 0) {
+	public function Arquivo($id = false) {
 		global $tabela_arquivos;
 		$id = (int) $id;
-		if ($id === 0) {
+		if ($id === false) {
 			$upload = true;
 		} else {
 			$this->id = $id;
@@ -204,6 +204,7 @@ class Arquivo {
 			$this->conteudo = fread($arquivo, filesize($FILE['tmp_name']));
 			$this->setNome($FILE['name']);
 			$this->setTipo($FILE['type']);
+			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
 		}
 		return $this;
 	}

@@ -28,14 +28,17 @@ if ($idUsuario <= 0){
 			$tmpName  = $_FILES['userfile']['tmp_name'];
 			$fileSize = (int) $_FILES['userfile']['size'];
 			$fileType = $_FILES['userfile']['type'];
+			$titulo = isset($_POST['arquivo_titulo']) ? $_POST['arquivo_titulo'] : false;
+			$autor = isset($_POST['arquivo_autor']) ? $_POST['arquivo_autor'] : false;
 
 			$arquivo = new Arquivo();
-			$arquivo->setArquivo($_FILES['userfile'])
-			        ->setFuncionalidade($tipoFuncionalidade, $idFuncionalidade)
-			        ->setIdUploader($idUsuario)
-			        ->setTitulo($titulo)
-			        ->setAutor($autor)
-			        ->setTags($tags);
+			$arquivo->setArquivo($_FILES['userfile']);
+			$arquivo->setFuncionalidade($tipoFuncionalidade, $idFuncionalidade);
+			$arquivo->setIdUploader($idUsuario);
+			
+			if ($tags) $arquivo->setTags($tags);
+			if ($titulo) $arquivo->setTitulo($titulo);
+			if ($autor) $arquivo->setAutor($autor);
 			
 			if ($arquivo->temErros()) {
 				$json['erros'] = $arquivo->getErros();
