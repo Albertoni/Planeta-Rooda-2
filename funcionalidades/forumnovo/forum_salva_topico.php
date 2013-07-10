@@ -1,9 +1,11 @@
 <?php
-session_start();
-
 require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
+require("../../usuarios.class.php");
+
+session_start();
+
 require("sistema_forum.php");
 require("visualizacao_forum.php");
 
@@ -16,13 +18,14 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 
 $pesquisa1 = new conexao();
 
-$titulo = isset($_POST['titulo']) ? $pesquisa1->sanitizaString($_POST['titulo']) : die("Precisa de um titulo para criar um topico!");
-$idTopico = (isset($_POST['idTopico']) and is_numeric($_POST['idTopico'])) ? $pesquisa1->sanitizaString($_POST['idTopico']) : NULL;
-$conteudo = str_replace("\n", "<br>", $pesquisa1->sanitizaString($_POST['texto']));
-$idMensagem = (isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $pesquisa1->sanitizaString($_POST['idMensagem']) : false;
+$titulo = isset($_POST['titulo']) ? $_POST['titulo'] : die("Precisa de um titulo para criar um topico!");
+$idTopico = (isset($_POST['idTopico']) and is_numeric($_POST['idTopico'])) ? $_POST['idTopico'] : NULL;
+$conteudo = str_replace("\n", "<br>", $_POST['texto']);
+$idMensagem = (isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $_POST['idMensagem'] : false;
 $editar = ($idMensagem !== false);
 $acaoSendoEfetuada =  $editar ? "forum_editarTopico" : "forum_criarTopico";
 $userId = $_SESSION['SS_usuario_id'];
+
 
 // ESPECIFICA ONDE REDIRECIONARÁ
 
@@ -31,13 +34,24 @@ $userId = $_SESSION['SS_usuario_id'];
 }else{
 	$link = "forum_arvore.php?turma=$FORUM_ID&pagina=1&topico=".$pai;
 }*/
-($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
-if($user->podeAcessar($acaoSendoEfetuada, $turma)){
+
+if($user->podeAcessar($permissoes[$acaoSendoEfetuada], $turma)){
 	if(!$editar){ // CRIAÇÃO
-		$topico = new topico(NULL, $turma, $userId, $titulo,)
+		$topico = new topico(NULL, $turma, $userId, $titulo);
 	}else{ // EDIÇÃO
 		$topico = new topico($idTopico);
+
+		$topico->setTitulo($titulo);
+		$topico->setMensagem(0, $conteudo);
 	}
+
+	$erro = $topico->salvar();
+	if($idTopico == NULL){//criando
+		magic_redirect("forum.php?turma=$turma");
+	}else{//
+		# code...
+	}
+	
 }else{
 	die("Voce nao tem permissao para fazer isso");
 }

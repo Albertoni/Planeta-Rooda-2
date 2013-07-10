@@ -2,6 +2,7 @@
 	require("../../cfg.php");
 	require("../../bd.php");
 	require("../../funcoes_aux.php");
+	require("../../usuarios.class.php");
 	
 	session_start();
 	

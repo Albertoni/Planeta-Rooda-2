@@ -149,10 +149,6 @@ class conexao {
 		}
 	}
 
-	function ultimo_id(){
-		return $this->socketMysqli->insert_id;
-	}
-
 	function inserir($dados,$tabela){
 		$sql_campos='(';
 		$sql_valores='(';
@@ -183,6 +179,9 @@ class conexao {
 	}
 	
 	function ultimoId(){
+		return $this->socketMysqli->insert_id;
+	}
+	function ultimo_id(){
 		return $this->socketMysqli->insert_id;
 	}
 }
