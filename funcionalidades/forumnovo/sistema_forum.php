@@ -13,18 +13,59 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $idMensagemRespondida = 0;
 	private $texto = '';
 	private $data = 0;
+	private $salvo = false;
 	
-	function __construct($id, $idTopico = 0, $idUsuario = 0, $texto = '', $data = '', $idMensagemRespondida = NULL){
-		$this->id = $id;
-		$this->idTopico = $idTopico;
-		$this->idUsuario = $idUsuario;
-		$this->idMensagemRespondida = $idMensagemRespondida;
-		$this->texto = $texto;
-		$this->data = $data;
+	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+		if($idTopico === NULL){
+			$this->loadPost($id);
+		}else{
+			$this->idTopico = $idTopico;
+			$this->idUsuario = $idUsuario;
+			$this->idMensagemRespondida = $idMensagemRespondida;
+			$this->texto = $texto;
+		}
 	}
 
 	function salvar(){
 		$q = new conexao();
+
+		if($this->salvo == true){
+			$textoSafe					= $q->sanitizaString($this->texto);
+			$dataSafe					= $q->sanitizaString($this->data);
+
+			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE id = '$id'");
+		}else{
+			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
+			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
+			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
+			$textoSafe					= $q->sanitizaString($this->texto);
+
+			$q->solicitar("INSERT INTO ForumMensagem
+				VALUES (NULL, '$idTopicoSafe', '$idUsuarioSafe', '$textoSafe', NOW())");
+		}
+		
+		if ($q->erro != "") {
+			die("Erro na salvar da mensagem");
+		}
+	}
+
+	private function loadPost($id){
+		$q = new conexao();
+
+		$idSafe = $q->sanitizaString($id);
+		$q->solicitar("SELECT * FROM ForumMensagem WHERE id = '$idSafe'");
+
+		if($q->erro != ""){
+			$this->idTopico = $q->resultado['idTopico'];
+			$this->idUsuario = $q->resultado['idUsuario'];
+			$this->idMensagemRespondida = $q->resultado['idMensagemRespondida'];
+			$this->texto = $q->resultado['texto'];
+			$this->data = $q->resultado['data'];
+
+			$this->salvo = true;
+		}else{
+			die("Erro na loadPost da mensagem");
+		}
 	}
 }
 
@@ -118,6 +159,8 @@ function setMensagem($indice, $mensagem){
 					array_push($this->mensagens, $mensagem);
 					$q->proximo();
 				}
+			}else{
+				die("Erro na loadTopico do topico");
 			}
 		}
 	}
@@ -143,7 +186,10 @@ function setMensagem($indice, $mensagem){
 
 			$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, $data, NULL);
 			$mensagem->salvar();
+		}
 
+		if($q->erro != ""){
+			die("Erro na salvar do topico");
 		}
 	}
 }
