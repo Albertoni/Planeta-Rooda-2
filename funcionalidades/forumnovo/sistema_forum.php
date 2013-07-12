@@ -7,27 +7,65 @@
 
 
 class mensagem { //estrutura para o item post do forum, chamado de mensagem
-	var $msgId = 0;
-	var $msgPai = 0;
-	var $msgData = '';
-	var $msgUserId = 0;
-	var $msgUserName = '';
-	var $msgTitulo = '';
-	var $msgTexto = '';
-	var $msgQntFilhos = 0;
-	var $msgLink = '';
-	var $msgGrau = 0;
+	private $id = 0;
+	private $idTopico = 0;
+	private $idUsuario = 0;
+	private $idMensagemRespondida = 0;
+	private $texto = '';
+	private $data = 0;
+	private $salvo = false;
 	
-	function __construct($id, $uid, $uname, $pai, $qnt, $data, $conteudo, $grau,$titulo=''){
-		$this->msgId = $id;
-		$this->msgPai = $pai;
-		$this->msgData = $data;
-		$this->msgUserId = $uid;
-		$this->msgUserName = $uname;
-		$this->msgTitulo = $titulo;
-		$this->msgTexto = $conteudo;
-		$this->msgQntFilhos = $qnt;
-		$this->msgGrau = $grau;
+	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+		if($idTopico === NULL){
+			$this->loadPost($id);
+		}else{
+			$this->idTopico = $idTopico;
+			$this->idUsuario = $idUsuario;
+			$this->idMensagemRespondida = $idMensagemRespondida;
+			$this->texto = $texto;
+		}
+	}
+
+	function salvar(){
+		$q = new conexao();
+
+		if($this->salvo == true){
+			$textoSafe					= $q->sanitizaString($this->texto);
+			$dataSafe					= $q->sanitizaString($this->data);
+
+			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE id = '$id'");
+		}else{
+			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
+			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
+			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
+			$textoSafe					= $q->sanitizaString($this->texto);
+
+			$q->solicitar("INSERT INTO ForumMensagem
+				VALUES (NULL, '$idTopicoSafe', '$idUsuarioSafe', '$textoSafe', NOW())");
+		}
+		
+		if ($q->erro != "") {
+			die("Erro na salvar da mensagem");
+		}
+	}
+
+	private function loadPost($id){
+		$q = new conexao();
+
+		$idSafe = $q->sanitizaString($id);
+		$q->solicitar("SELECT * FROM ForumMensagem WHERE id = '$idSafe'");
+
+		if($q->erro != ""){
+			$this->idTopico = $q->resultado['idTopico'];
+			$this->idUsuario = $q->resultado['idUsuario'];
+			$this->idMensagemRespondida = $q->resultado['idMensagemRespondida'];
+			$this->texto = $q->resultado['texto'];
+			$this->data = $q->resultado['data'];
+
+			$this->salvo = true;
+		}else{
+			die("Erro na loadPost da mensagem");
+		}
 	}
 }
 
@@ -76,8 +114,20 @@ class topico{
 	private $titulo;	function getTitulo(){return $this->titulo;}
 	private $date;		function getDate(){return $this->date;}
 	private $mensagens;	function getMensagens(){return $this->mensagens;}
+	private $salvo = false;
+
+function setIdTopico($arg){$this->idTopico = $arg;}
+function setIdTurma($arg){$this->idTurma = $arg;}
+function setIdUsuario($arg){$this->idUsuario = $arg;}
+function setTitulo($arg){$this->titulo = $arg;}
+function setDate($arg){$this->date = $arg;}
+
+function setMensagem($indice, $mensagem){
+	$this->mensagens[$indice] = $mensagem;
+}
+
 	
-	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = NULL){
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL"){
 		if($idTurma === NULL){// se mandar só a id do topico, abre ele
 			$this->loadTopico($idTopico);
 		}else{
@@ -85,13 +135,13 @@ class topico{
 			$this->idTurma	= $idTurma;
 			$this->idUsuario= $idUsuario;
 			$this->titulo	= $titulo;
-			$this->date		= $date;
 		}
 	}
 
 	function loadTopico($id){
 		$q = new conexao();
-		$q->solicitar("SELECT * FROM ForumTopico WHERE idTopico = $idTopico");
+		$idSafe = $q->sanitizaString($id);
+		$q->solicitar("SELECT * FROM ForumTopico WHERE idTopico = $idSafe");
 
 		if($q->erro == ""){
 			$this->idTopico	= $q->resultado['idTopico'];
@@ -99,20 +149,51 @@ class topico{
 			$this->idUsuario= $q->resultado['idUsuario'];
 			$this->titulo	= $q->resultado['titulo'];
 			$this->date		= $q->resultado['date'];
+			$this->salvo	= true;
 
-			$q->solicitar("SELECT * FROM ForumMensagens WHERE idTopico = $this->idTopico ORDER BY idMensagem");
+			$q->solicitar("SELECT * FROM ForumMensagem WHERE idTopico = $this->idTopico ORDER BY idMensagem");
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
 					$mensagem = new mensagem();
-					array_push($this->mensagem, $mensagem);
+					array_push($this->mensagens, $mensagem);
 					$q->proximo();
 				}
+			}else{
+				die("Erro na loadTopico do topico");
 			}
 		}
 	}
-}
 
+	function salvar(){
+		if ($this->salvo === true){// atualizar
+			$this->mensagens[0]->salvar();
+
+			$q = new conexao();
+
+			$titulo = $q->sanitizaString($this->titulo);
+
+			$q->solicitar("UPDATE ForumTopico SET titulo='$titulo', data=NOW() WHERE idTopico = $this->idTopico");
+		}else{// inserir
+			$q = new conexao();
+
+			$idTurma = $q->sanitizaString($this->idTurma);
+			$titulo = $q->sanitizaString($this->titulo);
+			$q->solicitar("INSERT INTO ForumTopico
+				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
+
+			$this->idTopico = ($q->erro != "") ? $q->ultimo_id : NULL;
+
+			$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, $data, NULL);
+			$mensagem->salvar();
+		}
+
+		if($q->erro != ""){
+			die("Erro na salvar do topico");
+		}
+	}
+}
+($id, $idTopico = 0, $idUsuario = 0, $texto = 0, $data = 0, $idMensagemRespondida = 0){
 
 class forum {
 	/*\

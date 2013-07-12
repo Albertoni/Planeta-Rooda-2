@@ -250,14 +250,13 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	public function podeAcessar($cutoff, $turma){ // cutoff = ponto de corte, o bitmap de niveis que podem acessar
-		$temPermissao = false;
 		/*if ($this->isAdmin()){
 			return true; // ISSO NÃO DEVE NUNCA MAIS SER USADO
 		}*/
 		
 		$niveisTurma = $this->getNivel($turma);
 		$cutoff = (int) $cutoff;
-		
+
 		return $niveisTurma & $cutoff;
 	}
 	public function isAdmin(){return $this->getNivelAbsoluto() & 1;}
