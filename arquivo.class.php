@@ -9,7 +9,6 @@ class Arquivo {
 
 	private $titulo = "";
 	private $nome;      // nome do arquivo. Deve conter a extensao também 
-	private $autor = "";
 	private $tipo = ""; // mime-type
 	private $tamanho;
 	private $conteudo;
@@ -31,7 +30,6 @@ class Arquivo {
 				"SELECT
 				titulo AS 'titulo',
 				nome AS 'nome',
-				autor AS 'autor',
 				tipo AS 'tipo',
 				tamanho AS 'tamanho',
 				arquivo AS 'conteudo',
@@ -60,7 +58,6 @@ class Arquivo {
 		$this->conteudo = $resultadoBd['conteudo']; // conteudo do arquivo
 		$this->titulo = $resultadoBd['titulo'];     // titulo do arquivo
 		$this->nome = $resultadoBd['nome'];
-		$this->autor = $resultadoBd['autor'];
 		$this->tipo = $resultadoBd['tipo'];
 		$this->tamanho = $resultadoBd['tamanho'];
 		$this->setTags($resultadoBd['tags']);
@@ -80,9 +77,6 @@ class Arquivo {
 	}
 	public function getNome() {
 		return $this->nome;
-	}
-	public function getAutor() {
-		return $this->autor;
 	}
 	public function getTipo() {
 		return $this->tipo;
@@ -129,8 +123,6 @@ class Arquivo {
 			$valores[] = $bd->sanitizaString($this->titulo);
 			$campos[]  = 'nome';
 			$valores[] = $bd->sanitizaString($this->nome);
-			$campos[]  = 'autor';
-			$valores[] = $bd->sanitizaString($this->autor);
 			$campos[]  = 'tipo';
 			$valores[] = $bd->sanitizaString($this->tipo);
 			$campos[]  = 'tamanho';
@@ -152,6 +144,12 @@ class Arquivo {
 				"INSERT INTO $tabela_arquivos (".implode(", ", $campos).")
 				VALUES ('".implode("', '", $valores)."')"
 			);
+			if ($bd->erro !== "") {
+				$this->erros[] = "BD: {$bd->erro}";
+			} else {
+				$this->id = $bd->ultimo_id();
+			}
+
 		} else if ($this->download && !$this->upload) {
 			// arquivo editado
 		} else {
@@ -219,11 +217,6 @@ class Arquivo {
 	public function setNome($nome) {
 		$nome = trim($nome);
 		$this->nome = $nome;
-		return $this;
-	}
-	public function setAutor($autor) {
-		$autor = trim($autor);
-		$this->autor = $autor;
 		return $this;
 	}
 	public function setTipo($tipo) {
