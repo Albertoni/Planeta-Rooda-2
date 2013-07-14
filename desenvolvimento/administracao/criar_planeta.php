@@ -19,7 +19,7 @@ Acentuação é importante.
 		<input type="submit" value="Criar"/><BR />
 	</form>
 	
-	<?
+	<?php
 		require("../../cfg.php");
 		require("../../bd.php");
 		require("../../planeta.class.php");		

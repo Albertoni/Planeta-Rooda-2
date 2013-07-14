@@ -1,4 +1,4 @@
-<?	
+<?php	
 	session_start();
 	
 	//$atualizacao = date("Y-m-j H:i:s");

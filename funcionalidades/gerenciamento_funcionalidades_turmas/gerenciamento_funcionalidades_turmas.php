@@ -116,7 +116,7 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="comunicador">
 				<li><b><h1>Comunicador</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma:</span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="comunicador" <? if($turmaTem_comunicador){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_comunicador')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="comunicador" <?php if($turmaTem_comunicador){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_comunicador')"></li>
 				<br><span class="margem_esquerda">Possibilita interação sí­ncrona entre os usuários.</span><br><br><br>
 				<div <?php if(!$turmaTem_comunicador){echo 'style="display:none"';}?> id="habilitarFuncionalidade_comunicador">
 					<table border="0" width="100%" cellpadding="0px" cellspacing="0">
@@ -143,9 +143,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="biblioteca">
 				<li><b><h1>Biblioteca</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="biblioteca" <? if($turmaTem_biblioteca){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_biblioteca')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="biblioteca" <?php if($turmaTem_biblioteca){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_biblioteca')"></li>
 				<br><span class="margem_esquerda">Oportuniza a publicação e organização de materiais e links.</span><br><br><br>
-				<div <? if(!$turmaTem_biblioteca){echo 'style="display:none"';}?> id="habilitarFuncionalidade_biblioteca">
+				<div <?php if(!$turmaTem_biblioteca){echo 'style="display:none"';}?> id="habilitarFuncionalidade_biblioteca">
 					<table border="0">
 						<th></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -172,9 +172,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="blog">
 				<li><b><h1>Blog da Turma</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="blog" <? if($turmaTem_blog){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_blog')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="blog" <?php if($turmaTem_blog){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_blog')"></li>
 				<br><span class="margem_esquerda">Permite que os usuários e professor possam inserir posts e comentários.</span><br><br><br>
-				<div <? if(!$turmaTem_blog){echo 'style="display:none"';}?> id="habilitarFuncionalidade_blog">
+				<div <?php if(!$turmaTem_blog){echo 'style="display:none"';}?> id="habilitarFuncionalidade_blog">
 					<table border="0">
 						<th><b></b></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -207,9 +207,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="portfolio">
 				<li><b><h1>Portfólio</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="portfolio" <? if($turmaTem_portfolio){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_portfolio')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="portfolio" <?php if($turmaTem_portfolio){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_portfolio')"></li>
 				<br><span class="margem_esquerda">Destinado aos professores e voltada à construção de um histórico da turma através do registro e da publicação de arquivos, possibilitando acompanhar os alunos e as práticas pedagógicas.</span><br><br><br>
-				<div <? if(!$turmaTem_portfolio){echo 'style="display:none"';}?> id="habilitarFuncionalidade_portfolio">
+				<div <?php if(!$turmaTem_portfolio){echo 'style="display:none"';}?> id="habilitarFuncionalidade_portfolio">
 					<table border="0">
 						<th><b></b></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -245,9 +245,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="forum">
 				<li><b><h1>Fórum</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="forum" <? if($turmaTem_forum){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_forum')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="forum" <?php if($turmaTem_forum){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_forum')"></li>
 				<br><span class="margem_esquerda">Possibilita a interação assínc­rona entre os usuários, com as mensagens organizadas de forma hierárquica.<span><br><br><br>
-				<div <? if(!$turmaTem_forum){echo 'style="display:none"';}?> id="habilitarFuncionalidade_forum">
+				<div <?php if(!$turmaTem_forum){echo 'style="display:none"';}?> id="habilitarFuncionalidade_forum">
 					<table border="0">
 						<th><b></b></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -280,9 +280,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="arte">
 				<li><b><h1>Planeta Arte</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="arte" <? if($turmaTem_arte){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_arte')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="arte" <?php if($turmaTem_arte){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_arte')"></li>
 				<br><span class="margem_esquerda">Permite a montagem e a exposição de imagens, com a possibilidade de inserção de comentários.</span><br><br><br>
-				<div <? if(!$turmaTem_arte){echo 'style="display:none"';}?> id="habilitarFuncionalidade_arte">
+				<div <?php if(!$turmaTem_arte){echo 'style="display:none"';}?> id="habilitarFuncionalidade_arte">
 					<table border="0">
 						<td><b></b></td>
 						<th class="professor">Habilitado para Professores</td>
@@ -303,9 +303,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="pergunta">
 				<li><b><h1>Planeta Pergunta</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="pergunta" <? if($turmaTem_pergunta){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_pergunta')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="pergunta" <?php if($turmaTem_pergunta){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_pergunta')"></li>
 				<br><span class="margem_esquerda">Permite a elaboração de jogos de perguntas e respostas.</span><br><br><br>
-				<div <? if(!$turmaTem_pergunta){echo 'style="display:none"';}?> id="habilitarFuncionalidade_pergunta">
+				<div <?php if(!$turmaTem_pergunta){echo 'style="display:none"';}?> id="habilitarFuncionalidade_pergunta">
 					<table border="0">
 						<th></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -338,9 +338,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="player">
 				<li><b><h1>Planeta Player</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="player" <? if($turmaTem_player){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_player')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="player" <?php if($turmaTem_player){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_player')"></li>
 				<br><span class="margem_esquerda">[Descrição do player.]</span><br><br><br>
-				<div <? if(!$turmaTem_player){echo 'style="display:none"';}?> id="habilitarFuncionalidade_player">
+				<div <?php if(!$turmaTem_player){echo 'style="display:none"';}?> id="habilitarFuncionalidade_player">
 					<table border="0">
 						<th></th>
 						<th class="professor">Habilitado para Professores</th>
@@ -367,9 +367,9 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 			<div class="bloco">
 				<div class="gerenciamentoFuncionalidade" id="aulas">
 				<li><b><h1>Aulas</h1></b><span class="margem_esquerda">Marque para habilitar esta funcionalidade para esta turma: </span>
-						<input type="checkbox" class="habilitarFuncionalidade" name="aulas" <? if($turmaTem_aulas){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_aulas')"></li>
+						<input type="checkbox" class="habilitarFuncionalidade" name="aulas" <?php if($turmaTem_aulas){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_aulas')"></li>
 				<br><span class="margem_esquerda">[Descrição do aulas.]</span><br><br><br>
-				<div <? if(!$turmaTem_aulas){echo 'style="display:none"';}?> id="habilitarFuncionalidade_aulas">
+				<div <?php if(!$turmaTem_aulas){echo 'style="display:none"';}?> id="habilitarFuncionalidade_aulas">
 					<table border="0">
 						<th></th>
 						<th class="professor">Habilitado para Professores</th>

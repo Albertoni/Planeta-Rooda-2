@@ -1,4 +1,4 @@
-<?
+<?php
 	session_start();
 
 	//arquivos necessários para o funcionamento
@@ -137,7 +137,7 @@
 			$.fn.colorbox({href: link, width:"80%", height:"85%", iframe:true, onCleanup:function(){ /*location.replace('index.php');*/ }});
 		}
 	</script>
-<?
+<?php
 	//ajuste da resolução					
 	if(isset($_GET["screen_res"])){
 		$screen_res = $_GET["screen_res"];
@@ -156,7 +156,7 @@
 	?>
 </head>
 <body>
-    <?     
+    <?php     
 	//procurando variavel $personagem_id      
 	$personagem_id =      $_SESSION['SS_personagem_id'];
 
@@ -271,26 +271,26 @@
 			<param name="allowFullScreen" value="true" />
 			<param name="movie" value="loader.swf" />
 			<param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />
-		<?		
+		<?php		
 		if ($funcionalidade == "true") {	
 		?>			
 			<param name="wmode" value="opaque" />
 			<param name= "flashvars" value="wmode=opaque&funcionalidade=true&linkColorBox=<?=$linkColorBox?>&linkServidor=<?=$linkServidor?>" />
 			  <embed src="loader.swf" quality="high" bgcolor="#ffffff" wmode = "opaque" flashvars = "funcionalidade=true&linkColorBox=<?=$linkColorBox?>&linkServidor=<?=$linkServidor?>"
-		<?
+		<?php
 		} else if ($linkExterno == "true") {
 		?>			
 			<param name="wmode" value="opaque" />
 			<param name= "flashvars" value="wmode=opaque&linkExterno=true&linkColorBox=<?=$linkColorBox?>&linkServidor=<?=$linkServidor?>" />
 			  <embed src="loader.swf" quality="high" bgcolor="#ffffff" wmode = "opaque" flashvars = "linkExterno=true&linkColorBox=<?=$linkColorBox?>&linkServidor=<?=$linkServidor?>"
-		<?
+		<?php
 		} else {
 		?>			
 			<param name="wmode" value="window" />
 			<param name= "flashvars" value="animacao=<?=$animacao?>&direcaoAnimacao=<?=$direcaoAnimacao?>&fundoQuarto=<?=$fundoQuarto?>" />
 			<param name="movie" value="loader.swf" />
 			  <embed src="loader.swf" quality="high" bgcolor="#ffffff" wmode = "window" flashvars = "animacao=<?=$animacao?>&direcaoAnimacao=<?=$direcaoAnimacao?>&fundoQuarto=<?=$fundoQuarto?>"
-		<?
+		<?php
 		}
 		?>
 				width="100%" height="100%" name="loader" align="middle" 
@@ -298,7 +298,7 @@
 				pluginspage="http://www.macromedia.com/go/getflashplayer" />
 			</object> 
 		</div>
-		<?
+		<?php
 	}//if(($personagem_id   != "") || ($terreno_id != "")) {  
     ?>
 </body>

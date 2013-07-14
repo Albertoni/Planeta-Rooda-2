@@ -138,14 +138,14 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 				<h1><a class="toggle" id="toggle_post">▼</a> POSTAGENS</h1>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_post">
-<?
+<?php
 imprimeListaPosts($blog->getId(), $turma);
 ?>
 					</ul>
 				</div>
 			</div>
 			<div class="bloco" id="arquivos">
-				<? 
+				<?php 
 				$consulta = new conexao();
 				$consulta->solicitar("SELECT Tipo FROM $tabela_blogs WHERE Id = $blog_id");
 				$tipoBlog = $consulta->resultado['Tipo'];
@@ -242,7 +242,7 @@ imprimeListaPosts($blog->getId(), $turma);
 							 <a href="<?=$endereco?>" target="_blank" align="left" ><?=$titulo?></a>
 							 <img onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" src="../../images/botoes/bt_x.png" align="right"/>
 						 </li>
-<?
+<?php
 									 $consulta->proximo();
 								}
 ?>

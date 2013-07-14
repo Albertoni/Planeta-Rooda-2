@@ -1,4 +1,4 @@
-<?
+<?php
 	require_once("../cfg.php");		
 
 $dir=$_SERVER['PATH_INFO'];

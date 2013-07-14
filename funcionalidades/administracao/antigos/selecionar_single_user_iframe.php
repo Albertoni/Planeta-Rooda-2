@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
@@ -20,7 +21,7 @@ require("../../funcoes_aux.php");
 	<input type="submit" value="Pesquisar"/> <br />
 </form>
 <ul>
-<?
+<?php
 $donos = new conexao();
 if (isset($_GET['t']) && $_GET['t'] != ''){
 	$termo = $_GET['t'];

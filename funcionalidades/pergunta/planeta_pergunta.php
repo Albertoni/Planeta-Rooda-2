@@ -115,10 +115,10 @@ for($i=0 ; $i < $consulta->registros ;$i++) {
 				<div class="info">
 <?php
 	if($usuario->podeAcessar($permissoes['pergunta_editarQuestionario'], $turma)){
-?>					<a class="pode_editar" href="planeta_pergunta_ver_inseridas.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>">VER QUESTÕES</a><?
+?>					<a class="pode_editar" href="planeta_pergunta_ver_inseridas.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>">VER QUESTÕES</a><?php
 	}
 	if($usuario->podeAcessar($permissoes['pergunta_deletarQuestionario'], $turma)){
-?>					<a class="pode_deletar" href="planeta_pergunta_deletar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>"><b>DELETAR</b></a><?
+?>					<a class="pode_deletar" href="planeta_pergunta_deletar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>"><b>DELETAR</b></a><?php
 	}
 	//if($usuario)
 ?>
@@ -141,10 +141,10 @@ for($i=0 ; $i < $consulta->registros ;$i++) {
 				<div class="info">
 	<?php
 	if($usuario->podeAcessar($permissoes['pergunta_editarQuestionario'], $turma)){
-?>					<a class="pode_editar" href="planeta_pergunta_editar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>">EDITAR</a><?
+?>					<a class="pode_editar" href="planeta_pergunta_editar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>">EDITAR</a><?php
 	}
 	if($usuario->podeAcessar($permissoes['pergunta_deletarQuestionario'], $turma)){
-?>					<a class="pode_deletar" href="planeta_pergunta_deletar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>"><b>DELETAR</b></a><?
+?>					<a class="pode_deletar" href="planeta_pergunta_deletar.php?id=<?=$consulta->resultado['id']?>&amp;turma=<?=$turma?>"><b>DELETAR</b></a><?php
 	}
 	?>
 					<p class="data"><?=$datainicio?></p>

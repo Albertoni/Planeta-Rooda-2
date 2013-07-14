@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 	session_start();
 
 	require_once("biblioteca.inc.php");

@@ -32,7 +32,7 @@ if ($_GET['id'] != NULL){
 		<input type="submit" name="botaoSubmit" value="editar"/><BR />
 	</form>
 
-<?
+<?php
 	
 }
 ?>

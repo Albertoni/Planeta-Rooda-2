@@ -47,7 +47,7 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 				<script type="text/JavaScript">
 					alert("<?=$alertMsg?>");
 				</script>
-<?
+<?php
 			
 				break;
 				case "link":
@@ -216,7 +216,7 @@ resultado_procura();
 
 
 
-<?
+<?php
 function imprime_arquivo($idMaterial, $idFile, $nomeDono, $autor, $titulo, $nome, $tags, $dataHora, $numComentarios, $usuario, $permissoes, $turma, $materialAprovado){
 	if($materialAprovado == 0){
 		echo "			<ul class='naoAprovado' id='file$idFile'>";
@@ -525,4 +525,3 @@ function resultado_procura(){
 ?>
 </body>
 </html>
-

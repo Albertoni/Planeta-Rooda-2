@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
  function arrumar_data($data) {
 	$nova_data_array = explode("-",$data);
 	$nova_data = $nova_data_array[2]."-".$nova_data_array[1]."-".$nova_data_array[0];
@@ -13,7 +14,7 @@ function listaComentarios($codMaterial,$codUsuario){
 		if ($result!=''){
 		?>
 				<div style="overflow: auto; width: 100%; height:400;">
-		  <table width='100%' cellspacing='0' border='0'>	<?
+		  <table width='100%' cellspacing='0' border='0'>	<?php
 		
 			$bgColor[0] = "#97E6FF";
 			$bgColor[1] = "#33CCFF";
@@ -49,10 +50,10 @@ function listaComentarios($codMaterial,$codUsuario){
 				 <TR>
 			 		<TD bgcolor="<?=$color; ?>"  width='60%' height="10" border='0' align:right class='descricao_11'>Comentário de  <?=$nomeEscriotor?> em <?=$data?></TD>
 			</TR>
-			 		 <?
+			 		 <?php
 		  } 
 		  ?></table>
-			</div><?			
+			</div><?php			
 	}
 }
 
@@ -147,7 +148,7 @@ function enviaMaterial(){
 			}			
 	 	 }
 	</script>
-	<?
+	<?php
 	echo"<form method='post' action='salva.php' name='salva' enctype='multipart/form-data' onsubmit='return testaCampos()'>";
 	echo "<table width='100%' height='100%' valign='top' cellspacing='2' cellpadding='0' border='0'>";
 	echo "<tr><td valign='top' align='right'>";
@@ -165,10 +166,10 @@ function enviaMaterial(){
 	echo "<tr><td colspan='2' align='right'>";
 	echo "<font class='campos_13'>Link&nbsp;</font>";?>
 	<input type='radio' name='tipo' value='link' checked='checked' onClick="troca('link');">
-	<?
+	<?php
 	echo "<font class='campos_13'>Arquivo&nbsp;</font>";;?>
 	<input type='radio' name='tipo' value='arquivo' onClick="troca('arquivo');">
-	<?
+	<?php
 	echo "</td></tr>";
 	echo "<tr><td colspan='2'align='right'>";
 	
@@ -262,13 +263,13 @@ function listaMateriais($codTurma,$codUsuario,$buscaTitulo,$buscaQuem,$buscaPala
 			$link2 = str_replace('http://','',$link2);
 			if($a[tipoMaterial]=='l'){?>
 			<a href='#' onClick="window.open('http://<?=$link2?>','<?=$a[titulo]?>');";>[ <?=$link2?> ]</a>
-			<? }
+			<?php }
 			if($a[tipoMaterial]=='a'){			
 				echo "<a href='$link' target=_blank>[ Abrir ]</a>";
 			}
 			echo "</td><td align='right'>";
 			?>
-			<A href="#" onClick="window.open('comentarios.php?m=<?=$a[codMaterial]; ?>', '', 'width=450px, height=700px')">(<?=$coment?>) Comentarios<? if ($novos!=0){?>, (<?=$novos?>) Novos</a><? }
+			<A href="#" onClick="window.open('comentarios.php?m=<?=$a[codMaterial]; ?>', '', 'width=450px, height=700px')">(<?=$coment?>) Comentarios<?php if ($novos!=0){?>, (<?=$novos?>) Novos</a><?php }
 			echo "</td></tr>";
 			echo "</table>";
 			echo "</td>";

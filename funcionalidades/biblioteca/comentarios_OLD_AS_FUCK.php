@@ -1,5 +1,5 @@
-<? 
-
+<?php 
+// !SQLINJECTION
   session_start();
 	require_once("biblioteca.inc.php");
 	require_once("../cfg.php");		
@@ -83,7 +83,7 @@ echo"<script>opener.location.reload();</script>";
   </tr>
   <tr>
    <td rowspan="2"><img name="diario_comment_r6_c2" src="<?=$images_path; ?>diario_comment_r6_c2.gif" width="17" height="443" border="0" alt=""></td>
-   <td colspan="2" bgcolor="#CCCCCC"><?  listaComentarios($codMaterial,$codUsuario);  ?></td>
+   <td colspan="2" bgcolor="#CCCCCC"><?php  listaComentarios($codMaterial,$codUsuario);  ?></td>
    <td rowspan="2"><img name="diario_comment_r6_c5" src="<?=$images_path; ?>diario_comment_r6_c5.gif" width="55" height="443" border="0" alt=""></td>
    <td><img src="<?=$images_path; ?>spacer.gif" width="1" height="414" border="0" alt=""></td>
   </tr>

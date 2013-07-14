@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 	require_once("biblioteca.inc.php");
 	require_once("../cfg.php");		
 	require_once("../db.inc.php");
