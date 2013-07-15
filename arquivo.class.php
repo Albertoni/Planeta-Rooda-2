@@ -3,8 +3,8 @@ require_once("cfg.php");
 require_once("bd.php");
 class Arquivo {
 	private $id;
-	private $tipoFuncionalidade;
-	private $idFuncionalidade;
+	private $tipoFuncionalidade = 0; // deve ser removido (fazer 1 tabela de referencia para cada funcionalidade em favor da modularidade)
+	private $idFuncionalidade = 0;   // deve ser removido (fazer 1 tabela de referencia para cada funcionalidade em favor da modularidade)
 	private $idUploader;
 
 	private $titulo = "";
@@ -12,7 +12,7 @@ class Arquivo {
 	private $tipo = ""; // mime-type
 	private $tamanho;
 	private $conteudo;
-	private $tags = array();
+	private $tags = array(); // deve ser removido futuramente (só é usado na biblioteca, que tem um campo proprio na tabela de materiais)
 	private $data;
 	private $erros = array();
 	private $upload = false;
@@ -118,7 +118,7 @@ class Arquivo {
 		if ($this->upload && !$this->download) {
 			// novo arquivo
 			$bd = new conexao();
-			
+			// sanitizando dados para o banco de dados
 			$campos[]  = 'titulo';
 			$valores[] = $bd->sanitizaString($this->titulo);
 			$campos[]  = 'nome';
@@ -130,28 +130,68 @@ class Arquivo {
 			$campos[]  = 'arquivo';
 			$valores[] = $bd->sanitizaString($this->arquivo);
 			$campos[]  = 'tags';
-			$valores[] = $bd->sanitizaString(implode(",", $this->tags));
+			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
-			$campos[]  = 'funcionalidade_tipo';
-			$valores[] = $bd->sanitizaString($this->tipoFuncionalidade);
-			$campos[]  = 'funcionalidade_id';
-			$valores[] = $bd->sanitizaString($this->idFuncionalidade);
+			$campos[]  = 'funcionalidade_tipo';             // Estes campos
+			$valores[] = (int) $this->tipoFuncionalidade;   // devem ser
+			$campos[]  = 'funcionalidade_id';               // removidos
+			$valores[] = (int) $this->idFuncionalidade;     // futuramente.
 			$campos[]  = 'uploader_id';
-			$valores[] = $bd->sanitizaString($this->idUploader);
-
+			$valores[] = (int) $this->idUploader;
+			// executando consulta
 			$bd->solicitar(
-				"INSERT INTO $tabela_arquivos (".implode(", ", $campos).")
-				VALUES ('".implode("', '", $valores)."')"
+				"INSERT INTO $tabela_arquivos (" . implode(", ", $campos) . ")
+				VALUES ('" . implode("', '", $valores) . "')"
 			);
 			if ($bd->erro !== "") {
 				$this->erros[] = "BD: {$bd->erro}";
 			} else {
 				$this->id = $bd->ultimo_id();
+				$this->upload = false;
+				$this->download = true;
+				return true;
 			}
 
 		} else if ($this->download && !$this->upload) {
-			// arquivo editado
+			$bd = new conexao();
+			// sanitizando dados para o banco de dados
+			$campos[]  = 'titulo';
+			$valores[] = $bd->sanitizaString($this->titulo);
+			$campos[]  = 'nome';
+			$valores[] = $bd->sanitizaString($this->nome);
+			$campos[]  = 'tipo';
+			$valores[] = $bd->sanitizaString($this->tipo);
+			$campos[]  = 'tamanho';
+			$valores[] = $bd->sanitizaString($this->tamanho);
+			$campos[]  = 'arquivo';
+			$valores[] = $bd->sanitizaString($this->arquivo);
+			$campos[]  = 'tags';
+			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
+			$campos[]  = 'dataUpload';
+			$valores[] = $bd->sanitizaString($this->data);
+			$campos[]  = 'funcionalidade_tipo';             // Estes campos
+			$valores[] = (int) $this->tipoFuncionalidade;   // devem ser
+			$campos[]  = 'funcionalidade_id';               // removidos
+			$valores[] = (int) $this->idFuncionalidade;     // futuramente.
+			$campos[]  = 'uploader_id';
+			$valores[] = (int) $this->idUploader;
+			$sqlset = array();
+			// construindo a sintaxe do sql
+			foreach ($campos as $num => $campo) {
+				$sqlset[] = "{$campo} = '{$valores[$num]}'";
+			}
+			// executando consulta
+			$bd->solicitar(
+				"UPDATE $tabela_arquivos
+				SET " . implode(", ", $sqlset) . "
+				WHERE arquivo_id = {$this->id}"
+			);
+			if ($bd->erro !== '') {
+				$this->erros[] = $bd->erro;
+				return false;
+			}
+			return true;
 		} else {
 			$this->erros[] = "Este arquivo não pode ser enviado";
 			return false;
@@ -165,20 +205,8 @@ class Arquivo {
 		if ($upload === true) {
 			$tipo = (int) $tipo;
 			$id = (int) $id;
-			switch ($tipo) {
-				case TIPOBLOG:
-				case TIPOPORTFOLIO:
-				case TIPOBIBLIOTECA:
-				case TIPOAULA:
-				case TIPOFORUM:
-					$this->tipoFuncionalidade = $tipo;
-					$this->idFuncionalidade   = $id;
-					break;
-
-				default:
-					$this->erros[] = "Esta funcionalidade n&atilde;o suporta arquivos.";
-					break;
-			}
+			$this->tipoFuncionalidade = $tipo;
+			$this->idFuncionalidade   = $id;
 		}
 		return $this;
 	}
@@ -195,7 +223,7 @@ class Arquivo {
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name']) {
 			$this->erros[] = "Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
 		} if (!filesize($FILE['tmp_name'])) {
-			$this->erros[] = "Arquivo vazio.";
+			$this->erros[] = "Arquivo vazio ou inválido.";
 		} else {
 			$this->tamanho = $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
@@ -235,6 +263,19 @@ class Arquivo {
 			}
 		}
 		return $this;
+	}
+	public function excluir() {
+		if (!$this->upload && $this->download) {
+			$bd = new conexao();
+			$bd->solicitar(
+				"DELETE FROM $tabela_arquivos WHERE arquivo_id = {$this->id}"
+			);
+			if ($bd->erro !== '') {
+				$this->erros[] = "DB:" . $bd->erro;
+				return false;
+			}
+		}
+		return true;
 	}
 }
 /* /
