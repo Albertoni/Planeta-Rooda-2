@@ -33,7 +33,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$textoSafe					= $q->sanitizaString($this->texto);
 			$dataSafe					= $q->sanitizaString($this->data);
 
-			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE id = '$id'");
+			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
 		}else{
 			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
 			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
@@ -45,7 +45,8 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 		
 		if ($q->erro != "") {
-			die("Erro na salvar da mensagem");
+			print_r($q);
+			die("Erro na salvar da mensagem1");
 		}
 	}
 
@@ -183,17 +184,29 @@ function setMensagem($indice, $mensagem){
 				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
 
 			$this->idTopico = ($q->erro != "") ? $q->ultimo_id : NULL;
-
-			$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, $data, NULL);
-			$mensagem->salvar();
 		}
 
 		if($q->erro != ""){
 			die("Erro na salvar do topico");
 		}
 	}
+
+	function getPrintableMessageNumber(){
+		$mensagens = count($this->getMensagens());
+
+		if ($mensagens == 1) {
+			return "1 mensagem";
+		} else {
+			return "$mensagens mensagens";
+		}
+		
+	}
+
+	function insereMensagem($texto){
+ 		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, NULL, NULL);
+		$mensagem->salvar();
+	}
 }
-($id, $idTopico = 0, $idUsuario = 0, $texto = 0, $data = 0, $idMensagemRespondida = 0){
 
 class forum {
 	/*\
@@ -213,7 +226,7 @@ class forum {
 	\*/
 	
 	public $idTurma;
-	private $listaTopicos = array();
+	protected $listaTopicos = array();
 	public $numPaginas;
 	
 	function __construct($idTurma){
@@ -233,10 +246,10 @@ class forum {
 				$idTurma = $q->resultado['idTurma'];
 				$idUsuario = $q->resultado['idUsuario'];
 				$titulo = $q->resultado['titulo'];
-				$date = $q->resultado['date'];
+				$date = $q->resultado['data'];
 
 				$topicoLoop = new topico($idTopico, $idTurma, $idUsuario, $titulo, $date);
-				$listaTopicos[] = $topicoLoop; // appends
+				$this->listaTopicos[] = $topicoLoop; // appends
 			}
 			
 			return $this->listaTopicos;
@@ -251,8 +264,11 @@ class forum {
 class visualizacaoForum extends forum{
 
 	function imprimeTopicos(){
+
+		$this->carregaTopicos();
+
 		if(empty($this->listaTopicos)){
-			return "Não existem tópicos nessa turma.";
+			echo "Não existem tópicos nessa turma.";
 		}else{
 			$html = "";
 			foreach ($this->listaTopicos as $indice => $topico) {
@@ -263,7 +279,7 @@ class visualizacaoForum extends forum{
 				$titulo = $topico->getTitulo();
 				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
 
-				$html .= "
+				echo "
 <span><div class=\"cor1\" id=\"t$idTopico\">
 	<div class=\"esq\">
 	<div class=\"imagem\"><img src=\"img_output.php?id=$idUsuario\"></div>
