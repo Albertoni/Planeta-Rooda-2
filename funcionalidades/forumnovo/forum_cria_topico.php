@@ -129,7 +129,7 @@ else // senão, tá criando.
 					<textarea name="texto" rows="15" class="msg_dimensao"><?php echo $texto?></textarea>
 				</li>
 			</ul>
-			<input type="hidden" name="idTopico" value="<?php echo $topico?>" />
+			<?= $topico != -1 ? "<input type=\"hidden\" name=\"idTopico\" value=\"$topico\">" : "" ?>
 			<input type="hidden" name="idTurma" value="<?php echo $turma?>" />
 <?php
 	if($editar){
