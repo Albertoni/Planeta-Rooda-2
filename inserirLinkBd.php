@@ -41,9 +41,9 @@ $consulta->solicitar(
 	<li>funcionalidade_tipo: <span id="funcionalidade_tipo"><?=$funcionalidade_tipo?></span></li>
 	<li>funcionalidade_id: <span id="funcionalidade_id"><?=$funcionalidade_id?></span></li>
 </ul>
-<?
+<?php
 $turma = is_numeric($_POST['turma_id']) ? $_POST['turma_id'] : die("Oops! Algo de errado aconteceu, mas o link provavelmente foi adicionado com sucesso. Por favor, volte e tudo deverá funcionar corretamente.");
 
 ?>
-<script type=\"text/javascript\">document.location.href=\"portfolio_projeto.php?projeto_id=$funcionalidade_id&turma=$turma\";</script>
+<script type=\"text/javascript\">document.location.href=\"portfolio_projeto.php?projeto_id=$funcionalidade_id&turma=$turma\"";</script>
 </body>

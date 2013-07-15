@@ -333,7 +333,7 @@ function Init() {
 				</li>
 			</ul>
 		</div>
-<?
+<?php
 
 // Pode inserir links?
 

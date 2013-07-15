@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 session_start();
 //arquivos necessários para o funcionamento
 require_once("../cfg.php");

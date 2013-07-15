@@ -1,4 +1,4 @@
-<?
+<?php
 	session_start();
 
 	require_once("biblioteca.inc.php");
@@ -73,7 +73,7 @@
    <td rowspan="9"><img name="Biblioteca0002_r2_c1" src="<?=$images_path?>Biblioteca0002_r2_c1.png" width="44" height="242" border="0" alt=""></td>
    <td colspan="3" rowspan="4" bgcolor="#00CCFF">
   	<form name='busca' method='post' action='index.php'>
-   <?parteCima($buscaTitulo,$buscaQuem,$buscaPalavras);?>
+   <?php parteCima($buscaTitulo,$buscaQuem,$buscaPalavras);?>
    </form>
    </td>
    <td colspan="2"><img name="Biblioteca0002_r2_c5" src="<?=$images_path?>Biblioteca0002_r2_c5.png" width="134" height="17" border="0" alt=""></td>
@@ -93,7 +93,7 @@
    <td rowspan="2" colspan="3"><img name="Biblioteca0002_r5_c5" src="<?=$images_path?>Biblioteca0002_r5_c5.png" width="160" height="40" border="0" alt=""></td>
    <td colspan="4" rowspan="3" bgcolor="#CCCCCC">
    <form name='editar' method='post' action='salvaEditar.php?t=<?=$codMaterial?>&a=<?=$tipoMaterial?>'>
-   <?editar($codMaterial);?>
+   <?php editar($codMaterial);?>
    </form>
    </td>
    <td rowspan="5" colspan="2"><img name="Biblioteca0002_r5_c12" src="<?=$images_path?>Biblioteca0002_r5_c12.png" width="14" height="162" border="0" alt=""></td>
@@ -107,7 +107,7 @@
   <tr>
    <td rowspan="4"><img name="Biblioteca0002_r7_c2" src="<?=$images_path?>Biblioteca0002_r7_c2.png" width="14" height="147" border="0" alt=""></td>
    <td colspan="3" rowspan="2" bgcolor="#999999">
-   <?
+   <?php
    listaMateriais($codTurma,$codUsuario,$buscaTitulo,$buscaQuem,$buscaPalavras,1,1,$associacao);
    ?>  
    </td>

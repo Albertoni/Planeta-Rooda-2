@@ -1,4 +1,5 @@
-<?
+<?php
+// !!!DEPRECATED
 require("cfg.php");
 require("bd.php");
 require("funcoes_aux.php");

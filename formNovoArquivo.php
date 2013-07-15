@@ -40,7 +40,7 @@ require_once("file.class.php");
 
 </body>
 
-<?	
+<?php	
     if($_FILES['arquivo']['size'] > 0){
 		$consulta = new conexao();
 		$tipoPortfolio = TIPOPORTFOLIO;

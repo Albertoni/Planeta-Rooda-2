@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 session_start();
 
 require("../../cfg.php");
@@ -33,7 +34,7 @@ require("../../link.class.php");
 	<input type="submit" value="Pesquisar"/> <br />
 </form>
 <ul>
-<?
+<?php
 $donos = new conexao();
 if (isset($_GET['t']) && $_GET['t'] != ''){
 	$termo = $_GET['t'];

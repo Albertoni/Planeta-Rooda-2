@@ -125,8 +125,7 @@ foreach($aulas as $aula){
 		<h1>IMPORTAR AULAS PARA A TURMA</h1>
 		<div class="cor1">
 			<select style="vertical-align:middle" name="t">";
-<?cospeSelectDeTurmas();?>
-
+<?php cospeSelectDeTurmas(); ?>
 			</select>
 			<img style="vertical-align:middle; height:25px; padding-left:100px; cursor:pointer" src="../../images/botoes/bt_confirmar.png" onclick="importar.submit()"/>
 		</div>

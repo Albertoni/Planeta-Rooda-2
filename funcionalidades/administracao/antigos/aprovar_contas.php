@@ -66,7 +66,7 @@
 <body>
 	Bem vindo, <?=$nome?>!
 	<form method="post" action="processa_aprovacao.php">
-<?	
+<?php	
 	$consulta->solicitar("SELECT usuario_nome, usuario_email , usuario_nivel, usuario_troca_nivel, usuario_id FROM $tabela_usuarios WHERE usuario_troca_nivel != 0");
 	// Pega os que não estão com a conta confirmada
 	

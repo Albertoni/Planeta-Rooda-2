@@ -189,7 +189,7 @@ function coment(){
 				<h1><a class="toggle" id="toggle_post">▼</a> POSTAGENS</h1>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_post">
-					<?
+					<?php
 						$posts = new lista_posts($blog->getId(), $tabela_posts);
 						
 						for ($i=0; $i < $posts->tamanho_lista; $i++){
@@ -283,7 +283,7 @@ function coment(){
 				</div>
 			</div>
 			<div class="bloco" id="arquivos">
-				<? 
+				<?php 
 				$consulta = new conexao();
 				$consulta->solicitar("SELECT Tipo FROM $tabela_blogs WHERE Id = $blog_id");
 				$tipoBlog = $consulta->resultado['Tipo'];
@@ -351,7 +351,7 @@ function coment(){
 							<a href=<?=$file_name?> target='_blank'><?=$file_name?>  </a>
 							<div class="bts_caixa"><img class="apagar" src="images/botoes/bt_x.png" /></div>
 						</li>
-<?
+<?php
 							}
 ?>
 					</ul>

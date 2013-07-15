@@ -39,7 +39,7 @@ if($perm === false){
 
 <body onload="thumbnailImgsFromClass('postagem',150,380,true);atualiza('ajusta()');inicia();coment();">
 
-<?
+<?php
 		global $tabela_portfolioProjetos;
 		$consulta= new conexao();
 		$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
@@ -175,7 +175,7 @@ if($perm === false){
 				<h1 ><a class="toggle" id="toggle_posts">▼</a> POSTAGENS</h1>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_posts">
-					<?
+					<?php
 						$posts = new lista_posts($projeto_id, $tabela_portfolioPosts);
 						
 						for ($i=0; $i < $posts->tamanho_lista; $i++){
@@ -266,7 +266,7 @@ if($perm === false){
 
 </script>
 					</li>
-					<?
+					<?php
 						global $tabela_arquivos;
 						$tipoPortfolio = TIPOPORTFOLIO;
 						$consulta = new conexao();
@@ -281,7 +281,7 @@ if($perm === false){
 								<a href="../../downloadFile.php?id=<?=$fileId?>" target="_blank" ><?=$nomeArquivo?></a>
 								<button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja excluir este arquivo?',function(){deleteFile(<?=$fileId?>);});" align="right">excluir</button>
 							</li>
-					<?
+					<?php
 							$consulta->proximo();
 						}
 					?>
@@ -328,7 +328,7 @@ if($perm === false){
 		<div id="dir">
 			<div id="posts" class="bloco" >
 				<h1 id="nome_projeto"><?=$titulo?></h1>
-				<?
+				<?php
 					global $tabela_portfolioPosts;
 					$consulta = new conexao();
 					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
@@ -359,7 +359,7 @@ if($perm === false){
 						</li>
 					</ul>
 				</div>
-				<?
+				<?php
 						$consulta->proximo();
 					} //fim do for de geração de posts
 				?>

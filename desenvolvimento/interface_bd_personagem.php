@@ -1,4 +1,5 @@
-<?
+<?php
+// !SQLINJECTION
 session_start();
 header('Content-Type: text/html; charset=utf-8');
 //arquivos necessários para o funcionamento

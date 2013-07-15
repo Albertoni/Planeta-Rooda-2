@@ -1,4 +1,5 @@
-<?	
+<?php
+// !SQLINJECTION	
 	function rm($fileglob){
 	   if (is_string($fileglob)) {
 	       if (is_file($fileglob)) {

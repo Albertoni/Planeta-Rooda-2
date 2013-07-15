@@ -1,4 +1,4 @@
-<?
+<?php
 	session_start();
 
 	//arquivos necessários para o funcionamento
@@ -40,7 +40,7 @@
 	<script src="Scripts/swfobject_modified.js" type="text/javascript"></script>
 	<script src="/../jquery.js"></script>
 	<script src="colorbox/jquery.colorbox.js"></script>
-<?
+<?php
 	//ajuste da resolução					
 	if(isset($_GET["screen_res"])){
 		$screen_res = $_GET["screen_res"];
@@ -59,7 +59,7 @@
 	?>
 </head>
 <body>
-    <?     
+    <?php     
 	//procurando variavel $personagem_id      
 	$personagem_id = $_SESSION['SS_personagem_id'];
 
