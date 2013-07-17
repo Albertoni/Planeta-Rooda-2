@@ -114,6 +114,7 @@ class topico{
 	private $idUsuario;	function getIdUsuario(){return $this->idUsuario;}
 	private $titulo;	function getTitulo(){return $this->titulo;}
 	private $date;		function getDate(){return $this->date;}
+	private $nomeUsuario;function getNomeUsuario(){return $this->nomeUsuario;}
 	private $mensagens;	function getMensagens(){return $this->mensagens;}
 	private $salvo = false;
 
@@ -128,14 +129,16 @@ function setMensagem($indice, $mensagem){
 }
 
 	
-	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL"){
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = "", $nomeUsuario = "ERRO 43"){
 		if($idTurma === NULL){// se mandar só a id do topico, abre ele
 			$this->loadTopico($idTopico);
 		}else{
-			$this->idTopico	= $idTopico;
-			$this->idTurma	= $idTurma;
-			$this->idUsuario= $idUsuario;
-			$this->titulo	= $titulo;
+			$this->idTopico		= $idTopico;
+			$this->idTurma		= $idTurma;
+			$this->idUsuario	= $idUsuario;
+			$this->titulo		= $titulo;
+			$this->date			= $date;
+			$this->nomeUsuario	= $nomeUsuario;
 		}
 	}
 
@@ -237,19 +240,23 @@ class forum {
 		if(empty($this->listaTopicos)){
 			$idTurma = $this->idTurma;
 			$q = new conexao();
-			$q->solicitar("SELECT * FROM ForumTopico WHERE idTurma = $idTurma");
+			$q->solicitar("SELECT * FROM 
+				ForumTopico JOIN usuarios ON ForumTopico.idUsuario = usuarios.usuario_id 
+				WHERE idTurma = $idTurma");
 
 			$this->numTopicos = $q->registros;
-			
+			print_r((((((((((((((((((($q)))))))))))))))))));
 			for($i=0; $i < ($q->registros); $i+=1){
 				$idTopico = $q->resultado['idTopico'];
 				$idTurma = $q->resultado['idTurma'];
 				$idUsuario = $q->resultado['idUsuario'];
 				$titulo = $q->resultado['titulo'];
 				$date = $q->resultado['data'];
+				$nomeUsuario = $q->resultado['usuario_nome'];
 
-				$topicoLoop = new topico($idTopico, $idTurma, $idUsuario, $titulo, $date);
+				$topicoLoop = new topico($idTopico, $idTurma, $idUsuario, $titulo, $date, $nomeUsuario);
 				$this->listaTopicos[] = $topicoLoop; // appends
+				$q->proximo();
 			}
 			
 			return $this->listaTopicos;
@@ -271,12 +278,19 @@ class visualizacaoForum extends forum{
 			echo "Não existem tópicos nessa turma.";
 		}else{
 			$html = "";
+
+
+			/*for ($i=0; $i < count($this->listaTopicos); $i++) { 
+				# code...
+			}*/
+
 			foreach ($this->listaTopicos as $indice => $topico) {
 				$idTopico = $topico->getIdTopico();
 				$idTurma = $topico->getIdTurma();
 				$idUsuario = $topico->getIdUsuario();
 				$date = $topico->getDate();
 				$titulo = $topico->getTitulo();
+				$nomeUsuario = $topico->getNomeUsuario();
 				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
 
 				echo "
@@ -293,10 +307,10 @@ class visualizacaoForum extends forum{
 		<ul>
 		<li>
 		<div class=\"limite_topico\">
-		<div style=\"height:70px; overflow:hidden;\"><a href=\"$link\" id=\"tm518\">hue</a></div>
+		<div style=\"height:70px; overflow:hidden;\"><a href=\"$link\" id=\"tm518\">$titulo</a></div>
 		</div>
 		</li>
-		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">joao teste</span> em <span style=\"color:#C60;\">29/4/2013</span> às  <span style=\"color:#C60;\">17h 4min</span></li>
+		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">$nomeUsuario</span> em <span style=\"color:#C60;\">29/4/2013</span> às <span style=\"color:#C60;\">$date</span></li>
 		<li><div align=\"right\" class=\"enviar\">
 		</div></li>
 	</ul>
@@ -305,10 +319,6 @@ class visualizacaoForum extends forum{
 ";
 			}
 		}
-	}
-
-	function imprimePaginas(){
-
 	}
 
 	function imprimeNumTopicos(){
