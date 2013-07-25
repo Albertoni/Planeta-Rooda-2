@@ -15,7 +15,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $data = 0;
 	private $salvo = false;
 	
-	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $data = NULL, $idMensagemRespondida = NULL){
 		if($idTopico === NULL){
 			$this->loadPost($id);
 		}else{
@@ -23,6 +23,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$this->idUsuario = $idUsuario;
 			$this->idMensagemRespondida = $idMensagemRespondida;
 			$this->texto = $texto;
+			$this->data = ($data == NULL) ? 0 : $data;
 		}
 	}
 
@@ -45,7 +46,6 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 		
 		if ($q->erro != "") {
-			print_r($q);
 			die("Erro na salvar da mensagem1");
 		}
 	}
@@ -159,7 +159,7 @@ function setMensagem($indice, $mensagem){
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
-					$mensagem = new mensagem();
+					$mensagem = new mensagem($q->resultado['id'], $q->resultado['idTopico'], $q->resultado['idUsuario'], $q->resultado['texto'], $q->resultado['data'], $q->resultado['idMensagemRespondida']);
 					array_push($this->mensagens, $mensagem);
 					$q->proximo();
 				}
@@ -211,6 +211,49 @@ function setMensagem($indice, $mensagem){
 	}
 }
 
+class visualizacaoTopico extends topico{
+	function printMensagens(){
+		$mensagens = $this->getMensagens();
+		foreach ($mensagens as $indice => $mensagem){
+			$ue = 0;
+?>
+			<div class="cor3">
+				<ul>
+					<li class="tabela">
+					<div class="info" >
+						<p class="nome"><b>$nome</b></p>
+						<p class="data"><span style="color:#C60;">29/4/2013</span> às  <span style="color:#C60;">17h 4min</span></p>
+					</div>
+						<div class="bts_msg" align="right">
+							<input type="image" src="../../images/botoes/bt_editar.png" onclick="editar(1081,518)"/>
+							<input type="image" src="../../images/botoes/bt_excluir.png" onclick="excluir(1081,518,deltipo)"/>
+						</div>
+					</li>
+					<li>
+						<div class="imagem"><img src="img_output.php?id=512"/></div>
+						<div class="limite_resposta">
+							<p class="texto_resposta">hue</p>
+						</div>
+					</li>
+					<li>
+						<div class="bts_msg" align="right">
+							<input type="image" src="../../images/botoes/bt_responder_pq.png" onclick="responder(518)"/>
+						</div>
+					</li>
+					<li id="li_resposta_518" style="display:none;">
+						<textarea class="msg_dimensao" rows="10" id="msg_txt_518"></textarea>
+						<div class="bts_msg" align="right">
+						<input type="image" src="../../images/botoes/bt_enviar_pq.png" onclick="enviarRsp(1081,518)"/>
+						<input type="image" src="../../images/botoes/bt_cancelar_pq.png" onclick="cancelarRsp(1081,518,deltipo)"/>
+						</div>
+					</li>
+				</ul>
+			</div>
+<?php
+		}
+	}
+}
+
 class forum {
 	/*\
 	 * 
@@ -245,7 +288,6 @@ class forum {
 				WHERE idTurma = $idTurma");
 
 			$this->numTopicos = $q->registros;
-			print_r((((((((((((((((((($q)))))))))))))))))));
 			for($i=0; $i < ($q->registros); $i+=1){
 				$idTopico = $q->resultado['idTopico'];
 				$idTurma = $q->resultado['idTurma'];

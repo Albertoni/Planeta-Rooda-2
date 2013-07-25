@@ -224,6 +224,7 @@ function mostraArvore ($id_msg,$dono, $mensagem, $data, $cor, $grau, $resposta, 
 	$classe_cor = 'cor3';
 	$vetor_data = explode(",",$data);
 	$res = '';
+	$editavel = true;
 	for ($i=0;$i<$grau; $i++)
 		$res .= "Re.:";
 	
