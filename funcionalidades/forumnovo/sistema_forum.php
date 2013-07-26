@@ -152,14 +152,17 @@ function setMensagem($indice, $mensagem){
 			$this->idTurma	= $q->resultado['idTurma'];
 			$this->idUsuario= $q->resultado['idUsuario'];
 			$this->titulo	= $q->resultado['titulo'];
-			$this->date		= $q->resultado['date'];
+			$this->date		= $q->resultado['data'];
 			$this->salvo	= true;
 
-			$q->solicitar("SELECT * FROM ForumMensagem WHERE idTopico = $this->idTopico ORDER BY idMensagem");
+			$q->solicitar("SELECT * FROM ForumMensagem
+							INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
+							 WHERE idTopico = $this->idTopico
+							 ORDER BY idMensagem");
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
-					$mensagem = new mensagem($q->resultado['id'], $q->resultado['idTopico'], $q->resultado['idUsuario'], $q->resultado['texto'], $q->resultado['data'], $q->resultado['idMensagemRespondida']);
+					$mensagem = new mensagem($q->resultado['id'], $q->resultado['idTopico'], $q->resultado['idUsuario'], $q->resultado['texto'], $q->resultado['data'], $q->resultado['idMensagemRespondida'], $q->resultado['usuario_id']);
 					array_push($this->mensagens, $mensagem);
 					$q->proximo();
 				}
@@ -212,17 +215,26 @@ function setMensagem($indice, $mensagem){
 }
 
 class visualizacaoTopico extends topico{
+
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = "", $nomeUsuario = "ERRO 43"){
+		parent::__construct($idTopico, $idTurma, $idUsuario, $titulo, $date, $nomeUsuario);
+	}
+
+	function getPrintableDate(){
+		echo "<span class=\"data\">BOA PERGUNTA, PREENCHE A GETPRINTABLEDATE</span>";
+	}
+
 	function printMensagens(){
 		$mensagens = $this->getMensagens();
 		foreach ($mensagens as $indice => $mensagem){
-			$ue = 0;
+			$nome = $mensagem->get;
 ?>
 			<div class="cor3">
 				<ul>
 					<li class="tabela">
 					<div class="info" >
-						<p class="nome"><b>$nome</b></p>
-						<p class="data"><span style="color:#C60;">29/4/2013</span> às  <span style="color:#C60;">17h 4min</span></p>
+						<p class="nome"><b><?= $nome ?></b></p>
+						<p class="data"><?= $this->getPrintableDate() ?></p>
 					</div>
 						<div class="bts_msg" align="right">
 							<input type="image" src="../../images/botoes/bt_editar.png" onclick="editar(1081,518)"/>

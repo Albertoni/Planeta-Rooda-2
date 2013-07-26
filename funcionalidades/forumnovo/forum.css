@@ -22,7 +22,8 @@ float:left; margin-right:15px; display:table-cell}
 
 .info { float:left; width:60%; display:table-cell; margin-top:10px; border-bottom: 1px solid #888888; padding-bottom:10px;}
 .nome {float:left;}
-.data {float:right;}
+p.data {float:right;}
+span.data{color:#C60;}
 
 .bts_msg {width:40%; display:table-cell}
 .bts_msg input{margin-left:10px;}
