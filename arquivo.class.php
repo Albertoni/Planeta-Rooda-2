@@ -115,6 +115,7 @@ class Arquivo {
 	}
 	// METODOS RELACIONSADOS A UPLOAD
 	public function salvar() {
+		// NOVO ARQUIVO
 		if ($this->upload && !$this->download) {
 			// novo arquivo
 			$bd = new conexao();
@@ -128,7 +129,7 @@ class Arquivo {
 			$campos[]  = 'tamanho';
 			$valores[] = $bd->sanitizaString($this->tamanho);
 			$campos[]  = 'arquivo';
-			$valores[] = $bd->sanitizaString($this->arquivo);
+			$valores[] = $bd->sanitizaString($this->conteudo);
 			$campos[]  = 'tags';
 			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
 			$campos[]  = 'dataUpload';
@@ -152,7 +153,7 @@ class Arquivo {
 				$this->download = true;
 				return true;
 			}
-
+		// MUDANDO ARQUIVO ANTIGO
 		} else if ($this->download && !$this->upload) {
 			$bd = new conexao();
 			// sanitizando dados para o banco de dados
@@ -165,7 +166,7 @@ class Arquivo {
 			$campos[]  = 'tamanho';
 			$valores[] = $bd->sanitizaString($this->tamanho);
 			$campos[]  = 'arquivo';
-			$valores[] = $bd->sanitizaString($this->arquivo);
+			$valores[] = $bd->sanitizaString($this->conteudo);
 			$campos[]  = 'tags';
 			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
 			$campos[]  = 'dataUpload';
@@ -256,6 +257,7 @@ class Arquivo {
 		if (is_string($tags)) {
 			$tags = explode(",", $tags);
 		}
+		// nada de 'else' aqui.
 		if (is_array($tags)) {
 			$this->tags = array();
 			foreach ($tags as $value) {
