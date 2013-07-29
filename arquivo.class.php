@@ -308,7 +308,11 @@ class Arquivo
 		{
 			$tags = explode(",", $tags);
 		}
-		// nada de 'else' aqui.
+		// Nada de 'else' aqui, pois a entrada pode ser:
+		//   1. string com tags speradas por vírgula ou
+		//   2. array de tags.
+		// se for uma string (1), ela será convertida em array e depois
+		// é tratada como uma array a seguir.
 		if (is_array($tags))
 		{
 			$this->tags = array();
