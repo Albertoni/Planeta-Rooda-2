@@ -23,11 +23,10 @@ $turma = new turma($turmaId);
 function listar($ultimoId = 0) {
 	global $turmaId;
 	global $usuario;
+	$json = array();
 	$perm = checa_permissoes(TIPOBIBLIOTECA, $turmaId);
 	if ($perm === false) {
 		$json['errors'][] = "Portfólio desabilitado para esta turma.";
-	} else {
-
 	}
 	return $json;
 }
@@ -38,8 +37,7 @@ if (!$usuario_id) {
 	$json['session'] = true;
 	switch ($acao) {
 		case 'listar':
-			$json = listar();
-			
+			$json = listar($ultimoId);
 			break;
 		case 'enviar':
 			# code...
@@ -50,8 +48,3 @@ if (!$usuario_id) {
 	}
 }
 echo json_encode($json);
-class Material {
-	private $id;
-	private $titulo;
-	private 
-}
