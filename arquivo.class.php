@@ -15,7 +15,7 @@ class Arquivo
 	private $conteudo;
 	private $tags = array(); // deve ser removido futuramente (só é usado na biblioteca, que tem um campo proprio na tabela de materiais)
 	private $data;
-	private $erros = array();
+	private $erros = NULL;
 	private $upload = false;
 	private $download = false;
 
@@ -286,20 +286,17 @@ class Arquivo
 	}
 	public function setTitulo($titulo)
 	{
-		$titulo = trim($titulo);
-		$this->titulo = $titulo;
+		$this->titulo = trim($titulo);
 		return $this;
 	}
 	public function setNome($nome)
 	{
-		$nome = trim($nome);
-		$this->nome = $nome;
+		$this->nome = trim($nome);
 		return $this;
 	}
 	public function setTipo($tipo)
 	{
-		$tipo = trim($tipo);
-		$this->tipo = $tipo;
+		$this->tipo = trim($tipo);
 		return $this;
 	}
 	public function setTags($tags)

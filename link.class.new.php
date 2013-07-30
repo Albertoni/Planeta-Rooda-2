@@ -13,7 +13,8 @@ class Link
 	private $uploader_id = false;
 	private $funcionalidade_id = 0; // deve ser removido no futuro
 	private $funcionalidade_tipo = 0;  // deve ser removido no futuro]
-	private $this->erros = array();
+	private $erros = array();
+	
 	function __construct($id = false)
 	{
 		global $tabela_links;
