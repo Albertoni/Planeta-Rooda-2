@@ -44,6 +44,14 @@ class Link
 			}
 		}
 	}
+	public function getId()
+	{
+		return $this->id;
+	}
+	public function getEndereco()
+	{
+		return $this->endereco;
+	}
 	public function excluir()
 	{
 		global $tabela_links;
