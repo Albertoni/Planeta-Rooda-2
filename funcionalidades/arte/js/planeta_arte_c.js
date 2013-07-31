@@ -128,6 +128,9 @@ var borracha = {				// dados da borracha
 	largura : 10
 }
 
+var imagem_inicial;
+
+
 //	configura o http_salvar conforme o navegador
 if(navigator.appName == "Microsoft Internet Explorer") {
 	http_salvar = new ActiveXObject("Microsoft.XMLHTTP");
