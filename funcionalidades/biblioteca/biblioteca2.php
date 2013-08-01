@@ -1,10 +1,10 @@
 <?php
 require_once("../../cfg.php");
 require_once("../../bd.php");
-require_once("../../file.class.php");
-require_once("../../usuarios.class.php");
 require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("new.material.class.php");
 session_start();
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 $usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
@@ -55,43 +55,10 @@ if ($usuario_id >= 0)
 			<div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
 			<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 				<div id="conteudo">
-					<!-- SELEÇÂO DE TURMA -->
-					<div class="bloco" id="select_turma">
-						<h1>SELECIONAR TURMA</h1>
-						<div class="cor1">
-<?php
-$turmasDoUsuario = $usuario->getTurmas();
-if (count($turmasDoUsuario) > 0) {
-?>
-							<form method="get" id="troca_turma">
-								<select name="turma" id="select_turma">
-<?php
-	foreach ($turmasDoUsuario as $t) {
-?>
-									<option value="<?=$t['codTurma']?>"><?=$t['nomeTurma']?></option>
-<?php
-	}
-?>
-								</select>
-								<button type="submit" class="confirmar">Confirmar</button>
-							</form>
-<?php
-} else {
-?>
-									<div class="aviso">Você não está em nenhuma turma.</div>
-<?php
-}
-?>
-						</div>
-					</div>
-					<!-- FIM DA SELEÇÂO DE TURMA -->
 					<div class="bloco" id="materiais">
-						<h1>TURMA</h1>
+						<h1>NOME DA TURMA</h1>
 						<button type="button" id="botao_enviar_material">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
-					</div>
-					<div class="bloco" id="buscar_materiais">
-						<h1>BUSCAR MATERIAIS</h1>
 					</div>
 					<div class="bloco" id="enviar_material">
 						<h1>ENVIAR MATERIAL</h1>
