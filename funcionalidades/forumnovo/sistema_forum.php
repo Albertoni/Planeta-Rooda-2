@@ -221,11 +221,12 @@ class visualizacaoTopico extends topico{
 	}
 
 	function getPrintableDate(){
-		echo "<span class=\"data\">BOA PERGUNTA, PREENCHE A GETPRINTABLEDATE</span>";
+		echo "<span class=\"data\">BOA PERGUNTA, PREENCHE A GETPRINTABLEDATE AÍ TALVEZ EU SAIBA TE RESPONDER</span>";
 	}
 
-	function printMensagens(){
+	function imprimeMensagens(){
 		$mensagens = $this->getMensagens();
+		print_r($this);
 		foreach ($mensagens as $indice => $mensagem){
 			$nome = $mensagem->get;
 ?>

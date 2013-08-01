@@ -85,7 +85,7 @@ var http = false;
 var http_pesq = false;
 
 if (navigator.appName == "Microsoft Internet Explorer"){
-	http_pesq = new ActiveXObject("Microsoft.XMLhttp_mens");
+	http_pesq = new ActiveXObject("Microsoft.XMLhttp");
 	http = new ActiveXObject("Microsoft.XMLHTTP");
 }else{
 	http_pesq = new XMLHttpRequest();
@@ -164,4 +164,101 @@ function ordernar(elemento){
 	if (selecao != ' -- Ordenar... --'){
 		location.href = (location.href+'&ordem='+elemento.selectedIndex);
 	}
+}
+
+function enviaMensagem(){
+	var parametros = "topico=" + encodeURI("-1");
+	parametros += "&pai=" + encodeURI(document.getElementById('msg_pai').value);
+	parametros += "&turma=" + encodeURI(document.getElementById('msg_fid').value);
+	parametros += "&criador=" + encodeURI(document.getElementById('msg_criador').value);
+	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt').value);
+	parametros += "&ajax=1";
+
+	http.abort();
+	http.open("POST", "forum_salva_topico.php", true);
+	http.onreadystatechange=function() {
+		if ((http.readyState == 4)&& (http.status == 200 )) {
+			document.getElementById("dinamica").innerHTML = http.responseText;
+		}
+	}
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.setRequestHeader("Content-length", parametros.length);
+	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
+	http.send(parametros);
+}
+
+function escondeNovaMensagem(){
+	document.getElementById('msg_txt').value = "";
+	document.getElementById('msg_txt').innerHTML = "";
+	document.getElementById('nova_mensagem').style.display = "none";
+
+}
+
+function responde(id){
+	if (document.getElementById('li_resposta_'+id).style.display == "none")
+		document.getElementById('li_resposta_'+id).style.display = "block";
+	else
+		document.getElementById('li_resposta_'+id).style.display = "none";
+}
+
+function cancelaResposta(id){
+		document.getElementById('li_resposta_'+id).style.display = "none";
+}
+
+function enviaResposta(forumId,id){
+	var parametros = "topico=" + encodeURI("-1");
+	parametros += "&pai=" + encodeURI(id);
+	parametros += "&turma=" + encodeURI(forumId);
+	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt_'+id).value);
+	parametros += "&ajax=1";
+	http.abort();
+	http.open("POST", "forum_salva_topico.php", true);
+	http.onreadystatechange=function() {
+		if ((http.readyState == 4)&& (http.status == 200 )) {
+			cancelarRsp(id);
+			document.getElementById("dinamica").innerHTML = http.responseText;
+		}
+	}
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	http.setRequestHeader("Content-length", parametros.length);
+	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
+	http.send(parametros);
+}
+
+function geraPost(post){
+	var container = document.createElement("div");
+	container.className = "cor3";
+
+	container.innerHTML = "<ul>\
+		<li class=\"tabela\">\
+		<div class=\"info\">\
+			<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
+			<p class=\"data\">"+post.dataPost+"</p>\
+		</div>\
+			<div class=\"bts_msg\" align=\"right\">\
+				<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
+				<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir("+post.turma+","+post.idPost+",deltipo)\" "+ (post.podeDeletar ? "" : "style=\"display:none\"") +"/>\
+			</div>
+		</li>
+		<li>
+			<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
+			<div class=\"limite_resposta\">\
+				<p class=\"texto_resposta\">"+post.texto+"</p>\
+			</div>
+		</li>
+		<li>
+			<div class=\"bts_msg\" align=\"right\">\
+				<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\
+			</div>
+		</li>
+		<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
+			<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
+			<div class=\"bts_msg\" align=\"right\">\
+			<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviarRsp("+post.turma+","+post.idPost+")\"/>\
+			<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelarRsp("+post.turma+","+post.idPost+",deltipo)\"/>\
+			</div>\
+		</li>\
+	</ul>";
+
+	return container;
 }

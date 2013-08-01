@@ -50,13 +50,20 @@ span.data{color:#C60;}
 
 .espaco_linhas {margin-top:22px}
 
-#cancela_msg { position:relative; cursor:pointer}
-#confirm_msg { position:relative}
+#cancela_msg{position:relative; cursor:pointer}
+#confirm_msg{position:relative}
 
-#responder_topico { cursor:pointer}
+.botao_transparente{
+	margin:0;
+	padding:0;
+	border:0;
+	background-color: transparent;
+}
 
-#responder_topico_cima { cursor:pointer}
-#responder_topico_baixo { cursor:pointer}
+#responder_topico{cursor:pointer; float:right;}
+
+#responder_topico_cima{cursor:pointer}
+#responder_topico_baixo{cursor:pointer}
 
 .limite_resposta{
 	position:relative;
