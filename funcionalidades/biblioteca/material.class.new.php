@@ -39,7 +39,6 @@ class Material
 					palavras         AS tags,
 					codUsuario       AS codUsuario,
 					tipoMaterial     AS tipo,
-					material         AS material, -- deprecado (link)
 					data             AS data,
 					hora             AS hora,
 					refMaterial      AS codRecurso,
@@ -81,6 +80,7 @@ class Material
 		switch ($this->tipo) {
 			case MATERIAL_ARQUIVO:
 				$this->arquivo = new Arquivo($this->codRecurso);
+				if ($this->arquivo->getId() === 0)
 				break;
 			case MATERIAL_LINK:
 				$this->link = new Link($this->codRecurso);

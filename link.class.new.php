@@ -1,6 +1,7 @@
 <?php
 require_once("cfg.php");
 require_once("bd.php");
+require_once("usuarios.class.php");
 class Link
 {
 	private $to_register = false; // se verdadeiro, é um link novo ainda nao salvo.
@@ -11,8 +12,7 @@ class Link
 	private $tags = array();
 	private $endereco = ""; // URL do link
 	private $uploader_id = false;
-	private $funcionalidade_id = 0; // deve ser removido no futuro
-	private $funcionalidade_tipo = 0;  // deve ser removido no futuro]
+	private $usuario;
 	private $erros = array();
 	
 	function __construct($id = false)
@@ -51,6 +51,18 @@ class Link
 	public function getEndereco()
 	{
 		return $this->endereco;
+	}
+	public function getAutor()
+	{
+		return $this->autor;
+	}
+	public function salvar()
+	{
+		global $tabela_links;
+		if ($this->to_register)
+		{
+
+		}
 	}
 	public function excluir()
 	{

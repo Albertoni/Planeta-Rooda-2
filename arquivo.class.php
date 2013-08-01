@@ -3,13 +3,11 @@ require_once("cfg.php");
 require_once("bd.php");
 class Arquivo
 {
-	private $id;
-	private $tipoFuncionalidade = 0; // deve ser removido (fazer 1 tabela de referencia para cada funcionalidade em favor da modularidade)
-	private $idFuncionalidade = 0;   // deve ser removido (fazer 1 tabela de referencia para cada funcionalidade em favor da modularidade)
+	private $id = 0; // só mudar se o arquivo for carregado/salvado com sucesso.
 	private $idUploader;
 
 	private $titulo = "";
-	private $nome;      // nome do arquivo. Deve conter a extensao também 
+	private $nome;      // nome do arquivo. Deve conter a extensao também
 	private $tipo = ""; // mime-type
 	private $tamanho;
 	private $conteudo;
@@ -29,7 +27,6 @@ class Arquivo
 		}
 		else
 		{
-			$this->id = $id;
 			$bd = new conexao();
 			$bd->solicitar(
 				"SELECT
@@ -54,6 +51,7 @@ class Arquivo
 			if ($bd->registros === 1)
 			{
 				// carrega arquivo encontrado
+				$this->id = $id;
 				$this->popular($bd->resultado);
 				$download = true;
 			}
@@ -83,8 +81,6 @@ class Arquivo
 	public function getTipo() { return $this->tipo; }
 	public function getTamanho() { return $this->tamanho; }
 	public function getData() { return $this->data; }
-	public function getTipoFuncionalidade() { return $this->tipoFuncionalidade; }
-	public function getIdFuncionalidade() { return $this->idFuncionalidade; }
 	public function getIdUploader() { return $this->idUploader; }
 	public function getTags()
 	{
@@ -131,10 +127,6 @@ class Arquivo
 			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
-			$campos[]  = 'funcionalidade_tipo';             // Estes campos
-			$valores[] = (int) $this->tipoFuncionalidade;   // devem ser
-			$campos[]  = 'funcionalidade_id';               // removidos
-			$valores[] = (int) $this->idFuncionalidade;     // futuramente.
 			$campos[]  = 'uploader_id';
 			$valores[] = (int) $this->idUploader;
 			// executando consulta
@@ -153,8 +145,8 @@ class Arquivo
 				$this->download = true;
 				return true;
 			}
-		// MUDANDO ARQUIVO ANTIGO
 		}
+		// MUDANDO ARQUIVO ANTIGO
 		else if ($this->download && !$this->upload)
 		{
 			$bd = new conexao();
@@ -173,10 +165,6 @@ class Arquivo
 			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
-			$campos[]  = 'funcionalidade_tipo';             // Estes campos
-			$valores[] = (int) $this->tipoFuncionalidade;   // devem ser
-			$campos[]  = 'funcionalidade_id';               // removidos
-			$valores[] = (int) $this->idFuncionalidade;     // futuramente.
 			$campos[]  = 'uploader_id';
 			$valores[] = (int) $this->idUploader;
 			$sqlset = array();
@@ -208,16 +196,6 @@ class Arquivo
 	// 	if ($this->download && !$this->upload) {
 	// 	}
 	// }
-	public function setFuncionalidade($tipo, $id) {
-		if ($upload === true)
-		{
-			$tipo = (int) $tipo;
-			$id = (int) $id;
-			$this->tipoFuncionalidade = $tipo;
-			$this->idFuncionalidade   = $id;
-		}
-		return $this;
-	}
 	public function setIdUploader($id) {
 		$id = (int) $id;
 		if ($id === 0)
