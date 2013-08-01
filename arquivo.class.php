@@ -15,7 +15,7 @@ class Arquivo
 	private $conteudo;
 	private $tags = array(); // deve ser removido futuramente (só é usado na biblioteca, que tem um campo proprio na tabela de materiais)
 	private $data;
-	private $erros = NULL;
+	private $erros = array();
 	private $upload = false;
 	private $download = false;
 
@@ -76,30 +76,16 @@ class Arquivo
 		$this->idFuncionalidade = $resultadoBd['idFuncionalidade'];
 		$this->idUploader = $resultadoBd['idUploader'];
 	}
-	public function getId()
-	{
-		return $this->id;
-	}
-	public function getConteudo()
-	{
-		return $this->conteudo;
-	}
-	public function getTitulo()
-	{
-		return $this->titulo;
-	}
-	public function getNome()
-	{
-		return $this->nome;
-	}
-	public function getTipo()
-	{
-		return $this->tipo;
-	}
-	public function getTamanho()
-	{
-		return $this->tamanho;
-	}
+	public function getId() { return $this->id; }
+	public function getConteudo() { return $this->conteudo; }
+	public function getTitulo() { return $this->titulo; }
+	public function getNome() { return $this->nome; }
+	public function getTipo() { return $this->tipo; }
+	public function getTamanho() { return $this->tamanho; }
+	public function getData() { return $this->data; }
+	public function getTipoFuncionalidade() { return $this->tipoFuncionalidade; }
+	public function getIdFuncionalidade() { return $this->idFuncionalidade; }
+	public function getIdUploader() { return $this->idUploader; }
 	public function getTags()
 	{
 		$tags = array();
@@ -121,22 +107,6 @@ class Arquivo
 	public function temErros()
 	{
 		return (0 !== count($this->erros));
-	}
-	public function getData()
-	{
-		return $this->data;
-	}
-	public function getTipoFuncionalidade()
-	{
-		return $this->tipoFuncionalidade;
-	}
-	public function getIdFuncionalidade()
-	{
-		return $this->idFuncionalidade;
-	}
-	public function getIdUploader()
-	{
-		return $this->idUploader;
 	}
 	// METODOS RELACIONSADOS A UPLOAD
 	public function salvar()
