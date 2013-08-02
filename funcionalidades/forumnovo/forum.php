@@ -37,14 +37,14 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
-<script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
-<script type="text/javascript">
+<script src="../../jquery.js"></script>
+<script src="../../planeta.js"></script>
+<script src="../lightbox.js"></script>
+<script>
 	var deltipo = 0;
 </script>
 <script type="text/javascript" src="forum.js"></script>
