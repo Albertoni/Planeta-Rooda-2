@@ -7,7 +7,7 @@ define("MATERIAL_LINK", 'l');
 define("MATERIAL_ARQUIVO", 'a');
 class Material
 {
-	private $codMaterial  = -1;
+	private $id  = -1;
 	private $codTurma     = -1;
 	private $codRecurso   = -1;   // codigo do link ou arquivo
 	private $titulo       = "";
@@ -48,7 +48,7 @@ class Material
 			);
 			if ($bd->registros === 1)
 			{
-				$this->codMaterial = $id;
+				$this->id = $this->setId($id);
 				$this->setTurma((int) $bd->resultado['codTurma']);
 				$this->setTitulo($bd->resultado['titulo']);
 				$this->setAutor($bd->resultado['autor']);
@@ -93,13 +93,20 @@ class Material
 	}
 	public function salvar() {
 		if ($this->novo)
-		{}
-		else
-		{}
+		{
+			$bd = new conexao;
+			$this->novo = false;
+		}
+		elseif ($this->id)
+		{
+			$bd = new conexao;
+		}
 	}
-	public function getId() { return $this->codMaterial; }
+	public function getId() { return $this->id; }
 	public function getTitulo() { return $this->titulo; }
+	public function getAutor() { return $this->autor; }
 	public function getUsuario() { return $this->usuario; }
+	public function getTurma() { return $this->turma; }
 	public function getTags() { return $this->tags; }
 	public function getTipo() { return $this->tipo; }
 	public function getArquivo() { return $this->arquivo; }
@@ -116,6 +123,12 @@ class Material
 			return $this->link->getEndereco();
 		}
 	}
+	private function setId($id) { $this->id = (int) $id; }
+	public function setTitulo($titulo)
+	{
+		$this->titulo = trim($titulo);
+		return true;
+	}
 	public function setTurma($turma)
 	{
 		if (get_class() === "turma")
@@ -128,11 +141,6 @@ class Material
 			return true;
 		}
 		return false;
-	}
-	public function setTitulo($titulo)
-	{
-		$this->titulo = trim($titulo);
-		return true;
 	}
 	public function setAutor($autor)
 	{

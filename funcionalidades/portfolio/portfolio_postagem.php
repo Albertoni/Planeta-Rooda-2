@@ -8,8 +8,8 @@
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
-require("../../reguaNavegacao.class.php");
-require("../../usuarios.class.php");
+require_once("../../reguaNavegacao.class.php");
+require_once("../../usuarios.class.php");
 
 session_start();
 

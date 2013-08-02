@@ -4,16 +4,10 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
-require_once("new.material.class.php");
-session_start();
+require_once("material.class.new.php");
+$usuario = usuario_sessao();
+if (!$usuario) {}
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
-$usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
-
-if ($usuario_id >= 0)
-{
-	$usuario = new Usuario();
-	$usuario->openUsuario($usuario_id);
-}
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +15,7 @@ if ($usuario_id >= 0)
 		<meta charset="utf-8" />
 		<title>Planeta ROODA 2.0</title>
 		<link type="text/css" rel="stylesheet" href="../../planeta.css" />
-		<link type="text/css" rel="stylesheet" href="biblioteca.css" />
+		<link type="text/css" rel="stylesheet" href="biblioteca2.css" />
 	</head>
 	<body>
 		<div id="topo">
@@ -67,29 +61,40 @@ if ($usuario_id >= 0)
 							Tipo de material
 							<button>Arquivo</button>
 							<button>Link</button>
-							<fieldset class="material_material">
-								<legend>Material</legend>
-								<label>Título:<br>
-									<input type="text" name="titulo" id="material_titulo" />
-								</label><br>
-								<label>Palavras do Material:<br>
-									<input type="text" name="tags" id="material_tags" />
-								</label><br>
-								<label>Arquivo:<br>
-									<input type="file" name="arquivo" id="material_arquivo" />
-								</label><br>
-								<label>Link:<br>
-									<input type="text" name="link" id="material_link" />
-								</label><br>
-								<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
-							</fieldset>
+							<legend>Material</legend>
+							<label>Título:<br>
+								<input type="text" name="titulo" id="material_titulo" />
+							</label><br>
+							<label>Palavras do Material:<br>
+								<input type="text" name="tags" id="material_tags" />
+							</label><br>
+							<label>Arquivo:<br>
+								<input type="file" name="arquivo" id="material_arquivo" />
+							</label><br>
+							<label>Link:<br>
+								<input type="text" name="link" id="material_link" />
+							</label><br>
+							<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
 						</form>
 						</div>
+					</div>
+					<div class="bloco" id="materiais_enviados">
+						<h1>MATERIAIS ENVIADOS</h1>
+						<ul id="ul_materiais">
+							<li class="%classes%">
+								<h2>%titulo%</h2>
+								<small>Enviado por %usuario% em %data% (%hora%).</small>
+								<p>Autor: %autor%</p>
+								<a href="%link%">%nome%</a>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div><!-- fim do conteudo -->
 			<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 		</div>
+		<!-- JAVASCRIPT -->
+		<script src="../../js/rooda.js"></script>
 		<script>
 		;(function () {
 			var botao_enviar_material  = document.getElementById("botao_enviar_material");

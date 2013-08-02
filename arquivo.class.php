@@ -1,6 +1,7 @@
 <?php //>
 require_once("cfg.php");
 require_once("bd.php");
+require_once("usuarios.class.php")
 class Arquivo
 {
 	private $id = 0; // só mudar se o arquivo for carregado/salvado com sucesso.
@@ -107,6 +108,7 @@ class Arquivo
 	// METODOS RELACIONSADOS A UPLOAD
 	public function salvar()
 	{
+		global $tabela_arquivos;
 		// NOVO ARQUIVO
 		if ($this->upload && !$this->download)
 		{
@@ -270,6 +272,7 @@ class Arquivo
 	}
 	public function excluir()
 	{
+		global $tabela_arquivos;
 		if (!$this->upload && $this->download)
 		{
 			$bd = new conexao();
@@ -283,6 +286,22 @@ class Arquivo
 			}
 		}
 		return true;
+	}
+	public static function getArquivosUsuario($usuario)
+	{
+		if (get_class($usuario) === "Usuario")
+		{
+			$usuario = $usuario->getId();
+		}
+		global $tabela_arquivos
+		$arquios = array();
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT arquivo_id AS id 
+			FROM $tabela_arquivos
+			WHERE uploader_id = $usuario";
+		);
+		return $arquivos;
 	}
 }
 /* /

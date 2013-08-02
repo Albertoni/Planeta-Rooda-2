@@ -61,7 +61,7 @@ class Link
 		global $tabela_links;
 		if ($this->to_register)
 		{
-
+			if ($this->endereco === '');
 		}
 	}
 	public function excluir()
@@ -119,7 +119,8 @@ class Link
 	}
 	public function setEndereco($url)
 	{
-		if (is_string($url))
+		$url = trim($url);
+		if ($url !== '')
 		{
 			$url = urlencode($url);
 			if ('http://' !== substr($url,0,7) and 'https://' !== substr($url,0,8))

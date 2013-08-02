@@ -1,9 +1,21 @@
 <?php
 require_once("cfg.php");
+require_once("usuarios.class.php");
 //---------------------------------------------------------------
 //Funções Comuns
 //---------------------------------------------------------------
-
+	function usuario_sessao() {
+		session_start();
+		$usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
+		if ($usuario_id >= 0)
+		{
+			$usuario = new Usuario();
+			$usuario->openUsuario($usuario_id);
+			if ($usuario->getId() > 0)
+				return $usuario;
+		}
+		return false;
+	}
 	function resolucao($screen_res) {
 		
 		if($screen_res != "") { 

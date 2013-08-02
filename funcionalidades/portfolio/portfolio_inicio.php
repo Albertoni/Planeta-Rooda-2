@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../reguaNavegacao.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../reguaNavegacao.class.php");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
