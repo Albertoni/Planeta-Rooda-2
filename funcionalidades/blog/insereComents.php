@@ -1,14 +1,14 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");	
-	require("../../file.class.php");	
-//	require("verifica_user.php");
-	require("blog.class.php");
-//	require("visualizacao_blog.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("../../usuarios.class.php");	
+	require_once("../../file.class.php");	
+//	require_once("verifica_user.php");
+	require_once("blog.class.php");
+//	require_once("visualizacao_blog.php");
 	
 	//*************************************** TESTES =D **************************************************
 	

@@ -1,9 +1,9 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
 
 	$consulta = new conexao();
 	$usuario_id = $_SESSION['SS_usuario_id'];

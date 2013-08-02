@@ -1,7 +1,7 @@
 <?php 
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../reguaNavegacao.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../reguaNavegacao.class.php");
 	require_once("../../funcoes_aux.php");
 	
 	session_start();

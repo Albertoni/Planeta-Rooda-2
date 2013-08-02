@@ -1,13 +1,13 @@
 <?php
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
 
 session_start();
 
-require("sistema_forum.php");
-require("visualizacao_forum.php");
+require_once("sistema_forum.php");
+require_once("visualizacao_forum.php");
 
 $user=$_SESSION['user'];
 

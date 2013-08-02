@@ -8,11 +8,11 @@
 	require_once("../../cfg.php");
 	require_once("../../bd.php");
 	require_once("../../funcoes_aux.php");
-	require("../../reguaNavegacao.class.php");
-	require("../../usuarios.class.php");
-	require("blog.class.php");
-//	require("verifica_user.php");
-//	require("visualizacao_blog.php");
+	require_once("../../reguaNavegacao.class.php");
+	require_once("../../usuarios.class.php");
+	require_once("blog.class.php");
+//	require_once("verifica_user.php");
+//	require_once("visualizacao_blog.php");
 
 	session_start();
 

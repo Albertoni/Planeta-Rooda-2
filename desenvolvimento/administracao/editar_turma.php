@@ -1,8 +1,8 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 	
 	global $nivelAdmin;
 	

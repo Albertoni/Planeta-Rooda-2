@@ -3,7 +3,7 @@
 	//arquivos necessários para o funcionamento
 	require_once("../cfg.php");
 	require_once("../bd.php");
-	require("../funcoes_aux.php");
+	require_once("../funcoes_aux.php");
 	/*---------------------------------------------------
 	*	Insere um novo objeto no BD e retorna seu ID. - Diogo - 20.07.11
 	---------------------------------------------------*/

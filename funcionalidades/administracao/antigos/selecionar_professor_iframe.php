@@ -1,8 +1,8 @@
 <?php
 // !SQLINJECTION
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
 ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml">

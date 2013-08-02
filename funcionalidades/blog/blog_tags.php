@@ -1,12 +1,12 @@
 <?php
 session_start();
 
-require("blog.class.php");
-require("../../cfg.php");
-require("../../bd.php");
-require("../../usuarios.class.php");
+require_once("blog.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../usuarios.class.php");
 require_once("../../funcoes_aux.php");
-require("../../reguaNavegacao.class.php");
+require_once("../../reguaNavegacao.class.php");
 global $tabela_tags;
 global $tabela_posts;
 

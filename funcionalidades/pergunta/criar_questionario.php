@@ -1,6 +1,6 @@
 <?php
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
 
 session_start();
 

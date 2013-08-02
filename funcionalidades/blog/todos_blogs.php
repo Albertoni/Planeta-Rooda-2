@@ -1,14 +1,14 @@
 <?php
 	session_start();
 
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");
-	require("blog.class.php");
-	require("../../file.class.php");
-	require("../../link.class.php");
-	require("../../reguaNavegacao.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("../../usuarios.class.php");
+	require_once("blog.class.php");
+	require_once("../../file.class.php");
+	require_once("../../link.class.php");
+	require_once("../../reguaNavegacao.class.php");
 	$usuario_id = $_SESSION['SS_usuario_id'];
 	
 	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;

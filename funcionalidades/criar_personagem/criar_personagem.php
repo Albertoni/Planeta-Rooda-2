@@ -1,9 +1,9 @@
 ﻿<?php
 	session_start();
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../reguaNavegacao.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("../../reguaNavegacao.class.php");
 	$id_char_php = $_SESSION['SS_personagem_id'];
 ?><!DOCTYPE html>
 <html>

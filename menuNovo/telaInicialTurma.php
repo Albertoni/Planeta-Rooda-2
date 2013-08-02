@@ -1,7 +1,7 @@
 <?php
 require_once("../turma.class.php");
-require("../usuarios.class.php");
-require("funcoesMenuTurma.php");
+require_once("../usuarios.class.php");
+require_once("funcoesMenuTurma.php");
 
 session_start();
 

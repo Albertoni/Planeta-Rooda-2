@@ -1,6 +1,6 @@
 <?php
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 
 	$id = $_GET['id'];
 	$fonte_mensagem_erro = "../../fonte_erros.ttf";

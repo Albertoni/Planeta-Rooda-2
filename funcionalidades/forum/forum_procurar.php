@@ -1,13 +1,13 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("verifica_user.php");
-	require("sistema_forum.php");
-	require("visualizacao_forum.php");
-	require("../../reguaNavegacao.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("verifica_user.php");
+	require_once("sistema_forum.php");
+	require_once("visualizacao_forum.php");
+	require_once("../../reguaNavegacao.class.php");
 	
 	$topico = (isset($_GET['topico']))? stripslashes($_GET['topico']) : 1;
 	$pagina = (isset($_GET['pagina']))? stripslashes($_GET['pagina']) : 1;

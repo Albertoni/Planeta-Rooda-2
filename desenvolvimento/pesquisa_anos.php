@@ -2,8 +2,8 @@
 	session_start();
 	header('Content-Type: text/html; charset=utf-8');
 
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 
 	//$id = $_POST['dado_pesquisado'];
 	//$posicao_dado_para_retorno = $_POST['pos_tupla_resultado_pesquisa'];

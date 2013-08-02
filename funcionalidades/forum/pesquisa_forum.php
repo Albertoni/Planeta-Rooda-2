@@ -4,12 +4,12 @@
 */
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("verifica_user.php");
-	require("sistema_forum.php");
-	require("visualizacao_forum.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("verifica_user.php");
+	require_once("sistema_forum.php");
+	require_once("visualizacao_forum.php");
 	
 	$_SESSION['SS_forum_pesq_consulta'] = isset($_POST['consulta'])? stripslashes($_POST['consulta']) : $_SESSION['SS_forum_pesq_consulta'];
 	$_SESSION['SS_forum_pesq_tipo'] = isset($_POST['tipo'])? stripslashes($_POST['tipo']) : $_SESSION['SS_forum_pesq_tipo'];

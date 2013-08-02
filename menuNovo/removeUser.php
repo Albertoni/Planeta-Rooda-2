@@ -1,6 +1,6 @@
 <?php
 session_start();
-require('funcoesMenuTurma.php');
+require_once('funcoesMenuTurma.php');
 
 $turma = (int) $_POST['turma'];
 $userId = (int) $_POST['userId'];

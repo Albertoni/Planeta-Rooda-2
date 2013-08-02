@@ -1,8 +1,8 @@
 <?php
   
-//  require("../../funcoes_aux.php");
-  require("../../file.class.php");
-  //require("../../bd.php");
+//  require_once("../../funcoes_aux.php");
+  require_once("../../file.class.php");
+  //require_once("../../bd.php");
 
   
   $funcionalidade_tipo = $_GET['funcionalidade_tipo'];

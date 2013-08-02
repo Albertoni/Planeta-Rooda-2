@@ -1,12 +1,12 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("verifica_user_biblio.php");
-	require("sistema_biblioteca.php");
-	//require("visualizacao_forum.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("verifica_user_biblio.php");
+	require_once("sistema_biblioteca.php");
+	//require_once("visualizacao_forum.php");
 	
 	
 	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;

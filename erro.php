@@ -6,7 +6,7 @@
 	//arquivos necessários para o funcionamento
 	require_once("cfg.php");
 	require_once("bd.php");
-	require("funcoes_aux.php");
+	require_once("funcoes_aux.php");
 
 			$bd = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);	
 		  	$bd->solicitar("SELECT * FROM `erros_db` ORDER BY `erros_db_id` DESC");

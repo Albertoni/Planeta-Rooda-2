@@ -1,6 +1,6 @@
 <?php
-	require("cfg.php");
-	require("bd.php");
+	require_once("cfg.php");
+	require_once("bd.php");
 
 	$data="";
 	$pesquisa1 = new conexao($BD_host1,$BD_base1,$BD_user1,$BD_pass1);

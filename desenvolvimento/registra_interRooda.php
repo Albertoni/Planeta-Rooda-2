@@ -4,9 +4,9 @@
 */
 session_start();
 
-require("../cfg.php");
-require("../bd.php");
-require("../funcoes_aux.php");
+require_once("../cfg.php");
+require_once("../bd.php");
+require_once("../funcoes_aux.php");
 
 /*
 @author Yuri Pelz Gossmann 

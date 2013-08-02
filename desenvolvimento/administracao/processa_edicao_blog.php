@@ -1,7 +1,7 @@
 <?php
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
 	
 	$id = $HTTP_POST_VARS['Id'];
 	$tipo = $HTTP_POST_VARS['Tipo'];

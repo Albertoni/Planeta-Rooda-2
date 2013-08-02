@@ -3,7 +3,7 @@ session_start();
 //arquivos necessários para o funcionamento
 require_once("../cfg.php");
 require_once("../bd.php");
-require("../funcoes_aux.php");
+require_once("../funcoes_aux.php");
 
 /*---------------------------------------------------
 *	Procura o usuário e envia o convite.

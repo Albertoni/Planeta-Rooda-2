@@ -2,8 +2,8 @@
 	session_start();
 	header('Content-Type: text/html; charset=utf-8');
 
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 
 	$id_usuario_que_procura = $_POST['usuario_id'];
 	$nome = $_POST['dado_pesquisado'];

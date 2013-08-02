@@ -12,7 +12,7 @@
 *	permissao(uid:int):boolean
 */
 
-require('../../usuarios.class.php');
+require_once('../../usuarios.class.php');
 
 global $_SESSION;
 

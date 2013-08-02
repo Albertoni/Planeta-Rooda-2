@@ -3,7 +3,7 @@ session_start();
 //arquivos necessários para o funcionamento
 require_once("../cfg.php");
 require_once("../bd.php");
-require("../funcoes_aux.php");
+require_once("../funcoes_aux.php");
 
 $deve_filtrar_mensagens = $_POST["deve_filtrar_mensagens"];
 $id_chat = $_POST["identificacao"];

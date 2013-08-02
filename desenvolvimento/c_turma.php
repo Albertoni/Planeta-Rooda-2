@@ -6,8 +6,8 @@
 */
 session_start();
 
-require("../../cfg.php");
-require("../../bd.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
 
 class c_turma{
 //dados	

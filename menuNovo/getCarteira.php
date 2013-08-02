@@ -1,8 +1,8 @@
 <?php
 session_start();
-require("../bd.php");
-require("../cfg.php");
-require("../usuarios.class.php");
+require_once("../bd.php");
+require_once("../cfg.php");
+require_once("../usuarios.class.php");
 
 $userId = (int)$_GET['userId'];
 $user = new Usuario();

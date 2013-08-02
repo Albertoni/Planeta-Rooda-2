@@ -6,10 +6,10 @@ if(isset($_POST['codVideo']) and is_numeric($_POST['codVideo'])){
 	
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("../../usuarios.class.php");
 	
 	$idVideo = $_POST['codVideo'];
 	$codTurma = $_POST['codTurma'];

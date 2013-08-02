@@ -4,9 +4,9 @@ session_start();
 if (count($_POST) == 0)
 	die("Voce nao pode acessar essa pagina diretamente.");
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
 
 $q = new conexao(); global $tabela_PerguntaPerguntas;
 global $tabela_PerguntaRespostas;

@@ -1,13 +1,13 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("../../usuarios.class.php");
-    require("../../login.class.php");	
-	require("../../file.class.php");
-	require("../../link.class.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("../../usuarios.class.php");
+    require_once("../../login.class.php");	
+	require_once("../../file.class.php");
+	require_once("../../link.class.php");
 	$usuario_nivel 	= $_SESSION['SS_usuario_nivel_sistema'];
 	
 	if ($usuario_nivel > 10) { // Se for aluno ou visitante

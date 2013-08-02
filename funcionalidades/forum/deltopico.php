@@ -1,12 +1,12 @@
 <?php
 	session_start();
 	
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
-	require("verifica_user.php");
-	require("sistema_forum.php");
-	require("visualizacao_forum.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
+	require_once("verifica_user.php");
+	require_once("sistema_forum.php");
+	require_once("visualizacao_forum.php");
 	
 	$permissoes = checa_permissoes(TIPOFORUM, $FORUM_ID);
 	if($permissoes === false){

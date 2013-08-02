@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
-require("../../reguaNavegacao.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("../../reguaNavegacao.class.php");
 
 $uid= (isset($_GET['user']) and is_numeric($_GET['user'])) ? $_GET['user'] : die("Volte e tente novamente, id do usuário cujas respostas voce deseja ver nao foi passada corretamente.");
 $id = (isset($_GET['quest']) and is_numeric($_GET['quest'])) ? $_GET['quest'] : die("Volte e tente novamente, id do questionario cujas respostas voce deseja ver nao foi passada corretamente.");

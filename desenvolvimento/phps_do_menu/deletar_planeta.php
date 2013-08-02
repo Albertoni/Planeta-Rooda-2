@@ -2,9 +2,9 @@
 	session_start();
 header('Content-Type: text/html; charset=utf-8');
 
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
 	
 	/*
 	* Erros que podem acontecer neste arquivo.

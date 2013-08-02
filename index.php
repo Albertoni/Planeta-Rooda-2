@@ -2,8 +2,8 @@
 //================================================
 // Area de login teste
 //================================================
-	require("cfg.php");
-	require("bd.php");
+	require_once("cfg.php");
+	require_once("bd.php");
 	
 	session_start();
 

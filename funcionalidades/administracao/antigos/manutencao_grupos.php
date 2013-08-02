@@ -1,8 +1,8 @@
 <?php
 	session_start();
 
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

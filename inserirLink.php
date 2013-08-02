@@ -3,10 +3,10 @@
  * inserirLink.php
  */
 header("Content-Type: application/json");
-require("cfg.php");
-require("bd.php");    
-require("usuarios.class.php");
-require("link.class.php");
+require_once("cfg.php");
+require_once("bd.php");    
+require_once("usuarios.class.php");
+require_once("link.class.php");
 $json = array();
 $endereco = isset($_POST['novoLink']) ? trim($_POST['novoLink']) : '';
 $funcionalidade_tipo = isset($_GET['funcionalidade_tipo']) ? (int) $_GET['funcionalidade_tipo'] : 0;

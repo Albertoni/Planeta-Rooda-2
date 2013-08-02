@@ -1,5 +1,5 @@
 <?php
-	require("../../planeta.class.php");
+	require_once("../../planeta.class.php");
 	$p = new Planeta();
 	$p->clear();
 ?>

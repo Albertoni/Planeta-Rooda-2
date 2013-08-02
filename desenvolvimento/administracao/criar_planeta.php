@@ -20,9 +20,9 @@ Acentuação é importante.
 	</form>
 	
 	<?php
-		require("../../cfg.php");
-		require("../../bd.php");
-		require("../../planeta.class.php");		
+		require_once("../../cfg.php");
+		require_once("../../bd.php");
+		require_once("../../planeta.class.php");		
 		
 		if (($_POST['tipo']) and ($_POST['nome']) and ($_POST['responsavel']) and ($_POST['pai'])){
 			

@@ -6,7 +6,7 @@ header('Content-Type: text/html; charset=utf-8');
 require_once("../cfg.php");
 require_once("../bd.php");
 //require_once("../usuarios.class.php");
-require("../funcoes_aux.php");
+require_once("../funcoes_aux.php");
 
 /*
 			Montar mensagem que descreverá a localização do terreno em que se encontra o personagem.

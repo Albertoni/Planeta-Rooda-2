@@ -1,18 +1,18 @@
 <?php
-	require("../../cfg.php");
-	require("../../bd.php");
-	require("../../funcoes_aux.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
+	require_once("../../funcoes_aux.php");
 
-	//require("../../usuarios.class.php");
+	//require_once("../../usuarios.class.php");
 	
 	session_start();
 	
 	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 	
-	require("verifica_user.php");
-	require("sistema_forum.php");
-	require("visualizacao_forum.php");
-	require("../../reguaNavegacao.class.php");
+	require_once("verifica_user.php");
+	require_once("sistema_forum.php");
+	require_once("visualizacao_forum.php");
+	require_once("../../reguaNavegacao.class.php");
 	
 	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
 	

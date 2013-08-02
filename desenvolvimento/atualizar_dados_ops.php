@@ -8,7 +8,7 @@ session_start();
 //arquivos necessários para o funcionamento
 require_once("../cfg.php");
 require_once("../bd.php");
-require("../funcoes_aux.php");
+require_once("../funcoes_aux.php");
 
 /*---------------------------------------------------
 *	Recebe informações sobre o mp no terreno, grava no bd e envia hora atual. Envia para o flash as informações dos ops online. - Guto - 10.05.10

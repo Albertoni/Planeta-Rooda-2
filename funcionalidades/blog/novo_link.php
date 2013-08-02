@@ -1,9 +1,9 @@
 <?php	
-require("../../cfg.php");
-require("../../bd.php");	
-require("../../usuarios.class.php");
-require("../../link.class.php");
-require("blog.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");	
+require_once("../../usuarios.class.php");
+require_once("../../link.class.php");
+require_once("blog.class.php");
 
 $json = array();
 

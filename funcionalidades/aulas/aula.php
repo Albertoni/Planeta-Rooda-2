@@ -1,12 +1,12 @@
 <?php
 session_start();
 
-require("aula.class.php");
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
-require("../../reguaNavegacao.class.php");
+require_once("aula.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("../../reguaNavegacao.class.php");
 global $tabela_Aulas;
 
 $id = isset($_GET['id']) ? $_GET['id'] : die ("Por favor acesse essa pagina com uma id de aula setada.");

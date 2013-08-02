@@ -3,7 +3,7 @@
 	//arquivos necessários para o funcionamento
 	require_once("../cfg.php");
 	require_once("../bd.php");
-	require("../funcoes_aux.php");
+	require_once("../funcoes_aux.php");
 	/*---------------------------------------------------
 	*	Apaga um objeto do BD. - Diogo - 28.07.11
 	---------------------------------------------------*/

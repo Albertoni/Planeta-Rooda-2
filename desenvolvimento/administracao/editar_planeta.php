@@ -2,9 +2,9 @@
 
 session_start();
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../planeta.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../planeta.class.php");
 
 if ($_GET['id'] != NULL){
 	$id = (int)$_GET['id'];

@@ -3,11 +3,11 @@ session_start();
 
 if( ! isset($_SESSION['SS_usuario_id'])){die("Voce precisa estar logado para acessar isso, favor voltar.");}
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
-require("aula.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("aula.class.php");
 
 $usuario = new Usuario();
 $usuario->openUsuario($_SESSION['SS_usuario_id']);
@@ -73,9 +73,9 @@ case 1:
 	}
 	
 	if(isset($_POST['forum']) and $_POST['forum'] == "sim"){// Aqui cria um tópico no fórum para discutir a aula
-		require("../forum/sistema_forum.php");
-		require("../forum/verifica_user.php");
-		require("../forum/visualizacao_forum.php");
+		require_once("../forum/sistema_forum.php");
+		require_once("../forum/verifica_user.php");
+		require_once("../forum/visualizacao_forum.php");
 
 		$FORUM = new forum($turma);
 		$FORUM->salvaMensagem(true, -1, $_SESSION['SS_usuario_id'], $titulo, $_POST['text']);
@@ -86,7 +86,7 @@ case 1:
 case 2: // ARQUIVO
 	print_r($_FILES);
 	if(!isset($_FILES['arqui'])) die("ERRO: o parametro do arquivo não foi passado corretamente. Voltar e tentar novamente deve consertar o erro.");
-	require("../../file.class.php");
+	require_once("../../file.class.php");
 	
 	$a = new aula($turma, $titulo, $data, $desc, $_FILES['arqui'], $fundo, $_POST['tipo']);
 	if ($a->temErro())
@@ -95,9 +95,9 @@ case 2: // ARQUIVO
 		{$a->registra();}
 	
 	if(isset($_POST['forum']) and $_POST['forum'] == "sim"){// Aqui cria um tópico no fórum para discutir a aula
-		require("../forum/sistema_forum.php");
-		require("../forum/verifica_user.php");
-		require("../forum/visualizacao_forum.php");
+		require_once("../forum/sistema_forum.php");
+		require_once("../forum/verifica_user.php");
+		require_once("../forum/visualizacao_forum.php");
 
 		$FORUM = new forum($turma);
 		$FORUM->salvaMensagem(true, -1, $_SESSION['SS_usuario_id'], $titulo, $desc." Arquivo: <a href=\"../downloadFile.php?fileId=".$a->fileId."\">".$_FILES['arqui']['name']."</a>");
@@ -109,7 +109,7 @@ case 2: // ARQUIVO
 case 3: // LINK
 	if(!isset($_POST['link'])) die("ERRO: o parametro link não foi passado corretamente. Voltar e tentar novamente deve consertar o erro.");
 	if($_POST['link'] == "") die("Favor voltar e preencher o link");
-	require("../../link.class.php");
+	require_once("../../link.class.php");
 	
 	$a = new aula($turma, $titulo, $data, $desc, $_POST['link'], $fundo, $_POST['tipo']);
 	if ($a->temErro())
@@ -118,9 +118,9 @@ case 3: // LINK
 		{$a->registra();}
 	
 	if(isset($_POST['forum']) and $_POST['forum'] == "sim"){ // Aqui cria um tópico no fórum para discutir a aula
-		require("../forum/sistema_forum.php");
-		require("../forum/verifica_user.php");
-		require("../forum/visualizacao_forum.php");
+		require_once("../forum/sistema_forum.php");
+		require_once("../forum/verifica_user.php");
+		require_once("../forum/visualizacao_forum.php");
 
 		$FORUM = new forum($turma);
 		$FORUM->salvaMensagem(true, -1, $_SESSION['SS_usuario_id'], $titulo, $desc." Link: <a href=\"".$_POST['link']."\">".$_POST['link']."</a>");

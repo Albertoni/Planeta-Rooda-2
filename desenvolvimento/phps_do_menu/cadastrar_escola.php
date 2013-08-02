@@ -2,8 +2,8 @@
 	session_start();
 header('Content-Type: text/html; charset=utf-8');
 
-	require("../../cfg.php");
-	require("../../bd.php");
+	require_once("../../cfg.php");
+	require_once("../../bd.php");
 
 	$nomeEscola = $_POST['nome'];
 	$operacaoRealizadaComSucesso = true;

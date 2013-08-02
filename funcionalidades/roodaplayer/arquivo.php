@@ -2,12 +2,12 @@
 session_start();
 header('Content-type: text/html; charset=utf-8');
 
-require("../../cfg.php");
-require("../../bd.php");
-require("../../funcoes_aux.php");
-require("../../usuarios.class.php");
-require("../../login.class.php");
-require("../../reguaNavegacao.class.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("../../login.class.php");
+require_once("../../reguaNavegacao.class.php");
 
 if(isset($_GET["codTurma"]) and is_numeric($_GET['codTurma']))
 {

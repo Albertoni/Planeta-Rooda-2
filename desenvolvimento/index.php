@@ -2,10 +2,10 @@
 	session_start();
 
 	//arquivos necessários para o funcionamento
-	require("../cfg.php");
-	require("../bd.php");
-	require("../funcoes_aux.php");
-	require("flash.class.php");
+	require_once("../cfg.php");
+	require_once("../bd.php");
+	require_once("../funcoes_aux.php");
+	require_once("flash.class.php");
 
 	//ATENÇÃO: Todos os links à seguir devem ser iniciados por "http://"
 	global $linkServidor;

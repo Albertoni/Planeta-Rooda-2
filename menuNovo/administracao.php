@@ -1,6 +1,6 @@
 <?php
 require_once("../turma.class.php");
-require("../usuarios.class.php");
+require_once("../usuarios.class.php");
 
 session_start();
 

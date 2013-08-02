@@ -4,7 +4,7 @@ session_start();
 require_once("../cfg.php");
 require_once("../file.class.php");
 require_once("../bd.php");
-require("../funcoes_aux.php");
+require_once("../funcoes_aux.php");
 
 
 $id 		= $_SESSION['SS_usuario_id'];

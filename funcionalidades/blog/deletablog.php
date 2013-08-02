@@ -1,10 +1,10 @@
 <?php
 session_start();
-require("blog.class.php");
-require("../../usuarios.class.php");
-require("../../funcoes_aux.php");
-require("../../cfg.php");
-require("../../bd.php");
+require_once("blog.class.php");
+require_once("../../usuarios.class.php");
+require_once("../../funcoes_aux.php");
+require_once("../../cfg.php");
+require_once("../../bd.php");
 $usuario_id = $_SESSION['SS_usuario_id'];
 global $tabela_posts;
 global $tabela_blogs;
