@@ -225,40 +225,53 @@ function enviaResposta(forumId,id){
 	http.send(parametros);
 }
 
-function geraPost(post){
-	var container = document.createElement("div");
-	container.className = "cor3";
+var postDinamico = {
+	geraPost: function (post){
+		var container = document.createElement("div");
+		container.className = "cor3";
 
-	container.innerHTML = "<ul>\
-		<li class=\"tabela\">\
-		<div class=\"info\">\
-			<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
-			<p class=\"data\">"+post.dataPost+"</p>\
-		</div>\
-			<div class=\"bts_msg\" align=\"right\">\
-				<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
-				<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir("+post.turma+","+post.idPost+",deltipo)\" "+ (post.podeDeletar ? "" : "style=\"display:none\"") +"/>\
-			</div>
-		</li>
-		<li>
-			<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
-			<div class=\"limite_resposta\">\
-				<p class=\"texto_resposta\">"+post.texto+"</p>\
-			</div>
-		</li>
-		<li>
-			<div class=\"bts_msg\" align=\"right\">\
-				<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\
-			</div>
-		</li>
-		<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
-			<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
-			<div class=\"bts_msg\" align=\"right\">\
-			<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviarRsp("+post.turma+","+post.idPost+")\"/>\
-			<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelarRsp("+post.turma+","+post.idPost+",deltipo)\"/>\
+		container.innerHTML = "<ul>\
+			<li class=\"tabela\">\
+			<div class=\"info\">\
+				<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
+				<p class=\"data\">"+post.dataPost+"</p>\
 			</div>\
-		</li>\
-	</ul>";
+				<div class=\"bts_msg\" align=\"right\">\
+					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir("+post.turma+","+post.idPost+",deltipo)\" "+ (post.podeDeletar ? "" : "style=\"display:none\"") +"/>\
+				</div>\
+			</li>\
+			<li>\
+				<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
+				<div class=\"limite_resposta\">\
+					<p class=\"texto_resposta\">"+post.texto+"</p>\
+				</div>\
+			</li>\
+			<li>\
+				<div class=\"bts_msg\" align=\"right\">\
+					<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\
+				</div>\
+			</li>\
+			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
+				<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
+				<div class=\"bts_msg\" align=\"right\">\
+				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviarRsp("+post.turma+","+post.idPost+")\"/>\
+				<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelarRsp("+post.turma+","+post.idPost+",deltipo)\"/>\
+				</div>\
+			</li>\
+		</ul>";
 
-	return container;
-}
+		return container;
+	},
+
+	imprimePosts: function(array){
+		var domArray = array.map(postDinamico.geraPost);
+
+		domArray.forEach(
+			function(objeto, indice, array){
+				postDinamico.container.appendChild(objeto);
+		})
+	},
+
+	container:document.getElementById("bloco_mensagens")
+};
