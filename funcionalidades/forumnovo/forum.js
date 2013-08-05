@@ -234,7 +234,7 @@ var postDinamico = {
 			<li class=\"tabela\">\
 			<div class=\"info\">\
 				<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
-				<p class=\"data\">"+post.dataPost+"</p>\
+				<p class=\"data\"><span class=\"data\">"+post.dataPost+"</span> às <span class=\"data\">"+post.horaPost+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
@@ -273,5 +273,5 @@ var postDinamico = {
 		})
 	},
 
-	container:document.getElementById("bloco_mensagens")
+	container: document.getElementById("bloco_mensagens")
 };
