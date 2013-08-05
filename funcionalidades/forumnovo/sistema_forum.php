@@ -50,7 +50,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 	}
 
-	private function loadPost($id){
+	private function carregar($id){
 		$q = new conexao();
 
 		$idSafe = $q->sanitizaString($id);
@@ -67,6 +67,10 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}else{
 			die("Erro na loadPost da mensagem");
 		}
+	}
+
+	function toJson(){
+		return json_encode($this);
 	}
 }
 
@@ -226,7 +230,7 @@ class visualizacaoTopico extends topico{
 
 	function imprimeMensagens(){
 		$mensagens = $this->getMensagens();
-		print_r($this);
+		
 		foreach ($mensagens as $indice => $mensagem){
 			$nome = $mensagem->get;
 ?>
