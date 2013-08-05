@@ -3,6 +3,8 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../usuarios.class.php");
 require_once("../../turma.class.php");
+require_once("../../arquivo.class.php");
+require_once("../../link.class.new.php");
 define("MATERIAL_LINK", 'l');
 define("MATERIAL_ARQUIVO", 'a');
 class Material
@@ -36,7 +38,7 @@ class Material
 					codTurma         AS turma,
 					titulo           AS titulo,
 					autor            AS autor,
-					palavras         AS tags,
+					tags             AS tags,
 					codUsuario       AS codUsuario,
 					tipoMaterial     AS tipo,
 					data             AS data,
@@ -48,8 +50,8 @@ class Material
 			);
 			if ($bd->registros === 1)
 			{
-				$this->id = $this->setId($id);
-				$this->setTurma((int) $bd->resultado['codTurma']);
+				$this->setId($id);
+				$this->setTurma((int) $bd->resultado['turma']);
 				$this->setTitulo($bd->resultado['titulo']);
 				$this->setAutor($bd->resultado['autor']);
 				$this->setTags($bd->resultado['tags']);
@@ -63,6 +65,7 @@ class Material
 			}
 			elseif ($bd->erro !== '')
 			{
+				echo $bd->erro;
 				$this->erros[] = $bd->erro;
 			}
 		}
@@ -80,7 +83,7 @@ class Material
 		switch ($this->tipo) {
 			case MATERIAL_ARQUIVO:
 				$this->arquivo = new Arquivo($this->codRecurso);
-				if ($this->arquivo->getId() === 0)
+				if ($this->arquivo->getId() === 0);
 				break;
 			case MATERIAL_LINK:
 				$this->link = new Link($this->codRecurso);
@@ -124,6 +127,7 @@ class Material
 		}
 	}
 	private function setId($id) { $this->id = (int) $id; }
+	private function setCodRecurso($cod) { $this->codRecurso = (int) $cod; }
 	public function setTitulo($titulo)
 	{
 		$this->titulo = trim($titulo);
@@ -228,7 +232,7 @@ class Material
 	{
 		global $tabela_Materiais;
 		// permite passar o objeto turma como parâmetro.
-		if (get_class($turma) === "turma")
+		if (is_object($turma) && get_class($turma) === "turma")
 		{
 			// pega o id do objeto turma
 			$turma = $turma->getId();
@@ -240,10 +244,14 @@ class Material
 			"SELECT codMaterial AS id
 			FROM $tabela_Materiais
 			WHERE codTurma = $turma
-			ORDER BY codMaterial ASC"
+			ORDER BY codMaterial DESC"
 		);
 		// se ocorreu erro, retornar false.
-		if ($bd->erro !== '') return false;
+		if ($bd->erro) 
+		{
+			echo $bd->erro;
+			return false;
+		}
 		// caso contrário, fazer array com resultados.
 		$materiais = array();
 		while ($bd->resultado) {

@@ -1,7 +1,7 @@
 <?php //>
 require_once("cfg.php");
 require_once("bd.php");
-require_once("usuarios.class.php")
+require_once("usuarios.class.php");
 class Arquivo
 {
 	private $id = 0; // só mudar se o arquivo for carregado/salvado com sucesso.
@@ -293,13 +293,13 @@ class Arquivo
 		{
 			$usuario = $usuario->getId();
 		}
-		global $tabela_arquivos
+		global $tabela_arquivos;
 		$arquios = array();
 		$bd = new conexao();
 		$bd->solicitar(
 			"SELECT arquivo_id AS id 
 			FROM $tabela_arquivos
-			WHERE uploader_id = $usuario";
+			WHERE uploader_id = $usuario"
 		);
 		return $arquivos;
 	}

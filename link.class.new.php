@@ -27,7 +27,7 @@ class Link
 		{
 			$bd = new conexao();
 			$bd->solicitar(
-				"SELECT titulo, autor, tags, endereco, funcionalidade_tipo, funcionalidade_id, uploader_id 
+				"SELECT titulo, autor, tags, endereco, codUsuario
 				FROM $tabela_links WHERE Id = $id"
 			);
 			if ($bd->erro !== "")
@@ -61,7 +61,8 @@ class Link
 		global $tabela_links;
 		if ($this->to_register)
 		{
-			if ($this->endereco === '');
+			if ($this->endereco === '')
+				$this->erros[] = 'Endereço inválido';
 		}
 	}
 	public function excluir()
@@ -128,6 +129,6 @@ class Link
 				$url = "http://$url";
 			}
 		}
-		return $this;
+		$this->endereco = $url;
 	}
 }

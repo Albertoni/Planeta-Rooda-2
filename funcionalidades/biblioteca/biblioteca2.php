@@ -81,6 +81,37 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
+<?php
+if ($materiais = Material::getMateriaisTurma($turma)) {
+foreach ($materiais as $material) {
+//	print_r($material);
+	switch ($material->getTipo())
+	{
+		case MATERIAL_ARQUIVO:
+			$arquivo = $material->getArquivo();
+			$usuario = $material->getUsuario();
+			$classes = explode("/",$arquivo->getTipo());
+			$classes[] = 'arquivo';
+			$classes = implode(' ', $classes);
+			break;
+		case MATERIAL_LINK;
+			$link = $material->getLink();
+			$classes = 'link';
+			break;
+	}
+
+	echo <<<HTML
+							<li class="{$classes}">
+								<h2>{$material->getTitulo()}</h2>
+								<small>Enviado por {$usuario->getName()} em {$material->getData()} ({$material->getHora()}).</small>
+								<p>Autor: {$material->getAutor()}</p>
+								<a href="#{$material->getId()}">abrir material</a>
+							</li>
+HTML;
+}
+}
+
+?>
 							<li class="%classes%">
 								<h2>%titulo%</h2>
 								<small>Enviado por %usuario% em %data% (%hora%).</small>
