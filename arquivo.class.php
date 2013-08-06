@@ -4,7 +4,7 @@ require_once("bd.php");
 require_once("usuarios.class.php");
 class Arquivo
 {
-	private $id = 0; // só mudar se o arquivo for carregado/salvado com sucesso.
+	private $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
 	private $idUploader;
 
 	private $titulo = "";
@@ -38,8 +38,6 @@ class Arquivo
 				arquivo AS 'conteudo',
 				tags AS 'tags',
 				dataUpload AS 'data',
-				funcionalidade_tipo AS 'tipoFuncionalidade',
-				funcionalidade_id AS 'idFuncionalidade',
 				uploader_id AS 'idUploader'
 				FROM $tabela_arquivos
 				WHERE arquivo_id = '$id'"
@@ -65,15 +63,13 @@ class Arquivo
 	private function popular($resultadoBd)
 	{
 		$this->conteudo = $resultadoBd['conteudo']; // conteudo do arquivo
-		$this->titulo = $resultadoBd['titulo'];     // titulo do arquivo
-		$this->nome = $resultadoBd['nome'];
-		$this->tipo = $resultadoBd['tipo'];
-		$this->tamanho = $resultadoBd['tamanho'];
-		$this->setTags($resultadoBd['tags']);
-		$this->data = $resultadoBd['data'];
-		$this->tipoFuncionalidade = $resultadoBd['tipoFuncionalidade'];
-		$this->idFuncionalidade = $resultadoBd['idFuncionalidade'];
+		$this->titulo   = $resultadoBd['titulo'];     // titulo do arquivo
+		$this->nome     = $resultadoBd['nome'];
+		$this->tipo     = $resultadoBd['tipo'];
+		$this->tamanho  = $resultadoBd['tamanho'];
+		$this->data     = $resultadoBd['data'];
 		$this->idUploader = $resultadoBd['idUploader'];
+		$this->setTags($resultadoBd['tags']);
 	}
 	public function getId() { return $this->id; }
 	public function getConteudo() { return $this->conteudo; }
@@ -307,7 +303,7 @@ class Arquivo
 /* /
 $arquivo = new Arquivo(222);
 $erros = $arquivo->getErros();
-if (sizeof($erros) === 0) {
+if (count($erros) === 0) {
 	header("Content-length: {$arquivo->getTamanho()}");
 	header("Content-type: {$arquivo->getTipo()}");
 	header("Content-Disposition: attachment; filename={$arquivo->getNome()}");

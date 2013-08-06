@@ -56,6 +56,14 @@ class Link
 	{
 		return $this->autor;
 	}
+	public function getErros()
+	{
+		return $this->erros;
+	}
+	public function temErros()
+	{
+		return (bool) $this->erros;
+	}
 	public function salvar()
 	{
 		global $tabela_links;

@@ -46,8 +46,8 @@ class Usuario { //estrutura para o item post do blog
 		$numItens= count($q->itens);
 		if($numItens == 0)
 			return "Usuario inexistente (Id=$id)" ;
-
-		$this->popular($q->resultado);
+		else
+			$this->popular($q->resultado);
 	}
 
 	/**

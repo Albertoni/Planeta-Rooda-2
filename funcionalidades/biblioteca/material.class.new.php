@@ -35,7 +35,7 @@ class Material
 			$bd = new conexao();
 			$bd->solicitar(
 				"SELECT
-					codTurma         AS turma,
+					codTurma         AS codTurma,
 					titulo           AS titulo,
 					autor            AS autor,
 					tags             AS tags,
@@ -51,7 +51,7 @@ class Material
 			if ($bd->registros === 1)
 			{
 				$this->setId($id);
-				$this->setTurma((int) $bd->resultado['turma']);
+				$this->setTurma((int) $bd->resultado['codTurma']);
 				$this->setTitulo($bd->resultado['titulo']);
 				$this->setAutor($bd->resultado['autor']);
 				$this->setTags($bd->resultado['tags']);
@@ -75,16 +75,20 @@ class Material
 		}
 		else
 		{
-			$this->erros[] = 'Material não pode ser recuperado (parametros inválidos)';
+			$this->erros[] = 'Material não pode ser recuperado (parametros inválidos).';
 		}
 	}
 	private function carregaRecurso()
 	{
-		switch ($this->tipo) {
+		if (!$this->temErros()) switch ($this->tipo) {
 			case MATERIAL_ARQUIVO:
 				$this->arquivo = new Arquivo($this->codRecurso);
-				if ($this->arquivo->getId() === 0);
+				if ($this->arquivo->temErros())
+				{
+					$this->erros[] = "Não foi possivel recuperar o material.";
+				}
 				break;
+
 			case MATERIAL_LINK:
 				$this->link = new Link($this->codRecurso);
 				break;
@@ -95,21 +99,61 @@ class Material
 		}
 	}
 	public function salvar() {
+		if ($this->titulo === '')
+		{
+			$this->erros[] = 'Não pode salvar material sem título.';
+			return false;
+		}
+		if ($this->autor === '')
+		{
+			$this->erros[] = 'Não pode salvar material sem autor.';
+			return false;
+		}
+		if ($this->codUsuario === -1)
+		{
+			$this->erros[] = 'Não pode salvar material sem usuario.';
+			return false;
+		}
+		if ($this->)
 		if ($this->novo)
 		{
-			$bd = new conexao;
+			$bd = new conexao();
+			$bd->solicitar(
+				"INSERT INTO $tabela_Materiais"
+			);
 			$this->novo = false;
 		}
 		elseif ($this->id)
 		{
-			$bd = new conexao;
+			$bd = new conexao();
+			$codTurma     = (int) $this->codTurma;
+			$titulo       = $bd->sanitizaString($this->titulo);
+			$autor        = $bd->sanitizaString($this->autor);
+			$tags         = $bd->sanitizaString(implode(',', $this->tags));
+			$codUsuario   = (int) $this->codUsuario;
+			$tipoMaterial = $bd->sanitizaString($this->tipoMaterial);
+			$aprovado     = $this->aprovado ? '1' : '0';
+			$bd->solicitar(<<<SQL
+				UPDATE $tabela_Materiais 
+				SET codTurma = '$codTurma', 
+					titulo = '$titulo', 
+					autor = '$autor', 
+					tags = '$tags', 
+					codUsuario = '$codUsuario', 
+					tipoMaterial = '$tipoMaterial', 
+					data = '$data', 
+					hora = '$hora', 
+					refMaterial = '$refMaterial', 
+					materialAprovado = $aprovado
+SQL;
+			);
 		}
 	}
 	public function getId() { return $this->id; }
 	public function getTitulo() { return $this->titulo; }
 	public function getAutor() { return $this->autor; }
 	public function getUsuario() { return $this->usuario; }
-	public function getTurma() { return $this->turma; }
+	public function getIdTurma() { return $this->codTurma; }
 	public function getTags() { return $this->tags; }
 	public function getTipo() { return $this->tipo; }
 	public function getArquivo() { return $this->arquivo; }
@@ -132,6 +176,26 @@ class Material
 	{
 		$this->titulo = trim($titulo);
 		return true;
+	}
+	public function setMaterial($material)
+	{
+		if ($this->usuario === NULL || $this->usuario->getId() === 0)
+		{
+			$this->erros[] = 'Usuário nao definido.';
+		}
+		if ($this->turma)
+		// array $_FILE['arquivo']
+		if (is_array($material))
+		{
+		}
+		// objeto arquivo
+		elseif (is_object($material) && get_class($material) === 'Arquivo')
+		{
+		}
+		// link
+		elseif (is_string($material))
+		{
+		}
 	}
 	public function setTurma($turma)
 	{
@@ -177,9 +241,15 @@ class Material
 	{
 		if (is_integer($usuario))
 		{
-			$this->codUsuario = $usuario;
 			$this->usuario = new Usuario();
 			$this->usuario->openUsuario($usuario);
+			if ($this->usuario->getId() === 0)
+			{
+				$this->usuario = NULL;
+				$this->erros[] = 'Usuario inválido';
+				return false;
+			}
+			$this->codUsuario = $usuario;
 			return true;
 		}
 		elseif (get_class($usuario) === "Usuario")
