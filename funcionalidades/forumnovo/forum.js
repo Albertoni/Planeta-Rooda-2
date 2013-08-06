@@ -1,4 +1,5 @@
 var guto = 0; //a variável guto serve pra que o evento de click do 'body' seja ativado sem influenciar no click do '.bloco'
+var mensagemRespondida = 0; // usado pra guardar o id da mensagem sendo respondida
 
 var edicao = '\
 	<div class="esq">\
@@ -73,12 +74,12 @@ $(document).ready(function(){
 		$('#nova_mensagem').css('display','block');
 	});
 	$('#cancela_msg').click(function(){
-		escondeNMsg();
+		escondeNovaMensagem();
 	});
-	$('#envia_msg').click(function(){
-		enviaMens();
-		escondeNMsg();
-	});
+	/*$('#envia_msg').click(function(){
+		enviaMensagem();
+		escondeNovaMensagem();
+	});*/
 });
 
 var http = false;
@@ -166,27 +167,6 @@ function ordernar(elemento){
 	}
 }
 
-function enviaMensagem(){
-	var parametros = "topico=" + encodeURI("-1");
-	parametros += "&pai=" + encodeURI(document.getElementById('msg_pai').value);
-	parametros += "&turma=" + encodeURI(document.getElementById('msg_fid').value);
-	parametros += "&criador=" + encodeURI(document.getElementById('msg_criador').value);
-	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt').value);
-	parametros += "&ajax=1";
-
-	http.abort();
-	http.open("POST", "forum_salva_topico.php", true);
-	http.onreadystatechange=function() {
-		if ((http.readyState == 4)&& (http.status == 200 )) {
-			document.getElementById("dinamica").innerHTML = http.responseText;
-		}
-	}
-	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http.setRequestHeader("Content-length", parametros.length);
-	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
-	http.send(parametros);
-}
-
 function escondeNovaMensagem(){
 	document.getElementById('msg_txt').value = "";
 	document.getElementById('msg_txt').innerHTML = "";
@@ -194,25 +174,27 @@ function escondeNovaMensagem(){
 
 }
 
-function responde(id){
-	if (document.getElementById('li_resposta_'+id).style.display == "none")
+function responder(id){
+	if (document.getElementById('li_resposta_'+id).style.display == "none"){
 		document.getElementById('li_resposta_'+id).style.display = "block";
-	else
+		document.getElementById('mensagemRespondida').value = id;
+	}else{
 		document.getElementById('li_resposta_'+id).style.display = "none";
+	}
 }
 
 function cancelaResposta(id){
 		document.getElementById('li_resposta_'+id).style.display = "none";
 }
 
-function enviaResposta(forumId,id){
-	var parametros = "topico=" + encodeURI("-1");
-	parametros += "&pai=" + encodeURI(id);
+function enviaMensagem(forumId,id){
+	var parametros = "topico=" + encodeURI(document.getElementById("topico").value);
+	parametros += "&mensagemRespondida=" + encodeURI(id);
 	parametros += "&turma=" + encodeURI(forumId);
 	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt_'+id).value);
 	parametros += "&ajax=1";
 	http.abort();
-	http.open("POST", "forum_salva_topico.php", true);
+	http.open("POST", "forum_salva_mensagem.php", true);
 	http.onreadystatechange=function() {
 		if ((http.readyState == 4)&& (http.status == 200 )) {
 			cancelarRsp(id);
@@ -255,8 +237,8 @@ var postDinamico = {
 			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
 				<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
 				<div class=\"bts_msg\" align=\"right\">\
-				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviarRsp("+post.turma+","+post.idPost+")\"/>\
-				<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelarRsp("+post.turma+","+post.idPost+",deltipo)\"/>\
+				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+post.turma+","+post.idPost+")\"/>\
+				<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
 				</div>\
 			</li>\
 		</ul>";

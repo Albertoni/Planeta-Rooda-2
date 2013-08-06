@@ -213,7 +213,7 @@ function setMensagem($indice, $mensagem){
 	}
 
 	function insereMensagem($texto){
- 		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, NULL, NULL);
+		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, NULL, NULL);
 		$mensagem->salvar();
 	}
 }
@@ -224,49 +224,13 @@ class visualizacaoTopico extends topico{
 		parent::__construct($idTopico, $idTurma, $idUsuario, $titulo, $date, $nomeUsuario);
 	}
 
-	function getPrintableDate(){
-		echo "<span class=\"data\">BOA PERGUNTA, PREENCHE A GETPRINTABLEDATE AÍ TALVEZ EU SAIBA TE RESPONDER</span>";
-	}
-
 	function imprimeMensagens(){
 		$mensagens = $this->getMensagens();
 		
 		foreach ($mensagens as $indice => $mensagem){
-			$nome = $mensagem->get;
-?>
-			<div class="cor3">
-				<ul>
-					<li class="tabela">
-					<div class="info" >
-						<p class="nome"><b><?= $nome ?></b></p>
-						<p class="data"><?= $this->getPrintableDate() ?></p>
-					</div>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_editar.png" onclick="editar(1081,518)"/>
-							<input type="image" src="../../images/botoes/bt_excluir.png" onclick="excluir(1081,518,deltipo)"/>
-						</div>
-					</li>
-					<li>
-						<div class="imagem"><img src="img_output.php?id=512"/></div>
-						<div class="limite_resposta">
-							<p class="texto_resposta">hue</p>
-						</div>
-					</li>
-					<li>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_responder_pq.png" onclick="responder(518)"/>
-						</div>
-					</li>
-					<li id="li_resposta_518" style="display:none;">
-						<textarea class="msg_dimensao" rows="10" id="msg_txt_518"></textarea>
-						<div class="bts_msg" align="right">
-						<input type="image" src="../../images/botoes/bt_enviar_pq.png" onclick="enviarRsp(1081,518)"/>
-						<input type="image" src="../../images/botoes/bt_cancelar_pq.png" onclick="cancelarRsp(1081,518,deltipo)"/>
-						</div>
-					</li>
-				</ul>
-			</div>
-<?php
+			//$nome = $mensagem->get;
+
+			echo json_encode($mensagem);
 		}
 	}
 }
