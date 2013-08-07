@@ -188,11 +188,10 @@ function cancelaResposta(id){
 }
 
 function enviaMensagem(forumId,id){
-	var parametros = "topico=" + encodeURI(document.getElementById("topico").value);
+	var parametros = "idTopico=" + encodeURI(document.getElementById("topico").value);
 	parametros += "&mensagemRespondida=" + encodeURI(id);
 	parametros += "&turma=" + encodeURI(forumId);
 	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt_'+id).value);
-	parametros += "&ajax=1";
 	http.abort();
 	http.open("POST", "forum_salva_mensagem.php", true);
 	http.onreadystatechange=function() {
