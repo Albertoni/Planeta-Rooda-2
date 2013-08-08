@@ -188,11 +188,10 @@ function cancelaResposta(id){
 }
 
 function enviaMensagem(forumId,id){
-	var parametros = "topico=" + encodeURI(document.getElementById("topico").value);
+	var parametros = "idTopico=" + encodeURI(document.getElementById("topico").value);
 	parametros += "&mensagemRespondida=" + encodeURI(id);
 	parametros += "&turma=" + encodeURI(forumId);
 	parametros += "&msg_conteudo=" + encodeURI(document.getElementById('msg_txt_'+id).value);
-	parametros += "&ajax=1";
 	http.abort();
 	http.open("POST", "forum_salva_mensagem.php", true);
 	http.onreadystatechange=function() {
@@ -212,11 +211,13 @@ var postDinamico = {
 		var container = document.createElement("div");
 		container.className = "cor3";
 
+		post.data = post.data.split(' ');
+
 		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
 			<div class=\"info\">\
-				<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
-				<p class=\"data\"><span class=\"data\">"+post.dataPost+"</span> às <span class=\"data\">"+post.horaPost+"</span></p>\
+				<p class=\"nome\"><b>"+post.nomeUsuario+"</b></p>\
+				<p class=\"data\"><span class=\"data\">"+post.data[0]+"</span> às <span class=\"data\">"+post.data[1]+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\

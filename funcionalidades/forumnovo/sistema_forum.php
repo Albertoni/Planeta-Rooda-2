@@ -14,17 +14,27 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $texto = '';
 	private $data = 0;
 	private $salvo = false;
+	private $nomeUsuario = '';
 	
-	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $data = NULL, $idMensagemRespondida = NULL){
+	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
 		if($idTopico === NULL){
-			$this->loadPost($id);
+			$this->carregar($id);
 		}else{
 			$this->idTopico = $idTopico;
 			$this->idUsuario = $idUsuario;
 			$this->idMensagemRespondida = $idMensagemRespondida;
 			$this->texto = $texto;
-			$this->data = ($data == NULL) ? 0 : $data;
 		}
+	}
+
+	function loadFromSqlArray($a){
+		$this->id = $a['idMensagem'];
+		$this->idTopico = $a['idTopico'];
+		$this->idUsuario = $a['idUsuario'];
+		$this->idMensagemRespondida = $a['idMensagemRespondida'];
+		$this->texto = $a['texto'];
+		$this->data = $a['data'];
+		$this->nomeUsuario = $a['usuario_nome'];
 	}
 
 	function salvar(){
@@ -32,7 +42,6 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 		if($this->salvo == true){
 			$textoSafe					= $q->sanitizaString($this->texto);
-			$dataSafe					= $q->sanitizaString($this->data);
 
 			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
 		}else{
@@ -41,8 +50,10 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
 			$textoSafe					= $q->sanitizaString($this->texto);
 
+			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
+
 			$q->solicitar("INSERT INTO ForumMensagem
-				VALUES (NULL, '$idTopicoSafe', '$idUsuarioSafe', '$textoSafe', NOW())");
+				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)");
 		}
 		
 		if ($q->erro != "") {
@@ -65,12 +76,21 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 			$this->salvo = true;
 		}else{
-			die("Erro na loadPost da mensagem");
+			die("Erro na 'carregar' da mensagem");
 		}
 	}
 
 	function toJson(){
-		return json_encode($this);
+		$arr = array(
+			'idPost' => $this->id,
+			'idUsuario' => $this->idUsuario,
+			'idMensagemRespondida' => $this->idMensagemRespondida,
+			'nomeUsuario' => $this->nomeUsuario,
+			'texto' => $this->texto,
+			'data' => $this->data
+			);
+
+		return $arr;
 	}
 }
 
@@ -166,8 +186,11 @@ function setMensagem($indice, $mensagem){
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
-					$mensagem = new mensagem($q->resultado['id'], $q->resultado['idTopico'], $q->resultado['idUsuario'], $q->resultado['texto'], $q->resultado['data'], $q->resultado['idMensagemRespondida'], $q->resultado['usuario_id']);
+					$mensagem = new mensagem();
+					$mensagem->loadFromSqlArray($q->resultado);
+
 					array_push($this->mensagens, $mensagem);
+
 					$q->proximo();
 				}
 			}else{
@@ -226,12 +249,12 @@ class visualizacaoTopico extends topico{
 
 	function imprimeMensagens(){
 		$mensagens = $this->getMensagens();
+		$arrJson = array();
 		
 		foreach ($mensagens as $indice => $mensagem){
-			//$nome = $mensagem->get;
-
-			echo json_encode($mensagem);
+			$arrJson[] = $mensagem->toJson();
 		}
+		echo json_encode($arrJson);
 	}
 }
 
