@@ -14,16 +14,27 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $texto = '';
 	private $data = 0;
 	private $salvo = false;
+	private $nomeUsuario = '';
 	
-	function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
 		if($idTopico === NULL){
-			$this->loadPost($id);
+			$this->carregar($id);
 		}else{
 			$this->idTopico = $idTopico;
 			$this->idUsuario = $idUsuario;
 			$this->idMensagemRespondida = $idMensagemRespondida;
 			$this->texto = $texto;
 		}
+	}
+
+	function loadFromSqlArray($a){
+		$this->id = $a['idMensagem'];
+		$this->idTopico = $a['idTopico'];
+		$this->idUsuario = $a['idUsuario'];
+		$this->idMensagemRespondida = $a['idMensagemRespondida'];
+		$this->texto = $a['texto'];
+		$this->data = $a['data'];
+		$this->nomeUsuario = $a['usuario_nome'];
 	}
 
 	function salvar(){
@@ -65,20 +76,21 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 			$this->salvo = true;
 		}else{
-			die("Erro na loadPost da mensagem");
+			die("Erro na 'carregar' da mensagem");
 		}
 	}
 
 	function toJson(){
 		$arr = array(
+			'idPost' => $this->id,
 			'idUsuario' => $this->idUsuario,
 			'idMensagemRespondida' => $this->idMensagemRespondida,
+			'nomeUsuario' => $this->nomeUsuario,
 			'texto' => $this->texto,
 			'data' => $this->data
 			);
-		print_r($this);
 
-		return json_encode($arr);
+		return $arr;
 	}
 }
 
@@ -174,15 +186,11 @@ function setMensagem($indice, $mensagem){
 			if($q->erro == ""){
 				$this->mensagens = array();
 				for ($i=0; $i < $q->registros; $i++){
-/*
-conserta a criação dessa mensagem aí
+					$mensagem = new mensagem();
+					$mensagem->loadFromSqlArray($q->resultado);
 
-beleza
-*/
-die("PUTA QUE PARIU");
-					//function __construct($id, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
-					$mensagem = new mensagem($q->resultado['idMensagem'], $q->resultado['idTopico'], $q->resultado['idUsuario'], $q->resultado['texto'], $q->resultado['data'], $q->resultado['idMensagemRespondida'], $q->resultado['usuario_id']);
 					array_push($this->mensagens, $mensagem);
+
 					$q->proximo();
 				}
 			}else{
@@ -241,15 +249,12 @@ class visualizacaoTopico extends topico{
 
 	function imprimeMensagens(){
 		$mensagens = $this->getMensagens();
+		$arrJson = array();
 		
-		echo "BEGIN";
 		foreach ($mensagens as $indice => $mensagem){
-			//$nome = $mensagem->get;
-
-			//echo json_encode($mensagem);
-			print_r($mensagem->toJson());
+			$arrJson[] = $mensagem->toJson();
 		}
-		echo "FINIM";
+		echo json_encode($arrJson);
 	}
 }
 

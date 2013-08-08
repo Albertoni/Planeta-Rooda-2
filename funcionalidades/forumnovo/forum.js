@@ -211,11 +211,13 @@ var postDinamico = {
 		var container = document.createElement("div");
 		container.className = "cor3";
 
+		post.data = post.data.split(' ');
+
 		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
 			<div class=\"info\">\
-				<p class=\"nome\"><b>"+post.nomeAutor+"</b></p>\
-				<p class=\"data\"><span class=\"data\">"+post.dataPost+"</span> às <span class=\"data\">"+post.horaPost+"</span></p>\
+				<p class=\"nome\"><b>"+post.nomeUsuario+"</b></p>\
+				<p class=\"data\"><span class=\"data\">"+post.data[0]+"</span> às <span class=\"data\">"+post.data[1]+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
