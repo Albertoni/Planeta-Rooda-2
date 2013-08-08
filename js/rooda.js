@@ -50,6 +50,32 @@ ROODA.dom.purgeElement = function(node) {
     }
 };
 
+ROODA.dom.onScrollToBottom = (function () {
+    var handlers = [];
+    function exec(f) { f() }
+    window.addEventListener("scroll", function () {
+        if (window.scrollY >= window.scrollMaxY)
+        handlers.forEach(function (f) {
+            f();
+        });
+    });
+    return {
+        addHandler: function (fun) {
+            if (typeof fun === 'function') {
+                if (handlers.indexOf(fun) === -1) {
+                    handlers.push(fun);
+                }
+            }
+        },
+        removeHander: function (fun) {
+            if (handlers.indexOf(fun) !== -1) {
+                handlers = handlers.filter(function (f) {
+                    return f !== fun;
+                });
+            }
+        }
+    };
+}());
 
 /*
  * ROODA.ui

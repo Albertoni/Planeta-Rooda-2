@@ -9,12 +9,12 @@ define("MATERIAL_LINK", 'l');
 define("MATERIAL_ARQUIVO", 'a');
 class Material
 {
-	private $id  = -1;
-	private $codTurma     = -1;
-	private $codRecurso   = -1;   // codigo do link ou arquivo
+	private $id  = false;
+	private $codTurma     = false;
+	private $codRecurso   = false;   // codigo do link ou arquivo
 	private $titulo       = "";
 	private $autor        = "";   // Não confundir com as duas abaixo, que são quem deu upload. Esse é o autor do material.
-	private $codUsuario   = -1;   // Cod do usuário
+	private $codUsuario   = false;   // Cod do usuário
 	private $usuario      = NULL; // Obj do usuário
 	private $tipo         = "";
 	private $arquivo      = NULL; // guarda o objeto arquivo (se for arquivo)
@@ -102,19 +102,21 @@ class Material
 		if ($this->titulo === '')
 		{
 			$this->erros[] = 'Não pode salvar material sem título.';
-			return false;
 		}
 		if ($this->autor === '')
 		{
 			$this->erros[] = 'Não pode salvar material sem autor.';
-			return false;
 		}
-		if ($this->codUsuario === -1)
+		if ($this->codUsuario === false)
 		{
 			$this->erros[] = 'Não pode salvar material sem usuario.';
-			return false;
 		}
-		if ($this->)
+		if ($this->codRecurso !== false || ($this->arquivo === NULL && $this->link === NULL))
+		{
+			$this->erros[] = 'Não pode salvar material sem conteúdo.';
+		}
+		if (count($this->erros) > 0)
+			return false;
 		if ($this->novo)
 		{
 			$bd = new conexao();
@@ -145,7 +147,7 @@ class Material
 					hora = '$hora', 
 					refMaterial = '$refMaterial', 
 					materialAprovado = $aprovado
-SQL;
+SQL
 			);
 		}
 	}
@@ -170,6 +172,11 @@ SQL;
 			return $this->link->getEndereco();
 		}
 	}
+	public function getErros() { return $this->erros; }
+	public function temErros()
+	{
+		return (bool) $this->erros;
+	}
 	private function setId($id) { $this->id = (int) $id; }
 	private function setCodRecurso($cod) { $this->codRecurso = (int) $cod; }
 	public function setTitulo($titulo)
@@ -179,18 +186,27 @@ SQL;
 	}
 	public function setMaterial($material)
 	{
-		if ($this->usuario === NULL || $this->usuario->getId() === 0)
+		if ($this->usuario === NULL || !$this->usuario->getId())
 		{
-			$this->erros[] = 'Usuário nao definido.';
+			$this->erros[] = 'Usuário não definido.';
 		}
-		if ($this->turma)
+		if (!$this->codTurma) {
+			$this->erros[] = 'Turma não definida.';
+		}
 		// array $_FILE['arquivo']
 		if (is_array($material))
 		{
 		}
-		// objeto arquivo
-		elseif (is_object($material) && get_class($material) === 'Arquivo')
+		// objeto do recurso
+		elseif (is_object($material))
 		{
+			if (get_class($material) === 'Arquivo' || get_class($material) === 'Link')
+			{
+				if (!$material->getId())
+				{
+					$this->erros[] = 'O material não existe.';
+				}
+			}
 		}
 		// link
 		elseif (is_string($material))
@@ -297,8 +313,18 @@ SQL;
 	{
 		return (bool) $this->erros; // retorna falso se a array for vazia.
 	}
+	public function toAssoc()
+	{
+		$assoc = array(
+			'id' => $this->getId(),
+			'titulo' => $this->getTitulo(),
+			'tipo' => $this->getTipo(),
+			'tags' => $this->getTags(),
+			'aprovado' => $this->
+		);
+	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
-	public static function getMateriaisTurma($turma)
+	public static function getMateriaisTurma($turma, $aprovados = true, $usuario = false;)
 	{
 		global $tabela_Materiais;
 		// permite passar o objeto turma como parâmetro.
