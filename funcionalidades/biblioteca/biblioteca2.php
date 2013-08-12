@@ -74,6 +74,7 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 							<label>Link:<br>
 								<input type="text" name="link" id="material_link" />
 							</label><br>
+							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
 							<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
 						</form>
 						</div>
@@ -101,7 +102,7 @@ foreach ($materiais as $material) {
 	}
 
 	echo <<<HTML
-							<li class="{$classes}">
+							<li id="material_{$material->getId()}" class="{$classes}">
 								<h2>{$material->getTitulo()}</h2>
 								<small>Enviado por {$usuario->getName()} em {$material->getData()} ({$material->getHora()}).</small>
 								<p>Autor: {$material->getAutor()}</p>
@@ -112,6 +113,7 @@ HTML;
 }
 
 ?>
+
 							<li class="%classes%">
 								<h2>%titulo%</h2>
 								<small>Enviado por %usuario% em %data% (%hora%).</small>
@@ -133,6 +135,22 @@ HTML;
 			var enviar_material  = document.getElementById("enviar_material");
 			var buscar_materiais = document.getElementById("buscar_materiais");
 		}());
+		var radio_arquivo = document.getElementById("input_arquivo");
+		var label_arquivo = document.getElementById("label_arquivo");
+		var radio_link = document.getElementById("input_link");
+		var label_link = document.getElementById("label_link");
+		radio_arquivo.onchange = function () {
+			if (radio_arquivo.checked) {
+				label_arquivo.classList.add('checked');
+				label_link.classList.remove('checked');
+			} else {
+				label_arquivo.classList.remove('checked');
+				label_link.classList.add('checked');
+			}
+		}
+		radio_link.onchange = radio_arquivo.onchange;
+		radio_arquivo.style.display = "none";
+		radio_link.style.display = "none";
 		</script>
 	</body>
 </html>

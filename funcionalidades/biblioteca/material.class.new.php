@@ -196,6 +196,8 @@ SQL
 		// array $_FILE['arquivo']
 		if (is_array($material))
 		{
+			$obj = new Arquivo();
+			$arquivo->setArquivo($material);
 		}
 		// objeto do recurso
 		elseif (is_object($material))
@@ -313,18 +315,18 @@ SQL
 	{
 		return (bool) $this->erros; // retorna falso se a array for vazia.
 	}
-	public function toAssoc()
+	public function getAssoc()
 	{
 		$assoc = array(
 			'id' => $this->getId(),
 			'titulo' => $this->getTitulo(),
 			'tipo' => $this->getTipo(),
 			'tags' => $this->getTags(),
-			'aprovado' => $this->
+			'aprovado' => (bool) $this->aprovado
 		);
 	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
-	public static function getMateriaisTurma($turma, $aprovados = true, $usuario = false;)
+	public static function getMateriaisTurma($turma, $aprovados = true, $usuario = false)
 	{
 		global $tabela_Materiais;
 		// permite passar o objeto turma como parâmetro.

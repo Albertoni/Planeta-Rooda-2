@@ -1,0 +1,20 @@
+#label_arquivo,
+#label_link {
+	background: #999;
+	display: inline-block;
+	font-size: 15px;
+	line-height: 100%;
+	padding: 10px 15px;
+}
+#label_arquivo.checked,
+#label_link.checked {
+	background: #f99;
+}
+#label_link {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+#label_arquivo {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
