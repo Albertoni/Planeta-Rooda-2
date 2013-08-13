@@ -21,9 +21,9 @@ $usuario = new Usuario();
 $usuario->openUsuario($usuario_id);
 $turma = new turma($turmaId);
 function listar($ultimoId = 0) {
+	global $json;
 	global $turmaId;
 	global $usuario;
-	global $json;
 	$perm = checa_permissoes(TIPOBIBLIOTECA, $turmaId);
 	if ($perm === false) {
 		$json['errors'][] = "Portfólio desabilitado para esta turma.";
@@ -31,12 +31,19 @@ function listar($ultimoId = 0) {
 	return $json;
 }
 function enviar() {
-	global $_POST;
-	global $_FILE;
 	global $json;
 	global $turmaId;
 	global $usuario;
-	if(isset($_POST['tipo'])) {
+	global $_POST;
+	global $_FILE;
+	if (isset($_POST['tipo'])) switch ($_POST['tipo']) {
+		case 'a':
+			# code...
+			break;
+		case 'l':
+		default:
+			# code...
+			break;
 	}
 }
 if (!$usuario_id) {
@@ -45,14 +52,12 @@ if (!$usuario_id) {
 	$json['session'] = true;
 	switch ($acao) {
 		case 'listar':
-			$json = listar($ultimoId);
+			listar($ultimoId);
 			break;
 		case 'enviar':
-			$json = enviar();
-			# code...
+			enviar();
 			break;
 		default:
-			# code...
 			break;
 	}
 }

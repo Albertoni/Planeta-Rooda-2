@@ -25,7 +25,23 @@ class Material
 	private $tags         = "";
 	private $aprovado     = false;
 	private $novo         = false; // se for true, ainda nao está no banco de dados.
-	
+	private $turma_aberta = false;
+	private $consulta_turma = null;
+	private $sql = <<<SQL
+SELECT
+	codMaterial      AS id,
+	codTurma         AS codTurma,
+	titulo           AS titulo,
+	autor            AS autor,
+	tags             AS tags,
+	codUsuario       AS codUsuario,
+	tipoMaterial     AS tipo,
+	data             AS data,
+	hora             AS hora,
+	refMaterial      AS codRecurso,
+	materialAprovado AS aprovado
+	FROM BibliotecaMateriais
+SQL;
 	function __construct($id = false)
 	{
 		global $tabela_Materiais;
@@ -34,34 +50,13 @@ class Material
 		{
 			$bd = new conexao();
 			$bd->solicitar(
-				"SELECT
-					codTurma         AS codTurma,
-					titulo           AS titulo,
-					autor            AS autor,
-					tags             AS tags,
-					codUsuario       AS codUsuario,
-					tipoMaterial     AS tipo,
-					data             AS data,
-					hora             AS hora,
-					refMaterial      AS codRecurso,
-					materialAprovado AS aprovado
-				FROM $tabela_Materiais
-				WHERE codMaterial = $id"
+				$this->sql.<<<SQL
+				WHERE codMaterial = $id
+SQL
 			);
 			if ($bd->registros === 1)
 			{
-				$this->setId($id);
-				$this->setTurma((int) $bd->resultado['codTurma']);
-				$this->setTitulo($bd->resultado['titulo']);
-				$this->setAutor($bd->resultado['autor']);
-				$this->setTags($bd->resultado['tags']);
-				$this->setUsuario((int) $bd->resultado['codUsuario']);
-				$this->setTipo($bd->resultado['tipo']);
-				$this->setData($bd->resultado['data']);
-				$this->setHora($bd->resultado['hora']);
-				$this->setCodRecurso((int) $bd->resultado['codRecurso']);
-				$this->setAprovado((bool) $bd->resultado['aprovado']);
-				$this->carregaRecurso();
+				$this->popular($bd->resultado);
 			}
 			elseif ($bd->erro !== '')
 			{
@@ -77,6 +72,20 @@ class Material
 		{
 			$this->erros[] = 'Material não pode ser recuperado (parametros inválidos).';
 		}
+	}
+	private function popular($assoc) {
+		$this->setId($assoc['id']);
+		$this->setTurma((int) $assoc['codTurma']);
+		$this->setTitulo($assoc['titulo']);
+		$this->setAutor($assoc['autor']);
+		$this->setTags($assoc['tags']);
+		$this->setUsuario((int) $assoc['codUsuario']);
+		$this->setTipo($assoc['tipo']);
+		$this->setData($assoc['data']);
+		$this->setHora($assoc['hora']);
+		$this->setCodRecurso((int) $assoc['codRecurso']);
+		$this->setAprovado((bool) $assoc['aprovado']);
+		$this->carregaRecurso();
 	}
 	private function carregaRecurso()
 	{
@@ -121,7 +130,8 @@ class Material
 		{
 			$bd = new conexao();
 			$bd->solicitar(
-				"INSERT INTO $tabela_Materiais"
+				"INSERT INTO $tabela_Materiais
+				(codTurma,titulo,autor,tags,codUsuario,tipoMaterial,data,hora,refMaterial,materialAprovado)"
 			);
 			$this->novo = false;
 		}
@@ -151,6 +161,7 @@ SQL
 			);
 		}
 	}
+	public function existe() { return ($this->id !== false && !$this->novo); }
 	public function getId() { return $this->id; }
 	public function getTitulo() { return $this->titulo; }
 	public function getAutor() { return $this->autor; }
@@ -265,6 +276,7 @@ SQL
 			{
 				$this->usuario = NULL;
 				$this->erros[] = 'Usuario inválido';
+				throw new Exception("Usuário inválido como ", 1);
 				return false;
 			}
 			$this->codUsuario = $usuario;
@@ -326,37 +338,43 @@ SQL
 		);
 	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
-	public static function getMateriaisTurma($turma, $aprovados = true, $usuario = false)
+	public function abreTurma($parametros)
 	{
 		global $tabela_Materiais;
 		// permite passar o objeto turma como parâmetro.
-		if (is_object($turma) && get_class($turma) === "turma")
+		if (is_object($parametros['turma']) && get_class($parametros['turma']) === "turma")
 		{
 			// pega o id do objeto turma
-			$turma = $turma->getId();
+			$parametros['turma'] = $parametros['turma']->getId();
 		}
 		// neste ponto, a turma precisa ser o id da turma.
-		if (!is_integer($turma)) return false;
-		$bd = new conexao();
-		$bd->solicitar(
-			"SELECT codMaterial AS id
-			FROM $tabela_Materiais
-			WHERE codTurma = $turma
+		if (!is_integer($parametros['turma'])) {
+			throw new Exception('turma inválida', 1);
+			return false;
+		}
+		$this->consulta_turma = new conexao();
+		$this->consulta_turma->solicitar(
+			$this->sql."
+			WHERE codTurma = {$parametros['turma']}
 			ORDER BY codMaterial DESC"
 		);
 		// se ocorreu erro, retornar false.
-		if ($bd->erro) 
+		if ($this->consulta_turma->erro) 
 		{
-			echo $bd->erro;
-			return false;
+			throw new Exception($this->consulta_turma->erro, 1);
 		}
-		// caso contrário, fazer array com resultados.
-		$materiais = array();
-		while ($bd->resultado) {
-			$id = (int) $bd->resultado['id'];
-			$materiais[] = new Material($id);
-			$bd->proximo();
+
+		$this->popular($this->consulta_turma->resultado);
+		return true;
+	}
+	public function proximo()
+	{
+		$this->consulta_turma->proximo();
+		if ((bool) $this->consulta_turma->resultado)
+		{
+			$this->popular($this->consulta_turma->resultado);
+			return true;
 		}
-		return $materiais;
+		return false;
 	}
 }

@@ -1,20 +1,26 @@
 #label_arquivo,
 #label_link {
-	background: #999;
+	background: #fff;
+	border-style: solid;
 	display: inline-block;
 	font-size: 15px;
+	font-weight: bold;
 	line-height: 100%;
-	padding: 10px 15px;
+	padding: 5px 10px;
 }
 #label_arquivo.checked,
 #label_link.checked {
-	background: #f99;
+	background: #74d3ed;
 }
 #label_link {
+	border-color: #74d3ed #74d3ed #74d3ed #ccc;
+	border-width: 3px 3px 3px 1px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
 #label_arquivo {
+	border-color: #74d3ed #ccc #74d3ed #74d3ed;
+	border-width: 3px 1px 3px 3px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }

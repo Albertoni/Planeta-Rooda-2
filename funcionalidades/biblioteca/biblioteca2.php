@@ -58,9 +58,8 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 						<h1>ENVIAR MATERIAL</h1>
 						<div>
 						<form id="form_envio_material">
-							Tipo de material
-							<button>Arquivo</button>
-							<button>Link</button>
+							Tipo de material<br>
+							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
 							<legend>Material</legend>
 							<label>Título:<br>
 								<input type="text" name="titulo" id="material_titulo" />
@@ -68,49 +67,49 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 							<label>Palavras do Material:<br>
 								<input type="text" name="tags" id="material_tags" />
 							</label><br>
-							<label>Arquivo:<br>
-								<input type="file" name="arquivo" id="material_arquivo" />
+							<label class="file_label">Arquivo:
+								<input type="file" name="arquivo" id="material_arquivo" hidden />
 							</label><br>
 							<label>Link:<br>
 								<input type="text" name="link" id="material_link" />
 							</label><br>
-							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
 							<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
-						</form>
+					</form>
 						</div>
 					</div>
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
 <?php
-if ($materiais = Material::getMateriaisTurma($turma)) {
-foreach ($materiais as $material) {
-//	print_r($material);
-	switch ($material->getTipo())
-	{
-		case MATERIAL_ARQUIVO:
-			$arquivo = $material->getArquivo();
-			$usuario = $material->getUsuario();
-			$classes = explode("/",$arquivo->getTipo());
-			$classes[] = 'arquivo';
-			$classes = implode(' ', $classes);
-			break;
-		case MATERIAL_LINK;
-			$link = $material->getLink();
-			$classes = 'link';
-			break;
-	}
+$material = new Material();
+if ($material->abreTurma(array('turma' => $turma))) {
+	do {
+	//	print_r($material);
+		switch ($material->getTipo())
+		{
+			case MATERIAL_ARQUIVO:
+				$arquivo = $material->getArquivo();
+				$usuario = $material->getUsuario();
+				$classes = explode("/",$arquivo->getTipo());
+				$classes[] = 'arquivo';
+				$classes = implode(' ', $classes);
+				break;
+			case MATERIAL_LINK;
+				$link = $material->getLink();
+				$classes = 'link';
+				break;
+		}
 
-	echo <<<HTML
-							<li id="material_{$material->getId()}" class="{$classes}">
-								<h2>{$material->getTitulo()}</h2>
-								<small>Enviado por {$usuario->getName()} em {$material->getData()} ({$material->getHora()}).</small>
-								<p>Autor: {$material->getAutor()}</p>
-								<a href="#{$material->getId()}">abrir material</a>
-							</li>
+		echo <<<HTML
+								<li id="material_{$material->getId()}" class="{$classes}">
+									<h2>{$material->getTitulo()}</h2>
+									<small>Enviado por {$usuario->getName()} em {$material->getData()} ({$material->getHora()}).</small>
+									<p>Autor: {$material->getAutor()}</p>
+									<a href="#{$material->getId()}">abrir material</a>
+								</li>
 HTML;
-}
-}
+	} while ($material->proximo());
+} 
 
 ?>
 
@@ -129,16 +128,31 @@ HTML;
 		<!-- JAVASCRIPT -->
 		<script src="../../js/rooda.js"></script>
 		<script>
+		Array.prototype.forEach.call(document.getElementsByTagName("label"), function (l) {
+			if (l.control.type === 'file') {
+				t = document.createElement("span");
+				l.appendChild(t);
+				l.classList.add("file_label");
+				l.control.hidden = true;
+				l.control.onchange = function () {
+					var files = [], i;
+					for (i = 0; i < l.control.files.length; i++) {
+						files.push(l.control.files[i].name);
+					}
+					t.innerHTML = files.join(", ");
+				}
+			}
+		});
 		;(function () {
 			var botao_enviar_material  = document.getElementById("botao_enviar_material");
 			var botao_buscar_materiais = document.getElementById("botao_buscar_materiais");
 			var enviar_material  = document.getElementById("enviar_material");
 			var buscar_materiais = document.getElementById("buscar_materiais");
 		}());
-		var radio_arquivo = document.getElementById("input_arquivo");
 		var label_arquivo = document.getElementById("label_arquivo");
-		var radio_link = document.getElementById("input_link");
+		var radio_arquivo = label_arquivo.control;
 		var label_link = document.getElementById("label_link");
+		var radio_link = label_link.control;
 		radio_arquivo.onchange = function () {
 			if (radio_arquivo.checked) {
 				label_arquivo.classList.add('checked');

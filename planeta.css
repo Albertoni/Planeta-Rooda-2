@@ -33,6 +33,13 @@ ul { list-style:none; margin:0; padding:0;}
 
 input[type=text], .falso_text {border:solid 1px #74d3ed; background: #fff; overflow: hidden; vertical-align: middle; }
 input[type=text]:hover, .falso_text:hover {background-color:#74d3ed}
+label.file_label {
+	background: #fff;
+	border: 3px solid #74d3ed;
+	border-radius: 5px;
+	display: inline-block;
+	width: 300px;
+}
 button[type=submit],
 button.submit,
 input[type=submit],
