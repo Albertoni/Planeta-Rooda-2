@@ -27,7 +27,15 @@ class Material
 	private $novo         = false; // se for true, ainda nao está no banco de dados.
 	private $turma_aberta = false;
 	private $consulta_turma = null;
-	private $sql = <<<SQL
+	function __construct($id = false)
+	{
+		global $tabela_Materiais;
+		$this->erros = array();
+		if ($id !== false && is_integer($id))
+		{
+			$bd = new conexao();
+			$bd->solicitar(
+<<<SQL
 SELECT
 	codMaterial      AS id,
 	codTurma         AS codTurma,
@@ -40,18 +48,8 @@ SELECT
 	hora             AS hora,
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
-	FROM BibliotecaMateriais
-SQL;
-	function __construct($id = false)
-	{
-		global $tabela_Materiais;
-		$this->erros = array();
-		if ($id !== false && is_integer($id))
-		{
-			$bd = new conexao();
-			$bd->solicitar(
-				$this->sql.<<<SQL
-				WHERE codMaterial = $id
+FROM BibliotecaMateriais
+WHERE codMaterial = $id
 SQL
 			);
 			if ($bd->registros === 1)
@@ -145,18 +143,19 @@ SQL
 			$codUsuario   = (int) $this->codUsuario;
 			$tipoMaterial = $bd->sanitizaString($this->tipoMaterial);
 			$aprovado     = $this->aprovado ? '1' : '0';
-			$bd->solicitar(<<<SQL
-				UPDATE $tabela_Materiais 
-				SET codTurma = '$codTurma', 
-					titulo = '$titulo', 
-					autor = '$autor', 
-					tags = '$tags', 
-					codUsuario = '$codUsuario', 
-					tipoMaterial = '$tipoMaterial', 
-					data = '$data', 
-					hora = '$hora', 
-					refMaterial = '$refMaterial', 
-					materialAprovado = $aprovado
+			$bd->solicitar(
+<<<SQL
+UPDATE $tabela_Materiais 
+SET codTurma = '$codTurma', 
+	titulo = '$titulo', 
+	autor = '$autor', 
+	tags = '$tags', 
+	codUsuario = '$codUsuario', 
+	tipoMaterial = '$tipoMaterial', 
+	data = '$data', 
+	hora = '$hora', 
+	refMaterial = '$refMaterial', 
+	materialAprovado = $aprovado
 SQL
 			);
 		}
@@ -275,9 +274,7 @@ SQL
 			if ($this->usuario->getId() === 0)
 			{
 				$this->usuario = NULL;
-				$this->erros[] = 'Usuario inválido';
-				throw new Exception("Usuário inválido como ", 1);
-				return false;
+				throw new Exception("Usuário inválido.", 1);
 			}
 			$this->codUsuario = $usuario;
 			return true;
@@ -290,7 +287,7 @@ SQL
 		}
 		else
 		{
-			$this->erros[] = 'Usuario inválido';
+			throw new Exception("Usuario inválido.", 1);
 			return false;
 		}
 	}
@@ -302,7 +299,7 @@ SQL
 		}
 		else
 		{
-			$this->erros[] = 'Tipo de recurso inválido.';
+			throw new Exception("Tipo de recurso inválido.", 1);
 		}
 	}
 	public function setData($data)
@@ -338,10 +335,13 @@ SQL
 		);
 	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
-	public function abreTurma($parametros)
+	public function abrirTurma($parametros)
 	{
 		global $tabela_Materiais;
+		$this->novo = false;
 		// permite passar o objeto turma como parâmetro.
+		if (!isset($parametros['turma'])) throw new Exception("Turma não definida", 1);
+		
 		if (is_object($parametros['turma']) && get_class($parametros['turma']) === "turma")
 		{
 			// pega o id do objeto turma
@@ -353,22 +353,37 @@ SQL
 			return false;
 		}
 		$this->consulta_turma = new conexao();
-		$this->consulta_turma->solicitar(
-			$this->sql."
-			WHERE codTurma = {$parametros['turma']}
-			ORDER BY codMaterial DESC"
+		$this->consulta_turma->solicitar(<<<SQL
+SELECT
+	codMaterial      AS id,
+	codTurma         AS codTurma,
+	titulo           AS titulo,
+	autor            AS autor,
+	tags             AS tags,
+	codUsuario       AS codUsuario,
+	tipoMaterial     AS tipo,
+	data             AS data,
+	hora             AS hora,
+	refMaterial      AS codRecurso,
+	materialAprovado AS aprovado
+FROM BibliotecaMateriais
+WHERE codTurma = {$parametros['turma']}
+ORDER BY codMaterial DESC
+SQL
 		);
 		// se ocorreu erro, retornar false.
 		if ($this->consulta_turma->erro) 
 		{
 			throw new Exception($this->consulta_turma->erro, 1);
 		}
-
+		$this->turma_aberta = true;
 		$this->popular($this->consulta_turma->resultado);
 		return true;
 	}
 	public function proximo()
 	{
+		if (!$this->turma_aberta) throw new Exception("Material::proximo() só pode ser usado depois de abrir uma turma com Material::abrirTurma()", 1);
+		
 		$this->consulta_turma->proximo();
 		if ((bool) $this->consulta_turma->resultado)
 		{

@@ -34,11 +34,44 @@ ul { list-style:none; margin:0; padding:0;}
 input[type=text], .falso_text {border:solid 1px #74d3ed; background: #fff; overflow: hidden; vertical-align: middle; }
 input[type=text]:hover, .falso_text:hover {background-color:#74d3ed}
 label.file_label {
+	position: relative;
 	background: #fff;
 	border: 3px solid #74d3ed;
 	border-radius: 5px;
+	color: #999;
 	display: inline-block;
-	width: 300px;
+	font-size: 14px;
+	width: 350px;
+	height: 20px;
+	word-wrap: none;
+	overflow: hidden;
+	position: relative;
+	margin: 2px 0;
+}
+label.file_label span:not(.text) {
+	display: inline-block;
+	line-height: 100%;
+	padding: 3px 0px;
+	overflow: hidden;
+	position: absolute;
+	left: 145px;
+	right: 5px;
+	top: 0;
+	bottom: 0;
+}
+label.file_label .text {
+	background: #74d3ed;
+	display: inline-block;
+	text-align: center;
+	color: #000;
+	line-height: 100%;
+	margin: 0;
+	padding: 3px 0;
+	width: 140px;
+	position: absolute;
+	left: 0px;
+	top: 0;
+	bottom: 0;
 }
 button[type=submit],
 button.submit,

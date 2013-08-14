@@ -1,6 +1,13 @@
+body,td,th {
+	background-image: url("../../images/fundos/fundo7.png");
+	background-repeat:repeat-x;
+	background-attachment:fixed;
+	background-color: #A9ABC8 !important;
+}
 #label_arquivo,
 #label_link {
 	background: #fff;
+	border-color: #74d3ed;
 	border-style: solid;
 	display: inline-block;
 	font-size: 15px;
@@ -13,14 +20,12 @@
 	background: #74d3ed;
 }
 #label_link {
-	border-color: #74d3ed #74d3ed #74d3ed #ccc;
-	border-width: 3px 3px 3px 1px;
+	border-width: 3px 3px 3px 0px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
 }
 #label_arquivo {
-	border-color: #74d3ed #ccc #74d3ed #74d3ed;
-	border-width: 3px 1px 3px 3px;
+	border-width: 3px 0px 3px 3px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }

@@ -67,8 +67,8 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 							<label>Palavras do Material:<br>
 								<input type="text" name="tags" id="material_tags" />
 							</label><br>
-							<label class="file_label">Arquivo:
-								<input type="file" name="arquivo" id="material_arquivo" hidden />
+							<label><span class="text">Selecionar arquivo:</span><br>
+								<input type="file" name="arquivo" id="material_arquivo"/>
 							</label><br>
 							<label>Link:<br>
 								<input type="text" name="link" id="material_link" />
@@ -82,7 +82,7 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 						<ul id="ul_materiais">
 <?php
 $material = new Material();
-if ($material->abreTurma(array('turma' => $turma))) {
+if ($material->abrirTurma(array('turma' => $turma))) {
 	do {
 	//	print_r($material);
 		switch ($material->getTipo())
@@ -127,7 +127,10 @@ HTML;
 		</div>
 		<!-- JAVASCRIPT -->
 		<script src="../../js/rooda.js"></script>
+		<script src="../../js/ajax.js"></script>
+		<script src="../../js/ajaxFileManager.js"></script>
 		<script>
+		/* -  /
 		Array.prototype.forEach.call(document.getElementsByTagName("label"), function (l) {
 			if (l.control.type === 'file') {
 				t = document.createElement("span");
@@ -143,6 +146,7 @@ HTML;
 				}
 			}
 		});
+		/* - */
 		;(function () {
 			var botao_enviar_material  = document.getElementById("botao_enviar_material");
 			var botao_buscar_materiais = document.getElementById("botao_buscar_materiais");

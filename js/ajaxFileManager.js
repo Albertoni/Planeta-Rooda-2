@@ -1,3 +1,39 @@
+// faz com que todos os 'file input' fiquem com estilo moderno baseado em 'label'
+Array.prototype.forEach.call(document.getElementsByTagName("input"), function (input) {
+    var label, filesSpan;
+    if (input.type === 'file') {
+        // verificar se o elemento já tem label.
+        label = input.parentElement;
+        if (label.tagName.toUpperCase() === 'LABEL') {
+            // guardar o input para preservar handlers associados
+            label.removeChild(input);
+        } else {
+            // se nao tiver, criar um label.
+            label = document.createElement("label");
+            // guardar o input para preservar handlers associados
+            input.parentElement.replaceChild(label);
+        }
+        // adiciona texto de auxilio
+        label.classList.add("file_label")
+        label.innerHTML = '<span class="text">Selecionar arquivo:</span>';
+        // placeholder de arquivos selecionados
+        filesSpan = document.createElement("span");
+        // atualiza conteudo do placeholder
+        input.addEventListener('change', function () {
+            var i, fileList = [];
+            for (i = 0; i < this.files.length; i++) {
+                fileList.push(this.files[i].name);
+            }
+            filesSpan.innerHTML = fileList.join(", ");
+        });
+        // adiciona placeholder ao label
+        label.appendChild(filesSpan);
+        // esconde o 'file input' e adiciona ele ao label.
+        input.hidden = true;
+        label.appendChild(input);
+    }
+});
+
 var submitFormFunction = (function (handler) {
     var uploadHandler = handler || function(){
         if (this.readyState !== this.DONE) {
