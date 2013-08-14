@@ -83,7 +83,7 @@
 } ?>
 	</div>
 	
-	<div id="nova_mensagem" class="bloco">
+	<div id="li_resposta_-1" class="bloco nova_mensagem">
 	<h1>NOVA MENSAGEM</h1>
 		<ul class="sem_estilo">
 			<li>
@@ -103,70 +103,6 @@
 	<div id="dinamica">
 		<div id="bloco_mensagens" class="bloco">
 			<h1><?php echo $nomeTopico ?></h1>
-			<div class="cor3">
-				<ul>
-					<li class="tabela">
-					<div class="info" >
-						<p class="nome"><b>joao teste</b></p>
-						<p class="data"><span class="data">29/4/2013</span> às <span class="data">17h 4min</span></p>
-					</div>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_editar.png" onclick="editar(1081,518)"/>
-							<input type="image" src="../../images/botoes/bt_excluir.png" onclick="excluir(1081,518,deltipo)"/>
-						</div>
-					</li>
-					<li>
-						<div class="imagem"><img src="img_output.php?id=512"/></div>
-						<div class="limite_resposta">
-							<p class="texto_resposta">hue</p>
-						</div>
-					</li>
-					<li>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_responder_pq.png" onclick="responder(518)"/>
-						</div>
-					</li>
-					<li id="li_resposta_518" style="display:none;">
-						<textarea class="msg_dimensao" rows="10" id="msg_txt_518"></textarea>
-						<div class="bts_msg" align="right">
-						<input type="image" src="../../images/botoes/bt_enviar_pq.png" onclick="enviarRsp(1081,518)"/>
-						<input type="image" src="../../images/botoes/bt_cancelar_pq.png" onclick="cancelarRsp(1081,518,deltipo)"/>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<div class="cor3">
-				<ul>
-					<li class="tabela">
-					<div class="info" >
-						<p class="nome"><b></b> joao teste</p>
-						<p class="data"><span style="color:#C60;">29/4/2013</span> às  <span style="color:#C60;">17h 4min</span></p>
-					</div>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_editar.png" onclick="editar(1081,518)"/>
-							<input type="image" src="../../images/botoes/bt_excluir.png" onclick="excluir(1081,518,deltipo)"/>
-						</div>
-					</li>
-					<li>
-						<div class="imagem"><img src="img_output.php?id=512"/></div>
-						<div class="limite_resposta">
-							<p class="texto_resposta">hue</p>
-						</div>
-					</li>
-					<li>
-						<div class="bts_msg" align="right">
-							<input type="image" src="../../images/botoes/bt_responder_pq.png" onclick="responder(518)"/>
-						</div>
-					</li>
-					<li id="li_resposta_518" style="display:none;">
-						<textarea class="msg_dimensao" rows="10" id="msg_txt_518"></textarea>
-						<div class="bts_msg" align="right">
-						<input type="image" src="../../images/botoes/bt_enviar_pq.png" onclick="enviarRsp(1081,518)"/>
-						<input type="image" src="../../images/botoes/bt_cancelar_pq.png" onclick="cancelarRsp(1081,518,deltipo)"/>
-						</div>
-					</li>
-				</ul>
-			</div>
 		</div>
 <?php
 /*		if ($VERIFICA_USER_ERRO_ID == 0) {

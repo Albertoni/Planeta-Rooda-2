@@ -84,11 +84,15 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$arr = array(
 			'idPost' => $this->id,
 			'idUsuario' => $this->idUsuario,
-			'idMensagemRespondida' => $this->idMensagemRespondida,
 			'nomeUsuario' => $this->nomeUsuario,
 			'texto' => $this->texto,
 			'data' => $this->data
 			);
+
+		if($this->idMensagemRespondida != NULL){
+			$mens = new mensagem($this->idMensagemRespondida);
+			$arr['mensagemRespondida'] = $mens->toJson();
+		}
 
 		return $arr;
 	}
@@ -225,9 +229,9 @@ function setMensagem($indice, $mensagem){
 	}
 
 	function getPrintableMessageNumber(){
-		$mensagens = count($this->getMensagens());
+		$mensagens = count($this->mensagens);
 
-		if ($mensagens == 1) {
+		if ($mensagens === 1) {
 			return "1 mensagem";
 		} else {
 			return "$mensagens mensagens";
@@ -287,20 +291,20 @@ class forum {
 		if(empty($this->listaTopicos)){
 			$idTurma = $this->idTurma;
 			$q = new conexao();
-			$q->solicitar("SELECT * FROM 
+			$q->solicitar("SELECT idTopico, usuario_nome FROM 
 				ForumTopico JOIN usuarios ON ForumTopico.idUsuario = usuarios.usuario_id 
 				WHERE idTurma = $idTurma");
 
 			$this->numTopicos = $q->registros;
 			for($i=0; $i < ($q->registros); $i+=1){
 				$idTopico = $q->resultado['idTopico'];
-				$idTurma = $q->resultado['idTurma'];
+				/*$idTurma = $q->resultado['idTurma'];
 				$idUsuario = $q->resultado['idUsuario'];
 				$titulo = $q->resultado['titulo'];
-				$date = $q->resultado['data'];
+				$date = $q->resultado['data'];*/
 				$nomeUsuario = $q->resultado['usuario_nome'];
 
-				$topicoLoop = new topico($idTopico, $idTurma, $idUsuario, $titulo, $date, $nomeUsuario);
+				$topicoLoop = new topico($idTopico);
 				$this->listaTopicos[] = $topicoLoop; // appends
 				$q->proximo();
 			}

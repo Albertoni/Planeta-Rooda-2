@@ -196,7 +196,7 @@ function enviaMensagem(forumId,id){
 	http.open("POST", "forum_salva_mensagem.php", true);
 	http.onreadystatechange=function() {
 		if ((http.readyState == 4)&& (http.status == 200 )) {
-			cancelarRsp(id);
+			cancelaResposta(id);
 			document.getElementById("dinamica").innerHTML = http.responseText;
 		}
 	}
@@ -211,7 +211,23 @@ var postDinamico = {
 		var container = document.createElement("div");
 		container.className = "cor3";
 
+		console.log(post);
+
 		post.data = post.data.split(' ');
+
+		if(post.mensagemRespondida != undefined){
+			var textoPost = "<div class=\"limite_resposta\">\
+					<blockquote class=\"citacao\">\
+					<cite class=\"nome\">Nome Longo da Silva disse:</cite>\
+					quack\
+					</blockquote>\
+					<p class=\"texto_resposta\">"+post.texto+"</p>\
+				</div>";
+		}else{
+			var textoPost = "<div class=\"limite_resposta\">\
+					<p class=\"texto_resposta\">"+post.texto+"</p>\
+				</div>";
+		}
 
 		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
@@ -226,10 +242,8 @@ var postDinamico = {
 			</li>\
 			<li>\
 				<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
-				<div class=\"limite_resposta\">\
-					<p class=\"texto_resposta\">"+post.texto+"</p>\
-				</div>\
-			</li>\
+				"+textoPost
+				+"</li>\
 			<li>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\

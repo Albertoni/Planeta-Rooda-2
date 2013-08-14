@@ -35,7 +35,7 @@ if($user->podeAcessar($permissoes[$acaoSendoEfetuada], $turma)){
 		$topico = new topico($idTopico);
 
 		$topico->setTitulo($titulo);
-		$topico->editaMensagem(0, $conteudo);
+		$topico->setMensagem(0, $conteudo);
 	}
 
 	$erro = $topico->salvar();

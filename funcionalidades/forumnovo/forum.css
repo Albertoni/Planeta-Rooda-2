@@ -14,7 +14,7 @@ float:left; margin-right:15px; display:table-cell}
 
 .criado_por { color:#999999; font-size:11px; margin-top:15px; margin-bottom:15px}
 
-#nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
+.nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
 
 #bloco_mensagens { width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
 #bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
@@ -88,6 +88,15 @@ span.data{color:#C60;}
 	text-align: center;
 }
 
-
+.citacao{
+	border: 1px solid #C60;
+	padding: 5px;
+	margin: 10px;
+}
+.citacao .nome{
+	padding-bottom: 5px;
+	width: 100%;
+	border-bottom: 2px dashed #C60;
+}
 
 #resultado_pesquisa {width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
