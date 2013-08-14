@@ -104,46 +104,7 @@
 		<div id="bloco_mensagens" class="bloco">
 			<h1><?php echo $nomeTopico ?></h1>
 		</div>
-<?php
-/*		if ($VERIFICA_USER_ERRO_ID == 0) {
-			if ($FORUM->contador > 0){
-		mostraPaginas ($paginas, $pagina, false, "forum_arvore.php?turma=$FORUM_ID&topico=$topico&ordem=$ordem");
-?>
-	<div id="bloco_mensagens" class="bloco">
-<?php
-				echo "<h1>".$FORUM->titulo.'<select id="ordem" style="position:absolute; right:5px;" onchange="ordernar(this);"><option> -- Ordenar... --</option><option>Data</option><option>Árvore</option></select></h1>';
-				$forum_msg_cont = count($FORUM->mensagem);
-				for ($c=0; $c<$forum_msg_cont; $c++){
-					$mens = $FORUM->mensagem[$c];
-					mostraArvore($mens->msgId,$mens->msgUserName,$mens->msgTexto,$mens->msgData,($c % 2), $mens->msgGrau,$ESCRITA, $mens->msgUserId);
-				}
-
-?>
 	</div><!-- fim da div topicos -->
-<?php
-		mostraPaginas ($paginas, $pagina, false, "forum_arvore.php?turma=$FORUM_ID&topico=$topico&ordem=$ordem");
-			}else{
-?>
-	<div id="bloco_mensagens" class="bloco">
-		<h1>MENSAGENS</h1><?php mostraAviso(6);?>
-	</div><!-- fim da div topicos --><br />
-<?php
-			}
-		}else{
-?>
-	<div id="bloco_mensagens" class="bloco">
-		<h1>MENSAGENS</h1><?php mostraAviso($VERIFICA_USER_ERRO_ID);?>
-	</div><!-- fim da div topicos --><br />
-<?php
-		}
-		
-*/?>
-
-
-	
-
-	</div><!-- fim da div topicos -->
-
 	<div class="bts_baixo">
 	<a href="<?php echo $link_voltar; ?>"><img src="../../images/botoes/bt_voltar.png"/></a>
 	</div>

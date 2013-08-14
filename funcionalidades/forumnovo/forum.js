@@ -1,5 +1,6 @@
 var guto = 0; //a variável guto serve pra que o evento de click do 'body' seja ativado sem influenciar no click do '.bloco'
 var mensagemRespondida = 0; // usado pra guardar o id da mensagem sendo respondida
+var turma = document.getElementById("idTurma").value;
 
 var edicao = '\
 	<div class="esq">\
@@ -197,7 +198,10 @@ function enviaMensagem(forumId,id){
 	http.onreadystatechange=function() {
 		if ((http.readyState == 4)&& (http.status == 200 )) {
 			cancelaResposta(id);
-			document.getElementById("dinamica").innerHTML = http.responseText;
+
+			var novoPost = postDinamico.geraPost(JSON.parse(http.responseText));
+
+			document.getElementById("dinamica").appendChild(novoPost);
 		}
 	}
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -252,7 +256,7 @@ var postDinamico = {
 			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
 				<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
 				<div class=\"bts_msg\" align=\"right\">\
-				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+post.turma+","+post.idPost+")\"/>\
+				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+turma+","+post.idPost+")\"/>\
 				<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
 				</div>\
 			</li>\

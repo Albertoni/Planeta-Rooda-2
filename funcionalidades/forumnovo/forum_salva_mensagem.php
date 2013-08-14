@@ -22,3 +22,4 @@ if($permissoes === false){
 
 $mensagem = new mensagem(0, $idTopico, $_SESSION['SS_usuario_id'], $conteudo, $idMensagemRespondida);
 $mensagem->salvar();
+echo json_encode($mensagem->toJson());
