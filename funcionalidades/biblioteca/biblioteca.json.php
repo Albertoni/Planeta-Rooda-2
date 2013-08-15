@@ -12,7 +12,7 @@ header("Content-Type: application/json");
 $usuario = usuario_sessao();
 $json = array();
 if ($usuario === false) {
-	die(json_encode(array('user' => false)));
+	die(json_encode(array('user' => false, 'errors' = array('Você não está logado.'))));
 }
 $turmaId = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 $acao = isset($_GET['action']) ? (int) $_GET['action'] : "";
@@ -36,13 +36,20 @@ function enviar() {
 	global $usuario;
 	global $_POST;
 	global $_FILE;
+	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
+	$autor = isset($_POST['autor']) ? trim($_POST['autor'] : '';
+	$tags = isset($_POST['tags']) ? trim($_POST['tags']) : '';
+	if ($titulo === '') {
+		$json['erros'][] = "Não pode enviar material sem título";
+	};
+
 	if (isset($_POST['tipo'])) switch ($_POST['tipo']) {
 		case 'a':
 			# code...
 			break;
 		case 'l':
 		default:
-			# code...
+			$json['erros'][] = "Não foi possivel enviar o arquivo.";
 			break;
 	}
 }

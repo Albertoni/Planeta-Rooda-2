@@ -6,8 +6,8 @@ require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("material.class.new.php");
 $usuario = usuario_sessao();
-if (!$usuario) {}
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+if (!$usuario) { die("voce nao esta logado"); }
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,20 +58,27 @@ $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 						<h1>ENVIAR MATERIAL</h1>
 						<div>
 						<form id="form_envio_material">
-							Tipo de material<br>
+							<strong>Tipo de material:</strong> 
 							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
-							<legend>Material</legend>
+							<br>
+							<div class="material_recurso">
+								<label class="file_label" style="display:none" id="label_material_arquivo">
+									<span class="text">Selecionar arquivo:</span><br>
+									<input type="file" name="arquivo" id="material_arquivo"/>
+								</label>
+								<label class="link_label" style="display:none" id="label_material_link">
+									<span class="text">Link:</span>
+									<input type="text" name="link" id="material_link" />
+								</label>
+							</div>
 							<label>Título:<br>
 								<input type="text" name="titulo" id="material_titulo" />
 							</label><br>
+							<label>Autor:<br>
+								<input type="text" name="autor" id="material_autor" />
+							</label><br>
 							<label>Palavras do Material:<br>
 								<input type="text" name="tags" id="material_tags" />
-							</label><br>
-							<label><span class="text">Selecionar arquivo:</span><br>
-								<input type="file" name="arquivo" id="material_arquivo"/>
-							</label><br>
-							<label>Link:<br>
-								<input type="text" name="link" id="material_link" />
 							</label><br>
 							<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
 					</form>
@@ -153,22 +160,33 @@ HTML;
 			var enviar_material  = document.getElementById("enviar_material");
 			var buscar_materiais = document.getElementById("buscar_materiais");
 		}());
-		var label_arquivo = document.getElementById("label_arquivo");
-		var radio_arquivo = label_arquivo.control;
-		var label_link = document.getElementById("label_link");
-		var radio_link = label_link.control;
+
+
+
+
+		var label_radio_arquivo = document.getElementById("label_arquivo");
+		var radio_arquivo = label_radio_arquivo.control;
+		var label_radio_link = document.getElementById("label_link");
+		var radio_link = label_radio_link.control;
+		var label_material_arquivo = document.getElementById("label_material_arquivo");
+		var label_material_link = document.getElementById("label_material_link");
 		radio_arquivo.onchange = function () {
+			label_material_arquivo.style.display = "none";
+			label_material_link.style.display = "none";
 			if (radio_arquivo.checked) {
-				label_arquivo.classList.add('checked');
+				label_radio_arquivo.classList.add('checked');
 				label_link.classList.remove('checked');
+				label_material_arquivo.style.display = "inline-block";
 			} else {
-				label_arquivo.classList.remove('checked');
-				label_link.classList.add('checked');
+				label_radio_arquivo.classList.remove('checked');
+				label_radio_link.classList.add('checked');
+				label_material_link.style.display = "inline-block";
 			}
 		}
 		radio_link.onchange = radio_arquivo.onchange;
 		radio_arquivo.style.display = "none";
 		radio_link.style.display = "none";
 		</script>
+		<script type="text/javascript" src="../../jquery.js"></script>
 	</body>
 </html>

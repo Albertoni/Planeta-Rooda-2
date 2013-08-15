@@ -5,6 +5,7 @@ require_once("usuarios.class.php");
 //Funções Comuns
 //---------------------------------------------------------------
 	function usuario_sessao() {
+		global $_SESSION;
 		session_start();
 		$usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
 		if ($usuario_id >= 0)

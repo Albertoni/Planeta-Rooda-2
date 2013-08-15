@@ -29,3 +29,29 @@ body,td,th {
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
+label {
+	font-weight: bold;
+}
+
+#form_envio_material {
+	font-size: 15px;
+	padding: 10px;
+}
+#enviar_material {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-radius: 5px;
+	border-color: #74d3ed;
+	width: 400px;
+	margin: -140px 0 0 -200px;
+	z-index: 10;
+}
+#enviar_material h1 {
+	background: #74d3ed;
+	color: #000;
+}
+#form_envio_material div.material_recurso {
+	height: 30px;
+	margin: 5px;
+}

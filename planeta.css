@@ -33,6 +33,7 @@ ul { list-style:none; margin:0; padding:0;}
 
 input[type=text], .falso_text {border:solid 1px #74d3ed; background: #fff; overflow: hidden; vertical-align: middle; }
 input[type=text]:hover, .falso_text:hover {background-color:#74d3ed}
+label.link_label,
 label.file_label {
 	position: relative;
 	background: #fff;
@@ -41,7 +42,7 @@ label.file_label {
 	color: #999;
 	display: inline-block;
 	font-size: 14px;
-	width: 350px;
+	width: 360px;
 	height: 20px;
 	word-wrap: none;
 	overflow: hidden;
@@ -49,16 +50,21 @@ label.file_label {
 	margin: 2px 0;
 }
 label.file_label span:not(.text) {
-	display: inline-block;
 	line-height: 100%;
-	padding: 3px 0px;
+}
+label.file_label span:not(.text),
+label.link_label input {
+	display: inline-block;
 	overflow: hidden;
+	left: 140px;
+	right: 0px;
+	padding: 3px 3px;
 	position: absolute;
-	left: 145px;
-	right: 5px;
 	top: 0;
 	bottom: 0;
+	margin: 0;
 }
+label.link_label .text,
 label.file_label .text {
 	background: #74d3ed;
 	display: inline-block;
@@ -72,6 +78,13 @@ label.file_label .text {
 	left: 0px;
 	top: 0;
 	bottom: 0;
+}
+label.link_label .text {
+	width: 60px;
+}
+label.link_label input {
+	border: 0 none;
+	left:  60px;
 }
 button[type=submit],
 button.submit,
