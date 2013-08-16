@@ -38,7 +38,7 @@
 <link type="text/css" rel="stylesheet" href="forum.css" />
 </head>
 
-<body onload="atualiza('ajusta()');inicia(); postDinamico.imprimePosts(post);">
+<body onload="atualiza('ajusta()');inicia();">
 
 <div id="topo">
 	<div id="centraliza_topo">
@@ -103,6 +103,7 @@
 	<div id="dinamica">
 		<div id="bloco_mensagens" class="bloco">
 			<h1><?php echo $nomeTopico ?></h1>
+			<h2 id="mensagem_espera">Aguarde um instante, carregando mensagens...</h1>
 		</div>
 	</div><!-- fim da div topicos -->
 	<div class="bts_baixo">
@@ -126,6 +127,8 @@
 <![endif]-->
 <script>
 post = <?php $topico->imprimeMensagens(); ?>;
+postDinamico.imprimePosts(post);
+postDinamico.removeMensagemEspera();
 </script>
 
 </body>

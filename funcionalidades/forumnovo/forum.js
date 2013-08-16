@@ -200,7 +200,6 @@ function enviaMensagem(forumId,id){
 			cancelaResposta(id);
 
 			var novoPost = postDinamico.geraPost(JSON.parse(http.responseText));
-			alert(novoPost);
 
 			document.getElementById("bloco_mensagens").appendChild(novoPost);
 		}
@@ -215,8 +214,6 @@ var postDinamico = {
 	geraPost: function (post){
 		var container = document.createElement("div");
 		container.className = "cor3";
-
-		console.log(post);
 
 		post.data = post.data.split(' ');
 
@@ -275,5 +272,9 @@ var postDinamico = {
 		})
 	},
 
-	container: document.getElementById("bloco_mensagens")
+	container: document.getElementById("bloco_mensagens"),
+
+	removeMensagemEspera: function(){
+		document.getElementById("mensagem_espera").style.display = "none";
+	}
 };
