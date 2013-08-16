@@ -72,7 +72,7 @@ $(document).ready(function(){
 	});
 	
 	$('#responder_topico').click(function(){
-		$('#nova_mensagem').css('display','block');
+		$('.nova_mensagem').css('display','block');
 	});
 	$('#cancela_msg').click(function(){
 		escondeNovaMensagem();
@@ -222,8 +222,8 @@ var postDinamico = {
 		if(post.mensagemRespondida != undefined){
 			var textoPost = "<div class=\"limite_resposta\">\
 					<blockquote class=\"citacao\">\
-					<cite class=\"nome\">Nome Longo da Silva disse:</cite>\
-					quack\
+					<cite class=\"nome\">"+post.mensagemRespondida.nomeUsuario+" disse:</cite>\
+					"+post.mensagemRespondida.texto+"\
 					</blockquote>\
 					<p class=\"texto_resposta\">"+post.texto+"</p>\
 				</div>";

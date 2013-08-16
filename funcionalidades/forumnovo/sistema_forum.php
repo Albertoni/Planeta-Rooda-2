@@ -65,14 +65,15 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$q = new conexao();
 
 		$idSafe = $q->sanitizaString($id);
-		$q->solicitar("SELECT * FROM ForumMensagem WHERE id = '$idSafe'");
+		//$q->solicitar("SELECT * FROM ForumMensagem WHERE idMensagem = '$idSafe'");
+		
+		$q->solicitar("SELECT * FROM ForumMensagem
+						INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
+						WHERE idMensagem = $idSafe
+						ORDER BY idMensagem");
 
-		if($q->erro != ""){
-			$this->idTopico = $q->resultado['idTopico'];
-			$this->idUsuario = $q->resultado['idUsuario'];
-			$this->idMensagemRespondida = $q->resultado['idMensagemRespondida'];
-			$this->texto = $q->resultado['texto'];
-			$this->data = $q->resultado['data'];
+		if($q->erro == ""){
+			$this->loadFromSqlArray($q->resultado);
 
 			$this->salvo = true;
 		}else{
@@ -328,11 +329,6 @@ class visualizacaoForum extends forum{
 			echo "Não existem tópicos nessa turma.";
 		}else{
 			$html = "";
-
-
-			/*for ($i=0; $i < count($this->listaTopicos); $i++) { 
-				# code...
-			}*/
 
 			foreach ($this->listaTopicos as $indice => $topico) {
 				$idTopico = $topico->getIdTopico();
