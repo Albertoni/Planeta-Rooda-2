@@ -98,7 +98,7 @@
 	<div id="caixa_login">
 		<ul>
 			<li> <label for="login1">APELIDO</label> </li>
-			<li> <input id="login1" name="login1" type="text" class="campo_texto" /> </li>
+			<li> <input id="login1" name="login1" type="text" class="campo_texto" autofocus /> </li>
 			<li> <label for="password1">SENHA</label> </li>
 			<li> <input id="password1" name="password1" type="password" class="campo_texto" onkeypress="return captureKeys(event);" /> </li>
 			<li> <a href="#" onclick="abaDireita('senha');">Esqueci minha senha</a> </li>
