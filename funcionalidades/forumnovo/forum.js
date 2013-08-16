@@ -178,7 +178,7 @@ function escondeNovaMensagem(){
 function responder(id){
 	if (document.getElementById('li_resposta_'+id).style.display == "none"){
 		document.getElementById('li_resposta_'+id).style.display = "block";
-		document.getElementById('mensagemRespondida').value = id;
+		mensagemRespondida = id;
 	}else{
 		document.getElementById('li_resposta_'+id).style.display = "none";
 	}
@@ -200,8 +200,9 @@ function enviaMensagem(forumId,id){
 			cancelaResposta(id);
 
 			var novoPost = postDinamico.geraPost(JSON.parse(http.responseText));
+			alert(novoPost);
 
-			document.getElementById("dinamica").appendChild(novoPost);
+			document.getElementById("bloco_mensagens").appendChild(novoPost);
 		}
 	}
 	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

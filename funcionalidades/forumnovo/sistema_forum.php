@@ -54,6 +54,15 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 			$q->solicitar("INSERT INTO ForumMensagem
 				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)");
+
+			if ($q->erro == "") {
+				$this->id = $q->ultimo_id();
+
+				// por favor me perdoem
+				// ps.: se algum dia algum professor de algum colégio reclamar que a timestamp da mensagem postada mudou por 1 segundo eu pago uma cervejada pro nuted todo ~ João - 16/8/13 15:40
+				$q->solicitar("SELECT NOW()");
+				$this->data = $q->resultado['NOW()'];
+			}
 		}
 		
 		if ($q->erro != "") {

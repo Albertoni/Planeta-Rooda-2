@@ -92,6 +92,9 @@ span.data{color:#C60;}
 	border: 1px solid #C60;
 	padding: 5px;
 	margin: 10px;
+
+	text-align: justify;
+	text-justify:newspaper; /* isso pode dar problemas com linguagens asiáticas */
 }
 .citacao .nome{
 	padding-bottom: 5px;
