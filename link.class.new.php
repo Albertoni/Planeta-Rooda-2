@@ -56,6 +56,13 @@ class Link
 	{
 		return $this->autor;
 	}
+	public function getAssoc()
+	{
+		$assoc = array();
+		$assoc['endereco'] = $this->getEndereco();
+		$assoc['autor'] = $this->getAutor();
+		$assoc['id'] = $this->getId();
+	}
 	public function getErros()
 	{
 		return $this->erros;
@@ -138,5 +145,10 @@ class Link
 			}
 		}
 		$this->endereco = $url;
+	}
+	public function setUsuario($usuario) {
+		if (is_object($usuario) && get_class($usuario) === 'Usuario') {
+			$usuario = $usuario->getId();
+		}
 	}
 }

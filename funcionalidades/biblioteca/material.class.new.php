@@ -19,8 +19,7 @@ class Material
 	private $tipo         = "";
 	private $arquivo      = NULL; // guarda o objeto arquivo (se for arquivo)
 	private $link         = NULL; // quarda o objeto link (se for link)
-	private $data         = "";
-	private $hora         = "";
+	private $data         = 0; // Unix timestamp
 	private $erros        = NULL;
 	private $tags         = "";
 	private $aprovado     = false;
@@ -45,7 +44,6 @@ SELECT
 	codUsuario       AS codUsuario,
 	tipoMaterial     AS tipo,
 	data             AS data,
-	hora             AS hora,
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
 FROM BibliotecaMateriais
@@ -65,6 +63,7 @@ SQL
 		elseif($id === false)
 		{
 			$this->novo = true;
+			$this->data = time();
 		}
 		else
 		{
@@ -79,8 +78,7 @@ SQL
 		$this->setTags($assoc['tags']);
 		$this->setUsuario((int) $assoc['codUsuario']);
 		$this->setTipo($assoc['tipo']);
-		$this->setData($assoc['data']);
-		$this->setHora($assoc['hora']);
+		$this->setData((int) $assoc['data']);
 		$this->setCodRecurso((int) $assoc['codRecurso']);
 		$this->setAprovado((bool) $assoc['aprovado']);
 		$this->carregaRecurso();
@@ -129,7 +127,7 @@ SQL
 			$bd = new conexao();
 			$bd->solicitar(
 				"INSERT INTO $tabela_Materiais
-				(codTurma,titulo,autor,tags,codUsuario,tipoMaterial,data,hora,refMaterial,materialAprovado)"
+				(codTurma,titulo,autor,tags,codUsuario,tipoMaterial,data,refMaterial,materialAprovado)"
 			);
 			$this->novo = false;
 		}
@@ -153,7 +151,6 @@ SET codTurma = '$codTurma',
 	codUsuario = '$codUsuario', 
 	tipoMaterial = '$tipoMaterial', 
 	data = '$data', 
-	hora = '$hora', 
 	refMaterial = '$refMaterial', 
 	materialAprovado = $aprovado
 SQL
@@ -171,7 +168,6 @@ SQL
 	public function getArquivo() { return $this->arquivo; }
 	public function getLink() { return $this->link; }
 	public function getData() { return $this->data; }
-	public function getHora() { return $this->hora; }
 	public function getConteudoMaterial() {
 		if ($this->tipo === MATERIAL_ARQUIVO && !$this->novo)
 		{
@@ -271,24 +267,17 @@ SQL
 		{
 			$this->usuario = new Usuario();
 			$this->usuario->openUsuario($usuario);
-			if ($this->usuario->getId() === 0)
-			{
-				$this->usuario = NULL;
-				throw new Exception("Usuário inválido.", 1);
-			}
 			$this->codUsuario = $usuario;
-			return true;
 		}
 		elseif (get_class($usuario) === "Usuario")
 		{
 			$this->usuario = $usuario;
 			$this->codUsuario = $usuario->getId();
-			return true;
 		}
-		else
+		if ($this->usuario === NULL || $this->usuario->getId() === 0)
 		{
-			throw new Exception("Usuario inválido.", 1);
-			return false;
+			$this->usuario = NULL;
+			throw new Exception("Usuário inválido.", 1);
 		}
 	}
 	public function setTipo($tipo)
@@ -302,18 +291,14 @@ SQL
 			throw new Exception("Tipo de recurso inválido.", 1);
 		}
 	}
-	public function setData($data)
+	private function setData($data)
 	{
-		if (is_string($data))
-		{
-			$this->data = trim($data);
+		if (is_string($data)) {
+			$data = strtotime($data);
 		}
-	}
-	public function setHora($hora)
-	{
-		if (is_string($hora))
+		if (is_int($data))
 		{
-			$this->hora = trim($hora);
+			$this->data = $data;
 		}
 	}
 	public function setAprovado($aprovado)
@@ -326,18 +311,30 @@ SQL
 	}
 	public function getAssoc()
 	{
-		$assoc = array(
-			'id' => $this->getId(),
-			'titulo' => $this->getTitulo(),
-			'tipo' => $this->getTipo(),
-			'tags' => $this->getTags(),
-			'aprovado' => (bool) $this->aprovado
-		);
+		$assoc['id']       = $this->getId();
+		$assoc['tipo']     = $this->getTipo();
+		$assoc['titulo']   = $this->getTitulo();
+		$assoc['tags']     = $this->getTags();
+		$assoc['aprovado'] = (bool) $this->aprovado;
+		$assoc['usuario'] = $this->usuario->getSimpleAssoc();
+		$assoc['data'] = $this->data;
+		switch ($assoc['tipo']) {
+			case MATERIAL_ARQUIVO:
+				$assoc['arquivo'] = $this->arquivo->getAssoc();
+				break;
+			case MATERIAL_LINK:
+				$assoc['link'] = $this->link->getAssoc();
+				break;
+		}
+		return $assoc;
 	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
 	public function abrirTurma($parametros)
 	{
 		global $tabela_Materiais;
+		$condicaoSQL = '';
+		$mais_novo = isset($parametros['mais_novo']) ? (int) $parametros['mais_novo'] : 0;
+		$mais_velho = isset($parametros['mais_velho']) ? (int) $parametros['mais_velho'] : 0;
 		$this->novo = false;
 		// permite passar o objeto turma como parâmetro.
 		if (!isset($parametros['turma'])) throw new Exception("Turma não definida", 1);
@@ -352,6 +349,14 @@ SQL
 			throw new Exception('turma inválida', 1);
 			return false;
 		}
+		$turma = $parametros['turma'];
+		if ($mais_novo > 0)
+		{
+			$condicaoSQL = 'AND codMaterial > {$mais_novo}';
+		}
+		elseif ($mais_velho) {
+			$condicaoSQL = 'AND codMaterial < {$mais_velho}';
+		}
 		$this->consulta_turma = new conexao();
 		$this->consulta_turma->solicitar(<<<SQL
 SELECT
@@ -363,12 +368,13 @@ SELECT
 	codUsuario       AS codUsuario,
 	tipoMaterial     AS tipo,
 	data             AS data,
-	hora             AS hora,
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
 FROM BibliotecaMateriais
-WHERE codTurma = {$parametros['turma']}
+{$condicaoSQL}
+WHERE codTurma = {$turma}
 ORDER BY codMaterial DESC
+LIMIT 10
 SQL
 		);
 		// se ocorreu erro, retornar false.
@@ -377,8 +383,12 @@ SQL
 			throw new Exception($this->consulta_turma->erro, 1);
 		}
 		$this->turma_aberta = true;
-		$this->popular($this->consulta_turma->resultado);
-		return true;
+		if ((bool) $this->consulta_turma->resultado)
+		{
+			$this->popular($this->consulta_turma->resultado);
+			return true;
+		}
+		return false;
 	}
 	public function proximo()
 	{

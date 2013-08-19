@@ -110,7 +110,7 @@ if ($material->abrirTurma(array('turma' => $turma))) {
 		echo <<<HTML
 								<li id="material_{$material->getId()}" class="{$classes}">
 									<h2>{$material->getTitulo()}</h2>
-									<small>Enviado por {$usuario->getName()} em {$material->getData()} ({$material->getHora()}).</small>
+									<small>Enviado por {$usuario->getName()} em {$material->getData()}.</small>
 									<p>Autor: {$material->getAutor()}</p>
 									<a href="#{$material->getId()}">abrir material</a>
 								</li>
@@ -188,5 +188,6 @@ HTML;
 		radio_link.style.display = "none";
 		</script>
 		<script type="text/javascript" src="../../jquery.js"></script>
+		<script type="text/javascript" src="biblioteca2.js"></script>
 	</body>
 </html>

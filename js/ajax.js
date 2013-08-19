@@ -139,7 +139,7 @@ var AJAXSubmit = (function () {
  
 })();
 
-var AJAXOpen = function (url,handler) {
+var AJAXOpen = function (url, handler) {
 	var oAjaxReq = new XMLHttpRequest();
 	if (typeof handler === "function") {
 		oAjaxReq.onreadystatechange = handler;
@@ -147,7 +147,26 @@ var AJAXOpen = function (url,handler) {
 	oAjaxReq.open("GET",url);
 	oAjaxReq.send();
 };
-var AJAXGet = AJAXOpen;
+// AJAXGet("http://google.com/", { success: function () { alert("success"); }, fail: function () { alert("fail"); } });
+var AJAXGet = function (url, handlers) {
+  var oAjaxReq = new XMLHttpRequest();
+  oAjaxReq.onreadystatechange = function () {
+    if (this.readyState !== this.DONE) {
+      // requisição em andamento, não fazer nada.
+      return;
+    }
+    if (this.status === 200) {
+      if (typeof handlers.success === 'function')
+      {
+        handlers.sucess.call(this);
+      }
+    } else {
+      if (typeof handlers.fail === 'function') {
+        handlers.fail.call(this);
+      }
+    }
+  }
+};
 
 var AJAXPost = function(url,handler,dataObject) {
   var i, values = [], body = "", oAjaxReq = new XMLHttpRequest();

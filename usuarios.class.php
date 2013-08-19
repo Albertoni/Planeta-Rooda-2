@@ -77,6 +77,13 @@ class Usuario { //estrutura para o item post do blog
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}
 	public function getNaoGosto(){return $this->naoGosto;}
+	public function getSimpleAssoc() {
+		$assoc = array();
+		$assoc['id'] = $this->id;
+		$assoc['usuario'] = $this->user;
+		$assoc['nome'] = $this->name;
+		return $assoc;
+	}
 
 	/**
 	* Popula este usuário com o resultado de uma consulta no BD.

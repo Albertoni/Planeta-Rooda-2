@@ -5,28 +5,38 @@
 require_once('../../cfg.php');
 require_once('../../bd.php');
 require_once('../../funcoes_aux.php');
-require_once('../../user.class.php');
+require_once('../../usuarios.class.php');
 require_once('../../turma.class.php');
 require_once('material.class.new.php');
 header("Content-Type: application/json");
 $usuario = usuario_sessao();
-$json = array();
-if ($usuario === false) {
-	die(json_encode(array('user' => false, 'errors' = array('Você não está logado.'))));
-}
 $turmaId = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
-$acao = isset($_GET['action']) ? (int) $_GET['action'] : "";
-$ultimoId = isset($_GET['ultimo']) ? (int) $_GET['ultimo'] : 0;
-$usuario = new Usuario();
-$usuario->openUsuario($usuario_id);
+$acao = isset($_GET['acao']) ? (int) $_GET['acao'] : "";
+// se as duas variaveis abaixo forem 0, deve mandar os 10 materiais mais novos.
+// se definido o cliente pede por materiais mais novos do que o id nessa variavel
+$mais_novo = isset($_GET['mais_novo']) ? (int) $_GET['mais_novo'] : 0;
+// se definido o cliente pede para carregar materiais mais antigos que o id dessa variavel
+$mais_velho = isset($_GET['mais_velho']) ? (int) $_GET['mais_velho'] : 0;
 $turma = new turma($turmaId);
-function listar($ultimoId = 0) {
+$json['turma'] = $turmaId;
+function listar($mais_novo = 0, $mais_velho = 0) {
 	global $json;
 	global $turmaId;
 	global $usuario;
+	global $mais_velho;
+	global $mais_novo;
+	global $turma;
 	$perm = checa_permissoes(TIPOBIBLIOTECA, $turmaId);
 	if ($perm === false) {
 		$json['errors'][] = "Portfólio desabilitado para esta turma.";
+	}
+
+	$material = new Material();
+	if ($material->abrirTurma(array('turma' => $turmaId, 'mais_velho' => $mais_velho, 'mais_novo' => $mais_novo)));
+	{
+		do {
+			$json['materiais'][] = $material->getAssoc();
+		} while ($material->proximo());
 	}
 	return $json;
 }
@@ -37,7 +47,7 @@ function enviar() {
 	global $_POST;
 	global $_FILE;
 	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
-	$autor = isset($_POST['autor']) ? trim($_POST['autor'] : '';
+	$autor = isset($_POST['autor']) ? trim($_POST['autor']) : '';
 	$tags = isset($_POST['tags']) ? trim($_POST['tags']) : '';
 	if ($titulo === '') {
 		$json['erros'][] = "Não pode enviar material sem título";
@@ -45,7 +55,6 @@ function enviar() {
 
 	if (isset($_POST['tipo'])) switch ($_POST['tipo']) {
 		case 'a':
-			# code...
 			break;
 		case 'l':
 		default:
@@ -53,13 +62,13 @@ function enviar() {
 			break;
 	}
 }
-if (!$usuario_id) {
+if ($usuario === false) {
 	$json['session'] = false;
 } else {
 	$json['session'] = true;
 	switch ($acao) {
 		case 'listar':
-			listar($ultimoId);
+			listar($mais_novo, $mais_velho);
 			break;
 		case 'enviar':
 			enviar();

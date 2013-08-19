@@ -24,6 +24,7 @@ class Arquivo
 		$id = (int) $id;
 		if ($id === false)
 		{
+			$this->data = date('Y-m-d');
 			$upload = true;
 		}
 		else
@@ -100,6 +101,16 @@ class Arquivo
 	public function temErros()
 	{
 		return (0 !== count($this->erros));
+	}
+	public function getAssoc() {
+		$assoc = array();
+		$assoc['id'] = $this->getId();
+		$assoc['titulo'] = $this->getTitulo();
+		$assoc['nome'] = $this->getNome();
+		$assoc['tipo'] = $this->getTipo();
+		$assoc['tamanho'] = $this->getTamanho();
+		$assoc['tags'] = $this->getTags();
+		return $assoc;
 	}
 	// METODOS RELACIONSADOS A UPLOAD
 	public function salvar()
