@@ -7,6 +7,7 @@
 	session_start();
 	
 	require_once("../../reguaNavegacao.class.php");
+	require_once("sistema_forum.php");
 	
 	$user=$_SESSION['user'];
 	
@@ -15,14 +16,14 @@
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
 	if($user->podeAcessar($perm['forum_criarTopico'], $turma)){
-		$topico = (isset($_GET['tid']) and is_numeric($_GET['tid'])) ? $_GET['tid']:'-1'; // TID = TÓPICO ID
-		$editar = ($topico != '-1');
+		$topicoId = (isset($_GET['tid']) and is_numeric($_GET['tid'])) ? $_GET['tid']:'-1'; // TID = TÓPICO ID
+		$editar = ($topicoId != '-1');
 		$titulo = '';
 		$texto = '';
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
-				$topico = new topico($topico);
+				$topico = new topico($topicoId);
 				$idTurma = $topico->getIdTurma();
 				$idUsuario = $topico->getIdUsuario();
 				$titulo = $topico->getTitulo();

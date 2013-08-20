@@ -91,12 +91,19 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	}
 
 	function toJson(){
+		global $user; global $permissoes; global $turma;
+
+		$podeEditar = $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
+		$podeDeletar = $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
+
 		$arr = array(
 			'idPost' => $this->id,
 			'idUsuario' => $this->idUsuario,
 			'nomeUsuario' => $this->nomeUsuario,
 			'texto' => $this->texto,
-			'data' => $this->data
+			'data' => $this->data,
+			'podeEditar' => $podeEditar,
+			'podeDeletar' => $podeDeletar
 			);
 
 		if($this->idMensagemRespondida != NULL){
@@ -195,7 +202,7 @@ function setMensagem($indice, $mensagem){
 
 			$q->solicitar("SELECT * FROM ForumMensagem
 							INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
-							 WHERE idTopico = $this->idTopico
+							 WHERE idTopico = $idSafe
 							 ORDER BY idMensagem");
 			if($q->erro == ""){
 				$this->mensagens = array();
@@ -208,7 +215,7 @@ function setMensagem($indice, $mensagem){
 					$q->proximo();
 				}
 			}else{
-				die("Erro na loadTopico do topico");
+				die("Erro na loadTopico do topico - ".$q->erro);
 			}
 		}
 	}

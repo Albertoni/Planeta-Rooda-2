@@ -7,7 +7,6 @@ require_once("../../usuarios.class.php");
 session_start();
 
 require_once("sistema_forum.php");
-require_once("visualizacao_forum.php");
 
 $user=$_SESSION['user'];
 

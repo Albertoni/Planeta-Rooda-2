@@ -238,8 +238,8 @@ var postDinamico = {
 				<p class=\"data\"><span class=\"data\">"+post.data[0]+"</span> às <span class=\"data\">"+post.data[1]+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
-					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editar("+post.turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
-					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir("+post.turma+","+post.idPost+",deltipo)\" "+ (post.podeDeletar ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editarMensagem("+turma+","+post.idPost+")\" "+ (post.podeEditar ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirMensagem("+turma+","+post.idPost+",deltipo)\" "+ (post.podeDeletar ? "" : "style=\"display:none\"") +"/>\
 				</div>\
 			</li>\
 			<li>\
