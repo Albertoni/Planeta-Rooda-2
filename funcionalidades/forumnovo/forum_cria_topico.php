@@ -11,24 +11,27 @@
 	
 	$user=$_SESSION['user'];
 	
-	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma']))?$_GET['turma']:die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
+	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
 	
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
 	if($user->podeAcessar($perm['forum_criarTopico'], $turma)){
-		$topicoId = (isset($_GET['tid']) and is_numeric($_GET['tid'])) ? $_GET['tid']:'-1'; // TID = TÓPICO ID
-		$editar = ($topicoId != '-1');
+		$mensagemId =  (isset($_GET['idMensagem']) and is_numeric($_GET['idMensagem'])) ? $_GET['idMensagem']:'-1';
+		$editar = ($mensagemId != '-1');
 		$titulo = '';
 		$texto = '';
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
-				$topico = new topico($topicoId);
+				$mensagem = new mensagem($mensagemId);
+				$textoHTML = $mensagem->getTexto();
+				$idMensagem = $mensagem->getId();
+				$idTopico = $mensagem->getIdTopico();
+
+				$topico = new topico($idTopico);
 				$idTurma = $topico->getIdTurma();
 				$idUsuario = $topico->getIdUsuario();
 				$titulo = $topico->getTitulo();
-				$textoHTML = $topico->getMensagens()[0]->getTexto();
-				$idMensagem = $topico->getMensagens()[0]->getId();
 				$texto = str_replace("<br>", "\n", $textoHTML);
 			}else{
 				die("Voce nao tem permissao para editar topicos.");
@@ -83,7 +86,7 @@
 				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
 				<div id="rel"><p id="balao">
 <?php
-if (isset($_GET['tid'])) // Editando
+if (isset($_GET['idMensagem'])) // Editando
 	echo "Nesse espaço, você pode editar o título e/ou a mensagem do tópico escolhido.";
 else // senão, tá criando.
 	echo "Para criar um tópico de discussão, basta preencher o título do mesmo e a mensagem, que explica o assunto que será debatido.";
@@ -130,7 +133,7 @@ else // senão, tá criando.
 					<textarea name="texto" rows="15" class="msg_dimensao"><?php echo $texto?></textarea>
 				</li>
 			</ul>
-			<?= $topico != -1 ? "<input type=\"hidden\" name=\"idTopico\" value=\"$topico\">" : "" ?>
+			<?= $idTopico != -1 ? "<input type=\"hidden\" name=\"idTopico\" value=\"$idTopico\">" : "" ?>
 			<input type="hidden" name="idTurma" value="<?php echo $turma?>" />
 <?php
 	if($editar){

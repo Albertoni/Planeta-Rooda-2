@@ -117,8 +117,8 @@ function excluir(fid,tid,dtipo){
 	}
 }
 
-function editar(fid,tid){
-	document.location = "forum_cria_topico.php?turma="+fid+"&tid="+tid;
+function editarMensagem(fid,mid){
+	document.location = "forum_cria_topico.php?turma="+fid+"&idMensagem="+mid;
 }
 
 function colore(elemento){

@@ -7,11 +7,11 @@
 
 
 class mensagem { //estrutura para o item post do forum, chamado de mensagem
-	private $id = 0;
-	private $idTopico = 0;
+	private $id = 0; function getId(){return $this->id;}
+	private $idTopico = 0; function getIdTopico(){return $this->idTopico;}
 	private $idUsuario = 0;
 	private $idMensagemRespondida = 0;
-	private $texto = '';
+	private $texto = ''; function getTexto(){return $this->texto;}
 	private $data = 0;
 	private $salvo = false;
 	private $nomeUsuario = '';
@@ -98,6 +98,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 		$arr = array(
 			'idPost' => $this->id,
+			'idTopico' => $this->idTopico,
 			'idUsuario' => $this->idUsuario,
 			'nomeUsuario' => $this->nomeUsuario,
 			'texto' => $this->texto,
