@@ -29,7 +29,10 @@ Array.prototype.forEach.call(document.getElementsByTagName("input"), function (i
         // adiciona placeholder ao label
         label.appendChild(filesSpan);
         // esconde o 'file input' e adiciona ele ao label.
-        input.hidden = true;
+        input.hidden = false;
+        label.style.position = "relative";
+        input.style.position = "fixed";
+        input.style.opacity = '0';
         label.appendChild(input);
     }
 });

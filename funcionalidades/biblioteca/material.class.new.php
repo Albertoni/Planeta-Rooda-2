@@ -56,7 +56,6 @@ SQL
 			}
 			elseif ($bd->erro !== '')
 			{
-				echo $bd->erro;
 				$this->erros[] = $bd->erro;
 			}
 		}
@@ -72,11 +71,11 @@ SQL
 	}
 	private function popular($assoc) {
 		$this->setId($assoc['id']);
+		$this->setUsuario((int) $assoc['codUsuario']);
 		$this->setTurma((int) $assoc['codTurma']);
 		$this->setTitulo($assoc['titulo']);
 		$this->setAutor($assoc['autor']);
 		$this->setTags($assoc['tags']);
-		$this->setUsuario((int) $assoc['codUsuario']);
 		$this->setTipo($assoc['tipo']);
 		$this->setData((int) $assoc['data']);
 		$this->setCodRecurso((int) $assoc['codRecurso']);
@@ -332,29 +331,30 @@ SQL
 	public function abrirTurma($parametros)
 	{
 		global $tabela_Materiais;
+		$mais_novo = 0;
+		$mais_velho = 0;
+		$turma = 0;
 		$condicaoSQL = '';
-		$mais_novo = isset($parametros['mais_novo']) ? (int) $parametros['mais_novo'] : 0;
-		$mais_velho = isset($parametros['mais_velho']) ? (int) $parametros['mais_velho'] : 0;
-		$this->novo = false;
+		if (is_array($parametros)) {
+			$mais_novo = isset($parametros['mais_novo']) ? (int) $parametros['mais_novo'] : 0;
+			$mais_velho = isset($parametros['mais_velho']) ? (int) $parametros['mais_velho'] : 0;
+			$turma = isset($parametros['turma']) ? $parametros['turma'] : 0;
+		} else {
+			$turma = $parametros;
+		}
+		if (is_object($turma) && get_class($turma) === 'turma') {
+			$turma = $turma->getId();
+		}
+		$turma = is_numeric($turma) ? (int) $turma : 0;
 		// permite passar o objeto turma como parâmetro.
-		if (!isset($parametros['turma'])) throw new Exception("Turma não definida", 1);
-		
-		if (is_object($parametros['turma']) && get_class($parametros['turma']) === "turma")
-		{
-			// pega o id do objeto turma
-			$parametros['turma'] = $parametros['turma']->getId();
-		}
-		// neste ponto, a turma precisa ser o id da turma.
-		if (!is_integer($parametros['turma'])) {
-			throw new Exception('turma inválida', 1);
-			return false;
-		}
+		if ($turma <= 0) throw new Exception("Turma não definida", 1);
+		$this->novo = false;
 		$turma = $parametros['turma'];
 		if ($mais_novo > 0)
 		{
 			$condicaoSQL = 'AND codMaterial > {$mais_novo}';
 		}
-		elseif ($mais_velho) {
+		elseif ($mais_velho > 0) {
 			$condicaoSQL = 'AND codMaterial < {$mais_velho}';
 		}
 		$this->consulta_turma = new conexao();

@@ -147,6 +147,7 @@ var AJAXOpen = function (url, handler) {
 	oAjaxReq.open("GET",url);
 	oAjaxReq.send();
 };
+
 // AJAXGet("http://google.com/", { success: function () { alert("success"); }, fail: function () { alert("fail"); } });
 var AJAXGet = function (url, handlers) {
   var oAjaxReq = new XMLHttpRequest();
@@ -158,7 +159,7 @@ var AJAXGet = function (url, handlers) {
     if (this.status === 200) {
       if (typeof handlers.success === 'function')
       {
-        handlers.sucess.call(this);
+        handlers.success.call(this);
       }
     } else {
       if (typeof handlers.fail === 'function') {
@@ -166,6 +167,8 @@ var AJAXGet = function (url, handlers) {
       }
     }
   }
+  oAjaxReq.open("GET",url);
+  oAjaxReq.send();
 };
 
 var AJAXPost = function(url,handler,dataObject) {
