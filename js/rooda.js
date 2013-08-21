@@ -5,8 +5,15 @@ var ROODA = {};
  *    All the dom related functions are here.
  */
 ROODA.dom = {};
-
-
+ROODA.dom.simulateClick =  function (node) {
+    var clickevent = new MouseEvent('click', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+    });
+    // returna falso se o evento foi cancelado
+    return node.dispatchEvent(clickevent);
+};
 /*
  * ROODA.dom.walkTheDom(node,func)
  * Desc: 
@@ -15,7 +22,7 @@ ROODA.dom = {};
  *    node: DOM node
  *    func: function that will be called passing node and all its children.
  */
-ROODA.dom.walkTheDOM = function(node, fun) {
+ROODA.dom.walkTheDOM = function (node, fun) {
     'use strict';
     fun(node);
     node = node.firstChild;
@@ -32,7 +39,7 @@ ROODA.dom.walkTheDOM = function(node, fun) {
  *    Remove all handlers from a node and all its children
  *    and detach it from the document (if attached).
  */
-ROODA.dom.purgeElement = function(node) {
+ROODA.dom.purgeElement = function (node) {
     'use strict';
     ROODA.dom.walkTheDOM(node, function (e) {
         var i, l;

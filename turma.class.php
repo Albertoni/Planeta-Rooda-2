@@ -52,7 +52,7 @@ class turma{
 	public function getIdProfessorResponsavel(){return $this->idProfessorResponsavel;}
 	public function getDescricao(){return $this->descricao;}
 	
-	private function setId		($id)	{ $this->id = $id; }
+	private function setId		($id)	{ $this->id = (int) $id; }
 	private function setNome		($nome)	{ $this->nome = $nome; }
 	private function setDescricao	($desc)	{ $this->descricao = $desc; }
 	private function setIdProfessorResponsavel($idProfessorResponsavel){ $this->idProfessorResponsavel = $idProfessorResponsavel; }
@@ -127,7 +127,7 @@ class turma{
 			 WHERE codTurma=$id_param"
 		);
 		if ($conexao->resultado) {
-			$this->setId($id_param);
+			$this->setId((int) $id_param);
 			$this->setNome($conexao->resultado['nomeTurma']);
 			$this->setIdProfessorResponsavel($conexao->resultado['profResponsavel']);
 			$this->setDescricao($conexao->resultado['descricao']);

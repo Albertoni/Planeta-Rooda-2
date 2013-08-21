@@ -29,6 +29,10 @@ if (!$usuario) { die("voce nao esta logado"); }
 			</div>
 		</div>
 		<div id="geral">
+
+			<noscript>
+				<p>O seu javascript está desabilitado, essa pagina depende de javascript para funcionar corretamente.</p>
+			</noscript>
 			<!-- **************************
 						cabecalho
 			***************************** -->
@@ -57,7 +61,7 @@ if (!$usuario) { die("voce nao esta logado"); }
 					<div class="bloco" id="enviar_material">
 						<h1>ENVIAR MATERIAL</h1>
 						<div>
-						<form id="form_envio_material">
+						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
 							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
 							<br>
@@ -72,7 +76,7 @@ if (!$usuario) { die("voce nao esta logado"); }
 								</label>
 							</div>
 							<label>Título:<br>
-								<input type="text" name="titulo" id="material_titulo" />
+								<input type="text" name="titulo" id="material_titulo" required />
 							</label><br>
 							<label>Autor:<br>
 								<input type="text" name="autor" id="material_autor" />
@@ -80,7 +84,7 @@ if (!$usuario) { die("voce nao esta logado"); }
 							<label>Palavras do Material:<br>
 								<input type="text" name="tags" id="material_tags" />
 							</label><br>
-							<button id="bota_enviar_material" type="button" class="submit">Enviar</button>
+							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
 					</form>
 						</div>
 					</div>
@@ -162,8 +166,6 @@ HTML;
 		}());
 
 
-
-
 		var label_radio_arquivo = document.getElementById("label_arquivo");
 		var radio_arquivo = label_radio_arquivo.control;
 		var label_radio_link = document.getElementById("label_link");
@@ -171,16 +173,25 @@ HTML;
 		var label_material_arquivo = document.getElementById("label_material_arquivo");
 		var label_material_link = document.getElementById("label_material_link");
 		radio_arquivo.onchange = function () {
+			var changeEvent = new Event('change');
 			label_material_arquivo.style.display = "none";
 			label_material_link.style.display = "none";
+			label_material_arquivo.control.required = false;
+			label_material_link.control.required = false;
 			if (radio_arquivo.checked) {
 				label_radio_arquivo.classList.add('checked');
 				label_link.classList.remove('checked');
 				label_material_arquivo.style.display = "inline-block";
+				label_material_arquivo.control.required = true;
+				label_material_link.control.value = "";
+				label_material_link.control.dispatchEvent(changeEvent);
 			} else {
 				label_radio_arquivo.classList.remove('checked');
 				label_radio_link.classList.add('checked');
 				label_material_link.style.display = "inline-block";
+				label_material_link.control.required = true;
+				label_material_arquivo.control.value = "";
+				label_material_arquivo.control.dispatchEvent(changeEvent);
 			}
 		}
 		radio_link.onchange = radio_arquivo.onchange;
