@@ -20,7 +20,14 @@ float:left; margin-right:15px; display:table-cell}
 #bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
 #bloco_mensagens ul { margin:22px}
 
-.info { float:left; width:60%; display:table-cell; margin-top:10px; border-bottom: 1px solid #888888; padding-bottom:10px;}
+.info {
+	float:left;
+	width:100%;
+	display:table-cell;
+	margin-top:10px;
+	border-bottom: 1px solid #888888;
+	padding-bottom:10px;
+}
 .nome {float:left;}
 p.data {float:right;}
 span.data{color:#C60;}
@@ -90,16 +97,13 @@ span.data{color:#C60;}
 
 .citacao{
 	border: 1px solid #C60;
-	padding: 5px;
-	margin: 10px;
+	border-radius: 1em;
+	padding: 3px;
+	margin: 5px;
 
 	text-align: justify;
 	text-justify:newspaper; /* isso pode dar problemas com linguagens asiáticas */
-}
-.citacao .nome{
-	padding-bottom: 5px;
-	width: 100%;
-	border-bottom: 2px dashed #C60;
+	display: inline-block;
 }
 
 #resultado_pesquisa {width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}

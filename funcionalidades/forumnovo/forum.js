@@ -218,11 +218,10 @@ var postDinamico = {
 		post.data = post.data.split(' ');
 
 		if(post.mensagemRespondida != undefined){
+			post.mensagemRespondida.data = post.mensagemRespondida.data.split(' ');
+
 			var textoPost = "<div class=\"limite_resposta\">\
-					<blockquote class=\"citacao\">\
-					<cite class=\"nome\">"+post.mensagemRespondida.nomeUsuario+" disse:</cite>\
-					"+post.mensagemRespondida.texto+"\
-					</blockquote>\
+					<cite class=\"citacao\">Em resposta à mensagem de "+post.mensagemRespondida.nomeUsuario+", de "+post.mensagemRespondida.data[0]+" às "+post.mensagemRespondida.data[1]+":</cite>\
 					<p class=\"texto_resposta\">"+post.texto+"</p>\
 				</div>";
 		}else{
@@ -247,7 +246,7 @@ var postDinamico = {
 				"+textoPost
 				+"</li>\
 			<li>\
-				<div class=\"bts_msg\" align=\"right\">\
+				<div align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\
 				</div>\
 			</li>\
