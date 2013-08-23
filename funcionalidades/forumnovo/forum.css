@@ -1,8 +1,8 @@
 #topicos { width:100%; float:left; margin-bottom:12px; margin-top:12px}
 
-.esq { display:table-cell; float:left; width:40%; padding:20px}
+.esq { display:table-cell; float:left; width:40%; padding:10px}
 
-.dir { display:table-cell; float:right; width:47%; padding:20px}
+.dir { display:table-cell; float:right; width:47%; padding:10px}
 .dir a { text-decoration:none}
 .dir input { margin-left:10px}
 
@@ -10,9 +10,9 @@
 float:left; margin-right:15px; display:table-cell}
 .texto_resposta { display:table-cell; width:80%}
 
-.mensagens {margin-top:37px}
+.mensagens {margin-top:5px}
 
-.criado_por { color:#999999; font-size:11px; margin-top:15px; margin-bottom:15px}
+.criado_por {color:#999999; margin-top:10px;}
 
 .nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
 
@@ -107,3 +107,22 @@ span.data{color:#C60;}
 }
 
 #resultado_pesquisa {width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+
+#dinamica li {
+	list-style: none;
+}
+
+#dinamica .alterna:nth-child(2n){
+	background-color:#DEE5E5;
+}
+
+#dinamica .alterna:last-child{
+	border-bottom: 0px solid black;
+}
+
+.alterna{
+	background-color:#EEF5F5;
+	display: table;
+	width: 100%;
+	border-bottom: 1px solid black;
+}

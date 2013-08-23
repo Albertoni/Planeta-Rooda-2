@@ -191,7 +191,9 @@ function setMensagem($indice, $mensagem){
 	function loadTopico($id){
 		$q = new conexao();
 		$idSafe = $q->sanitizaString($id);
-		$q->solicitar("SELECT * FROM ForumTopico WHERE idTopico = $idSafe");
+		$q->solicitar("SELECT * FROM ForumTopico
+						INNER JOIN usuarios ON usuarios.usuario_id = ForumTopico.idUsuario
+						WHERE idTopico = $idSafe");
 
 		if($q->erro == ""){
 			$this->idTopico	= $q->resultado['idTopico'];
@@ -199,6 +201,7 @@ function setMensagem($indice, $mensagem){
 			$this->idUsuario= $q->resultado['idUsuario'];
 			$this->titulo	= $q->resultado['titulo'];
 			$this->date		= $q->resultado['data'];
+			$this->nomeUsuario = $q->resultado['usuario_nome'];
 			$this->salvo	= true;
 
 			$q->solicitar("SELECT * FROM ForumMensagem
@@ -309,18 +312,11 @@ class forum {
 		if(empty($this->listaTopicos)){
 			$idTurma = $this->idTurma;
 			$q = new conexao();
-			$q->solicitar("SELECT idTopico, usuario_nome FROM 
-				ForumTopico JOIN usuarios ON ForumTopico.idUsuario = usuarios.usuario_id 
-				WHERE idTurma = $idTurma");
+			$q->solicitar("SELECT idTopico FROM ForumTopico WHERE idTurma = $idTurma");
 
 			$this->numTopicos = $q->registros;
 			for($i=0; $i < ($q->registros); $i+=1){
 				$idTopico = $q->resultado['idTopico'];
-				/*$idTurma = $q->resultado['idTurma'];
-				$idUsuario = $q->resultado['idUsuario'];
-				$titulo = $q->resultado['titulo'];
-				$date = $q->resultado['data'];*/
-				$nomeUsuario = $q->resultado['usuario_nome'];
 
 				$topicoLoop = new topico($idTopico);
 				$this->listaTopicos[] = $topicoLoop; // appends
@@ -351,34 +347,25 @@ class visualizacaoForum extends forum{
 				$idTopico = $topico->getIdTopico();
 				$idTurma = $topico->getIdTurma();
 				$idUsuario = $topico->getIdUsuario();
-				$date = $topico->getDate();
 				$titulo = $topico->getTitulo();
 				$nomeUsuario = $topico->getNomeUsuario();
+				$data = explode(' ', $topico->getDate());
 				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
 
 				echo "
-<span><div class=\"cor1\" id=\"t$idTopico\">
+<div class=\"alterna\" id=\"t$idTopico\">
 	<div class=\"esq\">
-	<div class=\"imagem\"><img src=\"img_output.php?id=$idUsuario\"></div>
-
-	<ul>
 		<li><a href=\"$link\" id=\"ta$idTopico\">$titulo</a></li>
 		<li class=\"mensagens\">".$topico->getPrintableMessageNumber()."</li>
-		</ul>
-		</div>
+	</div>
 		<div class=\"dir\">
 		<ul>
-		<li>
-		<div class=\"limite_topico\">
-		<div style=\"height:70px; overflow:hidden;\"><a href=\"$link\" id=\"tm518\">$titulo</a></div>
-		</div>
-		</li>
-		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">$nomeUsuario</span> em <span style=\"color:#C60;\">29/4/2013</span> às <span style=\"color:#C60;\">$date</span></li>
+		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">$nomeUsuario</span> em <span style=\"color:#C60;\">$data[0]</span> às <span style=\"color:#C60;\">$data[1]</span></li>
 		<li><div align=\"right\" class=\"enviar\">
 		</div></li>
 	</ul>
 	</div>
-</div></span>
+</div>
 ";
 			}
 		}
