@@ -29,15 +29,16 @@ $userId = $_SESSION['SS_usuario_id'];
 if($user->podeAcessar($permissoes[$acaoSendoEfetuada], $turma)){
 	if(!$editar){ // CRIAÇÃO
 		$topico = new topico(NULL, $turma, $userId, $titulo);
+		$topico->salvar();
 		$topico->insereMensagem($conteudo);
 	}else{ // EDIÇÃO
 		$topico = new topico($idTopico);
 
 		$topico->setTitulo($titulo);
 		$topico->setMensagem(0, $conteudo);
+		$topico->salvar();
 	}
 
-	$erro = $topico->salvar();
 	if($idTopico == NULL){//criando
 		magic_redirect("forum.php?turma=$turma");
 	}else{//

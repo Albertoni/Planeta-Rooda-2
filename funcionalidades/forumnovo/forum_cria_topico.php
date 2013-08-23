@@ -10,6 +10,8 @@
 	require_once("sistema_forum.php");
 	
 	$user=$_SESSION['user'];
+
+	$idTopico = -1;
 	
 	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
 	

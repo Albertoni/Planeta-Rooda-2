@@ -17,7 +17,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $nomeUsuario = '';
 	
 	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
-		if($idTopico === NULL){
+		if($id !== NULL){
 			$this->carregar($id);
 		}else{
 			$this->idTopico = $idTopico;
@@ -52,8 +52,10 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 
 			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
 
-			$q->solicitar("INSERT INTO ForumMensagem
-				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)");
+			$query = "INSERT INTO ForumMensagem
+				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)";
+
+			$q->solicitar($query);
 
 			if ($q->erro == "") {
 				$this->id = $q->ultimo_id();
@@ -66,7 +68,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 		
 		if ($q->erro != "") {
-			die("Erro na salvar da mensagem1");
+			die("Erro na salvar da mensagem1 -- $query");
 		}
 	}
 
@@ -78,15 +80,14 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		
 		$q->solicitar("SELECT * FROM ForumMensagem
 						INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
-						WHERE idMensagem = $idSafe
-						ORDER BY idMensagem");
+						WHERE idMensagem = $idSafe");
 
 		if($q->erro == ""){
 			$this->loadFromSqlArray($q->resultado);
 
 			$this->salvo = true;
 		}else{
-			die("Erro na 'carregar' da mensagem");
+			die("Erro na 'carregar' da mensagem -$idSafe- $q->erro");
 		}
 	}
 
@@ -241,7 +242,7 @@ function setMensagem($indice, $mensagem){
 			$q->solicitar("INSERT INTO ForumTopico
 				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
 
-			$this->idTopico = ($q->erro != "") ? $q->ultimo_id : NULL;
+			$this->idTopico = ($q->erro == "") ? $q->ultimo_id() : NULL;
 		}
 
 		if($q->erro != ""){
@@ -261,7 +262,9 @@ function setMensagem($indice, $mensagem){
 	}
 
 	function insereMensagem($texto){
-		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, NULL, NULL);
+		print_r($this);
+
+		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, -1);
 		$mensagem->salvar();
 	}
 }
