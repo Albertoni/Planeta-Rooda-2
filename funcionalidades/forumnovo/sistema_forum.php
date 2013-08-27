@@ -262,8 +262,6 @@ function setMensagem($indice, $mensagem){
 	}
 
 	function insereMensagem($texto){
-		print_r($this);
-
 		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, -1);
 		$mensagem->salvar();
 	}
@@ -315,7 +313,7 @@ class forum {
 		if(empty($this->listaTopicos)){
 			$idTurma = $this->idTurma;
 			$q = new conexao();
-			$q->solicitar("SELECT idTopico FROM ForumTopico WHERE idTurma = $idTurma");
+			$q->solicitar("SELECT idTopico FROM ForumTopico WHERE idTurma = $idTurma ORDER BY data DESC");
 
 			$this->numTopicos = $q->registros;
 			for($i=0; $i < ($q->registros); $i+=1){
@@ -337,7 +335,7 @@ class forum {
 
 class visualizacaoForum extends forum{
 
-	function imprimeTopicos(){
+	function imprimeTopicos($user, $permissoes){
 
 		$this->carregaTopicos();
 
@@ -355,6 +353,21 @@ class visualizacaoForum extends forum{
 				$data = explode(' ', $topico->getDate());
 				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
 
+				$acoesPermitidas = "";
+				if($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma) or $user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)){
+					$acoesPermitidas .= "<div class=\"enviar\" align=\"right\">";
+
+					if ($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma)) {
+						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_editar.png\" onclick=\"editar(1081,518)\"/>";
+					}
+
+					if ($user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)) {
+						$acoesPermitidas .= "<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir(1081,518,deltipo)\"/>";
+					}
+
+					$acoesPermitidas .= "</div></li>";
+				}
+
 				echo "
 <div class=\"alterna\" id=\"t$idTopico\">
 	<div class=\"esq\">
@@ -364,8 +377,7 @@ class visualizacaoForum extends forum{
 		<div class=\"dir\">
 		<ul>
 		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">$nomeUsuario</span> em <span style=\"color:#C60;\">$data[0]</span> às <span style=\"color:#C60;\">$data[1]</span></li>
-		<li><div align=\"right\" class=\"enviar\">
-		</div></li>
+		$acoesPermitidas
 	</ul>
 	</div>
 </div>

@@ -107,7 +107,7 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 <?php
 		$forum->imprimeNumTopicos();
 
-		$forum->imprimeTopicos();
+		$forum->imprimeTopicos($user, $permissoes);
 ?>
 	
 	</div>

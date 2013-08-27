@@ -78,9 +78,6 @@
 	
 	<div class="bts_cima">
 	<a href="<?php echo $link_voltar; ?>"><img src="../../images/botoes/bt_voltar.png"/></a>
-<?php if ($user->podeAcessar($permissoes['forum_responderTopico'], $turma)){
-	echo "<button id=\"responder_topico\" class=\"botao_transparente\"><img src=\"../../images/botoes/bt_responder.png\"> </button>";
-} ?>
 	</div>
 	
 	<div id="li_resposta_-1" class="bloco nova_mensagem">
