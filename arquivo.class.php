@@ -8,7 +8,7 @@ class Arquivo
 	private $idUploader;
 
 	private $titulo = "";
-	private $nome;      // nome do arquivo. Deve conter a extensao também
+	private $nome = '';      // nome do arquivo. Deve conter a extensao também
 	private $tipo = ""; // mime-type
 	private $tamanho;
 	private $conteudo;
@@ -21,14 +21,15 @@ class Arquivo
 	public function __construct($id = false)
 	{
 		global $tabela_arquivos;
-		$id = (int) $id;
 		if ($id === false)
 		{
+			print "novo";
 			$this->data = date('Y-m-d');
-			$upload = true;
+			$this->upload = true;
 		}
 		else
 		{
+			$id = (int) $id;
 			$bd = new conexao();
 			$bd->solicitar(
 				"SELECT
@@ -57,7 +58,9 @@ class Arquivo
 			}
 			else
 			{
-				$this->erros[] = "Arquivo n&atilde;o encontrado";
+				$this->erros[] = "[arquivo] Arquivo n&atilde;o encontrado";
+				if ($bd->registros > 1)
+					$this->erros[] = "[arquivo] Vários arquivos encontrados";
 			}
 		}
 	}
@@ -116,6 +119,10 @@ class Arquivo
 	public function salvar()
 	{
 		global $tabela_arquivos;
+		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUploader) {
+			$this->errors[] = '[arquivo] Arquivo não pode ser enviado.';
+			return false;
+		}
 		// NOVO ARQUIVO
 		if ($this->upload && !$this->download)
 		{
@@ -145,7 +152,7 @@ class Arquivo
 			);
 			if ($bd->erro !== "")
 			{
-				$this->erros[] = "BD: {$bd->erro}";
+				$this->erros[] = "[arquivo] BD: {$bd->erro}";
 			}
 			else
 			{
@@ -197,7 +204,7 @@ class Arquivo
 		}
 		else
 		{
-			$this->erros[] = "Este arquivo não pode ser enviado";
+			$this->erros[] = "[arquivo] Este arquivo não pode ser enviado";
 			return false;
 		}
 	}
@@ -209,7 +216,7 @@ class Arquivo
 		$id = (int) $id;
 		if ($id === 0)
 		{
-			$this->erros[] = "Id inválido (nulo)";
+			$this->erros[] = "[arquivo] Id inválido (nulo)";
 		}
 		else
 		{
@@ -217,26 +224,28 @@ class Arquivo
 		}
 		return $this;
 	}
+	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name'])
 		{
-			$this->erros[] = "Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
+			$this->erros[] = "[arquivo] Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
 		}
 		if(!filesize($FILE['tmp_name']))
 		{
-			$this->erros[] = "Arquivo vazio ou inválido.";
+			$this->erros[] = "[arquivo] Arquivo vazio ou inválido.";
 		}
 		else
 		{
-			$this->tamanho = $FILE['size'];
+			$this->tamanho = (int) $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
-			$this->conteudo = fread($arquivo, filesize($FILE['tmp_name']));
+			$this->setConteudo(fread($arquivo, filesize($FILE['tmp_name'])));
 			$this->setNome($FILE['name']);
 			$this->setTipo($FILE['type']);
 			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
 		}
 		return $this;
 	}
+	// ex: $arquivo->setConteudo($blob);
 	public function setConteudo($conteudo)
 	{
 		$this->conteudo = $conteudo;

@@ -55,11 +55,11 @@ if (!$usuario) { die("voce nao esta logado"); }
 				<div id="conteudo">
 					<div class="bloco" id="materiais">
 						<h1>NOME DA TURMA</h1>
-						<button type="button" id="botao_enviar_material">Enviar material</button>
+						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
-					<div class="bloco" id="enviar_material">
-						<h1>ENVIAR MATERIAL</h1>
+					<div class="bloco" id="enviar_material" style="display: none;">
+						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
 						<div>
 						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
@@ -68,11 +68,11 @@ if (!$usuario) { die("voce nao esta logado"); }
 							<div class="material_recurso">
 								<label class="file_label" style="display:none" id="label_material_arquivo">
 									<span class="text">Selecionar arquivo:</span><br>
-									<input type="file" name="arquivo" id="material_arquivo"/>
+									<input type="file" name="arquivo" id="material_arquivo" />
 								</label>
 								<label class="link_label" style="display:none" id="label_material_link">
 									<span class="text">Link:</span>
-									<input type="text" name="link" id="material_link" />
+									<input type="text" name="link" id="material_link" required />
 								</label>
 							</div>
 							<label>Título:<br>
@@ -91,45 +91,7 @@ if (!$usuario) { die("voce nao esta logado"); }
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
-<?php
-$material = new Material();
-if ($material->abrirTurma(array('turma' => $turma))) {
-	do {
-	//	print_r($material);
-		switch ($material->getTipo())
-		{
-			case MATERIAL_ARQUIVO:
-				$arquivo = $material->getArquivo();
-				$usuario = $material->getUsuario();
-				$classes = explode("/",$arquivo->getTipo());
-				$classes[] = 'arquivo';
-				$classes = implode(' ', $classes);
-				break;
-			case MATERIAL_LINK;
-				$link = $material->getLink();
-				$classes = 'link';
-				break;
-		}
-
-		echo <<<HTML
-								<li id="material_{$material->getId()}" class="{$classes}">
-									<h2>{$material->getTitulo()}</h2>
-									<small>Enviado por {$usuario->getName()} em {$material->getData()}.</small>
-									<p>Autor: {$material->getAutor()}</p>
-									<a href="#{$material->getId()}">abrir material</a>
-								</li>
-HTML;
-	} while ($material->proximo());
-} 
-
-?>
-
-							<li class="%classes%">
-								<h2>%titulo%</h2>
-								<small>Enviado por %usuario% em %data% (%hora%).</small>
-								<p>Autor: %autor%</p>
-								<a href="%link%">%nome%</a>
-							</li>
+							<li>carregando materiais...</li>
 						</ul>
 					</div>
 				</div>
@@ -197,8 +159,17 @@ HTML;
 		radio_link.onchange = radio_arquivo.onchange;
 		radio_arquivo.style.display = "none";
 		radio_link.style.display = "none";
+		var toggleEnviar = (function () {
+			var enviarDiv = document.getElementById('enviar_material');
+			return function () {
+				if (enviarDiv.style.display !== 'none') {
+					enviarDiv.style.display = 'none';
+				} else {
+					enviarDiv.style.display = 'block';
+				}
+			};
+		}());
 		</script>
-		<script type="text/javascript" src="../../jquery.js"></script>
 		<script type="text/javascript" src="biblioteca2.js"></script>
 	</body>
 </html>

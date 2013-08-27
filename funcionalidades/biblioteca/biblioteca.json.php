@@ -22,6 +22,8 @@ $json['turma'] = $turmaId;
 $json['session'] = true;
 if ($usuario === false) {
 	$json['session'] = false;
+} else {
+	$json['session'] = $usuario->getSimpleAssoc();
 }
 if ($json['session']) {}
 if ($turma->getId() !== $turmaId) {
@@ -34,47 +36,157 @@ if ($turma->getId() !== $turmaId) {
 }
 function listar($mais_novo = 0, $mais_velho = 0) {
 	global $json;
+	global $turma;
 	global $turmaId;
 	global $usuario;
 	global $mais_velho;
 	global $mais_novo;
-	global $turma;
-
+	global $perm;
+	$opcoes = 
+		['turma'      => $turmaId,
+		 'mais_velho' => $mais_velho,
+		 'mais_novo'  => $mais_novo];
+	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $turmaId)) {
+		$opcoes['nao_aprovados'] = true;
+		$json['pode_aprovar'] = true;
+	}
+	$json['materiais'] = [];
 	$material = new Material();
 	try {
-		$ok = $material->abrirTurma(['turma' => $turmaId , 'mais_velho' => $mais_velho, 'mais_novo' => $mais_novo]);
+		$ok = $material->abrirTurma($opcoes);
 	} catch (Exception $e) {
 		$json['errors'][] = $e->getMessage();
 		return;
 	}
-	if ($ok);
-	{
-		do {
-			$json['materiais'][] = $material->getAssoc();
-		} while ($material->proximo());
-	}
+	if ($ok === true) do {
+		$json['materiais'][] = $material->getAssoc();
+	} while ($material->proximo());
 }
 function enviar() {
 	global $json;
 	global $turmaId;
 	global $usuario;
 	global $_POST;
-	global $_FILE;
+	global $_FILES;
+	global $perm;
+	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$turmaId)) {
+		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.';
+		return;
+	}
 	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
 	$autor = isset($_POST['autor']) ? trim($_POST['autor']) : '';
 	$tags = isset($_POST['tags']) ? trim($_POST['tags']) : '';
+	$link = isset($_POST['link']) ? trim($_POST['link']) : '';
 	if ($titulo === '') {
-		$json['erros'][] = "Não pode enviar material sem título";
+		$json['errors'][] = "Não pode enviar material sem título";
 	};
-
-	if (isset($_POST['tipo'])) switch ($_POST['tipo']) {
-		case 'a':
+	$material = new Material();
+	$material->setUsuario($usuario);
+	$material->setTurma($turmaId);
+	$material->setTitulo($titulo);
+	$material->setAutor($autor);
+	if (isset($_POST['tipo'])) 
+	{
+		switch ($_POST['tipo']) {
+			case MATERIAL_ARQUIVO:
+				if (isset($_POST['arquivo']) && is_numeric($_POST['arquivo'])) {
+					$arquivo = new Arquivo((int) $_POST['arquivo']);
+					if (!$arquivo->temErros()) {
+						$material->setMaterial($arquivo);
+					} else {
+						$json['errors'] = '[enviar] Arquivo nao encontrado';
+						return;
+					}
+				}
+				elseif (!isset($_FILES['arquivo'])) {
+					//print_r($_FILES);
+					$json['errors'][] = "[enviar] Nenhum arquivo enviado.";
+					return;
+				} else {
+					$material->setMaterial($_FILES['arquivo']);
+				}
+				break;
+			case MATERIAL_LINK:
+				if($link === '') {
+					$json['errors'][] = "[enviar] Nenhum link enviado";
+					return;
+				} else {
+					$material->setMaterial($link);
+				}
+				break;
+			default:
+				$json['errors'][] = "[enviar] Não foi possivel enviar o material.";
+				break;
+		}
+		if (!$material->temErros()) {
+			$material->salvar();
+		}
+		if ($material->temErros()) {
+			$er = $material->getErros();
+			foreach ($er as $error) {
+				$json['errors'][] = $error;
+			}
+		} else {
+			$json['material'] = $material->getAssoc();
+		}
+	} else {
+		$json['errors'][] = "Não foi possivel enviar o material.";
+	}
+}
+function editar() {
+	global $json;
+	global $turmaId;
+	global $usuario;
+	global $_POST;
+	global $_FILES;
+	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$turmaId)) {
+		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
+		return;
+	}
+	$id     = isset($_POST['id'])     ? trim($_POST['id'])     : 0;
+	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
+	$autor  = isset($_POST['autor'])  ? trim($_POST['autor'])  : '';
+	$tags   = isset($_POST['tags'])   ? trim($_POST['tags'])   : '';
+	$link   = isset($_POST['link'])   ? trim($_POST['link'])   : '';
+	$tipo   = isset($_POST['tipo'])   ? trim($_POST['tipo'])   : '';
+	$material = new Material($id);
+	if ($material->temErros()) {
+		$json['errors'] = array_merge($json['errors'], $material->getErros());
+		return;
+	}
+	if ($titulo !== '')
+		$material->setTitulo($titulo);
+	if ($autor !== '')
+		$material->setAutor($autor);
+	if ($tags !== '')
+		$material->setTags($tags);
+	switch ($tipo) {
+		case MATERIAL_ARQUIVO:
+			if (isset($_POST['arquivo'])) {
+				$arquivo = new Arquivo((int) $_POST['arquivo']);
+				if ($arquivo->temErros()) {
+					$json['errors'] = array_merge($json['errors'], $arquivo->getErros());
+					return;
+				}
+			}
+			elseif (isset($_FILES['arquivo'])) {
+				$material->setMaterial($_FILES['arquivo']);
+			}
 			break;
-		case 'l':
+		case MATERIAL_LINK:
+			if (isset($_POST['link'])) {
+				if (is_numeric($_POST['link'])) {
+					//
+				}
+			}
 			break;
-		default:
-			$json['erros'][] = "Não foi possivel enviar o arquivo.";
-			break;
+		default: 
+			$json['errors'][] = 'Tipo de material inválido.';
+			return;
+	}
+	$material->salvar();
+	if ($material->temErros()) {
+		$json['errors'] = array_merge($json['errors'], $material->getErros());
 	}
 }
 if($json['session'] && !isset($json['errors'])) {
