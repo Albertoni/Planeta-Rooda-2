@@ -172,7 +172,15 @@ function setTitulo($arg){$this->titulo = $arg;}
 function setDate($arg){$this->date = $arg;}
 
 function setMensagem($indice, $mensagem){
-	$this->mensagens[$indice] = $mensagem;
+	$objetoMensagem = NULL;
+
+	if(is_string($mensagem)){
+		$objetoMensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $mensagem, -1);
+	}else{
+		$objetoMensagem = $mensagem; // só renomeando
+	}
+	
+	$this->mensagens[$indice] = $objetoMensagem;
 }
 
 	
@@ -226,6 +234,7 @@ function setMensagem($indice, $mensagem){
 	}
 
 	function salvar(){
+
 		if ($this->salvo === true){// atualizar
 			$this->mensagens[0]->salvar();
 

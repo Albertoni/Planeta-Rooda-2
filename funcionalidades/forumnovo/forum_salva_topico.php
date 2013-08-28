@@ -23,25 +23,27 @@ $conteudo = str_replace("\n", "<br>", $_POST['texto']);
 $idMensagem = (isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $_POST['idMensagem'] : false;
 $editar = ($idMensagem !== false);
 $acaoSendoEfetuada =  $editar ? "forum_editarTopico" : "forum_criarTopico";
-$userId = $_SESSION['SS_usuario_id'];
+$idUsuario = $_SESSION['SS_usuario_id'];
 
 
 if($user->podeAcessar($permissoes[$acaoSendoEfetuada], $turma)){
 	if(!$editar){ // CRIAÇÃO
-		$topico = new topico(NULL, $turma, $userId, $titulo);
+		$topico = new topico(NULL, $turma, $idUsuario, $titulo);
 		$topico->salvar();
 		$topico->insereMensagem($conteudo);
 	}else{ // EDIÇÃO
 		$topico = new topico($idTopico);
 
+		$objetoMensagem = new mensagem($idMensagem, $idTopico, $idUsuario, $conteudo, -1);
+
 		$topico->setTitulo($titulo);
-		$topico->setMensagem(0, $conteudo);
+		$topico->setMensagem(0, $objetoMensagem);
 		$topico->salvar();
 	}
 
 	if($idTopico == NULL){//criando
 		magic_redirect("forum.php?turma=$turma");
-	}else{//
+	}else{
 		magic_redirect("forum_topico.php?turma=$turma&topico=$idTopico");
 	}
 	
