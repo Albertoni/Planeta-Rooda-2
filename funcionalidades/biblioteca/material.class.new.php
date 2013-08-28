@@ -412,6 +412,7 @@ SQL
 		$mais_novo = 0;
 		$mais_velho = 0;
 		$turma = 0;
+		$usuario = 0;
 		$nao_aprovados = false;
 		$condicaoSQL = "";
 		if (is_array($parametros)) {
@@ -419,14 +420,15 @@ SQL
 			$mais_velho = isset($parametros['mais_velho']) ? (int) $parametros['mais_velho'] : 0;
 			$turma = isset($parametros['turma']) ? $parametros['turma'] : 0;
 			$nao_aprovados = isset($parametros['nao_aprovados']) ? (bool) $parametros['nao_aprovados'] : false;
+			$usuario = isset($parametros['usuario']) ? (int) $parametros['usuario'] : 0;
 		} else {
 			$turma = $parametros;
 		}
+		// permite passar o objeto turma como parâmetro.
 		if (is_object($turma) && get_class($turma) === 'turma') {
 			$turma = $turma->getId();
 		}
 		$turma = is_numeric($turma) ? (int) $turma : 0;
-		// permite passar o objeto turma como parâmetro.
 		if ($turma <= 0) throw new Exception("Turma não definida", 1);
 		$this->novo = false;
 		$turma = $parametros['turma'];
@@ -438,7 +440,10 @@ SQL
 			$condicaoSQL .= "AND codMaterial < {$mais_velho} ";
 		}
 		if (!$nao_aprovados) {
-			$condicaoSQL .= "AND materialAprovado = 1 ";
+			// mostrar somente os materiais aprovados
+			$condicaoSQL .= "AND (materialAprovado = 1";
+			// a não ser que tenha um usuario definido, entao mostrar os nao aprovados dele também.
+			$condicaoSQL = ($usuario > 0) ? " OR codUsuario = {$usuario})" : ')';
 		}
 		$this->consulta_turma = new conexao();
 		$this->consulta_turma->solicitar(<<<SQL
@@ -483,5 +488,10 @@ SQL
 			return true;
 		}
 		return false;
+	}
+	public function registros()
+	{
+		if (!$this->turma_aberta) throw new Exception("Material::registros() só pode ser usado depois de abrir uma turma com Material::abrirTurma()", 1);
+		return $this->consulta_turma->registros;
 	}
 }

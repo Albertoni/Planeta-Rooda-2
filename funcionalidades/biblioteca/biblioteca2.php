@@ -93,6 +93,7 @@ if (!$usuario) { die("voce nao esta logado"); }
 						<ul id="ul_materiais">
 							<li>carregando materiais...</li>
 						</ul>
+						<button id="bt_carregar_mais">Carregar Mais</button>
 					</div>
 				</div>
 			</div><!-- fim do conteudo -->

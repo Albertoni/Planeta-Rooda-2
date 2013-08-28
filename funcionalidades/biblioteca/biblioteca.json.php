@@ -44,6 +44,7 @@ function listar($mais_novo = 0, $mais_velho = 0) {
 	global $perm;
 	$opcoes = 
 		['turma'      => $turmaId,
+		 'usuario'    => $usuario->getId(),
 		 'mais_velho' => $mais_velho,
 		 'mais_novo'  => $mais_novo];
 	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $turmaId)) {
@@ -58,9 +59,15 @@ function listar($mais_novo = 0, $mais_velho = 0) {
 		$json['errors'][] = $e->getMessage();
 		return;
 	}
-	if ($ok === true) do {
-		$json['materiais'][] = $material->getAssoc();
-	} while ($material->proximo());
+	if ($material->registros() < 10) {
+		$json['todos'] = true;
+	}
+	if ($ok === true) 
+	{
+		do {
+			$json['materiais'][] = $material->getAssoc();
+		} while ($material->proximo());
+	}
 }
 function enviar() {
 	global $json;

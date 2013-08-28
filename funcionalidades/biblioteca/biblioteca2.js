@@ -1,5 +1,6 @@
 var BIBLIOTECA = (function () {
 	var ulDinamica = document.getElementById("ul_materiais");
+	var btCarregar = document.getElementById("bt_carregar_mais");
 	var mais_novo = 0;
 	var mais_velho = 0;
 	var materiais = [];
@@ -48,6 +49,9 @@ var BIBLIOTECA = (function () {
 			this.link = obj.link;
 			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
 		}
+		if (!this.aprovado) {
+			this.HTMLElemento.classList.add('nao_aprovado');
+		}
 		this.atualizarHTML();
 	}
 	Material.prototype.atualizarHTML = function() {
@@ -55,10 +59,23 @@ var BIBLIOTECA = (function () {
 		+ this.usuario.nome + ' (' + this.data.toLocaleString()
 		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank">Abrir material</a></p>';
 		if (pode_aprovar && !this.aprovado) {
-			this.HTMLElemento.innerHTML += '<button type="button" class="aprovar" value="' +
+			this.HTMLElemento.innerHTML += '<button type="button" name="aprovar" class="aprovar" value="' +
 			+ this.id + '">Aprovar</button>';
 		}
 	};
+	ulDinamica.addEventListener('click', function(e) {
+		e = e || event;
+		var elem = e.target;
+		switch (elem.name) {
+			case 'aprovar':
+				console.log(elem.value);
+				break;
+			case 'excluir':
+				break;
+			default:
+				break;
+		}
+	});
 	// adicionar novo material à lista de materiais
 	function addMaterial(obj) {
 		// verifica se o material já está na lista
@@ -79,6 +96,9 @@ var BIBLIOTECA = (function () {
 		if (mais_novo < obj.id) {
 			mais_novo = obj.id;
 		}
+		if (mais_velho === 0 || mais_velho > obj.id) {
+			mais_velho = obj.id;
+		}
 	}
 	// remove material da lista de materiais
 	function removeMaterial(id) {
@@ -97,7 +117,7 @@ var BIBLIOTECA = (function () {
 		}
 	}
 	// solicita novos materiais ao servidor.
-	(function () {
+	var ajax = (function () {
 		var intervalToken;
 		var failCount;
 		// função executada quando falha a requisição de novos materiais
@@ -119,33 +139,45 @@ var BIBLIOTECA = (function () {
 			} else {
 				pode_aprovar = false;
 			}
-			console.log(json);
+			//console.log(json);
 			json.materiais.forEach(addMaterial);
+			if (json.todos) {
+				btCarregar.disabled = true;
+			}
 			atualizaLista();
 		}
 		// função que é executada quando a requisição de novos materiais é bem sucedida
-		function onFail() {
+		function onFail_new() {
 			failCount += 1;
 			if (failCount > 2) {
 				clearInterval(intervalToken);
 				ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.")
 			}
 		}
-		function request() {
+		function onFail_old() {
+			ROODA.ui.alert("Servidor não respondeu.");
+		}
+		function request_newer() {
 			AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_novo=" + mais_novo, {
 				'success': onSuccess,
-				'fail': onFail
+				'fail': onFail_new
+			});
+		}
+		function request_older() {
+			AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_velho=" + mais_velho, {
+				'success': onSuccess,
+				'fail': onFail_old
 			});
 		}
 		function init()
 		{
-			request();
-			intervalToken = setInterval(request, 60000);
+			materiais = [];
+			request_newer();
+			btCarregar.onclick = request_older;
+			intervalToken = setInterval(request_newer, 60000);
 		}
-		init();
+		return { 'init' : init, 'request_older' : request_older };
 	}());
-	return {
-		key : 'value',
-		t : turma
-	}
+	ajax.init();
+	return {}
 }());
