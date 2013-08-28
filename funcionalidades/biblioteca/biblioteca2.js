@@ -3,6 +3,7 @@ var BIBLIOTECA = (function () {
 	var mais_novo = 0;
 	var mais_velho = 0;
 	var materiais = [];
+	var pode_aprovar = false;
 	var token_atualizador; // valor retornado por setInterval()
 	var falhasSucessivas = 0; // numero de requisições que falharam
 	var turma = (function () {
@@ -15,15 +16,15 @@ var BIBLIOTECA = (function () {
 				if (param[0] === 'turma') {
 					param = parseInt(param[1], 10);
 					if (param) {
-						turma = param, 10;
+						turma = param;
 					}
 				}
 			}
 			return turma;
 	}());
-	// funcção de organização para chamar materiais.sort(compararMateriais)
-	function compararMateriais(a, b) {
-		return a.id - b.id;
+	// definição da relaçao de ordem para chamar materiais.sort(organizaMateriais)
+	function organizaMateriais(a, b) {
+		return b.id - a.id;
 	}
 	//console.log(typeof turma + turma);
 	function Material(obj) {
@@ -36,47 +37,115 @@ var BIBLIOTECA = (function () {
 		this.data = new Date(1000 * obj.data);
 		this.aprovado = obj.aprovado;
 		this.HTMLElemento = document.createElement('li');
+		if (this.tipo === 'arquivo') {
+			var classes = obj.arquivo.tipo.split('/');
+			this.arquivo = obj.arquivo;
+			for (i in classes) {
+				this.HTMLElemento.classList.add(classes[i]);
+			}
+		}
+		else if (this.tipo === 'link') {
+			this.link = obj.link;
+			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
+		}
 		this.atualizarHTML();
 	}
 	Material.prototype.atualizarHTML = function() {
-		this.HTMLElemento.innerHTML = '<h1>' + this.titulo + '</h1><small>Enviado por ' 
-		+ this.usuario.nome + ' em ' + this.data.toLocaleString() 
-		+ '</small><p>Autor:' + this.autor + '</p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank">baixar</a>';
+		this.HTMLElemento.innerHTML = '<h2>' + this.titulo + '</h2><small>Enviado por ' 
+		+ this.usuario.nome + ' (' + this.data.toLocaleString()
+		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank">Abrir material</a></p>';
+		if (pode_aprovar && !this.aprovado) {
+			this.HTMLElemento.innerHTML += '<button type="button" class="aprovar" value="' +
+			+ this.id + '">Aprovar</button>';
+		}
 	};
+	// adicionar novo material à lista de materiais
 	function addMaterial(obj) {
+		// verifica se o material já está na lista
+		if (materiais.filter(function (material) { return (obj.id === material.id); }).length !== 0) {
+			// material ja foi adicionado
+			console.log(material);
+			return;
+		}
+		// verifica se o material herda de Material.prototype.
 		if (!Material.prototype.isPrototypeOf(obj)) {
 			obj = new Material(obj);
+			console.log(obj);
 		}
-
+		// adiciona material à lista
+		materiais.push(obj);
+		// organiza lista
+		materiais.sort(organizaMateriais);
+		if (mais_novo < obj.id) {
+			mais_novo = obj.id;
+		}
 	}
-	function eventRequisicaoFalha() {}
-	function eventRequisicaoSucesso() {}
-	function solicitarMaisNovos() {
-		var request = AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_novo=" + mais_novo, {
-			success: function () {
-				var json;
-				try {
-					json = JSON.parse(this.responseText);
-				} catch (e) {
-					console.log(e.message);
-				}
-				console.log(json);
-				if (!json.session) {
-					console.log("nâo está logado");
-					return;
-				}
-				for (var i in json.materiais) {
-					json.materiais[i]
-				}
-			},
-			fail: function () {}
-		});
-		request
+	// remove material da lista de materiais
+	function removeMaterial(id) {
+		materiais = materiais.filter(function (material) { return (material.id !== id); });
 	}
+	// atualiza lista de materiais (HTML) de acordo com a lista de materiais (JS)
+	function atualizaLista() {
+		var i;
+		while (ulDinamica.firstElementChild) {
+			console.log('removendo');
+			ulDinamica.removeChild(ulDinamica.firstElementChild);
+		}
+		for (i in materiais) {
+			console.log('add');
+			ulDinamica.appendChild(materiais[i].HTMLElemento);
+		}
+	}
+	// solicita novos materiais ao servidor.
+	(function () {
+		var intervalToken;
+		var failCount;
+		// função executada quando falha a requisição de novos materiais
+		function onSuccess() {
+			var json;
+			failCount = 0;
+			try {
+				json = JSON.parse(this.responseText);
+			} catch (e) {
+				console.log(e.message);
+				console.log(this.responseText);
+			}
+			if (!json.session) {
+				ROODA.ui.alert("Sua sessão expirou.");
+				return;
+			}
+			if (json.pode_aprovar) {
+				pode_aprovar = true;
+			} else {
+				pode_aprovar = false;
+			}
+			console.log(json);
+			json.materiais.forEach(addMaterial);
+			atualizaLista();
+		}
+		// função que é executada quando a requisição de novos materiais é bem sucedida
+		function onFail() {
+			failCount += 1;
+			if (failCount > 2) {
+				clearInterval(intervalToken);
+				ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.")
+			}
+		}
+		function request() {
+			AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_novo=" + mais_novo, {
+				'success': onSuccess,
+				'fail': onFail
+			});
+		}
+		function init()
+		{
+			request();
+			intervalToken = setInterval(request, 60000);
+		}
+		init();
+	}());
 	return {
 		key : 'value',
-		s : solicitarMaisNovos,
 		t : turma
 	}
 }());
-//console.log(document.location.search);

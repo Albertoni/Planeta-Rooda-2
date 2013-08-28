@@ -4,15 +4,14 @@ require_once("bd.php");
 require_once("usuarios.class.php");
 class Link
 {
-	private $to_register = false; // se verdadeiro, é um link novo ainda nao salvo.
+	private $novo = false; // se verdadeiro, é um link novo ainda nao salvo.
 
 	private $id = false; // falso significa que o link nao foi carregado/salvo (nao existe)
 	private $titulo = "";
 	private $autor = "";
 	private $tags = array();
 	private $endereco = ""; // URL do link
-	private $uploader_id = false;
-	private $usuario;
+	private $codUsuario = false;
 	private $erros = array();
 	
 	function __construct($id = false)
@@ -21,7 +20,7 @@ class Link
 		if ($id === false)
 		{
 			// novo link
-			$this->to_register = true;
+			$this->novo = true;
 		}
 		else if (is_int($id))
 		{
@@ -36,7 +35,7 @@ class Link
 			}
 			else if ($bd->registros !== 1)
 			{
-				$this->erros[] = "Link não encontrado.";
+				$this->erros[] = "[link] Link não encontrado.";
 			}
 			else
 			{
@@ -47,6 +46,9 @@ class Link
 	public function getId()
 	{
 		return $this->id;
+	}
+	public function getTitulo() {
+		return $this->titulo;
 	}
 	public function getEndereco()
 	{
@@ -59,9 +61,11 @@ class Link
 	public function getAssoc()
 	{
 		$assoc = array();
-		$assoc['endereco'] = $this->getEndereco();
-		$assoc['autor'] = $this->getAutor();
 		$assoc['id'] = $this->getId();
+		$assoc['titulo'] = $this->getTitulo();
+		$assoc['autor'] = $this->getAutor();
+		$assoc['endereco'] = $this->getEndereco();
+		return $assoc;
 	}
 	public function getErros()
 	{
@@ -74,16 +78,55 @@ class Link
 	public function salvar()
 	{
 		global $tabela_links;
-		if ($this->to_register)
+		if ($this->novo && $this->id === false)
 		{
 			if ($this->endereco === '')
-				$this->erros[] = 'Endereço inválido';
+				$this->erros[] = '[link] Endereço inválido';
+			if ($this->titulo === '') 
+				$this->erros[] = '[link] O link precisa de um titulo';
+			if ($this->codUsuario === false)
+				$this->erros[] = '[link] Usuario não definido.';
+			$bd = new conexao();
+			$titulo = $bd->sanitizaString($this->titulo);
+			$autor = $bd->sanitizaString($this->autor);
+			$tags = $bd->sanitizaString(implode(',', $this->tags));
+			$endereco = $bd->sanitizaString($this->endereco);
+			$codUsuario = (int) $this->codUsuario;
+			$bd->solicitar(
+				"INSERT INTO $tabela_links (titulo, autor, tags, endereco, codUsuario)
+				VALUES ('$titulo', '$autor', '$tags', '$endereco', $codUsuario)"
+			);
+			if ($bd->erro !== '') {
+				$this->erros[] = '[link] BD: ' . $bd->erro;
+				return;
+			} else {
+				$this->id = $bd->ultimo_id();
+				$this->novo = false;
+			}
+		} elseif ($this->id !== false) {
+			$bd = new conexao();
+			$id = $this->id;
+			$titulo = $bd->sanitizaString($this->titulo);
+			$autor = $bd->sanitizaString($this->autor);
+			$tags = $bd->sanitizaString(implode(',', $this->tags));
+			$endereco = $bd->sanitizaString($this->endereco);
+			$bd->solicitar(
+				"UPDATE $tabela_links SET 
+				titulo = '$titulo',
+				autor = '$autor',
+				tags = '$tags',
+				endereco = 'endereco'
+				WHERE Id = $id"
+			);
+			if ($bd->erro !== '') {
+				$this->erros[] = '[link] BD: ' . $bd->erro;
+			}
 		}
 	}
 	public function excluir()
 	{
 		global $tabela_links;
-		if (!$this->to_register && $this->id !== false)
+		if (!$this->novo && $this->id !== false)
 		{
 			$bd = new conexao();
 			$bd->solicitar(
@@ -149,6 +192,9 @@ class Link
 	public function setUsuario($usuario) {
 		if (is_object($usuario) && get_class($usuario) === 'Usuario') {
 			$usuario = $usuario->getId();
+		}
+		if (is_numeric($usuario)) {
+			$this->codUsuario = (int) $usuario;
 		}
 	}
 }

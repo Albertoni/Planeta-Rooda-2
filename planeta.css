@@ -52,6 +52,10 @@ label.file_label {
 label.file_label span:not(.text) {
 	line-height: 100%;
 }
+label.file_label input[type=file] {
+	display: none;
+	overflow: hidden;
+}
 label.file_label span:not(.text),
 label.link_label input {
 	display: inline-block;
@@ -340,6 +344,9 @@ ul.listaFun li {
 }
 ul.listaFun li a {
 	text-decoration: none;
+}
+.bloco h1 .bt_fechar {
+	margin: 5px 5px;
 }
 .bt_fechar,
 .bt_excluir {

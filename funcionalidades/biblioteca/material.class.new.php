@@ -21,7 +21,7 @@ class Material
 	private $link         = NULL; // quarda o objeto link (se for link)
 	private $data         = 0; // Unix timestamp
 	private $erros        = NULL;
-	private $tags         = "";
+	private $tags         = array();
 	private $aprovado     = false;
 	private $novo         = false; // se for true, ainda nao está no banco de dados.
 	private $turma_aberta = false;
@@ -89,7 +89,7 @@ SQL
 				$this->arquivo = new Arquivo($this->codRecurso);
 				if ($this->arquivo->temErros())
 				{
-					$this->erros[] = "Não foi possivel recuperar o material.";
+					$this->erros[] = "[material] Não foi possivel recuperar o material.";
 				}
 				break;
 
@@ -98,36 +98,72 @@ SQL
 				break;
 			
 			default:
-				$this->erros[] = "Tipo de material nao definido";
+				$this->erros[] = "[material] Tipo de material nao definido";
 				break;
 		}
 	}
 	public function salvar() {
+		global $tabela_Materiais;
 		if ($this->titulo === '')
 		{
-			$this->erros[] = 'Não pode salvar material sem título.';
+			$this->erros[] = '[material] Não pode salvar material sem título.';
 		}
 		if ($this->autor === '')
 		{
-			$this->erros[] = 'Não pode salvar material sem autor.';
+			$this->erros[] = '[material] Não pode salvar material sem autor.';
 		}
 		if ($this->codUsuario === false)
 		{
-			$this->erros[] = 'Não pode salvar material sem usuario.';
+			$this->erros[] = '[material] Não pode salvar material sem usuario.';
 		}
-		if ($this->codRecurso !== false || ($this->arquivo === NULL && $this->link === NULL))
+		if ($this->codRecurso === false || ($this->arquivo === NULL && $this->link === NULL))
 		{
-			$this->erros[] = 'Não pode salvar material sem conteúdo.';
+			$this->erros[] = '[material] Não pode salvar material sem conteúdo.';
 		}
-		if (count($this->erros) > 0)
-			return false;
+		switch ($this->tipo) {
+			case MATERIAL_ARQUIVO:
+				$this->arquivo->salvar();
+				$refMaterial = $this->arquivo->getId();
+				if ($this->arquivo->temErros()) {
+					$this->erros = array_merge($this->erros, $this->arquivo->getErros());
+					return;
+				}
+				break;
+			
+			case MATERIAL_LINK:
+				$this->link->salvar();
+				$refMaterial = $this->link->getId();
+				if ($this->link->temErros()) {
+					$this->erros = array_merge($this->erros, $this->link->getErros());
+					return;
+				}
+				break;
+
+			default:
+				$refMaterial = false;
+		}
+		if (!$refMaterial) $this->erros[] = '[material] Material nao pode ser definido.';
+		if (count($this->erros) > 0) return false;
 		if ($this->novo)
 		{
 			$bd = new conexao();
+			$codTurma     = (int) $this->codTurma;
+			$titulo       = $bd->sanitizaString($this->titulo);
+			$autor        = $bd->sanitizaString($this->autor);
+			$tags         = $bd->sanitizaString(implode(',', $this->tags));
+			$codUsuario   = (int) $this->codUsuario;
+			$tipoMaterial = $bd->sanitizaString($this->tipo);
+			$refMaterial = $this->codRecurso;
+			$aprovado     = $this->aprovado ? '1' : '0';
+			$data = $bd->sanitizaString($this->data);
 			$bd->solicitar(
 				"INSERT INTO $tabela_Materiais
-				(codTurma,titulo,autor,tags,codUsuario,tipoMaterial,data,refMaterial,materialAprovado)"
+				(codTurma,titulo,autor,tags,codUsuario,tipoMaterial,data,refMaterial,materialAprovado)
+				VALUES ($codTurma,'$titulo','$autor','$tags','$codUsuario','$tipoMaterial','$data','$refMaterial','$aprovado')"
 			);
+			if ($bd->erro !== '') {
+				$this->erros[] = $bd->erro;
+			}
 			$this->novo = false;
 		}
 		elseif ($this->id)
@@ -138,7 +174,7 @@ SQL
 			$autor        = $bd->sanitizaString($this->autor);
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
 			$codUsuario   = (int) $this->codUsuario;
-			$tipoMaterial = $bd->sanitizaString($this->tipoMaterial);
+			$tipoMaterial = $bd->sanitizaString($this->tipo);
 			$aprovado     = $this->aprovado ? '1' : '0';
 			$bd->solicitar(
 <<<SQL
@@ -187,37 +223,77 @@ SQL
 	public function setTitulo($titulo)
 	{
 		$this->titulo = trim($titulo);
+		if ($this->arquivo) $this->arquivo->setTitulo($this->titulo);
 		return true;
 	}
 	public function setMaterial($material)
 	{
 		if ($this->usuario === NULL || !$this->usuario->getId())
 		{
-			$this->erros[] = 'Usuário não definido.';
+			$this->erros[] = '[material] Usuário não definido.';
 		}
 		if (!$this->codTurma) {
-			$this->erros[] = 'Turma não definida.';
+			$this->erros[] = '[material] Turma não definida.';
 		}
 		// array $_FILE['arquivo']
 		if (is_array($material))
 		{
-			$obj = new Arquivo();
-			$arquivo->setArquivo($material);
+			$this->tipo = MATERIAL_ARQUIVO;
+			$this->arquivo = new Arquivo();
+			$this->arquivo->setArquivo($material);
+			$this->arquivo->setIdUploader($this->codUsuario);
+			if ($this->titulo !== '') $this->arquivo->setTitulo($this->titulo);
+			$this->arquivo->salvar();
+			$this->codRecurso = $this->arquivo->getId();
+			if ($this->arquivo->temErros()) {
+				$this->erros[] = "[material] Nao foi possivel enviar o arquivo.";
+				$this->erros = array_merge($this->erros, $this->arquivo->getErros());
+			}
 		}
 		// objeto do recurso
 		elseif (is_object($material))
 		{
-			if (get_class($material) === 'Arquivo' || get_class($material) === 'Link')
+			$this->tipo = MATERIAL_ARQUIVO;
+			switch (get_class($material)) {
+				case 'Arquivo':
+					$this->tipo = MATERIAL_ARQUIVO;
+					$this->codRecurso = $this->arquivo->getId();
+					break;
+
+				case 'Link':
+					$this->tipo = MATERIAL_LINK;
+					$this->codRecurso = $this->link->getId();
+					break;
+				
+				default:
+					$this->erros[] = '[material] O material não é válido.';
+					return;
+			}
+			if (!$material->getId())
 			{
-				if (!$material->getId())
-				{
-					$this->erros[] = 'O material não existe.';
-				}
+				$this->erros[] = '[material] O material não existe.';
 			}
 		}
 		// link
 		elseif (is_string($material))
 		{
+			$this->link = new Link();
+			$this->link->setEndereco($material);
+			$this->link->setTitulo($this->titulo);
+			$this->link->setAutor($this->autor);
+			$this->link->setUsuario($this->codUsuario);
+			$this->link->setTags($this->tags);
+			$this->link->salvar();
+			if ($this->link->temErros()) {
+				$this->erros = array_merge($this->erros, $this->link->getErros());
+			}
+			else {
+				$this->codRecurso = $this->link->getId();
+				$this->tipo = MATERIAL_LINK;
+			}
+		}
+		else {
+			$this->erros[] = '[material] Material estranho.';
 		}
 	}
 	public function setTurma($turma)
@@ -311,18 +387,20 @@ SQL
 	public function getAssoc()
 	{
 		$assoc['id']       = $this->getId();
-		$assoc['tipo']     = $this->getTipo();
 		$assoc['titulo']   = $this->getTitulo();
+		$assoc['autor']    = $this->getAutor();
 		$assoc['tags']     = $this->getTags();
-		$assoc['aprovado'] = (bool) $this->aprovado;
-		$assoc['usuario'] = $this->usuario->getSimpleAssoc();
+		$assoc['usuario']  = is_object($this->usuario) ? $this->usuario->getSimpleAssoc() : null;
 		$assoc['data'] = $this->data;
-		switch ($assoc['tipo']) {
+		$assoc['aprovado'] = (bool) $this->aprovado;
+		switch ($this->getTipo()) {
 			case MATERIAL_ARQUIVO:
 				$assoc['arquivo'] = $this->arquivo->getAssoc();
+				$assoc['tipo']    = 'arquivo';
 				break;
 			case MATERIAL_LINK:
 				$assoc['link'] = $this->link->getAssoc();
+				$assoc['tipo'] = 'link';
 				break;
 		}
 		return $assoc;
@@ -334,11 +412,13 @@ SQL
 		$mais_novo = 0;
 		$mais_velho = 0;
 		$turma = 0;
-		$condicaoSQL = '';
+		$nao_aprovados = false;
+		$condicaoSQL = "";
 		if (is_array($parametros)) {
 			$mais_novo = isset($parametros['mais_novo']) ? (int) $parametros['mais_novo'] : 0;
 			$mais_velho = isset($parametros['mais_velho']) ? (int) $parametros['mais_velho'] : 0;
 			$turma = isset($parametros['turma']) ? $parametros['turma'] : 0;
+			$nao_aprovados = isset($parametros['nao_aprovados']) ? (bool) $parametros['nao_aprovados'] : false;
 		} else {
 			$turma = $parametros;
 		}
@@ -352,10 +432,13 @@ SQL
 		$turma = $parametros['turma'];
 		if ($mais_novo > 0)
 		{
-			$condicaoSQL = 'AND codMaterial > {$mais_novo}';
+			$condicaoSQL .= "AND codMaterial > {$mais_novo} ";
 		}
 		elseif ($mais_velho > 0) {
-			$condicaoSQL = 'AND codMaterial < {$mais_velho}';
+			$condicaoSQL .= "AND codMaterial < {$mais_velho} ";
+		}
+		if (!$nao_aprovados) {
+			$condicaoSQL .= "AND materialAprovado = 1 ";
 		}
 		$this->consulta_turma = new conexao();
 		$this->consulta_turma->solicitar(<<<SQL
@@ -371,8 +454,7 @@ SELECT
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
 FROM BibliotecaMateriais
-{$condicaoSQL}
-WHERE codTurma = {$turma}
+WHERE codTurma = {$turma} {$condicaoSQL}
 ORDER BY codMaterial DESC
 LIMIT 10
 SQL
@@ -383,7 +465,7 @@ SQL
 			throw new Exception($this->consulta_turma->erro, 1);
 		}
 		$this->turma_aberta = true;
-		if ((bool) $this->consulta_turma->resultado)
+		if ($this->consulta_turma->registros > 0)
 		{
 			$this->popular($this->consulta_turma->resultado);
 			return true;
