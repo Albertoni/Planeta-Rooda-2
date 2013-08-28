@@ -100,7 +100,7 @@
 	<div id="dinamica">
 		<div id="bloco_mensagens" class="bloco">
 			<h1><?php echo $nomeTopico ?></h1>
-			<h2 id="mensagem_espera">Aguarde um instante, carregando mensagens...</h1>
+			<h2 id="mensagem_espera">Aguarde um instante, carregando mensagens...</h2>
 		</div>
 	</div><!-- fim da div topicos -->
 	<div class="bts_baixo">
