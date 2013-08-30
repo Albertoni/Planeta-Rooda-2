@@ -18,23 +18,24 @@
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
 	if($user->podeAcessar($perm['forum_criarTopico'], $turma)){
-		$mensagemId =  (isset($_GET['idMensagem']) and is_numeric($_GET['idMensagem'])) ? $_GET['idMensagem']:'-1';
-		$editar = ($mensagemId != '-1');
+		$idTopico =  (isset($_GET['idTopico']) and is_numeric($_GET['idTopico'])) ? $_GET['idTopico']:'-1';
+		$editar = ($idTopico != '-1');
 		$titulo = '';
 		$texto = '';
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
-				$mensagem = new mensagem($mensagemId);
-				$textoHTML = $mensagem->getTexto();
-				$idMensagem = $mensagem->getId();
-				$idTopico = $mensagem->getIdTopico();
+				$q = new conexao();
 
-				$topico = new topico($idTopico);
-				$idTurma = $topico->getIdTurma();
-				$idUsuario = $topico->getIdUsuario();
-				$titulo = $topico->getTitulo();
-				$texto = str_replace("<br>", "\n", $textoHTML);
+				// dados do topico e primeira mensagem
+				$q->solicitar("SELECT * FROM ForumTopico INNER JOIN ForumMensagem
+					ON ForumTopico.idTopico = ForumMensagem.idTopico
+					WHERE ForumTopico.idTopico = $idTopico
+					ORDER BY idMensagem ASC LIMIT 1");
+
+				$texto = str_replace("<br>", "\n", $q->resultado['texto']);
+				$titulo = $q->resultado['titulo'];
+				$idMensagem = $q->resultado['idMensagem'];
 			}else{
 				die("Voce nao tem permissao para editar topicos.");
 			}

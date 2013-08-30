@@ -17,7 +17,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $nomeUsuario = '';
 	
 	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
-		if($id !== NULL){
+		if($id != NULL){
 			$this->carregar($id);
 		}else{
 			$this->idTopico = $idTopico;
@@ -68,11 +68,11 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 		
 		if ($q->erro != "") {
-			die("Erro na salvar da mensagem1 -- $query");
+			die("Erro na salvar da mensagem1 - $q->erro - $query");
 		}
 	}
 
-	private function carregar($id){
+	function carregar($id){
 		$q = new conexao();
 
 		$idSafe = $q->sanitizaString($id);
@@ -114,6 +114,10 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 
 		return $arr;
+	}
+
+	function setTexto($texto){
+		$this->texto = $texto;
 	}
 }
 
@@ -236,8 +240,6 @@ function setMensagem($indice, $mensagem){
 	function salvar(){
 
 		if ($this->salvo === true){// atualizar
-			$this->mensagens[0]->salvar();
-
 			$q = new conexao();
 
 			$titulo = $q->sanitizaString($this->titulo);
@@ -366,12 +368,12 @@ class visualizacaoForum extends forum{
 				if($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma) or $user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)){
 					$acoesPermitidas .= "<div class=\"enviar\" align=\"right\">";
 
-					if ($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma)) {
-						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_editar.png\" onclick=\"editar(1081,518)\"/>";
+					if ($user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)) {
+						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_editar.png\" onclick=\"editarTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
 					}
 
-					if ($user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)) {
-						$acoesPermitidas .= "<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluir(1081,518,deltipo)\"/>";
+					if ($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma)) {
+						$acoesPermitidas .= "<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
 					}
 
 					$acoesPermitidas .= "</div></li>";

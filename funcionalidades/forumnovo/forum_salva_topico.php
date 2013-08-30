@@ -32,12 +32,24 @@ if($user->podeAcessar($permissoes[$acaoSendoEfetuada], $turma)){
 		$topico->salvar();
 		$topico->insereMensagem($conteudo);
 	}else{ // EDIÇÃO
+		
+		$q = new conexao();
+
+		// dados do topico e primeira mensagem
+		$q->solicitar("SELECT * FROM ForumTopico INNER JOIN ForumMensagem
+			ON ForumTopico.idTopico = ForumMensagem.idTopico
+			WHERE ForumTopico.idTopico = $idTopico
+			ORDER BY idMensagem ASC LIMIT 1");
+
+		$idMensagem = $q->resultado['idMensagem'];
 		$topico = new topico($idTopico);
 
-		$objetoMensagem = new mensagem($idMensagem, $idTopico, $idUsuario, $conteudo, -1);
+		$objetoMensagem = new mensagem();
+		$objetoMensagem->carregar($idMensagem);
+		$objetoMensagem->setTexto($conteudo);
+		$objetoMensagem->salvar();
 
 		$topico->setTitulo($titulo);
-		$topico->setMensagem(0, $objetoMensagem);
 		$topico->salvar();
 	}
 

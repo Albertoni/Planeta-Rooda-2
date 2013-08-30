@@ -95,12 +95,10 @@ if (navigator.appName == "Microsoft Internet Explorer"){
 }
 
 
-function excluir(fid,tid,dtipo){
+function excluir(turma,idTopico){
 	if (confirm("Tem certeza que deseja deletar este tópico? Essa ação não pode ser desfeita.")){
-		var parametros = "fid=" + fid;
-		parametros = parametros + "&topico=" + tid;
-		parametros = parametros + "&deltipo=" + dtipo;
-		parametros = parametros + "&pagina=" + forum_pg;
+		var parametros = "turma=" + turma;
+		parametros = parametros + "&idTopico=" + idTopico;
 	
 		http.abort();
 		http.open("POST", "deltopico.php", true);
@@ -117,8 +115,8 @@ function excluir(fid,tid,dtipo){
 	}
 }
 
-function editarMensagem(fid,mid){
-	document.location = "forum_cria_topico.php?turma="+fid+"&idMensagem="+mid;
+function editarTopico(turma,idTopico){
+	document.location = "forum_cria_topico.php?turma="+turma+"&idTopico="+idTopico;
 }
 
 function colore(elemento){
