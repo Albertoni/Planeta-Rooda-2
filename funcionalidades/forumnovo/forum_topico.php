@@ -23,8 +23,8 @@
 		die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
 	}
 	
-	$user = new Usuario();
-	$user->openUsuario($_SESSION['SS_usuario_id']);
+	/*$user = new Usuario();
+	$user->openUsuario($_SESSION['SS_usuario_id']);*/
 
 	$topico = new visualizacaoTopico($idTopico);
 	$nomeTopico = $topico->getTitulo();
@@ -123,6 +123,7 @@
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
 <script>
+userId = <?php echo $_SESSION['SS_usuario_id']; ?>;
 post = <?php $topico->imprimeMensagens(); ?>;
 postDinamico.imprimePosts(post);
 postDinamico.removeMensagemEspera();
