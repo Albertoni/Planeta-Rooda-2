@@ -5,7 +5,7 @@ require_once("usuarios.class.php");
 class Arquivo
 {
 	private $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
-	private $idUploader;
+	private $idUsuario;
 
 	private $titulo = "";
 	private $nome = '';      // nome do arquivo. Deve conter a extensao também
@@ -18,12 +18,13 @@ class Arquivo
 	private $upload = false;
 	private $download = false;
 
+	private $consulta;
+
 	public function __construct($id = false)
 	{
 		global $tabela_arquivos;
 		if ($id === false)
 		{
-			print "novo";
 			$this->data = date('Y-m-d');
 			$this->upload = true;
 		}
@@ -40,7 +41,7 @@ class Arquivo
 				arquivo AS 'conteudo',
 				tags AS 'tags',
 				dataUpload AS 'data',
-				uploader_id AS 'idUploader'
+				uploader_id AS 'idUsuario'
 				FROM $tabela_arquivos
 				WHERE arquivo_id = '$id'"
 			);
@@ -72,7 +73,7 @@ class Arquivo
 		$this->tipo     = $resultadoBd['tipo'];
 		$this->tamanho  = $resultadoBd['tamanho'];
 		$this->data     = $resultadoBd['data'];
-		$this->idUploader = $resultadoBd['idUploader'];
+		$this->idUsuario = $resultadoBd['idUsuario'];
 		$this->setTags($resultadoBd['tags']);
 	}
 	public function getId() { return $this->id; }
@@ -82,7 +83,7 @@ class Arquivo
 	public function getTipo() { return $this->tipo; }
 	public function getTamanho() { return $this->tamanho; }
 	public function getData() { return $this->data; }
-	public function getIdUploader() { return $this->idUploader; }
+	public function getIdUsuario() { return $this->idUsuario; }
 	public function getTags()
 	{
 		$tags = array();
@@ -119,7 +120,7 @@ class Arquivo
 	public function salvar()
 	{
 		global $tabela_arquivos;
-		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUploader) {
+		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUsuario) {
 			$this->errors[] = '[arquivo] Arquivo não pode ser enviado.';
 			return false;
 		}
@@ -144,7 +145,7 @@ class Arquivo
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
 			$campos[]  = 'uploader_id';
-			$valores[] = (int) $this->idUploader;
+			$valores[] = (int) $this->idUsuario;
 			// executando consulta
 			$bd->solicitar(
 				"INSERT INTO $tabela_arquivos (" . implode(", ", $campos) . ")
@@ -182,7 +183,7 @@ class Arquivo
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
 			$campos[]  = 'uploader_id';
-			$valores[] = (int) $this->idUploader;
+			$valores[] = (int) $this->idUsuario;
 			$sqlset = array();
 			// construindo a sintaxe do sql
 			foreach ($campos as $num => $campo)
@@ -212,7 +213,7 @@ class Arquivo
 	// 	if ($this->download && !$this->upload) {
 	// 	}
 	// }
-	public function setIdUploader($id) {
+	public function setIdUsuario($id) {
 		$id = (int) $id;
 		if ($id === 0)
 		{
@@ -220,7 +221,7 @@ class Arquivo
 		}
 		else
 		{
-			$this->idUploader = $id;
+			$this->idUsuario = $id;
 		}
 		return $this;
 	}
@@ -303,21 +304,40 @@ class Arquivo
 		}
 		return true;
 	}
-	public static function getArquivosUsuario($usuario)
+	public function abrirUsuario($usuario)
 	{
+		global $tabela_arquivos;
 		if (get_class($usuario) === "Usuario")
 		{
 			$usuario = $usuario->getId();
 		}
-		global $tabela_arquivos;
-		$arquios = array();
-		$bd = new conexao();
-		$bd->solicitar(
-			"SELECT arquivo_id AS id 
+		$this->consulta = new conexao();
+		$this->consulta->solicitar(
+			"SELECT
+			titulo AS 'titulo',
+			nome AS 'nome',
+			tipo AS 'tipo',
+			tamanho AS 'tamanho',
+			arquivo AS 'conteudo',
+			tags AS 'tags',
+			dataUpload AS 'data',
+			uploader_id AS 'idUsuario'
 			FROM $tabela_arquivos
 			WHERE uploader_id = $usuario"
 		);
-		return $arquivos;
+		if ($this->consulta->erro !== '') {
+			$this->erros[] = 'BD: ' . $this->consulta->erro;
+		}
+	}
+	private function limpar() {
+		$this->id = 0;
+		$this->idUsuario = 0;
+		$this->titulo = '';
+		$this->nome = '';
+		$this->tipo = '';
+		$this->tamanho = 0;
+		$this->tags = array();
+		$this->erros = array();
 	}
 }
 /* /

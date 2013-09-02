@@ -216,7 +216,15 @@ require_once("usuarios.class.php");
 		$uri	= rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Pega o caminho relativo da pasta que o script tá rodando, planeta2/funcionalidades/portfolio
 		header("Location: http://$host$uri/$extra"); // Magia.
 	}
-
+	function redireciona_externo($url) {
+		global $linkServidor;
+		$url = htmlentities($url);
+		$html = '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Redirecionando</title><link type="text/css" rel="stylesheet" href="'.$linkServidor.'planeta.css" /></head>
+		<body><div class="middle_box">Você será redirecionado para <a href="'.$url.'">'.$url.'</a> em poucos segundos</div>
+		<script>setTimeout(function(){ window.location.href = "'.$url.'"; },3000);</script></body></html>';
+		echo $html;
+		exit;
+	}
 	function checa_permissoes($funcionalidade, $turma){
 		global $tabela_permissoes;	global $tabela_controleFuncionalidades;
 		

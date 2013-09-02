@@ -5,6 +5,8 @@ var BIBLIOTECA = (function () {
 	var mais_velho = 0;
 	var materiais = [];
 	var pode_aprovar = false;
+	var pode_editar = false;
+	var pode_excluir = false;
 	var token_atualizador; // valor retornado por setInterval()
 	var falhasSucessivas = 0; // numero de requisições que falharam
 	var turma = (function () {
@@ -35,18 +37,21 @@ var BIBLIOTECA = (function () {
 		this.autor = obj.autor;
 		this.usuario = obj.usuario;
 		this.tags = obj.tags;
-		this.data = new Date(1000 * obj.data);
+		this.data = new Date(1000 * obj.data); // javascript trabalha com milissegundos
 		this.aprovado = obj.aprovado;
 		this.HTMLElemento = document.createElement('li');
 		if (this.tipo === 'arquivo') {
 			var classes = obj.arquivo.tipo.split('/');
+			classes = classes.map(function(e) { return e.split(".").join("-"); });
 			this.arquivo = obj.arquivo;
+			this.HTMLElemento.classList.add('arquivo');
 			for (i in classes) {
 				this.HTMLElemento.classList.add(classes[i]);
 			}
 		}
 		else if (this.tipo === 'link') {
 			this.link = obj.link;
+			this.HTMLElemento.classList.add('link');
 			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
 		}
 		if (!this.aprovado) {
@@ -57,10 +62,18 @@ var BIBLIOTECA = (function () {
 	Material.prototype.atualizarHTML = function() {
 		this.HTMLElemento.innerHTML = '<h2>' + this.titulo + '</h2><small>Enviado por ' 
 		+ this.usuario.nome + ' (' + this.data.toLocaleString()
-		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank">Abrir material</a></p>';
+		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank" class="abrir_material">Abrir material<span class="icon">&nbsp;</span></a></p>';
 		if (pode_aprovar && !this.aprovado) {
-			this.HTMLElemento.innerHTML += '<button type="button" name="aprovar" class="aprovar" value="' +
+			this.HTMLElemento.innerHTML += '<button type="button" name="aprovar" class="aprovar" value="'
 			+ this.id + '">Aprovar</button>';
+		}
+		if (pode_editar) {
+			this.HTMLElemento.innerHTML += '<button type="button" name="editar" class="editar" value="' 
+			+ this.id + '">Editar</button>';
+		}
+		if (pode_excluir) {
+			this.HTMLElemento.innerHTML += '<button type="button" name="excluir" class="excluir" value="' 
+			+ this.id + '">Excluir</button>';
 		}
 	};
 	ulDinamica.addEventListener('click', function(e) {
@@ -127,18 +140,17 @@ var BIBLIOTECA = (function () {
 			try {
 				json = JSON.parse(this.responseText);
 			} catch (e) {
-				console.log(e.message);
+				ROODA.ui.alert("Servidor não respondeu.");
+				console.log(e);
 				console.log(this.responseText);
 			}
 			if (!json.session) {
 				ROODA.ui.alert("Sua sessão expirou.");
 				return;
 			}
-			if (json.pode_aprovar) {
-				pode_aprovar = true;
-			} else {
-				pode_aprovar = false;
-			}
+			pode_aprovar = json.pode_aprovar ? true : false;
+			pode_editar  = json.pode_editar  ? true : false;
+			pode_excluir = json.pode_excluir ? true : false;
 			//console.log(json);
 			json.materiais.forEach(addMaterial);
 			if (json.todos) {
@@ -169,8 +181,20 @@ var BIBLIOTECA = (function () {
 				'fail': onFail_old
 			});
 		}
+		function submit_success() {
+			try {
+				json = JSON.parse(this.responseText);
+			}
+			catch (e) {
+				ROODA.ui.alert("Erro na resposta do servidor.");
+				console.log(e);
+				console.log(this.responseText);
+			}
+		}
 		function init()
 		{
+			mais_novo = 0;
+			mais_velho = 0;
 			materiais = [];
 			request_newer();
 			btCarregar.onclick = request_older;
@@ -179,5 +203,5 @@ var BIBLIOTECA = (function () {
 		return { 'init' : init, 'request_older' : request_older };
 	}());
 	ajax.init();
-	return {}
+	return { init : ajax.init };
 }());

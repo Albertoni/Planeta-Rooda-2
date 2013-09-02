@@ -40,6 +40,11 @@ class Link
 			else
 			{
 				$this->id = $id;
+				$this->titulo = $bd->resultado['titulo'];
+				$this->autor = $bd->resultado['autor'];
+				$this->tags = $bd->resultado['tags'];
+				$this->endereco = $bd->resultado['endereco'];
+				$this->codUsuario = $bd->resultado['codUsuario'];
 			}
 		}
 	}
@@ -91,6 +96,7 @@ class Link
 			$autor = $bd->sanitizaString($this->autor);
 			$tags = $bd->sanitizaString(implode(',', $this->tags));
 			$endereco = $bd->sanitizaString($this->endereco);
+			echo " $endereco ";
 			$codUsuario = (int) $this->codUsuario;
 			$bd->solicitar(
 				"INSERT INTO $tabela_links (titulo, autor, tags, endereco, codUsuario)
@@ -115,7 +121,7 @@ class Link
 				titulo = '$titulo',
 				autor = '$autor',
 				tags = '$tags',
-				endereco = 'endereco'
+				endereco = '$endereco'
 				WHERE Id = $id"
 			);
 			if ($bd->erro !== '') {
@@ -182,7 +188,7 @@ class Link
 		if ($url !== '')
 		{
 			$url = urlencode($url);
-			if ('http://' !== substr($url,0,7) and 'https://' !== substr($url,0,8))
+			if (('http://' !== substr($url,0,7)) and ('https://' !== substr($url,0,8)))
 			{
 				$url = "http://$url";
 			}

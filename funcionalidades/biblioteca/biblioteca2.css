@@ -55,3 +55,83 @@ label {
 	height: 30px;
 	margin: 5px;
 }
+a.abrir_material {
+	background: url('../../images/botoes/bt_abrirmaterial.png');
+	border: 0 none;
+	display: inline-block;
+	width: 155px;
+	height: 37px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	text-indent: -370px;
+	position: relative;
+}
+.arquivo .abrir_material .icon,
+.link .abrir_material .icon {
+	display: inline-block;
+	position: absolute;
+	width: 22px;
+	height: 22px;
+	top: 7px;
+	right: 7px;
+}
+ul#ul_materiais li {
+	position: relative;
+	background: #;
+	margin: 5px;
+	padding: 5px;
+}
+ul#ul_materiais li h2 {
+	margin: 0;
+	padding: 0;
+}
+ul#ul_materiais li:nth-child(2n+1) {
+	background: #cdf4f4;
+}
+ul#ul_materiais li.nao_aprovado {
+	background: #efdede;
+}
+ul#ul_materiais li.nao_aprovado:nth-child(2n+1) {
+	background: #f2cdcd;
+}
+.arquivo .icon,
+.link .icon {
+	background: url('../../images/fileicons/unknown.png');
+}
+.arquivo.application .icon {
+	background: url('../../images/fileicons/binary.png');
+}
+.arquivo.image .icon {
+	background: url('../../images/fileicons/image.png');
+}
+.arquivo.image.vnd-adobe-photoshop .icon{
+	background: url('../../images/fileicons/image-x-psd.png');
+}
+.arquivo.text .icon {
+	background: url('../../images/fileicons/txt.png');
+}
+.arquivo.application.vnd-oasis-opendocument-text .icon {
+	background: url('../../images/fileicons/x-office-document.png');
+}
+.arquivo.application.msword .icon,
+.arquivo.application.vnd-openxmlformats-officedocument-wordprocessingml-document .icon {
+	background: url('../../images/fileicons/application-msword.png');
+}
+.arquivo.application.pdf .icon {
+	background: url('../../images/fileicons/application-pdf.png');
+}
+.link .icon {
+	background: url('../../images/fileicons/www.png')
+}
+button[name='aprovar'] {
+	background: url('../../images/botoes/bt_aprovar.png');
+	border: 0 none;
+	text-align: left;
+	text-indent: -300px;
+	width: 154px;
+	height: 47px;
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+}

@@ -116,31 +116,27 @@ SQL
 		{
 			$this->erros[] = '[material] Não pode salvar material sem usuario.';
 		}
-		if ($this->codRecurso === false || ($this->arquivo === NULL && $this->link === NULL))
-		{
-			$this->erros[] = '[material] Não pode salvar material sem conteúdo.';
-		}
 		switch ($this->tipo) {
 			case MATERIAL_ARQUIVO:
 				$this->arquivo->salvar();
-				$refMaterial = $this->arquivo->getId();
+				$this->codRecurso = $this->arquivo->getId();
+				$refMaterial = $this->codRecurso;
 				if ($this->arquivo->temErros()) {
 					$this->erros = array_merge($this->erros, $this->arquivo->getErros());
-					return;
 				}
 				break;
 			
 			case MATERIAL_LINK:
 				$this->link->salvar();
-				$refMaterial = $this->link->getId();
+				$this->codRecurso = $this->link->getId();
+				$refMaterial = $this->codRecurso;
 				if ($this->link->temErros()) {
 					$this->erros = array_merge($this->erros, $this->link->getErros());
-					return;
 				}
 				break;
 
 			default:
-				$refMaterial = false;
+				$this->codRecurso = false;
 		}
 		if (!$refMaterial) $this->erros[] = '[material] Material nao pode ser definido.';
 		if (count($this->erros) > 0) return false;
@@ -153,7 +149,7 @@ SQL
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
 			$codUsuario   = (int) $this->codUsuario;
 			$tipoMaterial = $bd->sanitizaString($this->tipo);
-			$refMaterial = $this->codRecurso;
+			$refMaterial  = $this->codRecurso;
 			$aprovado     = $this->aprovado ? '1' : '0';
 			$data = $bd->sanitizaString($this->data);
 			$bd->solicitar(
@@ -204,14 +200,16 @@ SQL
 	public function getLink() { return $this->link; }
 	public function getData() { return $this->data; }
 	public function getConteudoMaterial() {
-		if ($this->tipo === MATERIAL_ARQUIVO && !$this->novo)
-		{
-			return $this->arquivo->getConteudo();
+		if (!$this->novo) switch ($this->tipo) {
+			case MATERIAL_ARQUIVO:
+				return $this->arquivo->getConteudo();
+				break;
+			
+			case MATERIAL_LINK:
+				return $this->link->getEndereco();
+				break;
 		}
-		if ($this->tipo === MATERIAL_LINK && !$this->novo)
-		{
-			return $this->link->getEndereco();
-		}
+		return '';
 	}
 	public function getErros() { return $this->erros; }
 	public function temErros()
@@ -243,7 +241,6 @@ SQL
 			$this->arquivo->setArquivo($material);
 			$this->arquivo->setIdUploader($this->codUsuario);
 			if ($this->titulo !== '') $this->arquivo->setTitulo($this->titulo);
-			$this->arquivo->salvar();
 			$this->codRecurso = $this->arquivo->getId();
 			if ($this->arquivo->temErros()) {
 				$this->erros[] = "[material] Nao foi possivel enviar o arquivo.";
@@ -278,12 +275,12 @@ SQL
 		elseif (is_string($material))
 		{
 			$this->link = new Link();
+			echo $material;
 			$this->link->setEndereco($material);
 			$this->link->setTitulo($this->titulo);
 			$this->link->setAutor($this->autor);
 			$this->link->setUsuario($this->codUsuario);
 			$this->link->setTags($this->tags);
-			$this->link->salvar();
 			if ($this->link->temErros()) {
 				$this->erros = array_merge($this->erros, $this->link->getErros());
 			}

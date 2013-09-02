@@ -8,6 +8,7 @@ require_once("material.class.new.php");
 $usuario = usuario_sessao();
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 if (!$usuario) { die("voce nao esta logado"); }
+$assocUsuario = $usuario->getSimpleAssoc();
 ?>
 <!DOCTYPE html>
 <html>

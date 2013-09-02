@@ -25,7 +25,7 @@ $BD_base1 = "nuted_planeta";
 $BD_user1 = "root";
 $BD_pass1 = "root";
 
-$linkServidor = "http://sideshowbob/asd/";
+$linkServidor = "http://sideshowbob/Planeta-Rooda-2/";
 
 //constantes
 define("NL","<BR />\n");	//constante nova linha

@@ -51,6 +51,12 @@ function listar($mais_novo = 0, $mais_velho = 0) {
 		$opcoes['nao_aprovados'] = true;
 		$json['pode_aprovar'] = true;
 	}
+	if($usuario->podeAcessar($perm['biblioteca_excluirArquivos'], $turmaId)) {
+		$json['pode_excluir'] = true;
+	}
+	if($usuario->podeAcessar($perm['biblioteca_editarMateriais'], $turmaId)) {
+		$json['pode_editar'] = true;
+	}
 	$json['materiais'] = [];
 	$material = new Material();
 	try {
@@ -59,7 +65,7 @@ function listar($mais_novo = 0, $mais_velho = 0) {
 		$json['errors'][] = $e->getMessage();
 		return;
 	}
-	if ($material->registros() < 10) {
+	if ($material->registros() < 10 && $mais_velho > 0) {
 		$json['todos'] = true;
 	}
 	if ($ok === true) 
@@ -76,6 +82,8 @@ function enviar() {
 	global $_POST;
 	global $_FILES;
 	global $perm;
+	$json['success'] = false;
+
 	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$turmaId)) {
 		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.';
 		return;
@@ -134,7 +142,8 @@ function enviar() {
 				$json['errors'][] = $error;
 			}
 		} else {
-			$json['material'] = $material->getAssoc();
+			$json['success'] = true;
+			//$json['material'] = $material->getAssoc();
 		}
 	} else {
 		$json['errors'][] = "Não foi possivel enviar o material.";
