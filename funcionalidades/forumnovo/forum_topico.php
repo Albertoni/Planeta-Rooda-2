@@ -81,7 +81,13 @@
 	</div>
 	
 	<div id="li_resposta_-1" class="bloco nova_mensagem">
-	<h1>NOVA MENSAGEM</h1>
+	<h1>NOVA MENSAGEM 
+		<select onchange="postDinamico.reordenar(this)">
+			<option>Ordenar mensagens</option>
+			<option>Por data e hora</option>
+			<option>Por respostas</option>
+		</select>
+	</h1>
 		<ul class="sem_estilo">
 			<li>
 				<textarea class="msg_dimensao" rows="10" id="msg_txt_-1"></textarea>

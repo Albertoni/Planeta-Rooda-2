@@ -209,9 +209,10 @@ function enviaMensagem(forumId,id){
 }
 
 var postDinamico = {
-	geraPost: function (post){
+	geraPost: function (post, profundidadeArvore){
 		var container = document.createElement("div");
 		container.className = "cor3";
+		var margem = ((profundidadeArvore == undefined) ? 0 : profundidadeArvore * );
 
 		post.data = post.data.split(' ');
 
@@ -273,5 +274,38 @@ var postDinamico = {
 
 	removeMensagemEspera: function(){
 		document.getElementById("mensagem_espera").style.display = "none";
+	},
+
+	reordenar: function(select){
+		var selecao = select.options[select.selectedIndex].value;
+		if (selecao != 'Ordenar mensagens'){
+			selecao == 'Por data e hora' ? this.imprimePosts(post) : this.imprimeArvore(post);
+		}
+	},
+
+	imprimeArvore: function(array){
+		function copiaArray(arr){
+			return arr.filter(function(arg){return true;})
+		}
+
+		function pegaRespostas(arr, id){
+			return arr.filter(function(post){return id == post.idPost;});
+		}
+
+		function pegaArraySemRespostas(arr, id){
+			return arr.filter(function(post){return !(id == post.idPost);});
+		}
+
+		var arr = copiaArray(post); // vamos destruir, precisa copiar
+
+		while(arr.length > 0){
+			/*var post = arr.shift();
+
+			postDinamico.container.appendChild(postDinamico.geraPost)
+
+			pegaRespostas(arr, post.idPost).forEach*/
+
+			alert('FUDEU');
+		}
 	}
 };
