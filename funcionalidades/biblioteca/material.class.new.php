@@ -239,7 +239,7 @@ SQL
 			$this->tipo = MATERIAL_ARQUIVO;
 			$this->arquivo = new Arquivo();
 			$this->arquivo->setArquivo($material);
-			$this->arquivo->setIdUploader($this->codUsuario);
+			$this->arquivo->setIdUsuario($this->codUsuario);
 			if ($this->titulo !== '') $this->arquivo->setTitulo($this->titulo);
 			$this->codRecurso = $this->arquivo->getId();
 			if ($this->arquivo->temErros()) {
@@ -275,7 +275,6 @@ SQL
 		elseif (is_string($material))
 		{
 			$this->link = new Link();
-			echo $material;
 			$this->link->setEndereco($material);
 			$this->link->setTitulo($this->titulo);
 			$this->link->setAutor($this->autor);

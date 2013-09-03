@@ -1,6 +1,7 @@
 var BIBLIOTECA = (function () {
-	var ulDinamica = document.getElementById("ul_materiais");
-	var btCarregar = document.getElementById("bt_carregar_mais");
+	var ulDinamica;
+	var btCarregar;
+	var formEnvioMaterial;
 	var mais_novo = 0;
 	var mais_velho = 0;
 	var materiais = [];
@@ -76,7 +77,7 @@ var BIBLIOTECA = (function () {
 			+ this.id + '">Excluir</button>';
 		}
 	};
-	ulDinamica.addEventListener('click', function(e) {
+	function ulDinamica_onclick(e) {
 		e = e || event;
 		var elem = e.target;
 		switch (elem.name) {
@@ -88,7 +89,7 @@ var BIBLIOTECA = (function () {
 			default:
 				break;
 		}
-	});
+	}
 	// adicionar novo material à lista de materiais
 	function addMaterial(obj) {
 		// verifica se o material já está na lista
@@ -152,11 +153,14 @@ var BIBLIOTECA = (function () {
 			pode_editar  = json.pode_editar  ? true : false;
 			pode_excluir = json.pode_excluir ? true : false;
 			//console.log(json);
-			json.materiais.forEach(addMaterial);
 			if (json.todos) {
+				// sinal indicando que todos os posts mais antigos já foram carregados.
 				btCarregar.disabled = true;
 			}
-			atualizaLista();
+			if (json.materiais.length > 0) {
+				json.materiais.forEach(addMaterial);
+				atualizaLista();
+			}
 		}
 		// função que é executada quando a requisição de novos materiais é bem sucedida
 		function onFail_new() {
@@ -189,19 +193,44 @@ var BIBLIOTECA = (function () {
 				ROODA.ui.alert("Erro na resposta do servidor.");
 				console.log(e);
 				console.log(this.responseText);
+				return;
 			}
+			console.log(json);
+			if (!json.session) {
+				ROODA.ui.alert("Você não está logado.")
+				return;
+			}
+			if (!json.success) {
+				ROODA.ui.alert(json.errors.join("<br />\n"));
+			}
+			formEnvioMaterial.reset();
+			toggleEnviar();
+			request_newer();
 		}
-		function init()
+		function init(a)
 		{
+			a = a !== undefined ? a : 19;
 			mais_novo = 0;
 			mais_velho = 0;
 			materiais = [];
 			request_newer();
-			btCarregar.onclick = request_older;
 			intervalToken = setInterval(request_newer, 60000);
 		}
-		return { 'init' : init, 'request_older' : request_older };
+		var submitNewMaterial = submitFormFunction(submit_success);
+		return { 'init' : init, 'request_older' : request_older, 'submitNewMaterial' : submitNewMaterial };
 	}());
-	ajax.init();
-	return { init : ajax.init };
+	function init() { 
+		ulDinamica = document.getElementById("ul_materiais");
+		btCarregar = document.getElementById("bt_carregar_mais");
+		formEnvioMaterial = document.getElementById("form_envio_material");
+		btCarregar.addEventListener('click', ajax.request_older);
+		ulDinamica.addEventListener('click', ulDinamica_onclick);
+		formEnvioMaterial.onsubmit = function () {
+			var that = this;
+			setTimeout(function () { ajax.submitNewMaterial(that); }, 5);
+			return false;
+		};
+		ajax.init();
+	}
+	return { 'init' : init, form: formEnvioMaterial };
 }());

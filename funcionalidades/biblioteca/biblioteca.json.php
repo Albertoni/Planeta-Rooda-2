@@ -206,7 +206,7 @@ function editar() {
 	}
 }
 if($json['session'] && !isset($json['errors'])) {
-	$json['session'] = true;
+	//$json['session'] = true;
 	switch ($acao) {
 		case 'listar':
 			listar($mais_novo, $mais_velho);

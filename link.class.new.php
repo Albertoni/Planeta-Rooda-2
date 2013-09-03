@@ -96,7 +96,6 @@ class Link
 			$autor = $bd->sanitizaString($this->autor);
 			$tags = $bd->sanitizaString(implode(',', $this->tags));
 			$endereco = $bd->sanitizaString($this->endereco);
-			echo " $endereco ";
 			$codUsuario = (int) $this->codUsuario;
 			$bd->solicitar(
 				"INSERT INTO $tabela_links (titulo, autor, tags, endereco, codUsuario)

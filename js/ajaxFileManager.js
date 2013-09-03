@@ -37,38 +37,9 @@ Array.prototype.forEach.call(document.getElementsByTagName("input"), function (i
     }
 });
 
-var submitFormFunction = (function (handler) {
-    var uploadHandler = handler || function(){
-        if (this.readyState !== this.DONE) {
-            // requisição em andamento, não fazer nada.
-            return;
-        }
-        if (this.status !== 200) {
-            alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-            return;
-        }
-        if(t = this.responseText) {
-            try {
-                var res = JSON.parse(t);
-            }
-            catch (e) {
-                alert("Erro desconhecido (0xGLHF42)");
-                console.log("JSON: " + e.message + ":\n"+t);
-                return;
-            }
-            if (res.errors) {
-                alert(res.errors.join("\n"));
-            } else if (res.file_id && res.file_name) {
-                alert("Arquivo enviado com sucesso.");
-            } else { 
-                alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-            }
-        } else {
-            console.log("Sem resposta");
-        }
-    }
+var submitFormFunction = (function (successHandler, failHandler) {
     return (function (oFormElement) {
-        AJAXSubmit(oFormElement,uploadHandler);
+        AJAXSubmit(oFormElement, successHandler, failHandler);
     });
 });
 

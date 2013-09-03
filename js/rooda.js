@@ -1,5 +1,4 @@
 var ROODA = {};
-
 /*
  * ROODA.dom
  *    All the dom related functions are here.
@@ -31,8 +30,6 @@ ROODA.dom.walkTheDOM = function (node, fun) {
         node = node.nextSibling;
     }
 };
-
-
 /*
  * ROODA.dom.purgeElement(node)
  * Desc:
@@ -83,14 +80,11 @@ ROODA.dom.onScrollToBottom = (function () {
         }
     };
 }());
-
 /*
  * ROODA.ui
  *    All user interface related functions are here.
  */
 ROODA.ui = {};
-
-
 /* 
  * ROODA.ui.alert(str)
  * Desc:
@@ -123,13 +117,13 @@ ROODA.ui.alert = function(str) {
 
 
 /* 
- * ROODA.ui.alert( str [, yes_func [, no_func ]] )
+ * ROODA.ui.alert( str [, fun_yes [, fun_no ]] )
  * Desc:
  *    A non-blocking javascript confirm interface
  * Params:
  *    str: string message
- *    yes_func: function to be executed if user click "ok" button
- *    no_func: function to be executed if user click "no" button
+ *    fun_yes: function to be executed if user click "ok" button
+ *    fun_no: function to be executed if user click "no" button
  */
 ROODA.ui.confirm = function(str, fun_yes, fun_no) {
     'use strict';

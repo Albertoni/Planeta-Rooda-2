@@ -18,7 +18,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 		<link type="text/css" rel="stylesheet" href="biblioteca2.css" />
 	</head>
-	<body>
+	<body onload="BIBLIOTECA.init();">
 		<div id="topo">
 			<div id="centraliza_topo">
 				<?php 
@@ -58,6 +58,9 @@ $assocUsuario = $usuario->getSimpleAssoc();
 						<h1>NOME DA TURMA</h1>
 						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
+					</div>
+					<div class="bloco" id="editar_material" style="display: none;">
+						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
 					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
 						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>

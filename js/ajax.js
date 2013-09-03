@@ -1,11 +1,11 @@
+
+(function (exports) {
 "use strict";
- 
 /* 
  *   :: XMLHttpRequest.prototype.sendAsBinary() Polifyll ::
  * 
  *   https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#sendAsBinary()
  */
- 
 if (!XMLHttpRequest.prototype.sendAsBinary) {
   XMLHttpRequest.prototype.sendAsBinary = function (sData) {
     var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
@@ -17,7 +17,6 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
     /* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
   };
 }
- 
 /* 
  *   :: AJAX Form Submit Framework ::
  * 
@@ -30,8 +29,7 @@ if (!XMLHttpRequest.prototype.sendAsBinary) {
  * 
  *    AJAXSubmit(HTMLFormElement,function);
  */
- 
-var AJAXSubmit = (function () {
+exports.AJAXSubmit = (function () {
  
   function ajaxSuccess () {
     /* console.log("AJAXSubmit - Success!"); */
@@ -45,7 +43,22 @@ var AJAXSubmit = (function () {
     var oAjaxReq = new XMLHttpRequest();
 	 //oAjaxReq.responseType = "document";
     oAjaxReq.submittedData = oData;
-    oAjaxReq.onload = oData.fHandler || ajaxSuccess;
+    oAjaxReq.onreadystatechange = function () {
+      if (this.readyState !== this.DONE) {
+        // requisição em andamento, não fazer nada.
+        return;
+      }
+      if (this.status === 200) {
+        if (typeof oData.successHandler === 'function')
+        {
+          oData.successHandler.call(this);
+        }
+      } else {
+        if (typeof oData.failHandler === 'function') {
+          oData.failHandler.call(this);
+        }
+      }
+    };
     if (oData.technique === 0) {
       /* method is GET */
       oAjaxReq.open("get", oData.receiver.replace(/(?:\?.*)?$/, oData.segments.length > 0 ? "?" + oData.segments.join("&") : ""), true);
@@ -86,7 +99,7 @@ var AJAXSubmit = (function () {
     return sText.replace(/[\s\=\\]/g, "\\$&");
   }
  
-  function SubmitRequest (oTarget,fHandler) {
+  function SubmitRequest (oTarget,successHandler,failHandler) {
     var nFile, sFieldType, oField, oSegmReq, oFile, bIsPost = oTarget.method.toLowerCase() === "post";
     /* console.log("AJAXSubmit - Serializing form..."); */
     this.contentType = bIsPost && oTarget.enctype ? oTarget.enctype : "application\/x-www-form-urlencoded";
@@ -94,7 +107,8 @@ var AJAXSubmit = (function () {
     this.receiver = oTarget.action;
     this.status = 0;
     this.segments = [];
-	 this.fHandler = fHandler;
+    this.successHandler = successHandler;
+    this.failHandler = failHandler;
     var fFilter = this.technique === 2 ? plainEscape : escape;
     for (var nItem = 0; nItem < oTarget.elements.length; nItem++) {
       oField = oTarget.elements[nItem];
@@ -132,14 +146,14 @@ var AJAXSubmit = (function () {
     processStatus(this);
   }
  
-  return function (oFormElement,fHandler) {
+  return function (oFormElement,successHandler,failHandler) {
     if (!oFormElement.action) { return; }
-    new SubmitRequest(oFormElement,fHandler);
+    new SubmitRequest(oFormElement,successHandler,failHandler);
   };
  
 })();
 
-var AJAXOpen = function (url, handler) {
+exports.AJAXOpen = function (url, handler) {
 	var oAjaxReq = new XMLHttpRequest();
 	if (typeof handler === "function") {
 		oAjaxReq.onreadystatechange = handler;
@@ -149,7 +163,7 @@ var AJAXOpen = function (url, handler) {
 };
 
 // AJAXGet("http://google.com/", { success: function () { alert("success"); }, fail: function () { alert("fail"); } });
-var AJAXGet = function (url, handlers) {
+exports.AJAXGet = function (url, handlers) {
   var oAjaxReq = new XMLHttpRequest();
   oAjaxReq.onreadystatechange = function () {
     if (this.readyState !== this.DONE) {
@@ -171,7 +185,7 @@ var AJAXGet = function (url, handlers) {
   oAjaxReq.send();
 };
 
-var AJAXPost = function(url,handler,dataObject) {
+exports.AJAXPost = function(url,handler,dataObject) {
   var i, values = [], body = "", oAjaxReq = new XMLHttpRequest();
   if (typeof handler === "function") {
     oAjaxReq.onreadystatechange = handler;
@@ -188,3 +202,4 @@ var AJAXPost = function(url,handler,dataObject) {
   oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   oAjaxReq.send(body);
 }
+}(window));

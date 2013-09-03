@@ -99,17 +99,26 @@ ul#ul_materiais li.nao_aprovado:nth-child(2n+1) {
 .link .icon {
 	background: url('../../images/fileicons/unknown.png');
 }
-.arquivo.application .icon {
-	background: url('../../images/fileicons/binary.png');
-}
+/*image*/
 .arquivo.image .icon {
 	background: url('../../images/fileicons/image.png');
 }
 .arquivo.image.vnd-adobe-photoshop .icon{
 	background: url('../../images/fileicons/image-x-psd.png');
 }
+/*text*/
 .arquivo.text .icon {
 	background: url('../../images/fileicons/txt.png');
+}
+.arquivo.text.html .icon {
+	background: url('../../images/fileicons/text-html.png');
+}
+/*application*/
+.arquivo.application .icon {
+	background: url('../../images/fileicons/binary.png');
+}
+.arquivo.application.javascript .icon {
+	background: url('../../images/fileicons/application-javascript.png');
 }
 .arquivo.application.vnd-oasis-opendocument-text .icon {
 	background: url('../../images/fileicons/x-office-document.png');
