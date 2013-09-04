@@ -212,15 +212,15 @@ var postDinamico = {
 	geraPost: function (post, profundidadeArvore){
 		var container = document.createElement("div");
 		container.className = "cor3";
-		var margem = ((profundidadeArvore == undefined) ? 0 : profundidadeArvore * );
+		var margem = ((profundidadeArvore == undefined) ? 0 : profundidadeArvore * 10);
 
-		post.data = post.data.split(' ');
+		var data = post.data.split(' ');
 
 		if(post.mensagemRespondida != undefined){
-			post.mensagemRespondida.data = post.mensagemRespondida.data.split(' ');
+			var respondidaData = post.mensagemRespondida.data.split(' ');
 
 			var textoPost = "<div class=\"limite_resposta\">\
-					<cite class=\"citacao\">Em resposta à mensagem de "+post.mensagemRespondida.nomeUsuario+", de "+post.mensagemRespondida.data[0]+" às "+post.mensagemRespondida.data[1]+":</cite>\
+					<cite class=\"citacao\">Em resposta à mensagem de "+post.mensagemRespondida.nomeUsuario+", de "+respondidaData[0]+" às "+respondidaData[1]+":</cite>\
 					<p class=\"texto_resposta\">"+post.texto+"</p>\
 				</div>";
 		}else{
@@ -229,11 +229,11 @@ var postDinamico = {
 				</div>";
 		}
 
-		container.innerHTML = "<ul>\
+		container.innerHTML = "<ul style=\"margin-left:"+margem+"px\">\
 			<li class=\"tabela\">\
 			<div class=\"info\">\
 				<p class=\"nome\"><b>"+post.nomeUsuario+"</b></p>\
-				<p class=\"data\"><span class=\"data\">"+post.data[0]+"</span> às <span class=\"data\">"+post.data[1]+"</span></p>\
+				<p class=\"data\"><span class=\"data\">"+data[0]+"</span> às <span class=\"data\">"+data[1]+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editarMensagem("+turma+","+post.idPost+")\" "+ ((post.podeEditar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
@@ -283,8 +283,9 @@ var postDinamico = {
 		}
 	},
 
-	imprimeArvore: function(array){
+	imprimeArvore: function(posts){
 		function copiaArray(arr){
+			console.log(arr);
 			return arr.filter(function(arg){return true;})
 		}
 
@@ -296,16 +297,23 @@ var postDinamico = {
 			return arr.filter(function(post){return !(id == post.idPost);});
 		}
 
-		var arr = copiaArray(post); // vamos destruir, precisa copiar
+		function processaPost(post, profundidade){
+			postDinamico.container.appendChild(postDinamico.geraPost(post, profundidade));
+			var respostas = pegaRespostas(arr, post.idPost);
+			var semRespostas = pegaArraySemRespostas(arr, post.idPost);
+
+			respostas.forEach(function(post, index, array){
+				semRespostas = processaPost(post, profundidade+1);
+			});
+
+			return semRespostas;
+		}
+
+		var arr = copiaArray(posts); // vamos destruir, precisa copiar
 
 		while(arr.length > 0){
-			/*var post = arr.shift();
-
-			postDinamico.container.appendChild(postDinamico.geraPost)
-
-			pegaRespostas(arr, post.idPost).forEach*/
-
-			alert('FUDEU');
+			var post = arr.shift();
+			arr = processaPost(post, 0);
 		}
 	}
 };
