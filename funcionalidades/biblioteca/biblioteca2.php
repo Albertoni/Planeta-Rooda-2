@@ -61,6 +61,8 @@ $assocUsuario = $usuario->getSimpleAssoc();
 					</div>
 					<div class="bloco" id="editar_material" style="display: none;">
 						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
+						<form id="form_editar_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=enviar">
+						</form>
 					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
 						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>

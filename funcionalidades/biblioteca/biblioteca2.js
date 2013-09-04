@@ -2,6 +2,7 @@ var BIBLIOTECA = (function () {
 	var ulDinamica;
 	var btCarregar;
 	var formEnvioMaterial;
+	var formEdicaoMaterial;
 	var mais_novo = 0;
 	var mais_velho = 0;
 	var materiais = [];
@@ -70,7 +71,7 @@ var BIBLIOTECA = (function () {
 		}
 		if (pode_editar) {
 			this.HTMLElemento.innerHTML += '<button type="button" name="editar" class="editar" value="' 
-			+ this.id + '">Editar</button>';
+			+ this.id + '">Editar</button> ';
 		}
 		if (pode_excluir) {
 			this.HTMLElemento.innerHTML += '<button type="button" name="excluir" class="excluir" value="' 
@@ -82,9 +83,13 @@ var BIBLIOTECA = (function () {
 		var elem = e.target;
 		switch (elem.name) {
 			case 'aprovar':
-				console.log(elem.value);
+				console.log('aprovar: ' + elem.value);
 				break;
 			case 'excluir':
+				console.log('excluir: ' + elem.value);
+				break;
+			case 'editar':
+				console.log('editar: ' + elem.value);
 				break;
 			default:
 				break;
@@ -135,77 +140,147 @@ var BIBLIOTECA = (function () {
 		var intervalToken;
 		var failCount;
 		// função executada quando falha a requisição de novos materiais
-		function onSuccess() {
-			var json;
-			failCount = 0;
-			try {
-				json = JSON.parse(this.responseText);
-			} catch (e) {
-				ROODA.ui.alert("Servidor não respondeu.");
-				console.log(e);
-				console.log(this.responseText);
+		var request_newer = (function () {
+			function onSuccess() {
+				var json;
+				failCount = 0;
+				try {
+					json = JSON.parse(this.responseText);
+				} catch (e) {
+					ROODA.ui.alert("Erro no servidor.");
+					console.log(e);
+					console.log(this.responseText);
+					return;
+				}
+				if (!json.session) {
+					ROODA.ui.alert("Sua sessão expirou.");
+					return;
+				}
+				pode_aprovar = json.pode_aprovar ? true : false;
+				pode_editar  = json.pode_editar  ? true : false;
+				pode_excluir = json.pode_excluir ? true : false;
+				//console.log(json);
+				if (json.materiais.length > 0) {
+					json.materiais.forEach(addMaterial);
+					atualizaLista();
+				}
+				setTimeout(request_newer, 60000);
 			}
-			if (!json.session) {
-				ROODA.ui.alert("Sua sessão expirou.");
-				return;
+			// função que é executada quando a requisição de novos materiais é bem sucedida
+			function onFail() {
+				failCount += 1;
+				if (failCount > 2) {
+					ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.")
+				} else {
+					setTimeout(request_newer, 60000);
+				}
 			}
-			pode_aprovar = json.pode_aprovar ? true : false;
-			pode_editar  = json.pode_editar  ? true : false;
-			pode_excluir = json.pode_excluir ? true : false;
-			//console.log(json);
-			if (json.todos) {
-				// sinal indicando que todos os posts mais antigos já foram carregados.
-				btCarregar.disabled = true;
+			return function () {
+				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_novo=" + mais_novo, {
+					'success': onSuccess,
+					'fail': onFail
+				});
 			}
-			if (json.materiais.length > 0) {
-				json.materiais.forEach(addMaterial);
-				atualizaLista();
+		}());
+		function request_older = function () {
+			function onSuccess() {
+				var json;
+				failCount = 0;
+				try {
+					json = JSON.parse(this.responseText);
+				} catch (e) {
+					ROODA.ui.alert("Erro no servidor.");
+					console.log(e);
+					console.log(this.responseText);
+				}
+				if (!json.session) {
+					ROODA.ui.alert("Sua sessão expirou.");
+					return;
+				}
+				//console.log(json);
+				if (json.todos) {
+					// sinal indicando que todos os posts mais antigos já foram carregados.
+					btCarregar.disabled = true;
+				}
+				if (json.materiais.length > 0) {
+					json.materiais.forEach(addMaterial);
+					atualizaLista();
+				}
 			}
-		}
-		// função que é executada quando a requisição de novos materiais é bem sucedida
-		function onFail_new() {
-			failCount += 1;
-			if (failCount > 2) {
-				clearInterval(intervalToken);
-				ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.")
+			function onFail_old() {
+				ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.");
 			}
-		}
-		function onFail_old() {
-			ROODA.ui.alert("Servidor não respondeu.");
-		}
-		function request_newer() {
-			AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_novo=" + mais_novo, {
-				'success': onSuccess,
-				'fail': onFail_new
-			});
-		}
-		function request_older() {
-			AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_velho=" + mais_velho, {
-				'success': onSuccess,
-				'fail': onFail_old
-			});
-		}
-		function submit_success() {
-			try {
-				json = JSON.parse(this.responseText);
+			return function () {
+				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_velho=" + mais_velho, {
+					'success': onSuccess,
+					'fail': onFail_old
+				});
 			}
-			catch (e) {
-				ROODA.ui.alert("Erro na resposta do servidor.");
-				console.log(e);
-				console.log(this.responseText);
-				return;
+		}());
+		// submitNewMaterial(formulario) : faz request de submissão de material
+		var submitNewMaterial = (function() {
+			function submit_success() {
+				var json;
+				try {
+					json = JSON.parse(this.responseText);
+				}
+				catch (e) {
+					ROODA.ui.alert("Erro na resposta do servidor.");
+					console.log(e);
+					console.log(this.responseText);
+					return;
+				}
+				console.log(json);
+				if (!json.session) {
+					ROODA.ui.alert("Você não está logado.")
+					return;
+				}
+				if (!json.success) {
+					ROODA.ui.alert(json.errors.join("<br />\n"));
+				}
+				formEnvioMaterial.reset();
+				toggleEnviar();
+				request_newer();
 			}
-			console.log(json);
-			if (!json.session) {
-				ROODA.ui.alert("Você não está logado.")
-				return;
+			return submitFormFunction(submit_success);
+		}());
+		function deleteMaterial(id) {
+			function req_success() {
+				var res, json, id;
+				res = this.responseText;
+				if (!res) {
+					return;
+				}
+				try {
+					json = JSON.parse(res);
+				}
+				catch (e) {
+					ROODA.ui.alert("Erro no servidor.");
+					console.log(e);
+					console.log(res);
+					return;
+				}
+				if (json.success) {
+					id = json.id;
+					removeMaterial(id);
+					atualizaLista();
+				} else {
+					if (json.errors) {
+						ROODA.ui.alert("Não foi possivel excluir:<br>".json.errors.join("<br>"));
+					} else {
+						ROODA.ui.alert("Não foi possivel excluir:<br>Motivo desconhecido.")
+					}
+				}
 			}
-			if (!json.success) {
-				ROODA.ui.alert(json.errors.join("<br />\n"));
+			function req_fail() {
+				ROODA.ui.alert("Não foi possivel excluir o material: o servidor não respondeu.");
 			}
-			formEnvioMaterial.reset();
-			toggleEnviar();
-			request_newer();
+			return function () {
+				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=excluir&id=" + id, {
+					'success': req_success,
+					'fail': req_fail
+				});
+			}
 		}
 		function init(a)
 		{
@@ -214,15 +289,15 @@ var BIBLIOTECA = (function () {
 			mais_velho = 0;
 			materiais = [];
 			request_newer();
-			intervalToken = setInterval(request_newer, 60000);
 		}
-		var submitNewMaterial = submitFormFunction(submit_success);
+		// submitEditMaterial(formulario)
 		return { 'init' : init, 'request_older' : request_older, 'submitNewMaterial' : submitNewMaterial };
 	}());
 	function init() { 
 		ulDinamica = document.getElementById("ul_materiais");
 		btCarregar = document.getElementById("bt_carregar_mais");
 		formEnvioMaterial = document.getElementById("form_envio_material");
+		formEdicaoMaterial = document.getElementById("form_");
 		btCarregar.addEventListener('click', ajax.request_older);
 		ulDinamica.addEventListener('click', ulDinamica_onclick);
 		formEnvioMaterial.onsubmit = function () {

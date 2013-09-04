@@ -10,51 +10,59 @@ require_once('../../turma.class.php');
 require_once('material.class.new.php');
 header("Content-Type: application/json");
 $usuario = usuario_sessao();
-$turmaId = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 $acao = isset($_GET['acao']) ? trim($_GET['acao']) : "";
-// se as duas variaveis abaixo forem 0, deve mandar os 10 materiais mais novos.
-// se definido o cliente pede por materiais mais novos do que o id nessa variavel
-$mais_novo = isset($_GET['mais_novo']) ? (int) $_GET['mais_novo'] : 0;
-// se definido o cliente pede para carregar materiais mais antigos que o id dessa variavel
-$mais_velho = isset($_GET['mais_velho']) ? (int) $_GET['mais_velho'] : 0;
-$turma = new turma($turmaId);
-$json['turma'] = $turmaId;
-$json['session'] = true;
+
+
+$id = isset($_GET['material']) ? (int) $_GET['material'] : 0;
 if ($usuario === false) {
 	$json['session'] = false;
+	$json['errors'][] = "Você não está autenticado.";
 } else {
+	$idUsuario = $usuario->getId();
 	$json['session'] = $usuario->getSimpleAssoc();
 }
-if ($json['session']) {}
-if ($turma->getId() !== $turmaId) {
-	$json['errors'][] = "Turma não definida";
-} else {
-	$perm = checa_permissoes(TIPOBIBLIOTECA, $turmaId);
-	if ($perm === false) {
-		$json['errors'][] = "Biblioteca desabilitada para esta turma.";
-	}
-}
-function listar($mais_novo = 0, $mais_velho = 0) {
+
+function listar() {
 	global $json;
-	global $turma;
-	global $turmaId;
 	global $usuario;
-	global $mais_velho;
-	global $mais_novo;
-	global $perm;
+	global $_GET;
+	$idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+	$turma = new turma($idTurma);
+	$idUsuario = $usuario->getId();
+	if ($turma->getId() !== $idTurma) {
+		$json['errors'][] = "Turma não definida";
+		return;
+	}
+	if(!usuarioPertenceTurma($idUsuario, $idTurma)) {
+		// usuário não pertence a turma.
+		$json['errors'][] = "erro: voc&ecirc; n&atilde;o est&aacute; nesta setTurma.";
+		return;
+	} else {
+		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+		if ($perm === false) {
+			$json['errors'][] = "Biblioteca desabilitada para esta turma.";
+			return;
+		}
+	}
+	// se as duas variaveis abaixo forem 0, deve mandar os 10 materiais mais novos.
+	// se definido o cliente pede por materiais mais novos do que o id nessa variavel
+	$mais_novo = isset($_GET['mais_novo']) ? (int) $_GET['mais_novo'] : 0;
+	// se definido o cliente pede para carregar materiais mais antigos que o id dessa variavel
+	$mais_velho = isset($_GET['mais_velho']) ? (int) $_GET['mais_velho'] : 0;
+	// id da turma para listar
 	$opcoes = 
-		['turma'      => $turmaId,
+		['turma'      => $idTurma,
 		 'usuario'    => $usuario->getId(),
 		 'mais_velho' => $mais_velho,
 		 'mais_novo'  => $mais_novo];
-	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $turmaId)) {
+	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $idTurma)) {
 		$opcoes['nao_aprovados'] = true;
 		$json['pode_aprovar'] = true;
 	}
-	if($usuario->podeAcessar($perm['biblioteca_excluirArquivos'], $turmaId)) {
+	if($usuario->podeAcessar($perm['biblioteca_excluirArquivos'], $idTurma)) {
 		$json['pode_excluir'] = true;
 	}
-	if($usuario->podeAcessar($perm['biblioteca_editarMateriais'], $turmaId)) {
+	if($usuario->podeAcessar($perm['biblioteca_editarMateriais'], $idTurma)) {
 		$json['pode_editar'] = true;
 	}
 	$json['materiais'] = [];
@@ -77,14 +85,27 @@ function listar($mais_novo = 0, $mais_velho = 0) {
 }
 function enviar() {
 	global $json;
-	global $turmaId;
 	global $usuario;
+	global $_GET;
 	global $_POST;
 	global $_FILES;
 	global $perm;
+	$idUsuario = $usuario->getId();
+	$idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+	$turma = new turma($idTurma);
 	$json['success'] = false;
-
-	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$turmaId)) {
+	if(!usuarioPertenceTurma($idUsuario, $idTurma)) {
+		// usuário não pertence a turma.
+		$json['errors'][] = "erro: voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar este material.";
+		return;
+	} else {
+		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+		if ($perm === false) {
+			$json['errors'][] = "Biblioteca desabilitada para esta turma.";
+			return;
+		}
+	}
+	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$idTurma)) {
 		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.';
 		return;
 	}
@@ -97,7 +118,7 @@ function enviar() {
 	};
 	$material = new Material();
 	$material->setUsuario($usuario);
-	$material->setTurma($turmaId);
+	$material->setTurma($idTurma);
 	$material->setTitulo($titulo);
 	$material->setAutor($autor);
 	if (isset($_POST['tipo'])) 
@@ -149,13 +170,13 @@ function enviar() {
 		$json['errors'][] = "Não foi possivel enviar o material.";
 	}
 }
+/* ------------- /
 function editar() {
 	global $json;
-	global $turmaId;
 	global $usuario;
 	global $_POST;
 	global $_FILES;
-	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$turmaId)) {
+	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
 		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
 		return;
 	}
@@ -205,15 +226,34 @@ function editar() {
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
 	}
 }
+/* ------------------ */
+function excluir() {
+	global $json;
+	global $_GET;
+	global $usuario;
+	$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+	$material = new Material($id);
+	if ($material->temErros()) {
+		$json['errors'] = array_merge($json['errors'], $material->getErros());
+		return;
+	}
+	$idTurma = $material->getIdTurma();
+	if (!$usuario->podeAcessar($perm['biblioteca_excluirArquivos'],$idTurma)) {
+		$json['errors'] = 'Você não tem permissão para excluir materiais nesta biblioteca.';
+		return;
+	}
+}
 if($json['session'] && !isset($json['errors'])) {
 	//$json['session'] = true;
 	switch ($acao) {
 		case 'listar':
-			listar($mais_novo, $mais_velho);
+			listar();
 			break;
 		case 'enviar':
 			enviar();
 			break;
+		case 'excluir':
+			excluir();
 		default:
 			break;
 	}
