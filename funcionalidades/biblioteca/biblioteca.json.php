@@ -237,11 +237,65 @@ function excluir() {
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
 		return;
 	}
+	$idUsuario = $usuario->getId();
 	$idTurma = $material->getIdTurma();
+	if(!usuarioPertenceTurma($idUsuario, $idTurma)) {
+		// usuário não pertence a turma.
+		$json['errors'][] = "erro: voc&ecirc; n&atilde;o est&aacute; nesta setTurma.";
+		return;
+	} else {
+		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+		if ($perm === false) {
+			$json['errors'][] = "Biblioteca desabilitada para esta turma.";
+			return;
+		}
+	}
 	if (!$usuario->podeAcessar($perm['biblioteca_excluirArquivos'],$idTurma)) {
 		$json['errors'] = 'Você não tem permissão para excluir materiais nesta biblioteca.';
 		return;
 	}
+	$material->excluir();
+	$json['success'] = true;
+	$json['id'] = $id;
+}
+function aprovar() {
+	global $_GET;
+	global $_POST;
+	global $usuario;
+	global $json;
+	$id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+	$material = new Material($id);
+	if ($material->temErros()) {
+		$json['errors'][] = "erro: Erro ao abrir material.";
+		$json['errors'] = array_merge($json['errors'], $material->getErros());
+		return;
+	}
+	$idUsuario = $usuario->getId();
+	$idTurma = $material->getIdTurma();
+	if (!usuarioPertenceTurma($idUsuario, $idTurma)) {
+		// usuário não pertence a turma.
+		$json['errors'][] = "erro: voc&ecirc; n&atilde;o est&aacute; nesta setTurma.";
+		return;
+	} else {
+		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+		if ($perm === false) {
+			$json['errors'][] = "Biblioteca desabilitada para esta turma.";
+			return;
+		}
+	}
+	if (!$usuario->podeAcessar($perm['biblioteca_aprovarMateriais'],$idTurma)) {
+		$json['errors'][] = 'Você não tem permissão para aprovar materiais nesta biblioteca.';
+		return;
+	}
+	// APROVA
+	$material->aprovar();
+	if ($material->temErros()) {
+
+		$json['errors'] = isset($json['errors']) ? array_merge($json['errors'], $material->getErros()) : $material->getErros();
+		return;
+	}
+	$json['id'] = $material->getId();
+	$json['success'] = true;
 }
 if($json['session'] && !isset($json['errors'])) {
 	//$json['session'] = true;
@@ -252,8 +306,12 @@ if($json['session'] && !isset($json['errors'])) {
 		case 'enviar':
 			enviar();
 			break;
+		case 'aprovar':
+			aprovar();
+			break;
 		case 'excluir':
 			excluir();
+			break;
 		default:
 			break;
 	}

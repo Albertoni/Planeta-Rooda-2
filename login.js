@@ -276,7 +276,7 @@ function login(){
 	http_login.send(parametros);
 }
 
-var titulo_cad = 'CRIAR PERSONAGEM';
+var titulo_cad = 'CRIAR USUÁRIO';
 var titulo_sen = 'NOVA SENHA';
 
 var c_cadastro = '<ul>\

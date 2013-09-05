@@ -56,12 +56,14 @@ var BIBLIOTECA = (function () {
 			this.HTMLElemento.classList.add('link');
 			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
 		}
-		if (!this.aprovado) {
-			this.HTMLElemento.classList.add('nao_aprovado');
-		}
 		this.atualizarHTML();
 	}
 	Material.prototype.atualizarHTML = function() {
+		if (!this.aprovado) {
+			this.HTMLElemento.classList.add('nao_aprovado');
+		} else {
+			this.HTMLElemento.classList.remove('nao_aprovado');
+		}
 		this.HTMLElemento.innerHTML = '<h2>' + this.titulo + '</h2><small>Enviado por ' 
 		+ this.usuario.nome + ' (' + this.data.toLocaleString()
 		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank" class="abrir_material">Abrir material<span class="icon">&nbsp;</span></a></p>';
@@ -84,9 +86,11 @@ var BIBLIOTECA = (function () {
 		switch (elem.name) {
 			case 'aprovar':
 				console.log('aprovar: ' + elem.value);
+				ROODA.ui.confirm("Tem certeza que deseja aprovar este material?", function () { ajax.aproveMaterial(elem.value); });
 				break;
 			case 'excluir':
 				console.log('excluir: ' + elem.value);
+				ROODA.ui.confirm("Tem certeza que deseja excluir este material?", function () { ajax.deleteMaterial(parseInt(elem.value, 10)); });
 				break;
 			case 'editar':
 				console.log('editar: ' + elem.value);
@@ -122,6 +126,14 @@ var BIBLIOTECA = (function () {
 	// remove material da lista de materiais
 	function removeMaterial(id) {
 		materiais = materiais.filter(function (material) { return (material.id !== id); });
+	}
+	function aprovaMaterial(id) {
+		var tmp = materiais.filter(function (material) { return (material.id === id); });
+		console.log(tmp);
+		if (tmp[0]) {
+			tmp[0].aprovado = true;
+			tmp[0].atualizarHTML();
+		}
 	}
 	// atualiza lista de materiais (HTML) de acordo com a lista de materiais (JS)
 	function atualizaLista() {
@@ -182,7 +194,7 @@ var BIBLIOTECA = (function () {
 				});
 			}
 		}());
-		function request_older = function () {
+		var request_older = (function () {
 			function onSuccess() {
 				var json;
 				failCount = 0;
@@ -215,7 +227,7 @@ var BIBLIOTECA = (function () {
 					'success': onSuccess,
 					'fail': onFail_old
 				});
-			}
+			};
 		}());
 		// submitNewMaterial(formulario) : faz request de submissão de material
 		var submitNewMaterial = (function() {
@@ -244,7 +256,7 @@ var BIBLIOTECA = (function () {
 			}
 			return submitFormFunction(submit_success);
 		}());
-		function deleteMaterial(id) {
+		var deleteMaterial= (function () {
 			function req_success() {
 				var res, json, id;
 				res = this.responseText;
@@ -266,7 +278,7 @@ var BIBLIOTECA = (function () {
 					atualizaLista();
 				} else {
 					if (json.errors) {
-						ROODA.ui.alert("Não foi possivel excluir:<br>".json.errors.join("<br>"));
+						ROODA.ui.alert("Não foi possivel excluir:<br>" + json.errors.join("<br>"));
 					} else {
 						ROODA.ui.alert("Não foi possivel excluir:<br>Motivo desconhecido.")
 					}
@@ -275,23 +287,67 @@ var BIBLIOTECA = (function () {
 			function req_fail() {
 				ROODA.ui.alert("Não foi possivel excluir o material: o servidor não respondeu.");
 			}
-			return function () {
+			return function (id) {
 				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=excluir&id=" + id, {
 					'success': req_success,
 					'fail': req_fail
 				});
 			}
-		}
-		function init(a)
+		}());
+		var aproveMaterial= (function () {
+			// handler a executar quando o request ao servidor é executado com sucesso
+			function req_success() {
+				var res, json, id;
+				res = this.responseText;
+				if (!res) {
+					return;
+				}
+				try {
+					json = JSON.parse(res);
+				}
+				catch (e) {
+					ROODA.ui.alert("Erro no servidor.");
+					console.log(e);
+					console.log(res);
+					return;
+				}
+				if (json.success) {
+					id = json.id;
+					aprovaMaterial(id);
+				} else {
+					if (json.errors) {
+						ROODA.ui.alert("Não foi possivel aprovar:<br>" + json.errors.join("<br>"));
+					} else {
+						ROODA.ui.alert("Não foi possivel aprovar:<br>Motivo desconhecido.")
+					}
+				}
+			}
+			// handler para executar quando a requisição ao servidor falha
+			function req_fail() {
+				ROODA.ui.alert("Não foi possivel excluir o material: o servidor não respondeu.");
+			}
+			return function (id) {
+				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=aprovar&id=" + id, {
+					'success': req_success,
+					'fail': req_fail,
+				});
+			}
+		}());
+		function init()
 		{
-			a = a !== undefined ? a : 19;
 			mais_novo = 0;
 			mais_velho = 0;
 			materiais = [];
 			request_newer();
 		}
 		// submitEditMaterial(formulario)
-		return { 'init' : init, 'request_older' : request_older, 'submitNewMaterial' : submitNewMaterial };
+		return {
+			'init' : init,
+			'request_older' : request_older,
+			'submitNewMaterial' : submitNewMaterial,
+			'deleteMaterial' : deleteMaterial,
+			'aproveMaterial' : aproveMaterial
+		};
 	}());
 	function init() { 
 		ulDinamica = document.getElementById("ul_materiais");

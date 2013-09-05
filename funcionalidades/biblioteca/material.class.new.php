@@ -490,4 +490,27 @@ SQL
 		if (!$this->turma_aberta) throw new Exception("Material::registros() só pode ser usado depois de abrir uma turma com Material::abrirTurma()", 1);
 		return $this->consulta_turma->registros;
 	}
+	public function aprovar() {
+		global $tabela_Materiais;
+		if (!$this->id || $this->novo) {
+			return;
+		}
+		$bd = new conexao();
+		$bd->solicitar(
+			"UPDATE $tabela_Materiais SET materialAprovado = '1' WHERE codMaterial = {$this->id}"
+		);
+		if ($bd->erro !== '') {
+			$this->erros[] = "BD: {$bd->erro}";
+		}
+	}
+	public function excluir() {
+		global $tabela_Materiais;
+		if (!$this->id || $this->novo) {
+			return true;
+		}
+		$bd = new conexao();
+		$bd->solicitar(
+			"DELETE FROM $tabela_Materiais WHERE codMaterial = {$this->id}"
+		);
+	}
 }

@@ -124,7 +124,7 @@
 
 <!-- estrutura para cadastro -->
 <div id="sustenta_cadastro">
-	<div id="cadastro_topo"><p align="center" id="tituloDir">CRIAR PERSONAGEM</p></div>
+	<div id="cadastro_topo"><p align="center" id="tituloDir">CRIAR USUÁRIO</p></div>
 	<div id="caixa_cadastro">
 		<ul>
 			<li> <label for="nome_completo">NOME COMPLETO</label> </li>
