@@ -1,6 +1,5 @@
 var guto = 0; //a variável guto serve pra que o evento de click do 'body' seja ativado sem influenciar no click do '.bloco'
 var mensagemRespondida = 0; // usado pra guardar o id da mensagem sendo respondida
-var turma = document.getElementById("idTurma").value;
 
 var edicao = '\
 	<div class="esq">\
@@ -216,7 +215,7 @@ var postDinamico = {
 
 		var data = post.data.split(' ');
 
-		if(post.mensagemRespondida != undefined){
+		if((post.mensagemRespondida != undefined) && profundidadeArvore == 0){
 			var respondidaData = post.mensagemRespondida.data.split(' ');
 
 			var textoPost = "<div class=\"limite_resposta\">\
@@ -229,7 +228,7 @@ var postDinamico = {
 				</div>";
 		}
 
-		container.innerHTML = "<ul style=\"margin-left:"+margem+"px\">\
+		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
 			<div class=\"info\">\
 				<p class=\"nome\"><b>"+post.nomeUsuario+"</b></p>\
@@ -258,11 +257,15 @@ var postDinamico = {
 			</li>\
 		</ul>";
 
+		container.style.marginLeft = margem+'px';
+		container.style.width = '';
+
 		return container;
 	},
 
 	imprimePosts: function(array){
-		var domArray = array.map(postDinamico.geraPost);
+		var domArray = array.map(function(post, indice, array){return postDinamico.geraPost(post, 0);});
+		// antes de mexer no codigo acima leia a documentação de map, ela passa 3 parametros e só precisamos do primeiro
 
 		domArray.forEach(
 			function(objeto, indice, array){
@@ -270,13 +273,15 @@ var postDinamico = {
 		})
 	},
 
-	container: document.getElementById("bloco_mensagens"),
+	container: document.getElementById("areaMensagens"),
 
 	removeMensagemEspera: function(){
 		document.getElementById("mensagem_espera").style.display = "none";
 	},
 
 	reordenar: function(select){
+		$('#areaMensagens').empty();
+
 		var selecao = select.options[select.selectedIndex].value;
 		if (selecao != 'Ordenar mensagens'){
 			selecao == 'Por data e hora' ? this.imprimePosts(post) : this.imprimeArvore(post);
@@ -285,25 +290,26 @@ var postDinamico = {
 
 	imprimeArvore: function(posts){
 		function copiaArray(arr){
-			console.log(arr);
 			return arr.filter(function(arg){return true;})
 		}
 
 		function pegaRespostas(arr, id){
-			return arr.filter(function(post){return id == post.idPost;});
+			return arr.filter(function(post){return ((post.mensagemRespondida != undefined) ? (id == post.mensagemRespondida.idPost) : false);});
 		}
 
 		function pegaArraySemRespostas(arr, id){
-			return arr.filter(function(post){return !(id == post.idPost);});
+			return arr.filter(function(post){return !((post.mensagemRespondida != undefined) ? (id == post.mensagemRespondida.idPost) : false);});
 		}
 
-		function processaPost(post, profundidade){
+		function processaPost(post, arrayNovo, profundidade){
 			postDinamico.container.appendChild(postDinamico.geraPost(post, profundidade));
-			var respostas = pegaRespostas(arr, post.idPost);
-			var semRespostas = pegaArraySemRespostas(arr, post.idPost);
+			var respostas = pegaRespostas(arrayNovo, post.idPost);
+			var semRespostas = pegaArraySemRespostas(arrayNovo, post.idPost);
+			console.log(respostas);
+			console.log(semRespostas);
 
 			respostas.forEach(function(post, index, array){
-				semRespostas = processaPost(post, profundidade+1);
+				semRespostas = processaPost(post, semRespostas, profundidade+1);
 			});
 
 			return semRespostas;
@@ -313,7 +319,7 @@ var postDinamico = {
 
 		while(arr.length > 0){
 			var post = arr.shift();
-			arr = processaPost(post, 0);
+			arr = processaPost(post, arr, 0);
 		}
 	}
 };

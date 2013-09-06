@@ -75,7 +75,7 @@ span.data{color:#C60;}
 .limite_resposta{
 	position:relative;
 	float:left;
-	width:540px;
+	/*width:540px;*/
 }
 .anterior{
 	border:1px silver solid;
@@ -86,7 +86,6 @@ span.data{color:#C60;}
 .cor3{
 	background-color:#EEF5F5;
 	display:table;
-	width:100%;
 	margin-top : 5px;
 	margin-bottom : 5px;
 }

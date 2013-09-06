@@ -108,6 +108,7 @@
 				</select>
 			</h1>
 			<h2 id="mensagem_espera">Aguarde um instante, carregando mensagens...</h2>
+			<div id="areaMensagens"></div>
 		</div>
 	</div><!-- fim da div topicos -->
 	<div class="bts_baixo">
@@ -134,6 +135,8 @@ userId = <?php echo $_SESSION['SS_usuario_id']; ?>;
 post = <?php $topico->imprimeMensagens(); ?>;
 postDinamico.imprimePosts(post);
 postDinamico.removeMensagemEspera();
+
+var turma = document.getElementById("idTurma").value;
 </script>
 
 </body>
