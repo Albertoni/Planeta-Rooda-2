@@ -117,6 +117,9 @@ function excluir(turma,idTopico){
 function editarTopico(turma,idTopico){
 	document.location = "forum_cria_topico.php?turma="+turma+"&idTopico="+idTopico;
 }
+function editarMensagem (turma,idMensagem) {
+	document.location = "forum_edita_mensagem.php?turma="+turma+"&idMensagem="+idMensagem;
+}
 
 function colore(elemento){
 	quantidade = document.getElementById(elemento).getElementsByTagName('span').length -1;
@@ -323,3 +326,5 @@ var postDinamico = {
 		}
 	}
 };
+
+var turma = document.getElementById("idTurma").value;

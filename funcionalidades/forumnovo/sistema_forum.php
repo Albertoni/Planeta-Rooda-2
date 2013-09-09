@@ -41,14 +41,16 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$q = new conexao();
 
 		if($this->salvo == true){
-			$textoSafe					= $q->sanitizaString($this->texto);
+			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
 		}else{
 			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
 			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
 			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
-			$textoSafe					= $q->sanitizaString($this->texto);
+			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
 
@@ -242,14 +244,16 @@ function setMensagem($indice, $mensagem){
 		if ($this->salvo === true){// atualizar
 			$q = new conexao();
 
-			$titulo = $q->sanitizaString($this->titulo);
+			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$titulo			= $q->sanitizaString($tituloSemHtml);
 
 			$q->solicitar("UPDATE ForumTopico SET titulo='$titulo', data=NOW() WHERE idTopico = $this->idTopico");
 		}else{// inserir
 			$q = new conexao();
 
 			$idTurma = $q->sanitizaString($this->idTurma);
-			$titulo = $q->sanitizaString($this->titulo);
+			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$titulo			= $q->sanitizaString($tituloSemHtml);
 			$q->solicitar("INSERT INTO ForumTopico
 				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
 

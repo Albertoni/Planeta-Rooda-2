@@ -135,8 +135,6 @@ userId = <?php echo $_SESSION['SS_usuario_id']; ?>;
 post = <?php $topico->imprimeMensagens(); ?>;
 postDinamico.imprimePosts(post);
 postDinamico.removeMensagemEspera();
-
-var turma = document.getElementById("idTurma").value;
 </script>
 
 </body>
