@@ -82,32 +82,24 @@ $(document).ready(function(){
 	});*/
 });
 
-var http = false;
-var http_pesq = false;
-
-if (navigator.appName == "Microsoft Internet Explorer"){
-	http_pesq = new ActiveXObject("Microsoft.XMLhttp");
-	http = new ActiveXObject("Microsoft.XMLHTTP");
-}else{
-	http_pesq = new XMLHttpRequest();
-	http = new XMLHttpRequest();
-}
+var http = new XMLHttpRequest();
 
 
-function excluir(turma,idTopico){
+function excluirTopico(idTurma, idTopico){
 	if (confirm("Tem certeza que deseja deletar este tópico? Essa ação não pode ser desfeita.")){
-		var parametros = "turma=" + turma;
-		parametros = parametros + "&idTopico=" + idTopico;
+		var parametros = "turma=" + turma + "&idTopico=" + idTopico;
 	
 		http.abort();
 		http.open("POST", "deltopico.php", true);
 		http.onreadystatechange=function() {
-			if ((http.readyState == 4)&& (http.status == 200 )) {
-
-				document.getElementById("dinamica").innerHTML = http.responseText;
+			if((http.readyState == 4)&&(http.status == 200 )) {
+				if(http.responseText == "ok"){
+					document.getElementById("t"+idTopico).style.display = "none";
+				}else{
+					alert(http.responseText);
+				}
 			}
 		}
-		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		http.setRequestHeader("Content-length", parametros.length);
 		http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
 		http.send(parametros);
@@ -161,18 +153,10 @@ function pesquisar(pg, novaPesq){
 
 }
 
-function ordernar(elemento){
-	var selecao = elemento.options[elemento.selectedIndex].value;
-	if (selecao != ' -- Ordenar... --'){
-		location.href = (location.href+'&ordem='+elemento.selectedIndex);
-	}
-}
-
 function escondeNovaMensagem(){
 	document.getElementById('msg_txt').value = "";
 	document.getElementById('msg_txt').innerHTML = "";
 	document.getElementById('nova_mensagem').style.display = "none";
-
 }
 
 function responder(id){

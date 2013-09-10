@@ -252,7 +252,7 @@ function setMensagem($indice, $mensagem){
 			$q = new conexao();
 
 			$idTurma = $q->sanitizaString($this->idTurma);
-			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$tituloSemHtml	= strip_tags($this->titulo);
 			$titulo			= $q->sanitizaString($tituloSemHtml);
 			$q->solicitar("INSERT INTO ForumTopico
 				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
@@ -377,7 +377,7 @@ class visualizacaoForum extends forum{
 					}
 
 					if ($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma)) {
-						$acoesPermitidas .= "<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
+						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
 					}
 
 					$acoesPermitidas .= "</div></li>";
