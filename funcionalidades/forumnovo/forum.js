@@ -87,7 +87,7 @@ var http = new XMLHttpRequest();
 
 function excluirTopico(idTurma, idTopico){
 	if (confirm("Tem certeza que deseja deletar este tópico? Essa ação não pode ser desfeita.")){
-		var parametros = "turma=" + turma + "&idTopico=" + idTopico;
+		var parametros = "turma=" + idTurma + "&idTopico=" + idTopico;
 	
 		http.abort();
 		http.open("POST", "deltopico.php", true);
@@ -106,11 +106,59 @@ function excluirTopico(idTurma, idTopico){
 	}
 }
 
+function excluirMensagem(idTurma, idMensagem){
+	if (confirm("Tem certeza que deseja deletar essa mensagem? Essa ação não pode ser desfeita.")){
+		var parametros = "turma=" + turma + "&idMensagem=" + idMensagem;
+	
+		http.abort();
+		http.open("POST", "delmensagem.php", true);
+		http.onreadystatechange=function() {
+			if((http.readyState == 4)&&(http.status == 200 )) {
+				if(http.responseText == "ok"){
+					document.getElementById("m"+idMensagem).style.display = "none";
+				}else{
+					alert(http.responseText);
+				}
+			}
+		}
+		http.setRequestHeader("Content-length", parametros.length);
+		http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
+		http.send(parametros);
+	}
+}
+
 function editarTopico(turma,idTopico){
 	document.location = "forum_cria_topico.php?turma="+turma+"&idTopico="+idTopico;
 }
 function editarMensagem (turma,idMensagem) {
 	document.location = "forum_edita_mensagem.php?turma="+turma+"&idMensagem="+idMensagem;
+}
+
+function confirmaEditarMensagem(idTurma, idMensagem, idTopico){
+	var parametros = "turma=" + turma + "&idMensagem=" + idMensagem + "&idTopico=" + idTopico + "&msg_conteudo="+ document.getElementById("textarea").value;
+
+	http.abort();
+	http.open("POST", "forum_salva_mensagem.php", true);
+	http.onreadystatechange=function() {
+		if((http.readyState == 4)&&(http.status == 200 )) {
+			try{
+				JSON.parse(http.responseText);
+			}
+			catch(e){
+				if (e instanceof SyntaxError){
+					/*alert("Erro desconhecido, por favor tente editar a mensagem novamente.")
+					document.location = "forum.php?turma="+turma;*/
+
+					console.log(e);
+				}
+			}
+
+			document.location = "forum_topico.php?turma="+turma+"&topico="+idTopico;
+		}
+	}
+	http.setRequestHeader("Content-length", parametros.length);
+	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
+	http.send(parametros);
 }
 
 function colore(elemento){
@@ -223,7 +271,7 @@ var postDinamico = {
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editarMensagem("+turma+","+post.idPost+")\" "+ ((post.podeEditar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
-					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirMensagem("+turma+","+post.idPost+",deltipo)\" "+ ((post.podeDeletar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirMensagem("+turma+","+post.idPost+")\" "+ ((post.podeDeletar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
 				</div>\
 			</li>\
 			<li>\
@@ -246,6 +294,7 @@ var postDinamico = {
 
 		container.style.marginLeft = margem+'px';
 		container.style.width = '';
+		container.id = 'm'+post.idPost;
 
 		return container;
 	},
