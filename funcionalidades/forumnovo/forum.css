@@ -8,7 +8,6 @@
 
 .imagem { width:66px; height:66px; background-color:white; border:1px solid #888888; 
 float:left; margin-right:15px; display:table-cell}
-.texto_resposta { display:table-cell; width:80%}
 
 .mensagens {margin-top:5px}
 
@@ -16,7 +15,7 @@ float:left; margin-right:15px; display:table-cell}
 
 .nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
 
-#bloco_mensagens { width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+#bloco_mensagens { width:100%; max-width:660px; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
 #bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
 #bloco_mensagens ul { margin:22px}
 
@@ -75,8 +74,13 @@ span.data{color:#C60;}
 .limite_resposta{
 	position:relative;
 	float:left;
-	/*width:540px;*/
 }
+.texto_resposta {
+	display:table-cell;
+	word-wrap: break-word;
+	max-width: 500px;
+}
+
 .anterior{
 	border:1px silver solid;
 	margin:4px;
@@ -128,3 +132,10 @@ span.data{color:#C60;}
 }
 
 .clicavel{cursor: pointer;}
+
+h1{
+	text-overflow: ellipsis;
+	max-width:660px;
+	overflow: hidden;
+	background-color: #53686F;
+}
