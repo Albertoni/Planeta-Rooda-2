@@ -121,6 +121,7 @@ function enviar() {
 	$material->setTurma($idTurma);
 	$material->setTitulo($titulo);
 	$material->setAutor($autor);
+	$material->setTags($tags);
 	if (isset($_POST['tipo'])) 
 	{
 		switch ($_POST['tipo']) {

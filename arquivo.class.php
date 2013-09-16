@@ -34,6 +34,7 @@ class Arquivo
 			$bd = new conexao();
 			$bd->solicitar(
 				"SELECT
+				arquivo_id AS id,
 				titulo AS 'titulo',
 				nome AS 'nome',
 				tipo AS 'tipo',
@@ -67,12 +68,13 @@ class Arquivo
 	}
 	private function popular($resultadoBd)
 	{
-		$this->conteudo = $resultadoBd['conteudo']; // conteudo do arquivo
-		$this->titulo   = $resultadoBd['titulo'];     // titulo do arquivo
-		$this->nome     = $resultadoBd['nome'];
-		$this->tipo     = $resultadoBd['tipo'];
-		$this->tamanho  = $resultadoBd['tamanho'];
-		$this->data     = $resultadoBd['data'];
+		$this->id        = (int) $resultadoBd['id'];
+		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
+		$this->titulo    = $resultadoBd['titulo'];     // titulo do arquivo
+		$this->nome      = $resultadoBd['nome'];
+		$this->tipo      = $resultadoBd['tipo'];
+		$this->tamanho   = $resultadoBd['tamanho'];
+		$this->data      = $resultadoBd['data'];
 		$this->idUsuario = $resultadoBd['idUsuario'];
 		$this->setTags($resultadoBd['tags']);
 	}
@@ -314,6 +316,7 @@ class Arquivo
 		$this->consulta = new conexao();
 		$this->consulta->solicitar(
 			"SELECT
+			arquivo_id AS id,
 			titulo AS 'titulo',
 			nome AS 'nome',
 			tipo AS 'tipo',
@@ -326,11 +329,14 @@ class Arquivo
 			WHERE uploader_id = $usuario"
 		);
 		if ($this->consulta->erro !== '') {
-			$this->erros[] = 'BD: ' . $this->consulta->erro;
+			throw new Exception('BD: ' . $this->consulta->erro, 1);
+			return false;
 		}
+		$this->popular($this->consulta->resultado);
+		return $this->consulta->registros;
 	}
 	private function limpar() {
-		$this->id = 0;
+		$this->id = false;
 		$this->idUsuario = 0;
 		$this->titulo = '';
 		$this->nome = '';
@@ -338,6 +344,23 @@ class Arquivo
 		$this->tamanho = 0;
 		$this->tags = array();
 		$this->erros = array();
+	}
+	public function proximo() {
+		if ($this->consulta === null) {
+			throw new Exception("A consulta não está aberta.", 1);
+			return false;
+		}
+		if ($this->consulta->erro !== '') {
+			throw new Exception('BD: ' . $this->consulta->erro, 1);
+			return false;
+		}
+		$this->consulta->proximo();
+		if ($this->consulta->resultado) {
+			$this->popular($this->consulta->resultado);
+			return true;
+		}
+		$this->limpar();
+		return false;
 	}
 }
 /* /

@@ -195,8 +195,10 @@ var BIBLIOTECA = (function () {
 			}
 		}());
 		var request_older = (function () {
+			var waiting = false;
 			function onSuccess() {
 				var json;
+				waiting = false;
 				failCount = 0;
 				try {
 					json = JSON.parse(this.responseText);
@@ -220,13 +222,17 @@ var BIBLIOTECA = (function () {
 				}
 			}
 			function onFail_old() {
+				waiting = false;
 				ROODA.ui.alert("Servidor não está mais respondendo.<br>Verifique sua conexão com a internet.");
 			}
 			return function () {
-				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_velho=" + mais_velho, {
-					'success': onSuccess,
-					'fail': onFail_old
-				});
+				if (!waiting) {
+					waiting = true;
+					AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=listar&mais_velho=" + mais_velho, {
+						'success': onSuccess,
+						'fail': onFail_old
+					});
+				}
 			};
 		}());
 		// submitNewMaterial(formulario) : faz request de submissão de material
@@ -333,12 +339,19 @@ var BIBLIOTECA = (function () {
 				});
 			}
 		}());
+
+		var scrollHandler = function () {
+			if ((window.document.body.scrollHeight - document.documentElement.clientHeight - window.pageYOffset) < 20) {
+				request_older();
+			}
+		};
 		function init()
 		{
 			mais_novo = 0;
 			mais_velho = 0;
 			materiais = [];
 			request_newer();
+			window.addEventListener("scroll", scrollHandler);
 		}
 		// submitEditMaterial(formulario)
 		return {

@@ -241,6 +241,7 @@ SQL
 			$this->arquivo->setArquivo($material);
 			$this->arquivo->setIdUsuario($this->codUsuario);
 			if ($this->titulo !== '') $this->arquivo->setTitulo($this->titulo);
+			if ($this->tags) $this->arquivo->setTags($this->tags);
 			$this->codRecurso = $this->arquivo->getId();
 			if ($this->arquivo->temErros()) {
 				$this->erros[] = "[material] Nao foi possivel enviar o arquivo.";
@@ -460,7 +461,7 @@ ORDER BY codMaterial DESC
 LIMIT 10
 SQL
 		);
-		// se ocorreu erro, retornar false.
+		// se ocorreu erro, jogar exceção
 		if ($this->consulta_turma->erro) 
 		{
 			throw new Exception($this->consulta_turma->erro, 1);
