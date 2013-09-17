@@ -251,7 +251,13 @@ var postDinamico = {
 		var data = post.data.split(' ');
 
 		if((post.mensagemRespondida != undefined) && profundidadeArvore == 0){
-			var respondidaData = post.mensagemRespondida.data.split(' ');
+			try{
+				var respondidaData = post.mensagemRespondida.data.split(' ');
+			}catch(e){
+				var respondidaData = ['Ocorreu um erro', ''];
+				console.log(e);
+				console.log(post.mensagemRespondida);
+			}
 
 			var textoPost = "<div class=\"limite_resposta\">\
 					<cite class=\"citacao\">Em resposta à mensagem de "+post.mensagemRespondida.nomeUsuario+", de "+respondidaData[0]+" às "+respondidaData[1]+":</cite>\

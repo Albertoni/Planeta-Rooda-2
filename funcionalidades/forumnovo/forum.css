@@ -15,9 +15,9 @@ float:left; margin-right:15px; display:table-cell}
 
 .nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
 
-#bloco_mensagens { width:100%; max-width:660px; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
-#bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
-#bloco_mensagens ul { margin:22px}
+#bloco_mensagens {width:100%; max-width:660px; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+#bloco_mensagens li {margin-bottom:20px; width:100%; float:left}
+#bloco_mensagens ul {margin:22px}
 
 .info {
 	float:left;

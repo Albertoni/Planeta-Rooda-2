@@ -93,7 +93,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 	}
 
-	function toJson(){
+	function toJson($resposta = 0){
 		global $user; global $permissoes; global $turma;
 
 		$podeEditar = $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
@@ -110,9 +110,9 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			'podeDeletar' => $podeDeletar
 			);
 
-		if($this->idMensagemRespondida != NULL){
+		if(($this->idMensagemRespondida != NULL) and ($resposta == 0)){
 			$mens = new mensagem($this->idMensagemRespondida);
-			$arr['mensagemRespondida'] = $mens->toJson();
+			$arr['mensagemRespondida'] = $mens->toJson($resposta+1);
 		}
 
 		return $arr;
