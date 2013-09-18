@@ -26,7 +26,7 @@ body { background-image:url(images/fundos/fundo3.png); background-color:#B5D5E6}
 
 .data {float:right; display:table-cell;}
 
-.tabela_blog {display:table; width:200px; margin-bottom:15px;margin-left:0;margin-right:0;}
+.tabela_blog {display:table; width:100%; margin-bottom:15px;margin-left:0;margin-right:0;}
 .tabela_blog * { overflow: hidden; moz-text-overflow: ellipsis; text-overflow: ellipsis; }
 .tabela_blog p {display:table-cell; width:180px; float:left}
 .tabela_blog a { float:left; width: 170px; }

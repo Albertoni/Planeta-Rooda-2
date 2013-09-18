@@ -680,7 +680,7 @@ function imprimePost($post, $blog_id, $cor, $donos, $usuario_id, $usuario, $perm
 				<ul class=\"sem_estilo\">
 					<li class=\"tabela_blog\">
 						<span class=\"titulo\">
-							<a href=\"blog_singlepost.php?post_id=".$post->getId()."&blog_id=".$post->getBlogId()."\">".$post->getTitle()."</a>
+							<a href=\"blog_singlepost.php?post_id=".$post->getId()."&amp;blog_id=".$post->getBlogId()."&amp;turma=$turma\">".$post->getTitle()."</a>
 						</span>
 						<span class=\"data\">
 							".$post->getDate()."

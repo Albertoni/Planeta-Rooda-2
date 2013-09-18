@@ -9,6 +9,13 @@ require_once("../../reguaNavegacao.class.php");
 global $tabela_posts;
 global $tabela_blogs;
 
+$idTurma	= (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Erro desconhecido, por favor recarregue a pagina tente novamente2.");
+
+$permissoes = checa_permissoes(TIPOBLOG, $idTurma);
+if($permissoes === false){
+	die("Funcionalidade desabilitada para a sua turma.");
+}
+
 $post_id = isset($_GET['post_id']) ? $_GET['post_id'] : die ("Por favor acesse essa pagina com uma id de post setada.");
 $blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die ("Por favor acesse essa pagina com uma id de blog setada.");
 
@@ -18,10 +25,11 @@ $post->open($post_id);
 $consulta = new conexao();
 $consulta->solicitar("SELECT Title FROM $tabela_blogs WHERE Id = $blog_id");
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
@@ -92,11 +100,11 @@ function coment(){
 ***************************** -->
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
-			<a href="blog.php?blog_id=<?=$blog_id?>"><img src="images/botoes/bt_voltar.png" align="left"/></a>
+			<a href="blog.php?blog_id=<?=$blog_id?>&amp;turma=<?=$idTurma?>"><img src="images/botoes/bt_voltar.png" align="left"/></a>
 		</div>
 		<div id="esq" class="margem_paginas">
 			<div class="bloco" id="identsingle">
-				<a style="text-decoration:none" href="blog.php?blog_id=<?=$post->blogId?>"><h1><?=$consulta->resultado['Title']?></h1></a>
+				<a style="text-decoration:none" href="blog.php?blog_id=<?=$post->blogId?>&amp;turma=<?=$idTurma?>"><h1><?=$consulta->resultado['Title']?></h1></a>
 
 				<div class="cor1">
 				<ul class="sem_estilo">
