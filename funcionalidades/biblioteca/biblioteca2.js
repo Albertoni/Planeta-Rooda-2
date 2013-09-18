@@ -1,6 +1,5 @@
 var BIBLIOTECA = (function () {
 	var ulDinamica;
-	var btCarregar;
 	var formEnvioMaterial;
 	var formEdicaoMaterial;
 	var mais_novo = 0;
@@ -214,7 +213,8 @@ var BIBLIOTECA = (function () {
 				//console.log(json);
 				if (json.todos) {
 					// sinal indicando que todos os posts mais antigos já foram carregados.
-					btCarregar.disabled = true;
+					window.removeEventListener("scroll", scrollHandler);
+					console.log("handler removido");
 				}
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
@@ -364,10 +364,8 @@ var BIBLIOTECA = (function () {
 	}());
 	function init() { 
 		ulDinamica = document.getElementById("ul_materiais");
-		btCarregar = document.getElementById("bt_carregar_mais");
 		formEnvioMaterial = document.getElementById("form_envio_material");
 		formEdicaoMaterial = document.getElementById("form_");
-		btCarregar.addEventListener('click', ajax.request_older);
 		ulDinamica.addEventListener('click', ulDinamica_onclick);
 		formEnvioMaterial.onsubmit = function () {
 			var that = this;
@@ -377,4 +375,40 @@ var BIBLIOTECA = (function () {
 		ajax.init();
 	}
 	return { 'init' : init, form: formEnvioMaterial };
+}());
+
+var FILE_MODULE = (function () {
+	var screen = document.createElement('div');
+	var selected_file = 0;
+	screen.classList.add('file_selector');
+	screen.innerHTML  = '<button name="tab" value="new">Novo Arquivo</button><button name="tab" value="existing">Arquivo Existente</button>';
+	screen.innerHTML += '<div class="newfile_body">new</div><div class="existingfile_body">old</div>';
+	var fileForm = $(screen.getElementsByClassName('newfile_body')[0]);
+	var fileList = $(screen.getElementsByClassName('existingfile_body')[0]);
+	screen.addEventListener('click',function (e) {
+		e = e || window.event;
+		var elem = e.target;
+		switch (elem.name) {
+			case 'tab':
+				if (elem.value === 'new') {
+					fileList.fadeOut();
+					fileForm.fadeIn();
+				} else if (elem.value === 'existing') {
+					fileForm.fadeOut();
+					fileList.fadeIn();
+				}
+				break;
+		}
+	});
+	function updateList() {
+		AJAXGet('../../arquivo.json.php?acao=listar', {
+			success: function () {},
+			fail: function () {}
+		});
+	}
+	return {
+		'openSelector': function () {
+			document.body.appendChild(screen);
+		}
+	};
 }());

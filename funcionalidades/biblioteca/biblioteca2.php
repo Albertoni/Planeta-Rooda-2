@@ -100,13 +100,13 @@ $assocUsuario = $usuario->getSimpleAssoc();
 						<ul id="ul_materiais">
 							<li>carregando materiais...</li>
 						</ul>
-						<button id="bt_carregar_mais">Carregar Mais</button>
 					</div>
 				</div>
 			</div><!-- fim do conteudo -->
 			<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 		</div>
 		<!-- JAVASCRIPT -->
+		<script src="../../jquery-1.10.2.min.js"></script>
 		<script src="../../js/rooda.js"></script>
 		<script src="../../js/ajax.js"></script>
 		<script src="../../js/ajaxFileManager.js"></script>

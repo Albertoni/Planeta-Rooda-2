@@ -160,3 +160,16 @@ button[name='excluir'] {
 	width: 97px;
 	height: 34px;
 }
+
+.file_selector {
+	background: #fff;
+	border: 1px solid #000;
+	width: 400px;
+	height: 400px;
+	z-index: 20;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-left: -200px;
+	margin-top: -200px;
+}

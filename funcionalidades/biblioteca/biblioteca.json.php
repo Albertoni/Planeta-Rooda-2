@@ -65,7 +65,7 @@ function listar() {
 	if($usuario->podeAcessar($perm['biblioteca_editarMateriais'], $idTurma)) {
 		$json['pode_editar'] = true;
 	}
-	$json['materiais'] = [];
+	$json['materiais'] = array();
 	$material = new Material();
 	try {
 		$ok = $material->abrirTurma($opcoes);

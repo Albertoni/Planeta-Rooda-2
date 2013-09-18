@@ -300,11 +300,27 @@ class Arquivo
 			);
 			if ($bd->erro !== '')
 			{
-				$this->erros[] = "DB:" . $bd->erro;
+				$this->erros[] = "BD: " . $bd->erro;
 				return false;
 			}
 		}
 		return true;
+	}
+	public function sendoUsado() {
+		global $tabela_Materiais;
+		$qtd = 0;
+		$bd = new conexao();
+		// verifica ocorrencias do arquivo na biblioteca
+		$q[] = <<<SQL
+SELECT count(codMaterial) AS num 
+FROM $tabela_Materiais 
+WHERE refMaterial = {$this->id} AND tipoMaterial LIKE 'a'
+SQL;
+		foreach ($q as $query) {
+			$bd->solicitar($query);
+			$qtd += (int) $bd->resultado['num'];
+		}
+		return $qtd;
 	}
 	public function abrirUsuario($usuario)
 	{
