@@ -211,10 +211,7 @@ class Arquivo
 			return false;
 		}
 	}
-	// public function atualizar() {
-	// 	if ($this->download && !$this->upload) {
-	// 	}
-	// }
+	
 	public function setIdUsuario($id) {
 		$id = (int) $id;
 		if ($id === 0)
@@ -225,7 +222,6 @@ class Arquivo
 		{
 			$this->idUsuario = $id;
 		}
-		return $this;
 	}
 	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
@@ -235,7 +231,7 @@ class Arquivo
 		}
 		if(!filesize($FILE['tmp_name']))
 		{
-			$this->erros[] = "[arquivo] Arquivo vazio ou inválido.";
+			$this->erros[] = "[arquivo] Arquivo vazio ou inv&aacute;lido.";
 		}
 		else
 		{
@@ -246,28 +242,12 @@ class Arquivo
 			$this->setTipo($FILE['type']);
 			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
 		}
-		return $this;
 	}
 	// ex: $arquivo->setConteudo($blob);
-	public function setConteudo($conteudo)
-	{
-		$this->conteudo = $conteudo;
-	}
-	public function setTitulo($titulo)
-	{
-		$this->titulo = trim($titulo);
-		return $this;
-	}
-	public function setNome($nome)
-	{
-		$this->nome = trim($nome);
-		return $this;
-	}
-	public function setTipo($tipo)
-	{
-		$this->tipo = trim($tipo);
-		return $this;
-	}
+	public function setConteudo($conteudo){$this->conteudo = $conteudo;}
+	public function setTitulo($titulo){$this->titulo = trim($titulo);}
+	public function setNome($nome){$this->nome = trim($nome);}
+	public function setTipo($tipo){$this->tipo = trim($tipo);}
 	public function setTags($tags)
 	{
 		if (is_string($tags))
@@ -287,9 +267,8 @@ class Arquivo
 				$this->tags[] = trim($value);
 			}
 		}
-		return $this;
 	}
-	public function excluir()
+	public function excluir() // Returns false on error
 	{
 		global $tabela_arquivos;
 		if (!$this->upload && $this->download)
@@ -300,8 +279,7 @@ class Arquivo
 			);
 			if ($bd->erro !== '')
 			{
-				$this->erros[] = "BD: " . $bd->erro;
-				return false;
+				throw new Exception('BD: ' . $this->consulta->erro, 1);
 			}
 		}
 		return true;
