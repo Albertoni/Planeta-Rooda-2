@@ -48,6 +48,10 @@ class conexao {
 			$erroConexao=TRUE;
 		}
 
+		if(!$this->socketMysqli->set_charset("utf8")){
+			printf("Error loading character set utf8: %s\n", $mysqli->error);
+		}
+
 		if($erroConexao){
 			$this->status=FALSE;
 			echo $this->erro;
