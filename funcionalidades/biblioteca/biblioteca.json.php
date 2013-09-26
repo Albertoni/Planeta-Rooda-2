@@ -8,7 +8,7 @@ require_once('../../funcoes_aux.php');
 require_once('../../usuarios.class.php');
 require_once('../../turma.class.php');
 require_once('material.class.new.php');
-header("Content-Type: application/json");
+header("Content-Type: application/json; charset=UTF-8");
 $usuario = usuario_sessao();
 $acao = isset($_GET['acao']) ? trim($_GET['acao']) : "";
 
@@ -171,25 +171,35 @@ function enviar() {
 		$json['errors'][] = "Não foi possivel enviar o material.";
 	}
 }
-/* ------------- /
+/* ------------- */
 function editar() {
 	global $json;
 	global $usuario;
+	global $turma;
 	global $_POST;
-	global $_FILES;
-	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
-		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
+	$id     = isset($_POST['id'])     ? (int) ($_POST['id'])     : 0;
+	$titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
+	$autor  = isset($_POST['autor'])  ? $_POST['autor']  : '';
+	$tags   = isset($_POST['tags'])   ? $_POST['tags']   : '';
+	if (!$id) {
+		$json['errors'][] = 'Náo foi possivel editar o material, referencia inválida.';
 		return;
 	}
-	$id     = isset($_POST['id'])     ? trim($_POST['id'])     : 0;
-	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
-	$autor  = isset($_POST['autor'])  ? trim($_POST['autor'])  : '';
-	$tags   = isset($_POST['tags'])   ? trim($_POST['tags'])   : '';
-	$link   = isset($_POST['link'])   ? trim($_POST['link'])   : '';
-	$tipo   = isset($_POST['tipo'])   ? trim($_POST['tipo'])   : '';
 	$material = new Material($id);
 	if ($material->temErros()) {
+		if (!isset($json['errors'])) $json['errors'] = array();
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
+		return;
+	}
+	$idUsuario = $usuario->getId();
+	$idTurma = $material->getIdTurma();
+	$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+	if ($perm === false) {
+		$json['errors'][] = "Biblioteca desabilitada para esta turma.";
+		return;
+	}
+	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
+		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
 		return;
 	}
 	if ($titulo !== '')
@@ -198,33 +208,13 @@ function editar() {
 		$material->setAutor($autor);
 	if ($tags !== '')
 		$material->setTags($tags);
-	switch ($tipo) {
-		case MATERIAL_ARQUIVO:
-			if (isset($_POST['arquivo'])) {
-				$arquivo = new Arquivo((int) $_POST['arquivo']);
-				if ($arquivo->temErros()) {
-					$json['errors'] = array_merge($json['errors'], $arquivo->getErros());
-					return;
-				}
-			}
-			elseif (isset($_FILES['arquivo'])) {
-				$material->setMaterial($_FILES['arquivo']);
-			}
-			break;
-		case MATERIAL_LINK:
-			if (isset($_POST['link'])) {
-				if (is_numeric($_POST['link'])) {
-					//
-				}
-			}
-			break;
-		default: 
-			$json['errors'][] = 'Tipo de material inválido.';
-			return;
-	}
 	$material->salvar();
 	if ($material->temErros()) {
+		if (!isset($json['errors'])) $json['errors'] = array();
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
+	} else {
+		$json['material'] = $material->getAssoc();
+		//$json['material']['titulo'] = $titulo;
 	}
 }
 /* ------------------ */
@@ -313,6 +303,8 @@ if($json['session'] && !isset($json['errors'])) {
 		case 'excluir':
 			excluir();
 			break;
+		case 'editar':
+			editar();
 		default:
 			break;
 	}

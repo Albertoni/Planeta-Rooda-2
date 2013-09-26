@@ -69,11 +69,11 @@ exports.AJAXSubmit = (function () {
       if (oData.technique === 3) {
         /* enctype is multipart/form-data */
         var sBoundary = "---------------------------" + Date.now().toString(16);
-        oAjaxReq.setRequestHeader("Content-Type", "multipart\/form-data; boundary=" + sBoundary);
+        oAjaxReq.setRequestHeader("Content-Type", "multipart\/form-data; charset=UTF-8; boundary=" + sBoundary);
         oAjaxReq.sendAsBinary("--" + sBoundary + "\r\n" + oData.segments.join("--" + sBoundary + "\r\n") + "--" + sBoundary + "--\r\n");
       } else {
         /* enctype is application/x-www-form-urlencoded or text/plain */
-        oAjaxReq.setRequestHeader("Content-Type", oData.contentType);
+        oAjaxReq.setRequestHeader("Content-Type", oData.contentType + "; charset=UTF-8");
         oAjaxReq.send(oData.segments.join(oData.technique === 2 ? "\r\n" : "&"));
       }
     }

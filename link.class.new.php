@@ -9,10 +9,10 @@ class Link
 	private $id = false; // falso significa que o link nao foi carregado/salvo (nao existe)
 	private $titulo = "";
 	private $autor = "";
-	private $tags = array();
+	private $tags = [];
 	private $endereco = ""; // URL do link
 	private $codUsuario = false;
-	private $erros = array();
+	private $erros = [];
 	
 	function __construct($id = false)
 	{
@@ -42,7 +42,7 @@ class Link
 				$this->id = $id;
 				$this->titulo = $bd->resultado['titulo'];
 				$this->autor = $bd->resultado['autor'];
-				$this->tags = $bd->resultado['tags'];
+				$this->setTags($bd->resultado['tags']);
 				$this->endereco = $bd->resultado['endereco'];
 				$this->codUsuario = $bd->resultado['codUsuario'];
 			}
@@ -150,7 +150,6 @@ class Link
 		{
 			$this->titulo = trim($titulo);
 		}
-		return $this;
 	}
 	public function setAutor($autor)
 	{
@@ -158,7 +157,6 @@ class Link
 		{
 			$this->autor = trim($autor);
 		}
-		return $this;
 	}
 	public function setTags($tags)
 	{
@@ -173,13 +171,14 @@ class Link
 		// é tratada como uma array a seguir.
 		if (is_array($tags))
 		{
-			$this->tags = array();
+			$this->tags = [];
 			foreach ($tags as $value)
 			{
 				$this->tags[] = trim($value);
 			}
+			return true;
 		}
-		return $this;
+		return false;
 	}
 	public function setEndereco($url)
 	{

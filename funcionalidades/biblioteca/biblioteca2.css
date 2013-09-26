@@ -32,11 +32,13 @@ body,td,th {
 label {
 	font-weight: bold;
 }
-
+ 
+#form_edicao_material,
 #form_envio_material {
 	font-size: 15px;
 	padding: 10px;
 }
+#editar_material,
 #enviar_material {
 	position: fixed;
 	top: 50%;
@@ -47,6 +49,7 @@ label {
 	margin: -140px 0 0 -200px;
 	z-index: 10;
 }
+#editar_material h1,
 #enviar_material h1 {
 	background: #74d3ed;
 	color: #000;
@@ -151,6 +154,7 @@ button[name='editar'] {
 	text-indent: -300px;
 	width: 92px;
 	height: 35px;
+	overflow: hidden;
 }
 button[name='excluir'] {
 	background: url('../../images/botoes/bt_excluir.png');
@@ -159,17 +163,30 @@ button[name='excluir'] {
 	text-indent: -300px;
 	width: 97px;
 	height: 34px;
+	overflow: hidden;
 }
 
-.file_selector {
+#file_selector {
 	background: #fff;
 	border: 1px solid #000;
-	width: 400px;
-	height: 400px;
 	z-index: 20;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	margin-left: -200px;
 	margin-top: -200px;
+}
+#file_selector .content_wrapper {
+	display: block;
+	width: 400px;
+	height: 400px;
+	position: relative;
+}
+#file_selector .content_wrapper .newfile_body,
+#file_selector .content_wrapper .existingfile_body {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
 }

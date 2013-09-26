@@ -34,7 +34,7 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	// Recebe como parametro um id (inteiro maior que 0)
-	// Segundo parametro n„o È usado, n„o removo por medo de quebrar algo.
+	// Segundo parametro n√£o √© usado, n√£o removo por medo de quebrar algo.
 	public function openUsuario($param , $param2="") {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
@@ -72,7 +72,7 @@ class Usuario { //estrutura para o item post do blog
 	public function getName()		{return $this->name;}
 	public function getEmail()		{return $this->email;}
 	public function getPersonagemId(){return $this->personagemId;}
-	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma È o id da turma no banco de dados
+	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma √© o id da turma no banco de dados
 	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}
@@ -86,9 +86,9 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	/**
-	* Popula este usu·rio com o resultado de uma consulta no BD.
+	* Popula este usu√°rio com o resultado de uma consulta no BD.
 	*
-	* @param Array<String,String> $resultadoBD Resultado da consulta correspondente a um usu·rio. Os nomes das colunas devem ser preservados.
+	* @param Array<String,String> $resultadoBD Resultado da consulta correspondente a um usu√°rio. Os nomes das colunas devem ser preservados.
 	*/
 	private function popular($resultadoBD){
 		$this->setId($resultadoBD['usuario_id']);
@@ -102,7 +102,7 @@ class Usuario { //estrutura para o item post do blog
 		//$this->dataUltimoLogin = $resultadoBD['personagem_ultimo_acesso'];
 		
 		
-		// Agora preparamos para setar o nÌvel
+		// Agora preparamos para setar o n√≠vel
 		
 		$this->nivel = array();
 		$niveis = new conexao(); global $tabela_turmasUsuario;
@@ -121,10 +121,10 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	/*
-	* Busca no BD usu·rios com nome parecido ao dado e os retorna em um array.
+	* Busca no BD usu√°rios com nome parecido ao dado e os retorna em um array.
 	*
-	* @param String nome Nome que È substring dos nomes dos usu·rios que devem ser retornados.
-	* @return Array<Usuario> Todos os usu·rios que tÍm o nome dado.
+	* @param String nome Nome que √© substring dos nomes dos usu√°rios que devem ser retornados.
+	* @return Array<Usuario> Todos os usu√°rios que t√™m o nome dado.
 	*/
 	public static function buscaPorNome($nome){
 		$resultados = array();
@@ -143,7 +143,7 @@ class Usuario { //estrutura para o item post do blog
 
 	/**
 	* @return array associativo com os indices 'codTurma' e 'nomeTurma'
-	*         das turmas que o usu·rio pertence.
+	*         das turmas que o usu√°rio pertence.
 	*/
 	public function getTurmas(){
 		$idUsuario = $this->id;
@@ -176,7 +176,7 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	/**
-	* @return Todos os planetas que o usu·rio pode acessar, em um array com objetos da classe Planeta.
+	* @return Todos os planetas que o usu√°rio pode acessar, em um array com objetos da classe Planeta.
 	*/
 	public function getPlanetasQuePodeAcessar(){
 		$planetasQuePodeAcessar = array();
@@ -201,12 +201,12 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	/**
-	* @param 	int	$nivelDeCorte	NÌvel que servir· para pesquisar as turmas. … importante que este nÌvel seja atÙmico e n„o a soma de v·rios nÌveis.
-	* @return 	Array<Turma>		As turmas em que o usu·rio desempenha (no m·ximo) o papel _nivelDeCorte.
-	*								Isto È:
-	*									se _nivelDeCorte = aluno, retornar· somente turmas em que o usu·rio È somente aluno.
-	*									se _nivelDeCorte = monitor, retornar· somente turmas em que o usu·rio È aluno e monitor ou somente monitor.
-	*									se _nivelDeCorte = professor, retornar· somente turmas em que o usu·rio È aluno, monitor e professor, ou aluno e professor, ou monitor e professor.
+	* @param 	int	$nivelDeCorte	N√≠vel que servir√° para pesquisar as turmas. √â importante que este n√≠vel seja at√¥mico e n√£o a soma de v√°rios n√≠veis.
+	* @return 	Array<Turma>		As turmas em que o usu√°rio desempenha (no m√°ximo) o papel _nivelDeCorte.
+	*								Isto √©:
+	*									se _nivelDeCorte = aluno, retornar√° somente turmas em que o usu√°rio √© somente aluno.
+	*									se _nivelDeCorte = monitor, retornar√° somente turmas em que o usu√°rio √© aluno e monitor ou somente monitor.
+	*									se _nivelDeCorte = professor, retornar√° somente turmas em que o usu√°rio √© aluno, monitor e professor, ou aluno e professor, ou monitor e professor.
 	*/
 	public function buscaTurmasComNivel(/*int*/ $nivelDeCorte){
 		global $nivelAluno;
@@ -258,7 +258,7 @@ class Usuario { //estrutura para o item post do blog
 
 	public function podeAcessar($cutoff, $turma){ // cutoff = ponto de corte, o bitmap de niveis que podem acessar
 		/*if ($this->isAdmin()){
-			return true; // ISSO N√O DEVE NUNCA MAIS SER USADO
+			return true; // ISSO N√ÉO DEVE NUNCA MAIS SER USADO
 		}*/
 		
 		$niveisTurma = $this->getNivel($turma);

@@ -59,12 +59,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
-					<div class="bloco" id="editar_material" style="display: none;">
-						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
-						<form id="form_editar_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=enviar">
-							<input type="hidden" name="id" value="" />
-						</form>
-					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
 						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
 						<div>
@@ -75,24 +69,42 @@ $assocUsuario = $usuario->getSimpleAssoc();
 							<div class="material_recurso">
 								<label class="file_label" style="display:none" id="label_material_arquivo">
 									<span class="text">Selecionar arquivo:</span><br>
-									<input type="file" name="arquivo" id="material_arquivo" />
+									<input type="file" name="arquivo" />
 								</label>
 								<label class="link_label" style="display:none" id="label_material_link">
 									<span class="text">Link:</span>
-									<input type="text" name="link" id="material_link" required />
+									<input type="text" name="link" required />
 								</label>
 							</div>
 							<label>Título:<br>
-								<input type="text" name="titulo" id="material_titulo" required />
+								<input type="text" name="titulo" required />
 							</label><br>
 							<label>Autor:<br>
-								<input type="text" name="autor" id="material_autor" />
+								<input type="text" name="autor" />
 							</label><br>
 							<label>Palavras do Material:<br>
-								<input type="text" name="tags" id="material_tags" />
+								<input type="text" name="tags" />
 							</label><br>
 							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
-					</form>
+						</form>
+						</div>
+					</div>
+					<div class="bloco" id="editar_material" style="display: none;">
+						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" name="fechar">fechar</button></h1>
+						<div>
+						<form id="form_edicao_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=editar">
+							<input type="hidden" name="id" value="0" />
+							<label>Título:<br>
+								<input type="text" name="titulo" required />
+							</label><br>
+							<label>Autor:<br>
+								<input type="text" name="autor" />
+							</label><br>
+							<label>Palavras do Material:<br>
+								<input type="text" name="tags" />
+							</label><br>
+							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
+						</form>
 						</div>
 					</div>
 					<div class="bloco" id="materiais_enviados">

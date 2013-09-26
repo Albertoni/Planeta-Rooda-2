@@ -2,6 +2,7 @@ var BIBLIOTECA = (function () {
 	var ulDinamica;
 	var formEnvioMaterial;
 	var formEdicaoMaterial;
+	var editorMaterial;
 	var mais_novo = 0;
 	var mais_velho = 0;
 	var materiais = [];
@@ -57,6 +58,7 @@ var BIBLIOTECA = (function () {
 		}
 		this.atualizarHTML();
 	}
+	Material.prototype = {titulo:'',autor:''};
 	Material.prototype.atualizarHTML = function() {
 		if (!this.aprovado) {
 			this.HTMLElemento.classList.add('nao_aprovado');
@@ -79,6 +81,7 @@ var BIBLIOTECA = (function () {
 			+ this.id + '">Excluir</button>';
 		}
 	};
+	//var form_edicao_material = document.getElementById('editar_material');
 	function ulDinamica_onclick(e) {
 		e = e || event;
 		var elem = e.target;
@@ -93,6 +96,26 @@ var BIBLIOTECA = (function () {
 				break;
 			case 'editar':
 				console.log('editar: ' + elem.value);
+				var material = materiais.filter(function (material) { return (parseInt(elem.value, 10) === material.id); })[0];
+				Array.prototype.forEach.call(formEdicaoMaterial.elements, function (elem) {
+					console.log(material);
+					console.log(elem.name);
+					switch (elem.name) {
+						case 'id':
+							elem.value = material.id.toString();
+							break;
+						case 'titulo':
+							elem.value = material.titulo;
+							break;
+						case 'autor':
+							elem.value = material.autor;
+							break;
+						case 'tags':
+							elem.value = material.tags.join(',');
+					}
+					console.log(elem);
+				});
+				$(editorMaterial).fadeIn();
 				break;
 			default:
 				break;
@@ -123,6 +146,9 @@ var BIBLIOTECA = (function () {
 		}
 	}
 	// remove material da lista de materiais
+	function getMaterial(id) {
+		return materiais.filter(function (material) { return (material.id === id); })[0];
+	}
 	function removeMaterial(id) {
 		materiais = materiais.filter(function (material) { return (material.id !== id); });
 	}
@@ -211,11 +237,11 @@ var BIBLIOTECA = (function () {
 					return;
 				}
 				//console.log(json);
-				if (json.todos) {
-					// sinal indicando que todos os posts mais antigos já foram carregados.
-					window.removeEventListener("scroll", scrollHandler);
-					console.log("handler removido");
-				}
+				// if (json.todos) {
+				// 	// sinal indicando que todos os posts mais antigos já foram carregados.
+				// 	window.removeEventListener("scroll", scrollHandler);
+				// 	console.log("handler removido");
+				// }
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
 					atualizaLista();
@@ -248,7 +274,7 @@ var BIBLIOTECA = (function () {
 					console.log(this.responseText);
 					return;
 				}
-				console.log(json);
+				//console.log(json);
 				if (!json.session) {
 					ROODA.ui.alert("Você não está logado.")
 					return;
@@ -259,6 +285,38 @@ var BIBLIOTECA = (function () {
 				formEnvioMaterial.reset();
 				toggleEnviar();
 				request_newer();
+			}
+			return submitFormFunction(submit_success);
+		}());
+		var submitEditMaterial = (function () {
+			function submit_success() {
+				var json;
+				try {
+					json = JSON.parse(this.responseText);
+				}
+				catch (e) {
+					ROODA.ui.alert("Erro na resposta do servidor.");
+					console.log(e);
+					console.log(this.responseText);
+					return;
+				}
+				console.log(json);
+				if (!json.session) {
+					return
+				}
+				if (json.errors) {
+					return
+				}
+				if (json.material) {
+					var m = getMaterial(json.material.id);
+					m.titulo = json.material.titulo;
+					m.autor = json.material.autor;
+					m.tags = json.material.tags;
+					m.atualizarHTML();
+				}
+				formEdicaoMaterial.reset();
+				$(editorMaterial).fadeOut();
+
 			}
 			return submitFormFunction(submit_success);
 		}());
@@ -340,24 +398,27 @@ var BIBLIOTECA = (function () {
 			}
 		}());
 
-		var scrollHandler = function () {
-			if ((window.document.body.scrollHeight - document.documentElement.clientHeight - window.pageYOffset) < 20) {
-				request_older();
-			}
-		};
+		// var scrollHandler = function () {
+		// 	if ((window.document.body.scrollHeight - document.documentElement.clientHeight - window.pageYOffset) < 80) {
+		// 		request_older();
+		// 	}
+		// };
 		function init()
 		{
 			mais_novo = 0;
 			mais_velho = 0;
 			materiais = [];
 			request_newer();
-			window.addEventListener("scroll", scrollHandler);
+			// setTimeout(function () {
+			// 	window.addEventListener("scroll", scrollHandler);
+			// }, 2000);
 		}
 		// submitEditMaterial(formulario)
 		return {
 			'init' : init,
 			'request_older' : request_older,
 			'submitNewMaterial' : submitNewMaterial,
+			'submitEditMaterial' : submitEditMaterial,
 			'deleteMaterial' : deleteMaterial,
 			'aproveMaterial' : aproveMaterial
 		};
@@ -365,50 +426,32 @@ var BIBLIOTECA = (function () {
 	function init() { 
 		ulDinamica = document.getElementById("ul_materiais");
 		formEnvioMaterial = document.getElementById("form_envio_material");
-		formEdicaoMaterial = document.getElementById("form_");
+		formEdicaoMaterial = document.getElementById("form_edicao_material");
+		editorMaterial = document.getElementById("editar_material");
 		ulDinamica.addEventListener('click', ulDinamica_onclick);
+		$(editorMaterial).on('click', function (e) {
+			if (e.target.name === 'fechar') {
+				$(editorMaterial).fadeOut();
+			}
+		});
 		formEnvioMaterial.onsubmit = function () {
-			var that = this;
-			setTimeout(function () { ajax.submitNewMaterial(that); }, 5);
+			setTimeout(function () { ajax.submitNewMaterial(formEnvioMaterial); }, 5);
 			return false;
 		};
+		form_edicao_material.onsubmit = function() {
+			setTimeout(function () { ajax.submitEditMaterial(formEdicaoMaterial); }, 5);
+			return false;
+		}
 		ajax.init();
 	}
 	return { 'init' : init, form: formEnvioMaterial };
 }());
-
-var FILE_MODULE = (function () {
-	var screen = document.createElement('div');
-	var selected_file = 0;
-	screen.classList.add('file_selector');
-	screen.innerHTML  = '<button name="tab" value="new">Novo Arquivo</button><button name="tab" value="existing">Arquivo Existente</button>';
-	screen.innerHTML += '<div class="newfile_body">new</div><div class="existingfile_body">old</div>';
-	var fileForm = $(screen.getElementsByClassName('newfile_body')[0]);
-	var fileList = $(screen.getElementsByClassName('existingfile_body')[0]);
-	screen.addEventListener('click',function (e) {
-		e = e || window.event;
-		var elem = e.target;
-		switch (elem.name) {
-			case 'tab':
-				if (elem.value === 'new') {
-					fileList.fadeOut();
-					fileForm.fadeIn();
-				} else if (elem.value === 'existing') {
-					fileForm.fadeOut();
-					fileList.fadeIn();
-				}
-				break;
-		}
-	});
+/*
+$(document).ready(function () {
 	function updateList() {
 		AJAXGet('../../arquivo.json.php?acao=listar', {
 			success: function () {},
 			fail: function () {}
 		});
 	}
-	return {
-		'openSelector': function () {
-			document.body.appendChild(screen);
-		}
-	};
-}());
+}); */

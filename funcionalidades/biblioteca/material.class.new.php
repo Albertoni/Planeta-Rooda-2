@@ -70,11 +70,11 @@ SQL
 		}
 	}
 	private function popular($assoc) {
-		$this->setId($assoc['id']);
+		$this->setId((int) $assoc['id']);
 		$this->setUsuario((int) $assoc['codUsuario']);
 		$this->setTurma((int) $assoc['codTurma']);
-		$this->setTitulo($assoc['titulo']);
-		$this->setAutor($assoc['autor']);
+		$this->titulo = $assoc['titulo'];
+		$this->autor = $assoc['autor'];
 		$this->setTags($assoc['tags']);
 		$this->setTipo($assoc['tipo']);
 		$this->setData((int) $assoc['data']);
@@ -82,8 +82,7 @@ SQL
 		$this->setAprovado((bool) $assoc['aprovado']);
 		$this->carregaRecurso();
 	}
-	private function carregaRecurso()
-	{
+	private function carregaRecurso() {
 		if (!$this->temErros()) switch ($this->tipo) {
 			case MATERIAL_ARQUIVO:
 				$this->arquivo = new Arquivo($this->codRecurso);
@@ -104,16 +103,13 @@ SQL
 	}
 	public function salvar() {
 		global $tabela_Materiais;
-		if ($this->titulo === '')
-		{
+		if ($this->titulo === '') {
 			$this->erros[] = '[material] Não pode salvar material sem título.';
 		}
-		if ($this->autor === '')
-		{
+		if ($this->autor === '') {
 			$this->erros[] = '[material] Não pode salvar material sem autor.';
 		}
-		if ($this->codUsuario === false)
-		{
+		if ($this->codUsuario === false) {
 			$this->erros[] = '[material] Não pode salvar material sem usuario.';
 		}
 		switch ($this->tipo) {
@@ -140,8 +136,7 @@ SQL
 		}
 		if (!$refMaterial) $this->erros[] = '[material] Material nao pode ser definido.';
 		if (count($this->erros) > 0) return false;
-		if ($this->novo)
-		{
+		if ($this->novo) {
 			$bd = new conexao();
 			$codTurma     = (int) $this->codTurma;
 			$titulo       = $bd->sanitizaString($this->titulo);
@@ -162,28 +157,21 @@ SQL
 			}
 			$this->novo = false;
 		}
-		elseif ($this->id)
-		{
+		elseif ($this->id) {
 			$bd = new conexao();
 			$codTurma     = (int) $this->codTurma;
 			$titulo       = $bd->sanitizaString($this->titulo);
 			$autor        = $bd->sanitizaString($this->autor);
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
-			$codUsuario   = (int) $this->codUsuario;
-			$tipoMaterial = $bd->sanitizaString($this->tipo);
 			$aprovado     = $this->aprovado ? '1' : '0';
 			$bd->solicitar(
 <<<SQL
 UPDATE $tabela_Materiais 
-SET codTurma = '$codTurma', 
-	titulo = '$titulo', 
+SET titulo = '$titulo', 
 	autor = '$autor', 
 	tags = '$tags', 
-	codUsuario = '$codUsuario', 
-	tipoMaterial = '$tipoMaterial', 
-	data = '$data', 
-	refMaterial = '$refMaterial', 
 	materialAprovado = $aprovado
+WHERE codMaterial = {$this->id}
 SQL
 			);
 		}
@@ -212,30 +200,23 @@ SQL
 		return '';
 	}
 	public function getErros() { return $this->erros; }
-	public function temErros()
-	{
-		return (bool) $this->erros;
-	}
+	public function temErros() { return (bool) $this->erros; }
 	private function setId($id) { $this->id = (int) $id; }
 	private function setCodRecurso($cod) { $this->codRecurso = (int) $cod; }
-	public function setTitulo($titulo)
-	{
+	public function setTitulo($titulo) {
 		$this->titulo = trim($titulo);
 		if ($this->arquivo) $this->arquivo->setTitulo($this->titulo);
 		return true;
 	}
-	public function setMaterial($material)
-	{
-		if ($this->usuario === NULL || !$this->usuario->getId())
-		{
+	public function setMaterial($material) {
+		if ($this->usuario === NULL || !$this->usuario->getId()) {
 			$this->erros[] = '[material] Usuário não definido.';
 		}
 		if (!$this->codTurma) {
 			$this->erros[] = '[material] Turma não definida.';
 		}
 		// array $_FILE['arquivo']
-		if (is_array($material))
-		{
+		if (is_array($material)) {
 			$this->tipo = MATERIAL_ARQUIVO;
 			$this->arquivo = new Arquivo();
 			$this->arquivo->setArquivo($material);
@@ -249,8 +230,7 @@ SQL
 			}
 		}
 		// objeto do recurso
-		elseif (is_object($material))
-		{
+		elseif (is_object($material)) {
 			$this->tipo = MATERIAL_ARQUIVO;
 			switch (get_class($material)) {
 				case 'Arquivo':
@@ -267,14 +247,12 @@ SQL
 					$this->erros[] = '[material] O material não é válido.';
 					return;
 			}
-			if (!$material->getId())
-			{
+			if (!$material->getId()) {
 				$this->erros[] = '[material] O material não existe.';
 			}
 		}
 		// link
-		elseif (is_string($material))
-		{
+		elseif (is_string($material)) {
 			$this->link = new Link();
 			$this->link->setEndereco($material);
 			$this->link->setTitulo($this->titulo);
@@ -293,28 +271,22 @@ SQL
 			$this->erros[] = '[material] Material estranho.';
 		}
 	}
-	public function setTurma($turma)
-	{
-		if (get_class() === "turma")
-		{
+	public function setTurma($turma) {
+		if (get_class() === "turma") {
 			$turma = $turma->getId();
 		}
-		if (is_integer($turma))
-		{
+		if (is_integer($turma)) {
 			$this->codTurma = $turma;
 			return true;
 		}
 		return false;
 	}
-	public function setAutor($autor)
-	{
+	public function setAutor($autor) {
 		$this->autor = trim($autor);
 		return true;
 	}
-	public function setTags($tags)
-	{
-		if (is_string($tags))
-		{
+	public function setTags($tags) {
+		if (is_string($tags)) {
 			$tags = explode(",", $tags);
 		}
 		// Nada de 'else' aqui, pois a entrada pode ser:
@@ -322,67 +294,53 @@ SQL
 		//   2. array de tags.
 		// se for uma string (1), ela será convertida em array e depois
 		// é tratada como uma array a seguir.
-		if (is_array($tags))
-		{
+		if (is_array($tags)) {
 			$this->tags = array();
-			foreach ($tags as $value)
-			{
+			foreach ($tags as $value) {
 				$this->tags[] = trim($value);
 			}
 			return true;
 		}
 		return false;
 	}
-	public function setUsuario($usuario)
-	{
-		if (is_integer($usuario))
-		{
+	public function setUsuario($usuario) {
+		if (is_integer($usuario)) {
 			$this->usuario = new Usuario();
 			$this->usuario->openUsuario($usuario);
 			$this->codUsuario = $usuario;
 		}
-		elseif (get_class($usuario) === "Usuario")
-		{
+		elseif (get_class($usuario) === "Usuario") {
 			$this->usuario = $usuario;
 			$this->codUsuario = $usuario->getId();
 		}
-		if ($this->usuario === NULL || $this->usuario->getId() === 0)
-		{
+		if ($this->usuario === NULL || $this->usuario->getId() === 0) {
 			$this->usuario = NULL;
 			throw new Exception("Usuário inválido.", 1);
 		}
 	}
-	public function setTipo($tipo)
-	{
-		if ($tipo === MATERIAL_ARQUIVO || $tipo === MATERIAL_LINK)
-		{
+	public function setTipo($tipo) {
+		if ($tipo === MATERIAL_ARQUIVO || $tipo === MATERIAL_LINK) {
 			$this->tipo = $tipo;
 		}
-		else
-		{
+		else {
 			throw new Exception("Tipo de recurso inválido.", 1);
 		}
 	}
-	private function setData($data)
-	{
+	private function setData($data) {
 		if (is_string($data)) {
 			$data = strtotime($data);
 		}
-		if (is_int($data))
-		{
+		if (is_int($data)) {
 			$this->data = $data;
 		}
 	}
-	public function setAprovado($aprovado)
-	{
+	public function setAprovado($aprovado) {
 		$this->aprovado = (bool) $aprovado;
 	}
-	public function temErro()
-	{
+	public function temErro() {
 		return (bool) $this->erros; // retorna falso se a array for vazia.
 	}
-	public function getAssoc()
-	{
+	public function getAssoc() {
 		$assoc['id']       = $this->getId();
 		$assoc['titulo']   = $this->getTitulo();
 		$assoc['autor']    = $this->getAutor();
@@ -403,8 +361,7 @@ SQL
 		return $assoc;
 	}
 	// Retorna array com todos os materiais da turma especificada. retorna false em caso de falha.
-	public function abrirTurma($parametros)
-	{
+	public function abrirTurma($parametros) {
 		global $tabela_Materiais;
 		$mais_novo = 0;
 		$mais_velho = 0;
@@ -429,8 +386,7 @@ SQL
 		if ($turma <= 0) throw new Exception("Turma não definida", 1);
 		$this->novo = false;
 		$turma = $parametros['turma'];
-		if ($mais_novo > 0)
-		{
+		if ($mais_novo > 0) {
 			$condicaoSQL .= "AND codMaterial > {$mais_novo} ";
 		}
 		elseif ($mais_velho > 0) {
@@ -458,36 +414,30 @@ SELECT
 FROM BibliotecaMateriais
 WHERE codTurma = {$turma} {$condicaoSQL}
 ORDER BY codMaterial DESC
-LIMIT 10
 SQL
 		);
 		// se ocorreu erro, jogar exceção
-		if ($this->consulta_turma->erro) 
-		{
+		if ($this->consulta_turma->erro) {
 			throw new Exception($this->consulta_turma->erro, 1);
 		}
 		$this->turma_aberta = true;
-		if ($this->consulta_turma->registros > 0)
-		{
+		if ($this->consulta_turma->registros > 0) {
 			$this->popular($this->consulta_turma->resultado);
 			return true;
 		}
 		return false;
 	}
-	public function proximo()
-	{
+	public function proximo() {
 		if (!$this->turma_aberta) throw new Exception("Material::proximo() só pode ser usado depois de abrir uma turma com Material::abrirTurma()", 1);
 		
 		$this->consulta_turma->proximo();
-		if ((bool) $this->consulta_turma->resultado)
-		{
+		if ((bool) $this->consulta_turma->resultado) {
 			$this->popular($this->consulta_turma->resultado);
 			return true;
 		}
 		return false;
 	}
-	public function registros()
-	{
+	public function registros() {
 		if (!$this->turma_aberta) throw new Exception("Material::registros() só pode ser usado depois de abrir uma turma com Material::abrirTurma()", 1);
 		return $this->consulta_turma->registros;
 	}
