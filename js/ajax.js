@@ -125,7 +125,7 @@ exports.AJAXSubmit = (function () {
             oSegmReq.owner = this;
             /* (end of custom properties) */
             oSegmReq.onload = pushSegment;
-            this.segments.push("Content-Disposition: form-data; name=\"" + oField.name + "\"; filename=\""+ oFile.name + "\"\r\nContent-Type: " + oFile.type + "\r\n\r\n");
+            this.segments.push("Content-Disposition: form-data; name=\"" + oField.name + "\"; filename=\""+ oFile.name + "\"\r\nContent-Type: " + oFile.type + "; charset=UTF-8\r\n\r\n");
             this.status++;
             oSegmReq.readAsBinaryString(oFile);
           }
@@ -199,7 +199,7 @@ exports.AJAXPost = function(url,handler,dataObject) {
   }
   body = values.join("&");
   oAjaxReq.open("POST",url);
-  oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
   oAjaxReq.send(body);
 }
 }(window));

@@ -11,8 +11,6 @@ require_once('material.class.new.php');
 header("Content-Type: application/json; charset=UTF-8");
 $usuario = usuario_sessao();
 $acao = isset($_GET['acao']) ? trim($_GET['acao']) : "";
-
-
 $id = isset($_GET['material']) ? (int) $_GET['material'] : 0;
 if ($usuario === false) {
 	$json['session'] = false;
@@ -109,10 +107,10 @@ function enviar() {
 		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.';
 		return;
 	}
-	$titulo = isset($_POST['titulo']) ? trim($_POST['titulo']) : '';
-	$autor = isset($_POST['autor']) ? trim($_POST['autor']) : '';
-	$tags = isset($_POST['tags']) ? trim($_POST['tags']) : '';
-	$link = isset($_POST['link']) ? trim($_POST['link']) : '';
+	$titulo = isset($_POST['titulo']) ? utf8_encode($_POST['titulo']) : '';
+	$autor = isset($_POST['autor']) ? utf8_encode($_POST['autor']) : '';
+	$tags = isset($_POST['tags']) ? utf8_encode($_POST['tags']) : '';
+	$link = isset($_POST['link']) ? utf8_encode($_POST['link']) : '';
 	if ($titulo === '') {
 		$json['errors'][] = "Não pode enviar material sem título";
 	};
@@ -178,9 +176,9 @@ function editar() {
 	global $turma;
 	global $_POST;
 	$id     = isset($_POST['id'])     ? (int) ($_POST['id'])     : 0;
-	$titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
-	$autor  = isset($_POST['autor'])  ? $_POST['autor']  : '';
-	$tags   = isset($_POST['tags'])   ? $_POST['tags']   : '';
+	$titulo = isset($_POST['titulo']) ? utf8_encode($_POST['titulo']) : '';
+	$autor  = isset($_POST['autor'])  ? utf8_encode($_POST['autor'])  : '';
+	$tags   = isset($_POST['tags'])   ? utf8_encode($_POST['tags'])   : '';
 	if (!$id) {
 		$json['errors'][] = 'Náo foi possivel editar o material, referencia inválida.';
 		return;
@@ -214,7 +212,6 @@ function editar() {
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
 	} else {
 		$json['material'] = $material->getAssoc();
-		//$json['material']['titulo'] = $titulo;
 	}
 }
 /* ------------------ */
