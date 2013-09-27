@@ -50,7 +50,7 @@ if (isset($_POST['edicao'])){
 		//print_r($consulta);
 
 		//echo date(date("Y-m-d H:i:s"));
-	} else die ("&Eacute; necess&aacute;rio um titulo e descricao para o blog.");
-} else die ("&Eacute; necess&aacute;rio escolher um arquivo de imagem para o blog.");
+	} else die ("&Eacute; necess&aacute;rio um titulo e descricao para o webf&oacute;lio.");
+} else die ("&Eacute; necess&aacute;rio escolher um arquivo de imagem para o webf&oacute;lio.");
 ?>
 <script>history.go(-2);</script>

@@ -58,7 +58,7 @@ if(checa_permissoes(TIPOBIBLIOTECA, $turma)) {
 // Blog
 if(checa_permissoes(TIPOBLOG, $turma)) { 
 ?>
-					<li><a href="funcionalidades/blog/blog_inicio.php?turma=<?=$turma?>">Blog</a></li>
+					<li><a href="funcionalidades/blog/blog_inicio.php?turma=<?=$turma?>">Webfólio</a></li>
 <?php
 }	
 // Forum
@@ -70,7 +70,7 @@ if(checa_permissoes(TIPOFORUM, $turma)) {
 // Portfolio
 if(checa_permissoes(TIPOPORTFOLIO, $turma)) { 
 ?>
-					<li><a href="funcionalidades/portfolio/portfolio.php?turma=<?=$turma?>">Portfolio</a></li>
+					<li><a href="funcionalidades/portfolio/portfolio.php?turma=<?=$turma?>">Projetos</a></li>
 <?php
 }
 // Arte

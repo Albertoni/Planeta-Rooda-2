@@ -61,7 +61,7 @@
 <div id="centraliza_topo">
 		<?php 
 			$regua = new reguaNavegacao();
-			$regua->adicionarNivel("Blog");
+			$regua->adicionarNivel("Webfólio");
 			$regua->imprimir();
 		?>
 		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
