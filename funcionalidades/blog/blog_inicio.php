@@ -40,7 +40,7 @@
 		<div id="centraliza_topo">
 			<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Blog");
+				$regua->adicionarNivel("Webfólio");
 				$regua->imprimir();
 			?>
 			<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
@@ -77,7 +77,7 @@
 			<div class="bloco" id="meu_blog">
 				<h1>MEU WEBFÓLIO</h1>
 				<ul class="sem_estilo">
-					<a href="blog.php?blog_id=meu_blog&turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
+					<a href="blog.php?blog_id=meu_blog&amp;turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
 				</ul>
 			</div>
 			<div class="bloco" id="blog_coletivo">

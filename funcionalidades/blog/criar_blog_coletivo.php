@@ -34,7 +34,7 @@ if (isset($_SESSION['SS_usuario_id']) == false){die("Voc&ecirc; precisa estar lo
 		<div id="centraliza_topo">
 			<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Blog", "blog_inicio.php", false);
+				$regua->adicionarNivel("Webfólio", "blog_inicio.php", false);
 				$regua->adicionarNivel("Coletivo", " ", false);
 				$regua->adicionarNivel("Criar");
 				$regua->imprimir();
@@ -53,7 +53,7 @@ if (isset($_SESSION['SS_usuario_id']) == false){die("Voc&ecirc; precisa estar lo
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">O blog é um espaço pessoal para escrita, onde é possível anexar arquivos e links interessantes. Nele, você pode compartilhar diversos assuntos com seus colegas e permitir que eles, além de visualizar, publiquem comentários em seus posts e marquem suas reações ao lê-los.</p></div>
+					<div id="rel"><p id="balao">O webfólio é um espaço pessoal para escrita, onde é possível anexar arquivos e links interessantes. Nele, você pode compartilhar diversos assuntos com seus colegas e permitir que eles, além de visualizar, publiquem comentários em seus posts e marquem suas reações ao lê-los.</p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
@@ -146,7 +146,7 @@ unset($consulta);
 			</div>
 			<div id="dir">
 				<div id="info_blog" class="bloco">
-					<h1>INFORMAÇÕES DO BLOG</h1>
+					<h1>INFORMAÇÕES DO WEBFÓLIO</h1>
 					<ul class="sem_estilo">
 <?php
 if ($titulo != ''){// tão editando
@@ -159,9 +159,9 @@ if ($titulo != ''){// tão editando
 ?>
 						<li>Título</li>
 						<li><input type="text" name="titulo" class="blog_info"/></li>
-						<li>Descrição do Blog</li>
+						<li>Descrição do Webfólio</li>
 						<li><textarea class="blog_info" name="descricao" rows="4"></textarea></li>
-						<li>Imagem do Blog</li>
+						<li>Imagem do Webfólio</li>
 						<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
 						<input name="falso" type="text" id="falso_frame" />
 						<img src="images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />

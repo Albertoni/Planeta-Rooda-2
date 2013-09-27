@@ -45,8 +45,8 @@ function coment(){
 		<div id="centraliza_topo">
 			<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Blog", "blog_inicio.php", false);
-				$regua->adicionarNivel("Todos Blogs");
+				$regua->adicionarNivel("Webfólio", "blog_inicio.php", false);
+				$regua->adicionarNivel("Todos Webfólios");
 				$regua->imprimir();
 			?>
 			<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
@@ -63,7 +63,7 @@ function coment(){
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">O blog é um espaço pessoal para escrita, onde é possível anexar arquivos e links interessantes. Nele, você pode compartilhar diversos assuntos com seus colegas e permitir que eles, além de visualizar, publiquem comentários em seus posts e marquem suas reações ao lê-los.</p></div>
+					<div id="rel"><p id="balao">O webfólio é um espaço pessoal para escrita, onde é possível anexar arquivos e links interessantes. Nele, você pode compartilhar diversos assuntos com seus colegas e permitir que eles, além de visualizar, publiquem comentários em seus posts e marquem suas reações ao lê-los.</p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
@@ -82,7 +82,7 @@ function coment(){
 				<a href="criar_blog_coletivo.php?turma=<?=$turma?>"><img id="responder_topico" src="../../images/botoes/bt_criar_coletivo.png" align="right"/></a>
 			</div>
 			<div id="meus_coletivos" class="bloco">
-				<h1>MEUS BLOGS COLETIVOS</h1>
+				<h1>TODOS OS WEBFÓLIOS</h1>
 <?php
 $bd = new conexao();
 $bd->solicitar("SELECT * FROM blogblogs AS Bl INNER JOIN TurmasUsuario AS Tu
