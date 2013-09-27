@@ -139,3 +139,7 @@ h1{
 	overflow: hidden;
 	background-color: #53686F;
 }
+
+.titulo_topico{
+	text-transform: uppercase;
+}

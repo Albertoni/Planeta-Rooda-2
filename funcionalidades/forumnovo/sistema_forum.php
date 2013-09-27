@@ -386,7 +386,7 @@ class visualizacaoForum extends forum{
 				echo "
 <div class=\"alterna\" id=\"t$idTopico\">
 	<div class=\"esq\">
-		<li><a href=\"$link\" id=\"ta$idTopico\">$titulo</a></li>
+		<li><a href=\"$link\" id=\"ta$idTopico\" class=\"titulo_topico\">$titulo</a></li>
 		<li class=\"mensagens\">".$topico->getPrintableMessageNumber()."</li>
 	</div>
 		<div class=\"dir\">

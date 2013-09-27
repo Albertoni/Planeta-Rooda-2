@@ -57,7 +57,7 @@
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">O blog é um espaço pessoal para
+					<div id="rel"><p id="balao">O webfólio é um espaço pessoal para
 					escrita, onde é possível anexar arquivos e links interessantes.
 					Nele, você pode compartilhar diversos assuntos com seus colegas
 					e permitir que eles, além de visualizar, publiquem comentários
@@ -75,19 +75,19 @@
 	***************************** -->
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bloco" id="meu_blog">
-				<h1>MEU BLOG</h1>
+				<h1>MEU WEBFÓLIO</h1>
 				<ul class="sem_estilo">
 					<a href="blog.php?blog_id=meu_blog&turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
 				</ul>
 			</div>
 			<div class="bloco" id="blog_coletivo">
-				<h1>BLOG COLETIVO</h1>
+				<h1>WEBFÓLIOSCOLETIVOS</h1>
 				<ul class="sem_estilo">
 					<a href="blog_coletivo_lista.php?turma=<?=$turma?>"><img src="images/desenhos/blog_coletivo.png" border="0px" /></a>
 				</ul>
 			</div>
 			<div class="bloco" id="outros_blogs">
-				<h1>OUTROS BLOGS</h1>
+				<h1>OUTROS WEBFÓLIOS</h1>
 				<ul class="sem_estilo">
 					<a href="todos_blogs.php?turma=<?=$turma?>"><img src="images/desenhos/outros_blogs.png" border="0px" /></a>
 				</ul>
