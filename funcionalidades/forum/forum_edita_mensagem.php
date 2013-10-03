@@ -17,33 +17,34 @@
 	
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
-	if($user->podeAcessar($perm['forum_criarTopico'], $turma)){
-		$idTopico =  (isset($_GET['idTopico']) and is_numeric($_GET['idTopico'])) ? $_GET['idTopico']:'-1';
-		$editar = ($idTopico != '-1');
+	if($user->podeAcessar($perm['forum_responderTopico'], $turma)){
+		$idMensagem =  (isset($_GET['idMensagem']) and is_numeric($_GET['idMensagem'])) ? $_GET['idMensagem']:'-1';
+		$editar = ($idMensagem != '-1');
 		$titulo = '';
 		$texto = '';
 		
 		if ($editar){
-			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
+			if($user->podeAcessar($perm['forum_editarResposta'], $turma)){
 				$q = new conexao();
 
 				// dados do topico e primeira mensagem
-				$q->solicitar("SELECT * FROM ForumTopico INNER JOIN ForumMensagem
-					ON ForumTopico.idTopico = ForumMensagem.idTopico
-					WHERE ForumTopico.idTopico = $idTopico
-					ORDER BY idMensagem ASC LIMIT 1");
+				$q->solicitar("SELECT * FROM ForumMensagem
+					WHERE idMensagem = $idMensagem");
 
 				$texto = str_replace("<br>", "\n", $q->resultado['texto']);
-				$titulo = $q->resultado['titulo'];
 				$idMensagem = $q->resultado['idMensagem'];
+				$idTopico = $q->resultado['idTopico'];
+				$mensagemRespondida = $q->resultado['idMensagemRespondida'];
+
+				$argumentosJS = "$turma,$idMensagem,$idTopico";
 			}else{
-				die("Voce nao tem permissao para editar topicos.");
+				die("Voce nao tem permissao para editar mensagens.");
 			}
 		}else{
 			$criador = -1;
 		}
 	}else{
-		die("Voce nao tem permissao para criar topicos.");
+		die("Voce nao tem permissao para criar mensagens.");
 	}
 ?>
 <!DOCTYPE html>
@@ -55,7 +56,6 @@
 <link type="text/css" rel="stylesheet" href="forum.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="forum.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
@@ -89,10 +89,10 @@
 				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
 				<div id="rel"><p id="balao">
 <?php
-if (isset($_GET['idMensagem'])) // Editando
-	echo "Nesse espaço, você pode editar o título e/ou a mensagem do tópico escolhido.";
+if ($editar) // Editando
+	echo "Nesse espaço, você pode editar a mensagem escolhida.";
 else // senão, tá criando.
-	echo "Para criar um tópico de discussão, basta preencher o título do mesmo e a mensagem, que explica o assunto que será debatido.";
+	echo "GURIAS PELO AMOR DE DEUS QUE MENSAGEM QUE TEM QUE BOTAR AQUI MESMO AI MEU DEUS SOCORRO AOAODMOASMDOSMAODMASOIDNIUFGNDAIUNFINDSIJNFIJDSJF DSJFSNDJFJDSNFDSFNDSKJF NDSKJN FKJDSNFKJDSNFDSNKJFNDKJSNF KJDSNFKJDSNFKJNDSKJFJDSN KJFDNSKJNFKJDNSKJNSKJDNFKJDSNFKJ DSNKJFNDSKJFNDS KJDSN KJFDSNKJFNDSKJFNDSFKJNDSKJFNDSKJ NKJDSNFKJNFKJDSNFKJDS NKJFDS.";
 ?>
 				</p></div>
 			</div>
@@ -110,34 +110,26 @@ else // senão, tá criando.
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
 	
-	<form name="criatop" action="forum_salva_topico.php" method="post">
+	<form name="criatop" action="forum_salva_mensagem.php" method="post">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
-		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="document.criatop.submit();" />
+		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>)" />
 	</div>
 	
 	<div id="criar_topico" class="bloco">
 <?php
 	if ($editar){
-		echo "<h1>EDITAR TÓPICO</h1>";
+		echo "<h1>EDITAR MENSAGEM</h1>";
 	}else{
-		echo "<h1>CRIAR TÓPICO</h1>";
+		echo "<h1>CRIAR MENSAGEM</h1>";
 }?>
 			<ul class="sem_estilo">
-			
-				<li class="tabela">
-					<div class="box_dados">
-						Título do Tópico
-						<input type="text" name="titulo" value="<?php echo $titulo?>">
-					</div>
-				</li>
-				
-				<li class="espaco_linhas">Mensagem
-					<textarea name="texto" rows="15" class="msg_dimensao"><?php echo $texto?></textarea>
-				</li>
+				Mensagem:
+					<textarea name="msg_conteudo" rows="15" class="msg_dimensao" id="textarea"><?php echo $texto?></textarea>
 			</ul>
-			<?= $idTopico != -1 ? "<input type=\"hidden\" name=\"idTopico\" value=\"$idTopico\">" : "" ?>
-			<input type="hidden" name="idTurma" value="<?php echo $turma?>" />
+			<input type="hidden" name="idTopico" value="<?=$idTopico?>">
+			<input type="hidden" name="turma" value="<?php echo $turma?>" id="idTurma">
+			<input type="hidden" name="mensagemRespondida" value="<?php echo $mensagemRespondida?>">
 <?php
 	if($editar){
 		echo "			<input type=\"hidden\" name=\"idMensagem\" value=\"$idMensagem\">";
@@ -148,7 +140,7 @@ else // senão, tá criando.
 
 	<div class="bts_baixo">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
-		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="document.criatop.submit();" />
+		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>);" />
 	</div>
 	
 	</form>
@@ -161,6 +153,6 @@ else // senão, tá criando.
 
 
 </div><!-- fim da geral -->
-
+<script type="text/javascript" src="forum.js"></script>
 </body>
 </html>

@@ -1,53 +1,50 @@
 <?php
-	require_once("../../cfg.php");
-	require_once("../../bd.php");
-	require_once("../../funcoes_aux.php");
+error_reporting(E_ALL);
 
-	//require_once("../../usuarios.class.php");
-	
-	session_start();
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-	
-	require_once("verifica_user.php");
-	require_once("sistema_forum.php");
-	require_once("visualizacao_forum.php");
-	require_once("../../reguaNavegacao.class.php");
-	
-	$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
-	
-	if ($VERIFICA_USER_ERRO_ID == 0) {
-		global $tabela_forum; global $tabela_usuarios;
-		
-		$FORUM = new forum($FORUM_ID);
-		$FORUM->configBD($tabela_forum,$tabela_usuarios);
-		$FORUM->topicos($pagina);
-		
-		$paginas = array();
-		$paginas = $FORUM->paginas($pagina,10);
-	}
-	
-	$permissoes = checa_permissoes(TIPOFORUM, $FORUM_ID);
-	if($permissoes === false){
-		die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
-	}
-	
-	$user = new Usuario();
-	$user->openUsuario($_SESSION['SS_usuario_id']);
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+
+session_start();
+
+$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+
+
+
+//require_once("verifica_user.php");
+require_once("sistema_forum.php");
+//require_once("visualizacao_forum.php");
+require_once("../../reguaNavegacao.class.php");
+
+$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+
+$forum = new visualizacaoForum($turma);
+$forum->carregaTopicos();
+
+//$paginas = array();
+//$paginas = $FORUM->paginas($pagina,10);
+
+$permissoes = checa_permissoes(TIPOFORUM, $turma);
+if($permissoes === false){
+	die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
+}
+
+$user = new Usuario();
+$user->openUsuario($_SESSION['SS_usuario_id']);
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
-<script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
-<script type="text/javascript">
-	var forum_pg = <?php echo $pagina; ?>;
+<script src="../../jquery.js"></script>
+<script src="../../planeta.js"></script>
+<script src="../lightbox.js"></script>
+<script>
 	var deltipo = 0;
 </script>
 <script type="text/javascript" src="forum.js"></script>
@@ -99,56 +96,30 @@
 	
 	<div class="bts_cima">
 <?php
-$linkcria = "forum_cria_topico.php?fid=$FORUM_ID&amp;turma=$turma";
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>';
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
+	echo "<a href=\"forum_cria_topico.php?turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+}
 ?>
-	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
+	<a class="botao_procurar" href="forum_procurar.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_procurar_topico.png"></a>
 	</div>
 	
 	<div id="dinamica">
 <?php
-		if ($VERIFICA_USER_ERRO_ID == 0) {
-			if ($FORUM->contador > 0){
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$FORUM_ID");
-?>
+		$forum->imprimeNumTopicos();
 
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1> <?php
-				$forum_msg_cont = count($FORUM->mensagem);
-				for ($i=0; $i<$forum_msg_cont; $i++){
-					$topico = $FORUM->mensagem[$i];
-					mostraTopicos($topico->msgId,$topico->msgUserName,$topico->msgTitulo,$topico->msgTexto,$topico->msgData,$topico->msgQntFilhos,($i % 2), $topico->msgUserId);
-				}
-?>
-	</div><!-- fim da div topicos -->
-<?php			
-				mostraPaginas ($paginas, $pagina, false, "forum.php?turma=$FORUM_ID");
-
-			}else{
-?>
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1><?php mostraAviso(5);?>
-	</div><!-- fim da div topicos -->
-<?php
-			}
-		}else{
-?>
-	<div id="topicos" class="bloco">
-		<h1>TÓPICOS</h1><?php mostraAviso($VERIFICA_USER_ERRO_ID);?>
-	</div><!-- fim da div topicos -->
-<?php
-		}
+		$forum->imprimeTopicos($user, $permissoes);
 ?>
 	
 	</div>
 	
 	<div class="bts_baixo">
 <?php
-$linkcria = "forum_cria_topico.php?turma=$FORUM_ID";
-if ($user->podeAcessar($permissoes['forum_criarTopico'], $FORUM_ID)) echo '<input align="left" type="image" src="../../images/botoes/bt_criar_topico.png" onclick="document.location = \''.$linkcria.'\';"/>'; ?>
-	<input align="right" type="image" src="../../images/botoes/bt_procurar_topico.png" onclick="document.location='forum_procurar.php?turma=<?=$turma?>'"/>
+if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
+	echo "<a href=\"forum_cria_topico.php?turma=$turma\"><img src=\"../../images/botoes/bt_criar_topico.png\"></a>\n";
+}
+?>
 	</div>
-	<div style="clear:both;"></div>
+	
 	</div>
 
 	<!-- fim do conteudo -->

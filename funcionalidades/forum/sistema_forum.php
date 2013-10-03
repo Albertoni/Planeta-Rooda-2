@@ -3,29 +3,123 @@
 *	Sistema do forum
 *
 */
+
+
+
+class mensagem { //estrutura para o item post do forum, chamado de mensagem
+	private $id = 0; function getId(){return $this->id;}
+	private $idTopico = 0; function getIdTopico(){return $this->idTopico;}
+	private $idUsuario = 0;
+	private $idMensagemRespondida = 0;
+	private $texto = ''; function getTexto(){return $this->texto;}
+	private $data = 0;
+	private $salvo = false;
+	private $nomeUsuario = '';
 	
-class itemMsg { //estrutura para o item post do forum, chamado de mensagem
-	var $msgId = 0;
-	var $msgPai = 0;
-	var $msgData = '';
-	var $msgUserId = 0;
-	var $msgUserName = '';
-	var $msgTitulo = '';
-	var $msgTexto = '';
-	var $msgQntFilhos = 0;
-	var $msgLink = '';
-	var $msgGrau = 0;
-	
-	function itemMsg($id, $uid, $uname, $pai, $qnt, $data, $conteudo, $grau,$titulo=''){
-		$this->msgId = $id;
-		$this->msgPai = $pai;
-		$this->msgData = $data;
-		$this->msgUserId = $uid;
-		$this->msgUserName = $uname;
-		$this->msgTitulo = $titulo;
-		$this->msgTexto = $conteudo;
-		$this->msgQntFilhos = $qnt;
-		$this->msgGrau = $grau;
+	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+		if($id != NULL){
+			$this->carregar($id);
+		}else{
+			$this->idTopico = $idTopico;
+			$this->idUsuario = $idUsuario;
+			$this->idMensagemRespondida = $idMensagemRespondida;
+			$this->texto = $texto;
+		}
+	}
+
+	function loadFromSqlArray($a){
+		$this->id = $a['idMensagem'];
+		$this->idTopico = $a['idTopico'];
+		$this->idUsuario = $a['idUsuario'];
+		$this->idMensagemRespondida = $a['idMensagemRespondida'];
+		$this->texto = $a['texto'];
+		$this->data = $a['data'];
+		$this->nomeUsuario = $a['usuario_nome'];
+	}
+
+	function salvar(){
+		$q = new conexao();
+
+		if($this->salvo == true){
+			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSafe					= $q->sanitizaString($textoSemHtml);
+
+			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
+		}else{
+			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
+			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
+			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
+			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSafe					= $q->sanitizaString($textoSemHtml);
+
+			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
+
+			$query = "INSERT INTO ForumMensagem
+				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)";
+
+			$q->solicitar($query);
+
+			if ($q->erro == "") {
+				$this->id = $q->ultimo_id();
+
+				// por favor me perdoem
+				// ps.: se algum dia algum professor de algum colégio reclamar que a timestamp da mensagem postada mudou por 1 segundo eu pago uma cervejada pro nuted todo ~ João - 16/8/13 15:40
+				$q->solicitar("SELECT NOW()");
+				$this->data = $q->resultado['NOW()'];
+			}
+		}
+		
+		if ($q->erro != "") {
+			die("Erro na salvar da mensagem1 - $q->erro - $query");
+		}
+	}
+
+	function carregar($id){
+		$q = new conexao();
+
+		$idSafe = $q->sanitizaString($id);
+		//$q->solicitar("SELECT * FROM ForumMensagem WHERE idMensagem = '$idSafe'");
+		
+		$q->solicitar("SELECT * FROM ForumMensagem
+						INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
+						WHERE idMensagem = $idSafe");
+
+		if($q->erro == ""){
+			$this->loadFromSqlArray($q->resultado);
+
+			$this->salvo = true;
+		}else{
+			die("Erro na 'carregar' da mensagem -$idSafe- $q->erro");
+		}
+	}
+
+	function toJson($resposta = 0){
+		global $user; global $permissoes; global $turma;
+
+		$podeEditar = $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
+		$podeDeletar = $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
+
+		$arr = array(
+			'idPost' => $this->id,
+			'idTopico' => $this->idTopico,
+			'idUsuario' => $this->idUsuario,
+			'nomeUsuario' => $this->nomeUsuario,
+			'texto' => $this->texto,
+			'data' => $this->data,
+			'podeEditar' => $podeEditar,
+			'podeDeletar' => $podeDeletar
+			);
+
+		if(($this->idMensagemRespondida != NULL) and ($resposta == 0)){
+			$mens = new mensagem($this->idMensagemRespondida);
+			$arr['mensagemRespondida'] = $mens->toJson($resposta+1);
+		}
+
+		return $arr;
+	}
+
+	function setTexto($texto){
+		$this->texto = $texto;
 	}
 }
 
@@ -67,593 +161,255 @@ function string2consulta($t, $str){ // Usado em pesquisa_forum pra repassar pro 
 	}
 }
 
-function troca(&$v1, &$v2){ // Eu acho que troca o valor de v1 com o de v2. Sinceramente espero que faça isso, pelo menos.
-	$vaux = $v1;
-	$v1 = $v2;
-	$v2 = $vaux;
+class topico{
+	private $idTopico;	function getIdTopico(){return $this->idTopico;}
+	private $idTurma;	function getIdTurma(){return $this->idTurma;}
+	private $idUsuario;	function getIdUsuario(){return $this->idUsuario;}
+	private $titulo;	function getTitulo(){return $this->titulo;}
+	private $date;		function getDate(){return $this->date;}
+	private $nomeUsuario;function getNomeUsuario(){return $this->nomeUsuario;}
+	private $mensagens;	function getMensagens(){return $this->mensagens;}
+	private $salvo = false;
+
+function setIdTopico($arg){$this->idTopico = $arg;}
+function setIdTurma($arg){$this->idTurma = $arg;}
+function setIdUsuario($arg){$this->idUsuario = $arg;}
+function setTitulo($arg){$this->titulo = $arg;}
+function setDate($arg){$this->date = $arg;}
+
+function setMensagem($indice, $mensagem){
+	$objetoMensagem = NULL;
+
+	if(is_string($mensagem)){
+		$objetoMensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $mensagem, -1);
+	}else{
+		$objetoMensagem = $mensagem; // só renomeando
+	}
+	
+	$this->mensagens[$indice] = $objetoMensagem;
 }
 
-
-//ordena
-function quicksort(&$vet, $ini, $fim){
-	if ($ini < $fim){
-		$k = divide($vet, $ini, $fim);
-		quicksort($vet, $ini, $k-1);
-		quicksort($vet, $k+1, $fim);
+	
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = "", $nomeUsuario = "ERRO 43"){
+		if($idTurma === NULL){// se mandar só a id do topico, abre ele
+			$this->loadTopico($idTopico);
+		}else{
+			$this->idTopico		= $idTopico;
+			$this->idTurma		= $idTurma;
+			$this->idUsuario	= $idUsuario;
+			$this->titulo		= $titulo;
+			$this->date			= $date;
+			$this->nomeUsuario	= $nomeUsuario;
+		}
 	}
-}		//divide o array em dois
-		function divide(&$vet, $ini, $fim){
-			$i = $ini;
-			$j = $fim;
-			$dir = 1;
 
-			while ($i < $j){
-				if ($vet[$i]->msgId > $vet[$j]->msgId){
-					troca($vet[$i], $vet[$j]);
-					$dir = - $dir;
+	function loadTopico($id){
+		$q = new conexao();
+		$idSafe = $q->sanitizaString($id);
+		$q->solicitar("SELECT * FROM ForumTopico
+						INNER JOIN usuarios ON usuarios.usuario_id = ForumTopico.idUsuario
+						WHERE idTopico = $idSafe");
+
+		if($q->erro == ""){
+			$this->idTopico	= $q->resultado['idTopico'];
+			$this->idTurma	= $q->resultado['idTurma'];
+			$this->idUsuario= $q->resultado['idUsuario'];
+			$this->titulo	= $q->resultado['titulo'];
+			$this->date		= $q->resultado['data'];
+			$this->nomeUsuario = $q->resultado['usuario_nome'];
+			$this->salvo	= true;
+
+			$q->solicitar("SELECT * FROM ForumMensagem
+							INNER JOIN usuarios ON usuarios.usuario_id = ForumMensagem.idUsuario
+							 WHERE idTopico = $idSafe
+							 ORDER BY idMensagem");
+			if($q->erro == ""){
+				$this->mensagens = array();
+				for ($i=0; $i < $q->registros; $i++){
+					$mensagem = new mensagem();
+					$mensagem->loadFromSqlArray($q->resultado);
+
+					array_push($this->mensagens, $mensagem);
+
+					$q->proximo();
 				}
-				if ($dir == 1) {
-					$j--;
-				}else{
-					$i++;
-				}
+			}else{
+				die("Erro na loadTopico do topico - ".$q->erro);
 			}
-			return $i;
+		}
+	}
+
+	function salvar(){
+
+		if ($this->salvo === true){// atualizar
+			$q = new conexao();
+
+			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$titulo			= $q->sanitizaString($tituloSemHtml);
+
+			$q->solicitar("UPDATE ForumTopico SET titulo='$titulo', data=NOW() WHERE idTopico = $this->idTopico");
+		}else{// inserir
+			$q = new conexao();
+
+			$idTurma = $q->sanitizaString($this->idTurma);
+			$tituloSemHtml	= strip_tags($this->titulo);
+			$titulo			= $q->sanitizaString($tituloSemHtml);
+			$q->solicitar("INSERT INTO ForumTopico
+				VALUES (NULL, '$idTurma', '$this->idUsuario', '$titulo', NOW())");
+
+			$this->idTopico = ($q->erro == "") ? $q->ultimo_id() : NULL;
 		}
 
+		if($q->erro != ""){
+			die("Erro na salvar do topico");
+		}
+	}
 
+	function getPrintableMessageNumber(){
+		$mensagens = count($this->mensagens);
 
-class forum { //estrutura para o item post do forum, chamado de mensagem
-	var $forumId = 0;
-	var $mensagem = array();
-	var $titulo = 'MENSAGENS';
-	var $contador = 0;
-	var $BD_forum_tab = '';
-	var $BD_user_tab = '';
-	var $erro = '';
-	var $topico = -1;
-	
+		if ($mensagens === 1) {
+			return "1 mensagem";
+		} else {
+			return "$mensagens mensagens";
+		}
+		
+	}
+
+	function insereMensagem($texto){
+		$mensagem = new mensagem(NULL, $this->idTopico, $this->idUsuario, $texto, -1);
+		$mensagem->salvar();
+	}
+}
+
+class visualizacaoTopico extends topico{
+
+	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = "", $nomeUsuario = "ERRO 43"){
+		parent::__construct($idTopico, $idTurma, $idUsuario, $titulo, $date, $nomeUsuario);
+	}
+
+	function imprimeMensagens(){
+		$mensagens = $this->getMensagens();
+		$arrJson = array();
+		
+		foreach ($mensagens as $indice => $mensagem){
+			$arrJson[] = $mensagem->toJson();
+		}
+		echo json_encode($arrJson);
+	}
+}
+
+class forum {
 	/*\
-	 *Funções:
-	 *contaPáginas()
-	 *configBD($BDforum,$BDuser)
-	 *pesquisa($pg, $tipo, $consulta)
-	 *topicos($pg)
-	 *
+	 * 
+	 * Classe voltada SOMENTE a CARREGAR ou SALVAR os dados.
+	 * Ver visualizacaoForum para onde o HTML é gerado.
+	 * 
+	 * Construtor requer a id da turma.
+	 * 
+	 * carregaTopicos: retorna a lista de topicos no forum daquela turma.
+	 * carregaMensagems(int idTopico): Retorna a lista de mensagens do topico.
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
 	\*/
 	
-	function forum($fid){	// Construtor, somente seta o id do forum
-		$this->forumId = $fid;
+	public $idTurma;
+	protected $listaTopicos = array();
+	public $numPaginas;
+	
+	function __construct($idTurma){
+		$this->idTurma = (int) $idTurma;
 	}
 	
-	function contaPaginas(){
-		return ceil($this->contador /10); // Auto-explicativa
-	}
-	
-	function configBD($BDforum,$BDuser){ // Auto-explicativa 
-		$this->BD_forum_tab = $BDforum;
-		$this->BD_user_tab = $BDuser;
-	}
-	
-	function pesquisa($pg, $tipo, $consulta){
-		global $tabela_usuarios, $tabela_forum;
-	
-		$this->titulo = 'RESULTADOS DA PESQUISA';
-		$this->erro = '';
-		
-		unset($this->mensagem); // TODO: Porque isso existe?
-		
-		$pg = ($pg > 0)? $pg : 1;
-		$pagina = ($pg-1)*10;
-		
-		$pesquisa1 = new conexao();
-		if($pesquisa1->erro!= ""){ // Se tiver algum erro, copia da pesquisa pra classe:
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		
-		$pesquisa2 = new conexao();
-		if($pesquisa2->erro!= ""){ // Se tiver algum erro, copia da pesquisa pra classe:
-			$this->erro = $pesquisa2->erro;
-			return false;
-		}
+	function carregaTopicos(){
+		if(empty($this->listaTopicos)){
+			$idTurma = $this->idTurma;
+			$q = new conexao();
+			$q->solicitar("SELECT idTopico FROM ForumTopico WHERE idTurma = $idTurma ORDER BY data DESC");
 
-		$forum_id = $this->forumId;
+			$this->numTopicos = $q->registros;
+			for($i=0; $i < ($q->registros); $i+=1){
+				$idTopico = $q->resultado['idTopico'];
 
-		$this->erro = "tipo:$tipo - cons: $consulta"; // Se sobreviveu aos erros, põe infos de debug
-		switch ($tipo){
-			case 0:
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id'");
-
-
-
-				$this->contador = $pesquisa1->registros;
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id' ORDER BY msg_id ASC LIMIT $pagina,10");
-			break;
-
-
-			case 1:
-				$pesquisa1->solicitar("select * from $tabela_usuarios where $consulta");
-				$consulta = "";
-				for ($c=0; $c<$pesquisa1->registros; $c++){
-					$uid = $pesquisa1->resultado['usuario_id'];
-					if ($c==0)
-						$consulta = "msg_usuario ='$uid'";
-					else
-						$consulta = $consulta . " or msg_usuario ='$uid'";
-					$pesquisa1->proximo();
-				}
-				if ($consulta != "") $consulta = "($consulta)";
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id'");
-				$this->contador = $pesquisa1->registros;
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id' ORDER BY msg_id ASC LIMIT $pagina,10");
-			break;
-
-
-			case 2:
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id'");
-				$this->contador = $pesquisa1->registros;
-				$pesquisa1->solicitar("select * from $tabela_forum where $consulta and forum_id = '$forum_id' ORDER BY msg_id ASC LIMIT $pagina,10");
-			break;
-
-
-			default: // Pega os tópicos, não os posts.
-				$pesquisa1->solicitar("select * from $tabela_forum where msg_pai = '-1' and forum_id = '$forum_id' ORDER BY msg_id ASC LIMIT $pagina,10");
-		}
-		
-		if($pesquisa1->erro!= ""){ // in case of failure, dive for cover
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-
-		for ($c=0; $c<$pesquisa1->registros; $c++){
-		
-			// Seta as variáveis para a pesquisa seguinte
-			$id_msg = $pesquisa1->resultado['msg_id'];
-			$titulo = $pesquisa1->resultado['msg_titulo'];
-			$msg = $pesquisa1->resultado['msg_conteudo'];
-			$dono = $pesquisa1->resultado['msg_usuario']; // ESSA É A ID DO DONO
-			$data = $pesquisa1->resultado['msg_data'];
-			$pai = $pesquisa1->resultado['msg_pai'];
-			
-			// Pega o nome do criador do post
-			$pesquisa2->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono'");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return false;
-			}
-			$nome = $pesquisa2->resultado['usuario_nome'];
-			
-			// Pega o numero de filhos da mensagem.
-			$pesquisa2->solicitar("select * from $tabela_forum where msg_pai = '$id_msg'");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return false;
-			}
-			$quantidade = $pesquisa2->registros;
-
-			if ($pai != '-1'){ // Caso NÃO seja um tópico, pega o título do pai.
-				$pesquisa2->solicitar("select * from $tabela_forum where msg_id = '$pai' and forum_id = '$forum_id' LIMIT 1");
-				if($pesquisa2->erro!= ""){
-					$this->erro = $pesquisa2->erro;
-					return false;
-				}
-				$titulo = $pesquisa2->resultado['msg_titulo'];
+				$topicoLoop = new topico($idTopico);
+				$this->listaTopicos[] = $topicoLoop; // appends
+				$q->proximo();
 			}
 			
-			$post_id=$pesquisa2->resultado['msg_id'];
+			return $this->listaTopicos;
 
-
-
-			$editavel = permissao($dono, $post_id); //lembrete:fazer PERMISSAO virar OO
-			$this->mensagem[$c] = new itemMsg($id_msg, $dono, $nome, $pai, $quantidade, $data, $msg, $editavel, 0);
-			$pesquisa1->proximo();
-		}
-		return true;
-	}
-	
-	
-	
-	
-	function topicos($pg){
-		$this->titulo = 'TÓPICOS';
-		unset($this->mensagem);
-		$pg = ($pg > 0)? $pg : 1;
-		$pagina = ($pg-1)*10;
-		
-		$pesquisa1 = new conexao();
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		
-		$pesquisa2 = new conexao();
-		if($pesquisa2->erro!= ""){
-			$this->erro = $pesquisa2->erro;
-			return false;
-		}
-
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		
-		$pesquisa1->solicitar("select * from $tabela_forum where msg_pai = '-1' and forum_id = '$forum_id'");
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$this->contador = $pesquisa1->registros;
-		$pesquisa1->solicitar("select * from $tabela_forum where msg_pai = '-1' and forum_id = '$forum_id' ORDER BY msg_id DESC LIMIT $pagina,10");
-
-		for ($c=0; $c<$pesquisa1->registros; $c++){
-			$id_msg = $pesquisa1->resultado['msg_id'];
-			$titulo = $pesquisa1->resultado['msg_titulo'];
-			$msg = $pesquisa1->resultado['msg_conteudo'];
-			$dono = $pesquisa1->resultado['msg_usuario'];
-			$data = $pesquisa1->resultado['msg_data']; //verificar se existe campo DATA no BD
-			
-			$pesquisa2->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono'");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return false;
-			}
-			$nome = $pesquisa2->resultado['usuario_nome'];
-			$pesquisa2->solicitar("select * from $tabela_forum where msg_pai = '$id_msg'");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return false;
-			}
-			$quantidade = $pesquisa2->registros;
-			
-			$post_id=$pesquisa2->resultado['msg_id'];
-			
-			$this->mensagem[$c] = new itemMsg($id_msg, $dono, $nome, -1, $quantidade, $data, $msg, 0,$titulo);
-			$pesquisa1->proximo();
-		}
-		return true;
-	}
-
-
-
-
-	function salvaMensagem($nova, $pai, $dono, $titulo, $conteudo){
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		
-		$pesquisa1 = new conexao();
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-
-		$data = pegaData();
-		
-		if ($nova){ // Se for uma mensagem nova
-			$titulook = $pesquisa1->sanitizaString($titulo);
-			$conteudook = $pesquisa1->sanitizaString($conteudo);
-			$pesquisa1->solicitar("INSERT INTO $tabela_forum (msg_usuario, msg_titulo, msg_conteudo, msg_pai, forum_id, msg_data) VALUES ('$dono','$titulook','$conteudook','$pai','$forum_id', '$data')");
-			if($pesquisa1->erro!= ""){
-				$this->erro = $pesquisa1->erro;
-				return false;
-			}
-
-
-		}else{ // se for edição de uma já existente
-			$titulook = $pesquisa1->sanitizaString($titulo);
-			$conteudook = $pesquisa1->sanitizaString($conteudo);
-			
-			$pesquisa1->solicitar(	"UPDATE $tabela_forum
-									SET msg_titulo='$titulook', msg_conteudo='$conteudook', msg_data='$data'
-									WHERE (msg_id = '$pai' AND forum_id = '$forum_id' AND msg_usuario = '$dono') LIMIT 1");
-			if($pesquisa1->erro!= ""){
-				$this->erro = $pesquisa1->erro;
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	
-	
-	
-	function excluiMensagem($topico){
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		$pesquisa1 = new conexao();
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$pesquisa1->solicitar("DELETE FROM $tabela_forum WHERE msg_id = '$topico' AND forum_id = '$forum_id' LIMIT 1");
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$pesquisa1->solicitar("DELETE FROM $tabela_forum WHERE msg_pai = '$topico' AND forum_id = '$forum_id'");
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		return true;
-	}
-
-
-
-
-	function pegaDadosDaMensagem($topico){
-		unset($this->mensagem);
-		$pesquisa1 = new conexao();
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$pesquisa2 = new conexao();
-		if($pesquisa2->erro!= ""){
-			$this->erro = $pesquisa2->erro;
-			return false;
-		}
-
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		
-		$pesquisa1->solicitar("select * from $tabela_forum where msg_id = '$topico' and forum_id = '$forum_id' LIMIT 1");
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$this->contador = $pesquisa1->registros;
-		$titulo = $pesquisa1->resultado['msg_titulo'];
-		$id_msg = $pesquisa1->resultado['msg_id'];
-		$msg = $pesquisa1->resultado['msg_conteudo'];
-		$dono = $pesquisa1->resultado['msg_usuario'];
-		$data = $pesquisa1->resultado['msg_data'];
-		$pai = $pesquisa1->resultado['msg_pai'];
-		$pesquisa1->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono'");
-		if($pesquisa1->erro!= ""){
-			$this->erro = $pesquisa1->erro;
-			return false;
-		}
-		$nome = $pesquisa2->resultado['usuario_nome'];
-		$qnt = 0;
-		if ($pai == '-1'){
-			$pesquisa1->solicitar("select * from $tabela_forum where msg_pai = '$topico' and forum_id = '$forum_id'");
-			if($pesquisa1->erro!= ""){
-				$this->erro = $pesquisa1->erro;
-				return false;
-			}
-			$qnt = $pesquisa1->registros;
-		}
-		$editavel = permissao($dono); //lembrete:fazer PERMISSAO virar OO
-		$this->mensagem[0] = new itemMsg($id_msg, $dono, $nome, $pai, $qnt, $data, $msg, $editavel, 0);
-		
-		return true;
-	}
-
-
-
-
-	function paginas($pg, $qnt){
-		$pgs = array();
-		
-		$primeiro = 1;
-		$ant = $pg -1;
-		if ($ant < 1) $ant = 1;
-		
-		$linf = $pg - floor($qnt/2);
-		$lsup = $pg + floor($qnt/2);
-		$ultimo = ceil($this->contador /10);
-
-		
-		if ($ultimo < 1) return false;
-		if ($ultimo < $lsup) $lsup = $ultimo;
-		
-		$prox = $pg + 1;
-		if ($prox > $ultimo) $prox = $ultimo;
-
-		if ($linf < 1) $linf = 1;
-		
-		$pgs[] = $primeiro;
-		$pgs[] = $ant;
-		$pgs[] = $prox;
-		$pgs[] = $ultimo;
-		
- 		for ($i = $linf; $i <= $lsup; $i++){
- 			$pgs[] = $i;
- 		}
-		
-		return $pgs;
-	}
-	
-	
-	
-	
-	
-	function paiAbsoluto($id){
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		$pesquisa = new conexao();
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return null;
-		}
-		$pesquisa->solicitar("select * from $tabela_forum where msg_id = '$id' and forum_id = '$forum_id' LIMIT 1"); //LE DIREITO Q TU ENTENDE =P
-		if ($pesquisa->registros < 1) return null;
-		$pai = $pesquisa->resultado['msg_pai'];
-		if ($pai == '-1') return $id;
-		return $this->paiAbsoluto($pai);
-	}
-	
-	
-	
-	
-	
-	function retornaRespostas($id,$primeiro=0){
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		$pesquisa = new conexao();
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return null;
-		}
-		$pesquisa->solicitar("select * from $tabela_forum where msg_id = '$id' and forum_id = '$forum_id' LIMIT 1"); //LE DIREITO Q TU ENTENDE =P
-		if ($pesquisa->registros < 1) return '';
-			$titulo = $pesquisa->resultado['msg_titulo'];
-			$id_msg = $pesquisa->resultado['msg_id'];
-			$msg = $pesquisa->resultado['msg_conteudo'];
-			$dono = $pesquisa->resultado['msg_usuario'];
-			$data = $pesquisa->resultado['msg_data'];
-			$pai = $pesquisa->resultado['msg_pai'];
-			$vetor_data = explode(",",$data);
-
-		$pesquisa->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono' LIMIT 1");
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return null;
-		}
-		$nome = $pesquisa->resultado['usuario_nome'];
-		
-		$cabecalho = '<div class="info" style="float:none;border:0;">';
-		$cabecalho = $cabecalho.'<p class="nome">'.$nome.'</p>';
-		$cabecalho = $cabecalho.'<p class="data"><span style="color:#C60;">'.$vetor_data[0].'</span> às <span style="color:#C60;">'.$vetor_data[1].'</span></p>';
-		$cabecalho = $cabecalho.'</div>';
-
-		if ($primeiro == 0) $cabecalho = '';
-		$primeiro++;
-
-		if (($pai == $this->topico)||($primeiro == 2)){
-			return $cabecalho.$msg;
 		}else{
-			return $cabecalho.'<div class="anterior">'.$this->retornaRespostas($pai,$primeiro).'</div>'.$msg;
+			return $this->listaTopicos;
 		}
-	}
-	
-	
-	
-	
-	
-	function pegaArvore($id,$grau,$cronos){ //retorna um array de resultados. As mensagens, seguidas pelas suas respostas. Dê um print_r se for necessário maior compreensão.
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		$tudo = array();
-		$pesquisa = new conexao();
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return array();
-		}
-		$pesquisa2 = new conexao();
-		if($pesquisa2->erro!= ""){
-			$this->erro = $pesquisa2->erro;
-			return array();
-		}
-		$pesquisa->solicitar("select * from $tabela_forum where msg_pai = '$id' and forum_id = '$forum_id' ORDER BY msg_id ASC"); //LE DIREITO Q TU ENTENDE =P
-		if ($pesquisa->registros < 1) return array();
-		for ($c=0; $c<$pesquisa->registros; $c++){
-			$auxiliar = array();
-			$titulo = $pesquisa->resultado['msg_titulo'];
-			$id_msg = $pesquisa->resultado['msg_id'];
-			$msg = $pesquisa->resultado['msg_conteudo'];
-			$dono = $pesquisa->resultado['msg_usuario'];
-			$data = $pesquisa->resultado['msg_data'];
-			$pai = $pesquisa->resultado['msg_pai'];
-
-			$pesquisa2->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono' LIMIT 1");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return array();
-			}
-			$nome = $pesquisa2->resultado['usuario_nome'];
-			$pesquisa2->solicitar("select * from $tabela_forum where msg_pai = '$id_msg'");
-			if($pesquisa2->erro!= ""){
-				$this->erro = $pesquisa2->erro;
-				return array();
-			}
-			$quantidade = $pesquisa2->registros;
-
-			//$editavel = permissao($dono); //lembrete:fazer PERMISSAO virar OO
-			if ($cronos) $msg = $this->retornaRespostas($id_msg);
-			$tudo[] = new itemMsg($id_msg, $dono, $nome, $pai, $quantidade, $data, $msg, $grau);
-			
-			$auxiliar = $this->pegaArvore($pesquisa->resultado['msg_id'],$grau+1,$cronos);
-			if ($auxiliar != array())
-				$tudo = array_merge($tudo, $auxiliar);
-			$pesquisa->proximo();
-		}
-		return $tudo;
-	}
-	
-	
-	
-	
-	
-	function pegaMensagensArvore($id, $pagina, $cronos = true, $ultimaPagina = false){
-		unset($this->mensagem);
-		$this->topico = $id;
-		global $tabela_usuarios;
-		global $tabela_forum;
-		$forum_id = $this->forumId;
-		
-		$pagina = ($pagina > 0)? $pagina : 1;
-		// TODO: Tinha um if aqui, mas não me lembor pra que, talvez fosse importante
-		
-		$pagina = ($pagina-1)*10;
-		$pesquisa = new conexao();
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return array();
-		}
-		
-		$pesquisa->solicitar("select * from $tabela_forum where msg_id = '$id' and forum_id = '$forum_id' LIMIT 1"); //LE DIREITO Q TU ENTENDE =P
-		if ($pesquisa->registros < 1){
-			return array();
-		}
-		
-		$titulo = $pesquisa->resultado['msg_titulo'];
-		$id_msg = $pesquisa->resultado['msg_id'];
-		$msg = $pesquisa->resultado['msg_conteudo'];
-		$dono = $pesquisa->resultado['msg_usuario'];
-		$data = $pesquisa->resultado['msg_data'];
-		$pai = $pesquisa->resultado['msg_pai'];
-
-		$pesquisa->solicitar("select usuario_nome from $tabela_usuarios where usuario_id = '$dono' LIMIT 1");
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return array();
-		}
-		$nome = $pesquisa->resultado['usuario_nome'];
-		$pesquisa->solicitar("select * from $tabela_forum where msg_pai = '$id_msg'");
-		if($pesquisa->erro!= ""){
-			$this->erro = $pesquisa->erro;
-			return array();
-		}
-		$quantidade = $pesquisa->registros;
-		if ($titulo == ''){
-			$titulo = "Respostas";
-		}
-		$this->titulo = $titulo;
-		
-		
-		// WARNING: WILD GAMBIARRA IS DONE HERE
-		if(!isset($grau)) { $grau = NULL; }
-		
-		$item = new itemMsg($id_msg, $dono, $nome, $pai, $quantidade, $data, $msg, false, $grau);
-			
-		$this->mensagem = array_merge(array(0 => $item),$this->pegaArvore($id,0,$cronos));
-		$this->contador = count($this->mensagem);
-		if ($ultimaPagina){
-			$pagina = ceil(($this->contador)/10);
-			$pagina = ($pagina-1)*10;
-		}
-		
-		if ($cronos) // organiza os itens por data
-			quicksort($this->mensagem,0,count($this->mensagem)-1);
-		$this->mensagem = array_slice($this->mensagem, $pagina, 10);
-		return true;
 	}
 }
 
 
-?>
+class visualizacaoForum extends forum{
+
+	function imprimeTopicos($user, $permissoes){
+
+		$this->carregaTopicos();
+
+		if(empty($this->listaTopicos)){
+			echo "Não existem tópicos nessa turma.";
+		}else{
+			$html = "";
+
+			foreach ($this->listaTopicos as $indice => $topico) {
+				$idTopico = $topico->getIdTopico();
+				$idTurma = $topico->getIdTurma();
+				$idUsuario = $topico->getIdUsuario();
+				$titulo = $topico->getTitulo();
+				$nomeUsuario = $topico->getNomeUsuario();
+				$data = explode(' ', $topico->getDate());
+				$link = "forum_topico.php?turma=$idTurma&amp;topico=$idTopico";
+
+				$acoesPermitidas = "";
+				if($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma) or $user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)){
+					$acoesPermitidas .= "<div class=\"enviar\" align=\"right\">";
+
+					if ($user->podeAcessar($permissoes['forum_editarTopico'], $idTurma)) {
+						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_editar.png\" onclick=\"editarTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
+					}
+
+					if ($user->podeAcessar($permissoes['forum_excluirTopico'], $idTurma)) {
+						$acoesPermitidas .= "<img src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirTopico($idTurma,$idTopico)\" class=\"clicavel\"/>";
+					}
+
+					$acoesPermitidas .= "</div></li>";
+				}
+
+				echo "
+<div class=\"alterna\" id=\"t$idTopico\">
+	<div class=\"esq\">
+		<li><a href=\"$link\" id=\"ta$idTopico\" class=\"titulo_topico\">$titulo</a></li>
+		<li class=\"mensagens\">".$topico->getPrintableMessageNumber()."</li>
+	</div>
+		<div class=\"dir\">
+		<ul>
+		<li class=\"criado_por\">Por: <span style=\"color:#C60;\">$nomeUsuario</span> em <span style=\"color:#C60;\">$data[0]</span> às <span style=\"color:#C60;\">$data[1]</span></li>
+		$acoesPermitidas
+	</ul>
+	</div>
+</div>
+";
+			}
+		}
+	}
+
+	function imprimeNumTopicos(){
+		$frase = ($this->numTopicos == 1) ? "Existe 1 tópico nesse forum." : "Existem $this->numTopicos tópicos nesse forum.";
+		
+		echo "		<div class=\"troca_paginas\">
+			<div class=\"paginas_padding\">
+				$frase
+			</div>
+		</div>";
+
+		
+	}
+}

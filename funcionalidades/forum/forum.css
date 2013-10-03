@@ -1,37 +1,42 @@
 #topicos { width:100%; float:left; margin-bottom:12px; margin-top:12px}
 
-.esq { display:table-cell; float:left; width:40%; padding:20px}
+.esq { display:table-cell; float:left; width:40%; padding:10px}
 
-.dir { display:table-cell; float:right; width:47%; padding:20px}
+.dir { display:table-cell; float:right; width:47%; padding:10px}
 .dir a { text-decoration:none}
 .dir input { margin-left:10px}
 
 .imagem { width:66px; height:66px; background-color:white; border:1px solid #888888; 
 float:left; margin-right:15px; display:table-cell}
-.texto_resposta { display:table-cell; width:80%}
 
-.mensagens {margin-top:37px}
+.mensagens {margin-top:5px}
 
-.criado_por { color:#999999; font-size:11px; margin-top:15px; margin-bottom:15px}
+.criado_por {color:#999999;}
 
-#nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
+.nova_mensagem {width:100%; margin-bottom:22px; float:left; display:none}
 
-#bloco_mensagens { width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
-#bloco_mensagens li { margin-bottom:20px; width:100%; float:left}
-#bloco_mensagens ul { margin:22px}
+#bloco_mensagens {width:100%; max-width:660px; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+#bloco_mensagens li {margin-bottom:20px; width:100%; float:left}
+#bloco_mensagens ul {margin:22px}
 
-.info { float:left; width:60%; display:table-cell; margin-top:10px; border-bottom: 1px solid #888888; padding-bottom:10px;}
+.info {
+	float:left;
+	width:100%;
+	display:table-cell;
+	margin-top:10px;
+	border-bottom: 1px solid #888888;
+	padding-bottom:10px;
+}
 .nome {float:left;}
-.data {float:right;}
+p.data {float:right;}
+span.data{color:#C60;}
 
 .bts_msg {width:40%; display:table-cell}
 .bts_msg input{margin-left:10px;}
 
 .resposta {width:636px; padding:22px; clear:both;}
 
-#procurar_topico { width:100%; margin-bottom:22px; float:left}
-#procurar_topico input[type=text] {width:100%; margin-bottom:5px}
-#procurar_topico input[type=image] {margin-left:22px;}
+.botao_procurar {float:right}
 
 #box_procurar {padding-top:10px;}
 
@@ -51,19 +56,31 @@ float:left; margin-right:15px; display:table-cell}
 
 .espaco_linhas {margin-top:22px}
 
-#cancela_msg { position:relative; cursor:pointer}
-#confirm_msg { position:relative}
+#cancela_msg{position:relative; cursor:pointer}
+#confirm_msg{position:relative}
 
-#responder_topico { cursor:pointer}
+.botao_transparente{
+	margin:0;
+	padding:0;
+	border:0;
+	background-color: transparent;
+}
 
-#responder_topico_cima { cursor:pointer}
-#responder_topico_baixo { cursor:pointer}
+#responder_topico{cursor:pointer; float:right;}
+
+#responder_topico_cima{cursor:pointer}
+#responder_topico_baixo{cursor:pointer}
 
 .limite_resposta{
 	position:relative;
 	float:left;
-	width:540px;
 }
+.texto_resposta {
+	display:table-cell;
+	word-wrap: break-word;
+	max-width: 500px;
+}
+
 .anterior{
 	border:1px silver solid;
 	margin:4px;
@@ -73,11 +90,56 @@ float:left; margin-right:15px; display:table-cell}
 .cor3{
 	background-color:#EEF5F5;
 	display:table;
-	width:100%;
 	margin-top : 5px;
 	margin-bottom : 5px;
 }
 
+.troca_paginas{
+	text-align: center;
+}
 
+.citacao{
+	border: 1px solid #C60;
+	border-radius: 1em;
+	padding: 3px;
+	margin: 5px;
+
+	text-align: justify;
+	text-justify:newspaper; /* isso pode dar problemas com linguagens asiáticas */
+	display: inline-block;
+}
 
 #resultado_pesquisa {width:100%; float:left; margin-bottom:12px; border-left:0; border-right:0; border-bottom:0; margin-top:12px; background-color : transparent;}
+
+#dinamica li {
+	list-style: none;
+	word-wrap: break-word;
+}
+
+#dinamica .alterna:nth-child(2n){
+	background-color:#DEE5E5;
+}
+
+#dinamica .alterna:last-child{
+	border-bottom: 0px solid black;
+}
+
+.alterna{
+	background-color:#EEF5F5;
+	display: inline-block;
+	width: 100%;
+	border-bottom: 1px solid black;
+}
+
+.clicavel{cursor: pointer;}
+
+h1{
+	text-overflow: ellipsis;
+	max-width:660px;
+	overflow: hidden;
+	background-color: #53686F;
+}
+
+.titulo_topico{
+	text-transform: uppercase;
+}
