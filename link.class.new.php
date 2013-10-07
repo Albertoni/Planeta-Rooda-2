@@ -9,10 +9,10 @@ class Link
 	private $id = false; // falso significa que o link nao foi carregado/salvo (nao existe)
 	private $titulo = "";
 	private $autor = "";
-	private $tags = [];
+	private $tags = array();
 	private $endereco = ""; // URL do link
 	private $codUsuario = false;
-	private $erros = [];
+	private $erros = array();
 	
 	function __construct($id = false)
 	{
@@ -171,7 +171,7 @@ class Link
 		// é tratada como uma array a seguir.
 		if (is_array($tags))
 		{
-			$this->tags = [];
+			$this->tags = array();
 			foreach ($tags as $value)
 			{
 				$this->tags[] = trim($value);
@@ -185,7 +185,6 @@ class Link
 		$url = trim($url);
 		if ($url !== '')
 		{
-			$url = urlencode($url);
 			if (('http://' !== substr($url,0,7)) and ('https://' !== substr($url,0,8)))
 			{
 				$url = "http://$url";

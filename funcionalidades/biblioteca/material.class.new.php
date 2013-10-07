@@ -1,12 +1,12 @@
 <?php
+define("MATERIAL_LINK", 'l');
+define("MATERIAL_ARQUIVO", 'a');
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../usuarios.class.php");
 require_once("../../turma.class.php");
 require_once("../../arquivo.class.php");
 require_once("../../link.class.new.php");
-define("MATERIAL_LINK", 'l');
-define("MATERIAL_ARQUIVO", 'a');
 class Material
 {
 	private $id  = false;
@@ -34,8 +34,7 @@ class Material
 		{
 			$bd = new conexao();
 			$bd->solicitar(
-<<<SQL
-SELECT
+"SELECT
 	codMaterial      AS id,
 	codTurma         AS codTurma,
 	titulo           AS titulo,
@@ -47,8 +46,7 @@ SELECT
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
 FROM BibliotecaMateriais
-WHERE codMaterial = $id
-SQL
+WHERE codMaterial = $id"
 			);
 			if ($bd->registros === 1)
 			{
@@ -165,14 +163,12 @@ SQL
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
 			$aprovado     = $this->aprovado ? '1' : '0';
 			$bd->solicitar(
-<<<SQL
-UPDATE $tabela_Materiais 
+"UPDATE $tabela_Materiais 
 SET titulo = '$titulo', 
 	autor = '$autor', 
 	tags = '$tags', 
 	materialAprovado = $aprovado
-WHERE codMaterial = {$this->id}
-SQL
+WHERE codMaterial = {$this->id}"
 			);
 		}
 	}
@@ -396,11 +392,11 @@ SQL
 			// mostrar somente os materiais aprovados
 			$condicaoSQL .= "AND (materialAprovado = 1";
 			// a não ser que tenha um usuario definido, entao mostrar os nao aprovados dele também.
-			$condicaoSQL = ($usuario > 0) ? " OR codUsuario = {$usuario})" : ')';
+			$condicaoSQL .= ($usuario > 0) ? " OR codUsuario = {$usuario})" : ')';
 		}
 		$this->consulta_turma = new conexao();
-		$this->consulta_turma->solicitar(<<<SQL
-SELECT
+
+$sql = "SELECT
 	codMaterial      AS id,
 	codTurma         AS codTurma,
 	titulo           AS titulo,
@@ -412,13 +408,12 @@ SELECT
 	refMaterial      AS codRecurso,
 	materialAprovado AS aprovado
 FROM BibliotecaMateriais
-WHERE codTurma = {$turma} {$condicaoSQL}
-ORDER BY codMaterial DESC
-SQL
-		);
+WHERE codTurma = $turma $condicaoSQL
+ORDER BY codMaterial DESC";
+		$this->consulta_turma->solicitar($sql);
 		// se ocorreu erro, jogar exceção
 		if ($this->consulta_turma->erro) {
-			throw new Exception($this->consulta_turma->erro, 1);
+			throw new Exception($this->consulta_turma->erro." :: $sql", 1);
 		}
 		$this->turma_aberta = true;
 		if ($this->consulta_turma->registros > 0) {
@@ -465,3 +460,4 @@ SQL
 		);
 	}
 }
+?>

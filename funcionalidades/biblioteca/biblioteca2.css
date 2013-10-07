@@ -146,6 +146,7 @@ button[name='aprovar'] {
 	position: absolute;
 	bottom: 5px;
 	right: 5px;
+	overflow: hidden;
 }
 button[name='editar'] {
 	background: url('../../images/botoes/bt_editar.png');

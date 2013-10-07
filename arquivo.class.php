@@ -56,7 +56,7 @@ class Arquivo
 				// carrega arquivo encontrado
 				$this->id = $id;
 				$this->popular($bd->resultado);
-				$download = true;
+				$this->download = true;
 			}
 			else
 			{
@@ -75,7 +75,7 @@ class Arquivo
 		$this->tipo      = $resultadoBd['tipo'];
 		$this->tamanho   = $resultadoBd['tamanho'];
 		$this->data      = $resultadoBd['data'];
-		$this->idUsuario = $resultadoBd['idUsuario'];
+		$this->idUsuario = (int) $resultadoBd['idUsuario'];
 		$this->setTags($resultadoBd['tags']);
 	}
 	public function getId() { return $this->id; }

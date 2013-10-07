@@ -2,6 +2,7 @@
 /*
  * funcionalidades/biblioteca/biblioteca.json.php
  */
+//try {
 require_once('../../cfg.php');
 require_once('../../bd.php');
 require_once('../../funcoes_aux.php');
@@ -19,7 +20,6 @@ if ($usuario === false) {
 	$idUsuario = $usuario->getId();
 	$json['session'] = $usuario->getSimpleAssoc();
 }
-
 function listar() {
 	global $json;
 	global $usuario;
@@ -48,11 +48,10 @@ function listar() {
 	// se definido o cliente pede para carregar materiais mais antigos que o id dessa variavel
 	$mais_velho = isset($_GET['mais_velho']) ? (int) $_GET['mais_velho'] : 0;
 	// id da turma para listar
-	$opcoes = 
-		['turma'      => $idTurma,
+	$opcoes = array('turma'      => $idTurma,
 		 'usuario'    => $usuario->getId(),
 		 'mais_velho' => $mais_velho,
-		 'mais_novo'  => $mais_novo];
+		 'mais_novo'  => $mais_novo);
 	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $idTurma)) {
 		$opcoes['nao_aprovados'] = true;
 		$json['pode_aprovar'] = true;
@@ -210,6 +209,7 @@ function editar() {
 	if ($material->temErros()) {
 		if (!isset($json['errors'])) $json['errors'] = array();
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
+		$json['material'] = $material->getAssoc();
 	} else {
 		$json['material'] = $material->getAssoc();
 	}
@@ -225,11 +225,17 @@ function excluir() {
 		$json['errors'] = array_merge($json['errors'], $material->getErros());
 		return;
 	}
+	if ($material->getId() === false) {
+		// material nao existe
+		$json['success'] = true;
+		$json['id'] = $id;
+		return;
+	}
 	$idUsuario = $usuario->getId();
 	$idTurma = $material->getIdTurma();
 	if(!usuarioPertenceTurma($idUsuario, $idTurma)) {
 		// usuário não pertence a turma.
-		$json['errors'][] = "erro: voc&ecirc; n&atilde;o est&aacute; nesta setTurma.";
+		$json['errors'][] = "erro: voc&ecirc; n&atilde;o est&aacute; nesta turma.";
 		return;
 	} else {
 		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
@@ -307,3 +313,9 @@ if($json['session'] && !isset($json['errors'])) {
 	}
 }
 echo json_encode($json);
+//}
+//catch (Exception $e) {
+//	echo $e->getMessage();
+//}
+
+?>

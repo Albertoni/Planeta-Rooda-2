@@ -17,6 +17,15 @@ require_once("usuarios.class.php");
 		}
 		return false;
 	}
+	function gen_salt($length) {
+		$alph = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$max = strlen($alph) - 1;
+		$salt = '';
+		for ($i = 0; $i < $length; $i++) {
+			$salt .= substr($alph, rand(0,$max), 1);
+		}
+		return $salt;
+	}
 	function resolucao($screen_res) {
 		
 		if($screen_res != "") { 
@@ -218,7 +227,7 @@ require_once("usuarios.class.php");
 	}
 	function redireciona_externo($url) {
 		global $linkServidor;
-		$url = htmlentities($url);
+		$url = htmlspecialchars($url);
 		$html = '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Redirecionando</title><link type="text/css" rel="stylesheet" href="'.$linkServidor.'planeta.css" /></head>
 		<body><div class="middle_box">Você será redirecionado para <a href="'.$url.'">'.$url.'</a> em poucos segundos</div>
 		<script>setTimeout(function(){ window.location.href = "'.$url.'"; },3000);</script></body></html>';

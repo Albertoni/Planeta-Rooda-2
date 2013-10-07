@@ -9,6 +9,7 @@ var BIBLIOTECA = (function () {
 	var pode_aprovar = false;
 	var pode_editar = false;
 	var pode_excluir = false;
+	var busca = {}
 	var token_atualizador; // valor retornado por setInterval()
 	var falhasSucessivas = 0; // numero de requisições que falharam
 	var turma = (function () {
@@ -31,6 +32,213 @@ var BIBLIOTECA = (function () {
 	function organizaMateriais(a, b) {
 		return b.id - a.id;
 	}
+	var busca = (function () {
+		var selecionada, ativa, dom = { 
+		    	'container' : document.createElement("span"),
+		    	'title' : document.createElement("span"),
+		    	'typeLabel' : document.createElement("label"),
+		    	'type' : document.createElement("select"),
+		    	'queryLabel' : document.createElement("label"),
+		    	'submit' : document.createElement("button"),
+		    	'tags' : document.createElement("select")
+		    },
+		    // dicionarios de indexação
+		    indices = {
+		    	'tags' : {}, 
+		    	'autores' : {}, 
+		    	'usuarios' : {}
+		    },
+		    // tipos de busca
+		    searchTypes = {
+		    	// BUSCA POR TITULO
+		    	'all' : {
+		    		'text' : 'mostrar todos',
+		    		'field' : document.createElement('span'),
+		    		'lists' : {},
+		    		'default' : true, 
+		    		'onselect' : function () {
+		    			while (dom.queryLabel.firstElementChild) {
+		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+		    			}
+		    		},
+		    		'apply' : function () {
+		    			atualizaLista(materiais);
+		    		}
+		    	},
+		    	'title' : { 
+		    		'text' : 'título',
+		    		'field' : document.createElement('input'),
+		    		'lists' : {},
+		    		'onselect' : function () {
+		    			while (dom.queryLabel.firstElementChild) {
+		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+		    			}
+		    			dom.queryLabel.appendChild(this.field);
+		    		},
+		    		'apply' : function () {
+		    			var that = this;
+		    			atualizaLista(materiais.filter(function (m) {
+		    				return (m.titulo.toLowerCase().search(that.field.value.toLowerCase()) !== -1);
+		    			}));
+		    		}
+		    	},
+		    	// BUSCA POR AUTOR
+		    	'author' : { 
+		    		'text' : 'autor', 
+		    		'field' : document.createElement('select'),
+		    		'lists' : {},
+		    		'onselect' : function () {
+		    			var that = this;
+		    			while (this.field.firstElementChild) {
+		    				this.field.removeChild(this.field.firstElementChild);
+		    			}
+		    			Object.keys(this.lists).forEach(function (autor) {
+		    				var opt = document.createElement("option");
+		    				opt.value = autor;
+		    				opt.text = autor;
+		    				that.field.add(opt);
+		    			});
+		    			while (dom.queryLabel.firstElementChild) {
+		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+		    			}
+		    			dom.queryLabel.appendChild(this.field);
+		    		},
+		    		'apply' : function () {
+		    			atualizaLista(this.lists[this.field.value]);
+		    		}
+		    	},
+		    	// BUSCA POR TAGS
+		    	'tags' : { 
+		    		'text' : 'palavras chave', 
+		    		'field' : dom.tags,
+		    		'lists' : {},
+		    		'onselect' : function () {
+		    			var that = this;
+		    			while (this.field.firstElementChild) {
+		    				this.field.removeChild(this.field.firstElementChild);
+		    			}
+		    			Object.keys(this.lists).forEach(function (tag) {
+		    				var opt = document.createElement("option");
+		    				opt.value = tag;
+		    				opt.text = tag;
+		    				that.field.add(opt);
+		    			});
+		    			while (dom.queryLabel.firstElementChild) {
+		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+		    			}
+		    			dom.queryLabel.appendChild(this.field);
+		    		},
+		    		'apply' : function () {
+		    			atualizaLista(this.lists[this.field.value]);
+		    		}
+		    	},
+		    	// BUSCA POR USUARIO
+		    	'user' : { 
+		    		'text' : 'usuário', 
+		    		'field' : document.createElement('select'),
+		    		'lists' : {},
+		    		'onselect' : function () {
+		    			var that = this;
+		    			while (this.field.firstElementChild) {
+		    				this.field.removeChild(this.field.firstElementChild);
+		    			}
+		    			Object.keys(this.lists).forEach(function (usuario) {
+		    				var opt = document.createElement("option");
+		    				opt.value = usuario;
+		    				opt.text = usuario;
+		    				that.field.add(opt);
+		    			});
+		    			while (dom.queryLabel.firstElementChild) {
+		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+		    			}
+		    			dom.queryLabel.appendChild(this.field);
+		    		},
+		    		'apply' : function () {
+		    			atualizaLista(this.lists[this.field.value]);
+		    		}
+		    	}
+		    };
+		// estrutura
+		//dom.container.classList.add("bloco");
+		dom.container.appendChild(dom.title);
+		dom.container.appendChild(dom.typeLabel);
+		dom.typeLabel.appendChild(dom.type);
+		dom.container.appendChild(dom.queryLabel);
+		dom.container.appendChild(dom.submit);
+		var b = document.getElementById("botao_buscar_material");
+		b.parentElement.replaceChild(dom.container,b);
+		// conteudo
+		dom.title.innerHTML = "Buscar: ";
+		Object.keys(searchTypes).forEach(function (key) {
+			var opt = document.createElement("option");
+			opt.value = key;
+			opt.text = searchTypes[key].text;
+			if (searchTypes[key].default) {
+				opt.selected = true;
+				ativa = selecionada = key;
+				searchTypes[key].onselect();
+			}
+			dom.type.add(opt, null);
+		});
+		dom.type.onchange = function () {
+			selecionada = this.value;
+			if (searchTypes[this.value]) {
+				if (typeof searchTypes[this.value].onselect === 'function') {
+					searchTypes[this.value].onselect();
+				}
+			}
+		}
+		dom.submit.innerHTML = "buscar";
+		dom.submit.onclick = function () {
+			ativa = selecionada;
+			searchTypes[selecionada].apply();
+		}
+		return {
+			'indexar' : function (material) {
+				// adiciona objeto as tags que ele contem
+				material.tags.forEach(function (tag) {
+					if (!Array.isArray(searchTypes.tags.lists[tag])) {
+						searchTypes.tags.lists[tag] = [];
+					}
+					searchTypes.tags.lists[tag].push(material);
+				});
+				// adiciona objeto ao usuario
+				if (!Array.isArray(searchTypes.user.lists[material.usuario.nome])) {
+					searchTypes.user.lists[material.usuario.nome] = [];
+				}
+				searchTypes.user.lists[material.usuario.nome].push(material);
+				// adiciona objeto ao autor
+				if (!Array.isArray(searchTypes.author.lists[material.autor])) {
+					searchTypes.author.lists[material.autor] = [];
+				}
+				searchTypes.author.lists[material.autor].push(material);
+			},
+			'desindexar' : function (material) {
+				// remove material do indice de tags
+				material.tags.forEach(function (tag) {
+					searchTypes.tags.lists[tag].splice(searchTypes.tags.lists[tag].indexOf(material), 1);
+					// remove tag do dicionario se estiver vazia
+					if (searchTypes.tags.lists[tag].length === 0) {
+						delete searchTypes.tags.lists[tag];
+					}
+				});
+				// remove material do indice de usuarios
+				searchTypes.user.lists[material.usuario.nome].splice(searchTypes.user.lists[material.usuario.nome].indexOf(material), 1);
+				if (searchTypes.user.lists[material.usuario.nome].length === 0) {
+					delete searchTypes.user.lists[material.usuario.nome];
+				}
+				// remove material do indice de autores
+				searchTypes.author.lists[material.autor].splice(searchTypes.author.lists[material.autor].indexOf(material), 1);
+				if (searchTypes.author.lists[material.autor].length === 0) {
+					delete searchTypes.author.lists[material.autor];
+				}
+			},
+			'atualizar' : function () {
+				searchTypes[ativa].apply();
+			},
+			's' : searchTypes
+		};
+	}());
 	//console.log(typeof turma + turma);
 	function Material(obj) {
 		this.id = obj.id;
@@ -66,7 +274,7 @@ var BIBLIOTECA = (function () {
 			this.HTMLElemento.classList.remove('nao_aprovado');
 		}
 		this.HTMLElemento.innerHTML = '<h2>' + this.titulo + '</h2><small>Enviado por ' 
-		+ this.usuario.nome + ' (' + this.data.toLocaleString()
+		+ this.usuario.nome.toString() + ' (' + this.data.toLocaleString()
 		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank" class="abrir_material">Abrir material<span class="icon">&nbsp;</span></a></p>';
 		if (pode_aprovar && !this.aprovado) {
 			this.HTMLElemento.innerHTML += '<button type="button" name="aprovar" class="aprovar" value="'
@@ -144,13 +352,20 @@ var BIBLIOTECA = (function () {
 		if (mais_velho === 0 || mais_velho > obj.id) {
 			mais_velho = obj.id;
 		}
+		busca.indexar(obj);
 	}
 	// remove material da lista de materiais
 	function getMaterial(id) {
 		return materiais.filter(function (material) { return (material.id === id); })[0];
 	}
 	function removeMaterial(id) {
-		materiais = materiais.filter(function (material) { return (material.id !== id); });
+		var material = getMaterial(id),
+		    idx = materiais.indexOf(material);
+		// remove material
+		if (idx !== -1) {
+			busca.desindexar(material);
+			materiais.splice(idx, 1);
+		}
 	}
 	function aprovaMaterial(id) {
 		var tmp = materiais.filter(function (material) { return (material.id === id); });
@@ -161,15 +376,15 @@ var BIBLIOTECA = (function () {
 		}
 	}
 	// atualiza lista de materiais (HTML) de acordo com a lista de materiais (JS)
-	function atualizaLista() {
+	function atualizaLista(lista) {
 		var i;
 		while (ulDinamica.firstElementChild) {
 			console.log('removendo');
 			ulDinamica.removeChild(ulDinamica.firstElementChild);
 		}
-		for (i in materiais) {
+		for (i in lista) {
 			console.log('add');
-			ulDinamica.appendChild(materiais[i].HTMLElemento);
+			ulDinamica.appendChild(lista[i].HTMLElemento);
 		}
 	}
 	// solicita novos materiais ao servidor.
@@ -199,7 +414,8 @@ var BIBLIOTECA = (function () {
 				//console.log(json);
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
-					atualizaLista();
+					//atualizaLista(materiais);
+					busca.atualizar();
 				}
 				setTimeout(request_newer, 60000);
 			}
@@ -244,7 +460,8 @@ var BIBLIOTECA = (function () {
 				// }
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
-					atualizaLista();
+					//atualizaLista(materiais);
+					busca.atualizar();
 				}
 			}
 			function onFail_old() {
@@ -339,7 +556,8 @@ var BIBLIOTECA = (function () {
 				if (json.success) {
 					id = json.id;
 					removeMaterial(id);
-					atualizaLista();
+					//atualizaLista(materiais);
+					busca.atualizar();
 				} else {
 					if (json.errors) {
 						ROODA.ui.alert("Não foi possivel excluir:<br>" + json.errors.join("<br>"));
@@ -444,7 +662,7 @@ var BIBLIOTECA = (function () {
 		}
 		ajax.init();
 	}
-	return { 'init' : init, form: formEnvioMaterial };
+	return { 'init' : init, form: formEnvioMaterial, 'tags': busca.tags, 'busca' : busca };
 }());
 /*
 $(document).ready(function () {

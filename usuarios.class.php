@@ -6,7 +6,7 @@
 require_once("funcoes_aux.php");
 require_once("cfg.php");
 require_once("bd.php");
-require_once("class/planeta.php");
+//require_once("class/planeta.php");
 
 
 class Usuario { //estrutura para o item post do blog
@@ -83,6 +83,10 @@ class Usuario { //estrutura para o item post do blog
 		$assoc['usuario'] = $this->user;
 		$assoc['nome'] = $this->name;
 		return $assoc;
+	}
+	// novo metodo de encripção de senha
+	public function setPassword($password) {
+		$salt = "$2y$07$".gen_salt(22);
 	}
 
 	/**
