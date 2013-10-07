@@ -100,7 +100,8 @@
 	
 	<div id="dinamica">
 		<div id="bloco_mensagens" class="bloco">
-			<h1><?php echo $nomeTopico ?> 
+			<h1>
+				<span class="titulo_topico"><?php echo $nomeTopico ?> </span>
 				<select onchange="postDinamico.reordenar(this)">
 					<option>Ordenar mensagens</option>
 					<option>Por data e hora</option>
