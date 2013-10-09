@@ -1,6 +1,6 @@
 function Engine(){
 	// Grabs data from the server to initialize the game state
-	this.updateState(undefined);
+	var playersInfo = this.updateServersideState(undefined);
 	this.keys = {
 					'left':false,
 					'right':false,
@@ -10,6 +10,11 @@ function Engine(){
 
 	this.FPS = 60; // this is the FPS it aims to run at
 	this.updateCounter = 0;
+	this.playersList = [];
+
+	for (var i = playersInfo.length - 1; i >= 0; i--) {
+		this.playersList.push(new Player(playersInfo[i]));
+	};
 
 	setInterval(Engine.mainLoop.bind(this), // Hack to get past this being set to the wrong
 				(this.FPS / 1000))
@@ -22,7 +27,7 @@ Engine.prototype.updateServersideState = function(userData){
 	if(userData === undefined){
 		var arguments = "";
 	}else{
-		var arguments = "userData="JSON.stringify(userData)
+		var arguments = "userData="+JSON.stringify(userData)
 	}
 
 	var http = new XMLHttpRequest();
@@ -30,7 +35,7 @@ Engine.prototype.updateServersideState = function(userData){
 	http.abort();
 	http.open("POST", "updateState.php", true);
 	http.onreadystatechange=function() {
-		alert("TODO");
+		return JSON.decode(http.responseText);
 	}
 	http.setRequestHeader("Content-length", arguments.length);
 	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
@@ -63,11 +68,19 @@ Engine.prototype.mainLoop = function(){
 	var userData = this.updateMainChar();
 
 	if(this.updateCounter >= this.FPS){ // Only sends and gets the new data sporadically as to not DDos the server
-		this.updateServersideState(userData);
+		var playersInfo = this.updateServersideState(userData);
 		this.updateCounter = 0;
+
+		for (var i = playersInfo.length - 1; i >= 0; i--) {
+			this.updatePlayer(playersInfo[i]);
+		};
 	}else{
 		this.updateCounter += 1;
 	}
+}
 
-
+Player.prototype.updatePlayer(player, data){
+	player.posx = data.posx;
+	player.posy = data.posy;
+	player.orientation = data.orientation; // the side he's facing, not his preferred gender
 }
