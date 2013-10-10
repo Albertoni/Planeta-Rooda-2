@@ -52,7 +52,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
 			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
-			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
+			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "0" : $idMensagemRespondidaSafe);
 
 			$query = "INSERT INTO ForumMensagem
 				VALUES (NULL, $idTopicoSafe, $idUsuarioSafe, '$textoSafe', NOW(), $idMensagemRespondidaSafe)";
