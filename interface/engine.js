@@ -1,6 +1,6 @@
 function Engine(){
 	// Grabs data from the server to initialize the game state
-	var playersInfo = this.updateServersideState(undefined);
+	var charactersInfo = this.updateServersideState(undefined);
 	this.keys = {
 					'left':false,
 					'right':false,
@@ -10,10 +10,10 @@ function Engine(){
 
 	this.FPS = 60; // this is the FPS it aims to run at
 	this.updateCounter = 0;
-	this.playersList = [];
+	this.charactersList = [];
 
-	for (var i = playersInfo.length - 1; i >= 0; i--) {
-		this.playersList.push(new Player(playersInfo[i]));
+	for (var i = charactersInfo.length - 1; i >= 0; i--) {
+		this.charactersList.push(new character(charactersInfo[i]));
 	};
 
 	setInterval(Engine.mainLoop.bind(this), // Hack to get past this being set to the wrong
@@ -68,19 +68,13 @@ Engine.prototype.mainLoop = function(){
 	var userData = this.updateMainChar();
 
 	if(this.updateCounter >= this.FPS){ // Only sends and gets the new data sporadically as to not DDos the server
-		var playersInfo = this.updateServersideState(userData);
+		var charactersInfo = this.updateServersideState(userData);
 		this.updateCounter = 0;
 
-		for (var i = playersInfo.length - 1; i >= 0; i--) {
-			this.updatePlayer(playersInfo[i]);
+		for (var i = charactersInfo.length - 1; i >= 0; i--) {
+			this.updatecharacter(charactersInfo[i]);
 		};
 	}else{
 		this.updateCounter += 1;
 	}
-}
-
-Player.prototype.updatePlayer(player, data){
-	player.posx = data.posx;
-	player.posy = data.posy;
-	player.orientation = data.orientation; // the side he's facing, not his preferred gender
 }

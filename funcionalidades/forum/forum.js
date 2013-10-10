@@ -322,10 +322,9 @@ var postDinamico = {
 	},
 
 	reordenar: function(select){
-		$('#areaMensagens').empty();
-
 		var selecao = select.options[select.selectedIndex].value;
 		if (selecao != 'Ordenar mensagens'){
+			$('#areaMensagens').empty();
 			selecao == 'Por data e hora' ? this.imprimePosts(post) : this.imprimeArvore(post);
 		}
 	},
