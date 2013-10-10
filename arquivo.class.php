@@ -2,8 +2,7 @@
 require_once("cfg.php");
 require_once("bd.php");
 require_once("usuarios.class.php");
-class Arquivo
-{
+class Arquivo {
 	private $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
 	private $idUsuario;
 

@@ -244,8 +244,8 @@ function excluir() {
 			return;
 		}
 	}
-	if (!$usuario->podeAcessar($perm['biblioteca_excluirArquivos'],$idTurma)) {
-		$json['errors'] = 'Você não tem permissão para excluir materiais nesta biblioteca.';
+	if ($idUsuario !== $material->getUsuario()->getId() && !$usuario->podeAcessar($perm['biblioteca_excluirArquivos'],$idTurma)) {
+		$json['errors'][] = 'Você não tem permissão para excluir materiais nesta biblioteca.';
 		return;
 	}
 	$material->excluir();

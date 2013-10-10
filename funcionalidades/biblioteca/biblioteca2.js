@@ -10,6 +10,7 @@ var BIBLIOTECA = (function () {
 	var pode_editar = false;
 	var pode_excluir = false;
 	var busca = {}
+	var sessao = {'id' : 0, 'usuario' : '', 'nome' : ''};
 	var token_atualizador; // valor retornado por setInterval()
 	var falhasSucessivas = 0; // numero de requisições que falharam
 	var turma = (function () {
@@ -55,7 +56,7 @@ var BIBLIOTECA = (function () {
 		    		'text' : 'mostrar todos',
 		    		'field' : document.createElement('span'),
 		    		'lists' : {},
-		    		'default' : true, 
+		    		'def' : true, 
 		    		'onselect' : function () {
 		    			while (dom.queryLabel.firstElementChild) {
 		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
@@ -173,7 +174,7 @@ var BIBLIOTECA = (function () {
 			var opt = document.createElement("option");
 			opt.value = key;
 			opt.text = searchTypes[key].text;
-			if (searchTypes[key].default) {
+			if (searchTypes[key].def) {
 				opt.selected = true;
 				ativa = selecionada = key;
 				searchTypes[key].onselect();
@@ -264,6 +265,29 @@ var BIBLIOTECA = (function () {
 			this.HTMLElemento.classList.add('link');
 			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
 		}
+		this.HTMLTitulo = document.createElement("h2");
+		this.HTMLInfo = document.createElement("small");
+		this.HTMLLink = document.createElement("a");
+		this.HTMLBotaoAprovar = document.createElement("button");
+		this.HTMLBotaoAprovar.type = 'button';
+		this.HTMLBotaoAprovar.name = 'aprovar';
+		this.HTMLBotaoAprovar.className = 'aprovar';
+		this.HTMLBotaoAprovar.value = this.id.toString();
+		this.HTMLBotaoAprovar.innerHTML = "Aprovar"; 
+		this.HTMLBotaoEditar = document.createElement("button");
+		this.HTMLBotaoEditar.type = 'button';
+		this.HTMLBotaoEditar.name = 'editar';
+		this.HTMLBotaoEditar.className = 'editar';
+		this.HTMLBotaoEditar.value = this.id.toString();
+		this.HTMLBotaoEditar.innerHTML = "Editar"; 
+		this.HTMLBotaoExcluir = document.createElement("button");
+		this.HTMLBotaoExcluir.type = 'button';
+		this.HTMLBotaoExcluir.name = 'excluir';
+		this.HTMLBotaoExcluir.className = 'excluir';
+		this.HTMLBotaoExcluir.value = this.id.toString();
+		this.HTMLBotaoExcluir.innerHTML = "Excluir"; 
+		this.HTMLAutor = document.createElement("p");
+		this.HTMLLink = document.createElement("a");
 		this.atualizarHTML();
 	}
 	Material.prototype = {titulo:'',autor:''};
@@ -273,21 +297,26 @@ var BIBLIOTECA = (function () {
 		} else {
 			this.HTMLElemento.classList.remove('nao_aprovado');
 		}
-		this.HTMLElemento.innerHTML = '<h2>' + this.titulo + '</h2><small>Enviado por ' 
-		+ this.usuario.nome.toString() + ' (' + this.data.toLocaleString()
-		+ ')</small><p>Autor:' + this.autor + '</p><p><a href="abrirMaterial.php?id=' + this.id + '" target="_blank" class="abrir_material">Abrir material<span class="icon">&nbsp;</span></a></p>';
+		while (this.HTMLElemento.firstElementChild) {
+			this.HTMLElemento.removeChild(this.HTMLElemento.firstElementChild);
+		}
+		this.HTMLElemento.appendChild(this.HTMLTitulo);
+		this.HTMLElemento.appendChild(this.HTMLInfo);
+		this.HTMLElemento.appendChild(this.HTMLAutor);
+		this.HTMLElemento.appendChild(this.HTMLLink);
 		if (pode_aprovar && !this.aprovado) {
-			this.HTMLElemento.innerHTML += '<button type="button" name="aprovar" class="aprovar" value="'
-			+ this.id + '">Aprovar</button>';
+			this.HTMLElemento.appendChild(this.HTMLBotaoAprovar);
 		}
-		if (pode_editar) {
-			this.HTMLElemento.innerHTML += '<button type="button" name="editar" class="editar" value="' 
-			+ this.id + '">Editar</button> ';
+		if (pode_editar || this.usuario.id ===  sessao.id) {
+			this.HTMLElemento.appendChild(this.HTMLBotaoEditar);
 		}
-		if (pode_excluir) {
-			this.HTMLElemento.innerHTML += '<button type="button" name="excluir" class="excluir" value="' 
-			+ this.id + '">Excluir</button>';
+		if (pode_excluir || this.usuario.id ===  sessao.id) {
+			this.HTMLElemento.appendChild(this.HTMLBotaoExcluir);
 		}
+		this.HTMLTitulo.innerText = this.titulo;
+		this.HTMLInfo.innerText = 'Enviado por ' + this.usuario.nome + ' (' + this.data.toLocaleString() + ')';
+		this.HTMLAutor.innerText = 'Autor: ' + this.autor;
+		this.HTMLLink.href = 'abrirMaterial.php?id=' + this.id + '';
 	};
 	//var form_edicao_material = document.getElementById('editar_material');
 	function ulDinamica_onclick(e) {
@@ -408,6 +437,9 @@ var BIBLIOTECA = (function () {
 					ROODA.ui.alert("Sua sessão expirou.");
 					return;
 				}
+				sessao.id = json.session.id;
+				sessao.usuario = json.session.usuario;
+				sessao.nome = json.session.nome;
 				pode_aprovar = json.pode_aprovar ? true : false;
 				pode_editar  = json.pode_editar  ? true : false;
 				pode_excluir = json.pode_excluir ? true : false;
@@ -611,7 +643,7 @@ var BIBLIOTECA = (function () {
 			return function (id) {
 				AJAXGet("biblioteca.json.php?turma=" + turma + "&acao=aprovar&id=" + id, {
 					'success': req_success,
-					'fail': req_fail,
+					'fail': req_fail
 				});
 			}
 		}());
