@@ -128,7 +128,7 @@ function enviar() {
 					if (!$arquivo->temErros()) {
 						$material->setMaterial($arquivo);
 					} else {
-						$json['errors'] = '[enviar] Arquivo nao encontrado';
+						$json['errors'][] = '[enviar] Arquivo nao encontrado';
 						return;
 					}
 				}
@@ -195,7 +195,7 @@ function editar() {
 		$json['errors'][] = "Biblioteca desabilitada para esta turma.";
 		return;
 	}
-	if (!$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
+	if ($idUsuario !== $material->getUsuario()->getId() && !$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
 		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
 		return;
 	}

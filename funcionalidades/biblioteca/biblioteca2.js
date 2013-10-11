@@ -242,6 +242,7 @@ var BIBLIOTECA = (function () {
 	}());
 	//console.log(typeof turma + turma);
 	function Material(obj) {
+		var i;
 		this.id = obj.id;
 		this.titulo = obj.titulo;
 		this.tipo = obj.tipo;
@@ -285,9 +286,12 @@ var BIBLIOTECA = (function () {
 		this.HTMLBotaoExcluir.name = 'excluir';
 		this.HTMLBotaoExcluir.className = 'excluir';
 		this.HTMLBotaoExcluir.value = this.id.toString();
-		this.HTMLBotaoExcluir.innerHTML = "Excluir"; 
+		this.HTMLBotaoExcluir.innerHTML = "Excluir";
 		this.HTMLAutor = document.createElement("p");
 		this.HTMLLink = document.createElement("a");
+		this.HTMLLink.classList.add("abrir_material");
+		this.HTMLLink.innerHTML = 'Abrir Material <span class="icon">&nbsp;</span>'
+		this.HTMLLink.target = '_blank';
 		this.atualizarHTML();
 	}
 	Material.prototype = {titulo:'',autor:''};
