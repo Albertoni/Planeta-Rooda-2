@@ -9,7 +9,6 @@ class Link
 	private $id = false; // falso significa que o link nao foi carregado/salvo (nao existe)
 	private $titulo = "";
 	private $autor = "";
-	private $tags = array();
 	private $endereco = ""; // URL do link
 	private $codUsuario = false;
 	private $erros = array();
@@ -26,7 +25,7 @@ class Link
 		{
 			$bd = new conexao();
 			$bd->solicitar(
-				"SELECT titulo, autor, tags, endereco, codUsuario
+				"SELECT titulo, autor, endereco, codUsuario
 				FROM $tabela_links WHERE Id = $id"
 			);
 			if ($bd->erro !== "")
@@ -42,7 +41,6 @@ class Link
 				$this->id = $id;
 				$this->titulo = $bd->resultado['titulo'];
 				$this->autor = $bd->resultado['autor'];
-				$this->setTags($bd->resultado['tags']);
 				$this->endereco = $bd->resultado['endereco'];
 				$this->codUsuario = $bd->resultado['codUsuario'];
 			}
@@ -94,12 +92,11 @@ class Link
 			$bd = new conexao();
 			$titulo = $bd->sanitizaString($this->titulo);
 			$autor = $bd->sanitizaString($this->autor);
-			$tags = $bd->sanitizaString(implode(',', $this->tags));
 			$endereco = $bd->sanitizaString($this->endereco);
 			$codUsuario = (int) $this->codUsuario;
 			$bd->solicitar(
-				"INSERT INTO $tabela_links (titulo, autor, tags, endereco, codUsuario)
-				VALUES ('$titulo', '$autor', '$tags', '$endereco', $codUsuario)"
+				"INSERT INTO $tabela_links (titulo, autor, endereco, codUsuario)
+				VALUES ('$titulo', '$autor', '$endereco', $codUsuario)"
 			);
 			if ($bd->erro !== '') {
 				$this->erros[] = '[link] BD: ' . $bd->erro;
@@ -113,13 +110,11 @@ class Link
 			$id = $this->id;
 			$titulo = $bd->sanitizaString($this->titulo);
 			$autor = $bd->sanitizaString($this->autor);
-			$tags = $bd->sanitizaString(implode(',', $this->tags));
 			$endereco = $bd->sanitizaString($this->endereco);
 			$bd->solicitar(
 				"UPDATE $tabela_links SET 
 				titulo = '$titulo',
 				autor = '$autor',
-				tags = '$tags',
 				endereco = '$endereco'
 				WHERE Id = $id"
 			);
@@ -157,28 +152,6 @@ class Link
 		{
 			$this->autor = trim($autor);
 		}
-	}
-	public function setTags($tags)
-	{
-		if (is_string($tags))
-		{
-			$tags = explode(',', $tags);
-		}
-		// Nada de 'else' aqui, pois a entrada pode ser:
-		//   1. string com tags speradas por vírgula ou
-		//   2. array de tags.
-		// se for uma string (1), ela será convertida em array e depois
-		// é tratada como uma array a seguir.
-		if (is_array($tags))
-		{
-			$this->tags = array();
-			foreach ($tags as $value)
-			{
-				$this->tags[] = trim($value);
-			}
-			return true;
-		}
-		return false;
 	}
 	public function setEndereco($url)
 	{

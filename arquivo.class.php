@@ -11,7 +11,7 @@ class Arquivo {
 	private $tipo = ""; // mime-type
 	private $tamanho;
 	private $conteudo;
-	private $tags = array(); // deve ser removido futuramente (só é usado na biblioteca, que tem um campo proprio na tabela de materiais)
+	private $md5;
 	private $data;
 	private $erros = array();
 	private $upload = false;
@@ -21,7 +21,6 @@ class Arquivo {
 
 	public function __construct($id = false)
 	{
-		global $tabela_arquivos;
 		if ($id === false)
 		{
 			$this->data = date('Y-m-d');
@@ -29,53 +28,58 @@ class Arquivo {
 		}
 		else
 		{
-			$id = (int) $id;
-			$bd = new conexao();
-			$bd->solicitar(
-				"SELECT
-				arquivo_id AS id,
-				titulo AS 'titulo',
-				nome AS 'nome',
-				tipo AS 'tipo',
-				tamanho AS 'tamanho',
-				arquivo AS 'conteudo',
-				tags AS 'tags',
-				dataUpload AS 'data',
-				uploader_id AS 'idUsuario'
-				FROM $tabela_arquivos
-				WHERE arquivo_id = '$id'"
-			);
-			if ($bd->erro)
-			{
-				// erro na consulta;
-				$this->erros[] = "mysql: " . $bd->erro;
-			}
-			if ($bd->registros === 1)
-			{
-				// carrega arquivo encontrado
-				$this->id = $id;
-				$this->popular($bd->resultado);
-				$this->download = true;
-			}
-			else
-			{
-				$this->erros[] = "[arquivo] Arquivo n&atilde;o encontrado";
-				if ($bd->registros > 1)
-					$this->erros[] = "[arquivo] Vários arquivos encontrados";
-			}
+			$this->abrir($id);
+		}
+	}
+	private function abrir($id) {
+		global $tabela_arquivos;
+		$id = (int) $id;
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT
+			arquivo_id AS id,
+			titulo AS 'titulo',
+			nome AS 'nome',
+			tipo AS 'tipo',
+			tamanho AS 'tamanho',
+			arquivo AS 'conteudo',
+			md5 AS 'md5',
+			dataUpload AS 'data',
+			uploader_id AS 'idUsuario'
+			FROM $tabela_arquivos
+			WHERE arquivo_id = '$id'"
+		);
+		if ($bd->erro)
+		{
+			// erro na consulta;
+			$this->erros[] = "mysql: " . $bd->erro;
+		}
+		if ($bd->registros === 1)
+		{
+			// carrega arquivo encontrado
+			$this->id = $id;
+			$this->popular($bd->resultado);
+			$this->upload = false;
+			$this->download = true;
+		}
+		else
+		{
+			$this->erros[] = "[arquivo] Arquivo n&atilde;o encontrado";
+			if ($bd->registros > 1)
+				$this->erros[] = "[arquivo] Vários arquivos encontrados";
 		}
 	}
 	private function popular($resultadoBd)
 	{
 		$this->id        = (int) $resultadoBd['id'];
 		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
+		$this->md5  = $resultadoBd['md5']; // conteudo do arquivo
 		$this->titulo    = $resultadoBd['titulo'];     // titulo do arquivo
 		$this->nome      = $resultadoBd['nome'];
 		$this->tipo      = $resultadoBd['tipo'];
 		$this->tamanho   = $resultadoBd['tamanho'];
 		$this->data      = $resultadoBd['data'];
 		$this->idUsuario = (int) $resultadoBd['idUsuario'];
-		$this->setTags($resultadoBd['tags']);
 	}
 	public function getId() { return $this->id; }
 	public function getConteudo() { return $this->conteudo; }
@@ -85,15 +89,6 @@ class Arquivo {
 	public function getTamanho() { return $this->tamanho; }
 	public function getData() { return $this->data; }
 	public function getIdUsuario() { return $this->idUsuario; }
-	public function getTags()
-	{
-		$tags = array();
-		foreach ($this->tags as $value)
-		{
-			$tags[] = $value;
-		}
-		return $tags;
-	}
 	public function getErros()
 	{
 		$erros = array();
@@ -114,7 +109,6 @@ class Arquivo {
 		$assoc['nome'] = $this->getNome();
 		$assoc['tipo'] = $this->getTipo();
 		$assoc['tamanho'] = $this->getTamanho();
-		$assoc['tags'] = $this->getTags();
 		return $assoc;
 	}
 	// METODOS RELACIONSADOS A UPLOAD
@@ -131,22 +125,34 @@ class Arquivo {
 			// novo arquivo
 			$bd = new conexao();
 			// sanitizando dados para o banco de dados
+			$md5 = $bd->sanitizaString($this->md5);
+			$nome = $bd->sanitizaString($this->nome);
+			$uploader = (int) $this->idUsuario;
 			$campos[]  = 'titulo';
 			$valores[] = $bd->sanitizaString($this->titulo);
 			$campos[]  = 'nome';
-			$valores[] = $bd->sanitizaString($this->nome);
+			$valores[] = $nome;
 			$campos[]  = 'tipo';
 			$valores[] = $bd->sanitizaString($this->tipo);
 			$campos[]  = 'tamanho';
 			$valores[] = $bd->sanitizaString($this->tamanho);
 			$campos[]  = 'arquivo';
 			$valores[] = $bd->sanitizaString($this->conteudo);
-			$campos[]  = 'tags';
-			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
+			$campos[]  = 'md5';
+			$valores[] = $md5;
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
 			$campos[]  = 'uploader_id';
-			$valores[] = (int) $this->idUsuario;
+			$valores[] = $uploader;
+			// aproveitar o arquivo que ja foi enviado pelo usuario anteriormente, se for igual.
+			$bd->solicitar("SELECT arquivo_id AS id FROM $tabela_arquivos 
+							WHERE uploader_id = $uploader
+							AND md5 = '$md5'
+							AND nome = '$nome'");
+			if ($bd->resultado) {
+				$this->abrir($bd->resultado['id']);
+				return true;
+			}
 			// executando consulta
 			$bd->solicitar(
 				"INSERT INTO $tabela_arquivos (" . implode(", ", $campos) . ")
@@ -179,8 +185,8 @@ class Arquivo {
 			$valores[] = $bd->sanitizaString($this->tamanho);
 			$campos[]  = 'arquivo';
 			$valores[] = $bd->sanitizaString($this->conteudo);
-			$campos[]  = 'tags';
-			$valores[] = $bd->sanitizaString(implode(",", $this->tags)); // campo deve ser removido futuramente
+			$campos[]  = 'md5';
+			$valores[] = $bd->sanitizaString($this->md5);
 			$campos[]  = 'dataUpload';
 			$valores[] = $bd->sanitizaString($this->data);
 			$campos[]  = 'uploader_id';
@@ -243,31 +249,11 @@ class Arquivo {
 		}
 	}
 	// ex: $arquivo->setConteudo($blob);
-	public function setConteudo($conteudo){$this->conteudo = $conteudo;}
+	public function setConteudo($conteudo){$this->conteudo = $conteudo; $this->md5 = md5($conteudo); }
 	public function setTitulo($titulo){$this->titulo = trim($titulo);}
 	public function setNome($nome){$this->nome = trim($nome);}
 	public function setTipo($tipo){$this->tipo = trim($tipo);}
-	public function setTags($tags)
-	{
-		if (is_string($tags))
-		{
-			$tags = explode(",", $tags);
-		}
-		// Nada de 'else' aqui, pois a entrada pode ser:
-		//   1. string com tags speradas por vírgula ou
-		//   2. array de tags.
-		// se for uma string (1), ela será convertida em array e depois
-		// é tratada como uma array a seguir.
-		if (is_array($tags))
-		{
-			$this->tags = array();
-			foreach ($tags as $value)
-			{
-				$this->tags[] = trim($value);
-			}
-		}
-	}
-	public function excluir() // Returns false on error
+	public function excluir() // exception on error
 	{
 		global $tabela_arquivos;
 		if (!$this->upload && $this->download)
@@ -293,6 +279,12 @@ SELECT count(codMaterial) AS num
 FROM $tabela_Materiais 
 WHERE refMaterial = {$this->id} AND tipoMaterial LIKE 'a'
 SQL;
+		// verifica ocorrencias do arquivo nas mensagens do forum
+		$q[] = <<<SQL
+SELECT count(idMensagem) AS num
+FROM ForumMensagemAnexos
+WHERE idArquivo = {$this->id}
+SQL;
 		foreach ($q as $query) {
 			$bd->solicitar($query);
 			$qtd += (int) $bd->resultado['num'];
@@ -315,7 +307,7 @@ SQL;
 			tipo AS 'tipo',
 			tamanho AS 'tamanho',
 			arquivo AS 'conteudo',
-			tags AS 'tags',
+			md5 AS 'md5',
 			dataUpload AS 'data',
 			uploader_id AS 'idUsuario'
 			FROM $tabela_arquivos
@@ -335,7 +327,6 @@ SQL;
 		$this->nome = '';
 		$this->tipo = '';
 		$this->tamanho = 0;
-		$this->tags = array();
 		$this->erros = array();
 	}
 	public function proximo() {
