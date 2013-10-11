@@ -3,7 +3,7 @@
 *	Sistema do forum
 *
 */
-
+require_once("../../arquivo.class.php");
 
 
 class mensagem { //estrutura para o item post do forum, chamado de mensagem
@@ -15,6 +15,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $data = 0;
 	private $salvo = false;
 	private $nomeUsuario = '';
+	private $anexos = array();
 	
 	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
 		if($id != NULL){
@@ -35,6 +36,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$this->texto = $a['texto'];
 		$this->data = $a['data'];
 		$this->nomeUsuario = $a['usuario_nome'];
+		$this->carregarAnexos();
 	}
 
 	function salvar(){
@@ -85,20 +87,41 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 						WHERE idMensagem = $idSafe");
 
 		if($q->erro == ""){
-			$this->loadFromSqlArray($q->resultado);
-
-			$this->salvo = true;
+			if ($q->registros == 1) {
+				$this->loadFromSqlArray($q->resultado);
+				$this->salvo = true;
+			} else {
+				throw new Exception("Mensagem não encontrada");
+			}
 		}else{
-			die("Erro na 'carregar' da mensagem -$idSafe- $q->erro");
+			throw new Exception("Erro na 'carregar' da mensagem -$idSafe- $q->erro");
 		}
 	}
+	function carregarAnexos() {
+		$q = new conexao();
 
+		$q->solicitar("SELECT * FROM ForumMensagemAnexos
+						WHERE idMensagem = {$this->id}");
+		if($q->erro == ""){
+			$this->anexos = array();
+			while ($q->resultado) {
+				$this->anexos[] = new Arquivo((int) $q->resultado['idArquivo']);
+				$q->proximo();
+			}
+		} else {
+			die("Erro ao carregar anexos da mensagem");
+		}
+	}
 	function toJson($resposta = 0){
 		global $user; global $permissoes; global $turma;
 
 		$podeEditar = $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
 		$podeDeletar = $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
-
+		$anexosJson = array();
+		foreach ($this->anexos as $anexo) {
+			$anexosJson[] = $anexo->getAssoc();
+			$anexo->getAssoc();
+		}
 		$arr = array(
 			'idPost' => $this->id,
 			'idTopico' => $this->idTopico,
@@ -107,7 +130,8 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			'texto' => $this->texto,
 			'data' => $this->data,
 			'podeEditar' => $podeEditar,
-			'podeDeletar' => $podeDeletar
+			'podeDeletar' => $podeDeletar,
+			'anexos' => $anexosJson
 			);
 
 		if(($this->idMensagemRespondida != NULL) and ($resposta == 0)){
@@ -228,7 +252,6 @@ function setMensagem($indice, $mensagem){
 				for ($i=0; $i < $q->registros; $i++){
 					$mensagem = new mensagem();
 					$mensagem->loadFromSqlArray($q->resultado);
-
 					array_push($this->mensagens, $mensagem);
 
 					$q->proximo();
