@@ -20,10 +20,10 @@
 		global $nivelAluno;
 		$nivel=0;
 
-		$temProfessor	= $conteudoAssociativo[$_base."_professor"];
-		$temMonitor		= $conteudoAssociativo[$_base."_monitor"];
-		$temAluno		= $conteudoAssociativo[$_base."_aluno"];
-		$temTodos		= $conteudoAssociativo[$_base."_todos"];
+		$temProfessor	= isset($conteudoAssociativo[$_base."_professor"]) ? $conteudoAssociativo[$_base."_professor"] : false;
+		$temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
+		$temAluno		= isset($conteudoAssociativo[$_base."_aluno"]) ? $conteudoAssociativo[$_base."_aluno"] : false;
+		$temTodos		= isset($conteudoAssociativo[$_base."_todos"]) ? $conteudoAssociativo[$_base."_todos"] : false;
 
 		if(((bool) $temTodos) == true and $temTodos != 'false'){
 			$nivel+=$nivelProfessor+$nivelMonitor+$nivelAluno;
@@ -98,8 +98,8 @@
 	$portfolio_excluirPost = getNivelCheckbox($conteudoAssociativo,'portfolio_Excluir Post');
 	$portfolio_adicionarLinks = getNivelCheckbox($conteudoAssociativo,'portfolio_Adicionar Links');
 	$portfolio_adicionarArquivos = getNivelCheckbox($conteudoAssociativo,'portfolio_Adicionar Arquivos');
-	$forum_criarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Criar Tópico_professor');
-	$forum_editarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Editar Tópico_professor');
+	$forum_criarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Criar Tópico');
+	$forum_editarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Editar Tópico');
 	$forum_excluirTopico = getNivelCheckbox($conteudoAssociativo,'forum_Excluir Tópico');
 	$forum_responderTopico = getNivelCheckbox($conteudoAssociativo,'forum_Responder Tópico');
 	$forum_editarResposta = getNivelCheckbox($conteudoAssociativo,'forum_Editar Resposta');
