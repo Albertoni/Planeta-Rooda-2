@@ -268,6 +268,17 @@ var postDinamico = {
 					<p class=\"texto_resposta\">"+post.texto+"</p>\
 				</div>";
 		}
+		var anexos = '';
+		if (post.anexos.length > 0) {
+			anexos = '<ul class="anexos">';
+			for (var i = 0; i < post.anexos.length; i+=1) {
+				var classes = post.anexos[i].tipo.split('/');
+				classes = classes.map(function(e) { return e.split(".").join("-"); });
+				classes.push('arquivo');
+				anexos += '<li class="'+classes.join(' ')+'"><a href="abre_anexo.php?m='+post.idPost+'&amp;a='+post.anexos[i].id+'">'+post.anexos[i].nome+'<span class="icon">&nbsp</span></a></li>';
+			}
+			anexos += '</ul>';
+		}
 
 		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
@@ -284,6 +295,9 @@ var postDinamico = {
 				<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
 				"+textoPost
 				+"</li>\
+				<li>\
+				"+anexos+"\
+				</li>\
 			<li>\
 				<div align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\

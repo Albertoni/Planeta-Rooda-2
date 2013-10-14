@@ -6,11 +6,9 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 
-session_start();
-
+$user = usuario_sessao();
+if (!$user) die ("Voc&ecirc; n&atilde;o est&aacute; logado");
 $turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-
-
 
 //require_once("verifica_user.php");
 require_once("sistema_forum.php");
@@ -30,9 +28,6 @@ if($permissoes === false){
 	die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
 }
 
-$user = new Usuario();
-$user->openUsuario($_SESSION['SS_usuario_id']);
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -47,7 +42,6 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 <script>
 	var deltipo = 0;
 </script>
-<script type="text/javascript" src="forum.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
@@ -85,7 +79,7 @@ $user->openUsuario($_SESSION['SS_usuario_id']);
 	</div>
 </div><!-- fim do cabecalho -->
 	
-	
+<input type="hidden" id="idTurma" value="<?php echo $turma?>" />
 <div id="conteudo_topo"></div><!-- para a imagem de fundo do topo -->
 <div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 
@@ -129,5 +123,6 @@ if ($user->podeAcessar($permissoes['forum_criarTopico'], $turma)){
 
 
 </div><!-- fim da geral -->
+<script type="text/javascript" src="forum.js"></script>
 </body>
 </html>

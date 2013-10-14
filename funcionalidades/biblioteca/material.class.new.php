@@ -218,7 +218,6 @@ WHERE codMaterial = {$this->id}"
 			$this->arquivo->setArquivo($material);
 			$this->arquivo->setIdUsuario($this->codUsuario);
 			if ($this->titulo !== '') $this->arquivo->setTitulo($this->titulo);
-			if ($this->tags) $this->arquivo->setTags($this->tags);
 			$this->codRecurso = $this->arquivo->getId();
 			if ($this->arquivo->temErros()) {
 				$this->erros[] = "[material] Nao foi possivel enviar o arquivo.";
@@ -254,7 +253,6 @@ WHERE codMaterial = {$this->id}"
 			$this->link->setTitulo($this->titulo);
 			$this->link->setAutor($this->autor);
 			$this->link->setUsuario($this->codUsuario);
-			$this->link->setTags($this->tags);
 			if ($this->link->temErros()) {
 				$this->erros = array_merge($this->erros, $this->link->getErros());
 			}
