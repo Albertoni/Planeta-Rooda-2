@@ -41,7 +41,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$q = new conexao();
 
 		if($this->salvo == true){
-			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSemHtml				= strip_tags($this->texto);
 			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
@@ -49,7 +49,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
 			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
 			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
-			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSemHtml				= strip_tags($this->texto);
 			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
@@ -244,7 +244,7 @@ function setMensagem($indice, $mensagem){
 		if ($this->salvo === true){// atualizar
 			$q = new conexao();
 
-			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$tituloSemHtml	= strip_tags($this->titulo);
 			$titulo			= $q->sanitizaString($tituloSemHtml);
 
 			$q->solicitar("UPDATE ForumTopico SET titulo='$titulo', data=NOW() WHERE idTopico = $this->idTopico");

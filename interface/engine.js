@@ -42,6 +42,7 @@ Engine.prototype.updateServersideState = function(userData){
 	http.send(parametros);
 }
 
+// Attach this to BOTH the keydown AND keyup events.
 Engine.prototype.keysPressed = function(e){
 	e = e || window.event;
 
@@ -77,4 +78,33 @@ Engine.prototype.mainLoop = function(){
 	}else{
 		this.updateCounter += 1;
 	}
+}
+
+Engine.prototype.drawChat = function (chats) {
+	
+}
+
+Engine.prototype.updateMainChar = function(){
+	if(this.mainChar.running){
+		this.walkDistance = 5; // TODO: DEFINIR ESSES VALORESZ
+	}else{
+		this.walkDistance = 10;
+	}
+
+	if(this.keys.left){
+		this.mainChar.posx -= this.walkDistance;
+		this.mainChar.orientation = "left";
+	};
+	if(this.keys.right){
+		this.mainChar.posx += this.walkDistance;
+		this.mainChar.orientation = "right";
+	};
+	if(this.keys.up){
+		this.mainChar.posy += this.walkDistance;
+		this.mainChar.orientation = "up";
+	};
+	if(this.keys.down){
+		this.mainChar.posy -= this.walkDistance
+		this.mainChar.orientation = "down";
+	};
 }
