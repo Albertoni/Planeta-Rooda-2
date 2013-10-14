@@ -153,10 +153,10 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
 					<tr>
-						<td class="opcaoGerenciamento">Enviar Materias</td>
+						<td class="opcaoGerenciamento">Enviar Materiais</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Materias</td>
+						<td class="opcaoGerenciamento">Editar Materiais</td>
 					</tr>
 					<tr>
 						<td class="opcaoGerenciamento">Excluir Arquivos</td>
@@ -271,6 +271,12 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 					</tr>
 					<tr>
 						<td class="opcaoGerenciamento">Excluir Resposta</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Editar Anexo</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Excluir Anexo</td>
 					</tr>
 					</table>
 				</div></div>
