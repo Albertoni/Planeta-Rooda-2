@@ -16,7 +16,7 @@ function Engine(){
 		this.charactersList.push(new character(charactersInfo[i]));
 	};
 
-	setInterval(Engine.mainLoop.bind(this), // Hack to get past this being set to the wrong
+	setInterval(Engine.mainLoop.bind(this), // Hack to get past this being set to the wrong "this" value
 				(this.FPS / 1000))
 }
 
