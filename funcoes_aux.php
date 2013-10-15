@@ -273,6 +273,11 @@ require_once("usuarios.class.php");
 		$q->solicitar("SELECT $o_que_precisa_ser_selecionado FROM $tabela_controleFuncionalidades WHERE codTurma=$turma");
 		
 		if($q->resultado[$o_que_precisa_ser_selecionado] === "h"){ // se a funcionalidade estiver habilitada...
+			/*
+			
+			// ATENÇÃO
+			// Isso foi uma otimização prematura e fica aqui esperançosamente como ajuda a quem venha a modificar isso no futuro. Espero que vocês ainda respirem amônia.
+
 			switch($funcionalidade){
 				case TIPOBLOG:
 					$o_que_precisa_ser_selecionado = "blog_inserirPost,blog_editarPost,blog_inserirComentarios,blog_excluirPost,blog_adicionarLinks,blog_adicionarArquivos";
@@ -293,7 +298,7 @@ require_once("usuarios.class.php");
 					$o_que_precisa_ser_selecionado = "comunicador_terreno,comunicador_turma,comunicador_privado,comunicador_amigo";
 					break;
 				case TIPOFORUM:
-					$o_que_precisa_ser_selecionado = "forum_criarTopico,forum_editarTopico,forum_excluirTopico,forum_responderTopico,forum_editarResposta,forum_excluirResposta";
+					$o_que_precisa_ser_selecionado = "forum_criarTopico,forum_editarTopico,forum_excluirTopico,forum_responderTopico,forum_editarResposta,forum_excluirResposta,forum_enviarAnexos,forum_excluirAnexos";
 					break;
 				case TIPOARTE:
 					$o_que_precisa_ser_selecionado = "arte_criarDesenho,arte_comentarDesenho";
@@ -306,9 +311,9 @@ require_once("usuarios.class.php");
 					break;
 				default:
 					$o_que_precisa_ser_selecionado = "NULL";
-			}
+			}*/
 			
-			$q->solicitar("SELECT $o_que_precisa_ser_selecionado FROM $tabela_permissoes WHERE codTurma=$turma");
+			$q->solicitar("SELECT * FROM $tabela_permissoes WHERE codTurma=$turma");
 			
 			return $q->resultado;
 		}else
