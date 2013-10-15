@@ -17,5 +17,3 @@ Character.prototype.updatecharacter = function(data){
 	this.posy = data.posy;
 	this.orientation = data.orientation; // the side he's facing, not his preferred gender
 }
-
-Character.prototype.

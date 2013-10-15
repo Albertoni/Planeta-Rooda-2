@@ -110,9 +110,9 @@
 				imgs.mapaPele = getImageContext(imgs.mapaPeleImg);
 				imgs.mapaLuvas = getImageContext(imgs.mapaLuvasImg);
 				imgs.mapaCinto = getImageContext(imgs.mapaCintoImg);
-				colorAllPixels(imgs.mapaPele, form.cor_pele.value);
-				colorAllPixels(imgs.mapaCinto, form.cor_cinto.value);
-				colorAllPixels(imgs.mapaLuvas, form.cor_luvas.value);
+				colorAllPixels(imgs.mapaPele, engine.mainChar.cor_pele);
+				colorAllPixels(imgs.mapaCinto, engine.mainChar.cor_cinto);
+				colorAllPixels(imgs.mapaLuvas, engine.mainChar.cor_luvas);
 				atualiza = atualiza_c;
 				atualiza();
 			}
@@ -149,103 +149,5 @@
 		imgs.mapaCintoImg.src = "../images/desenhos/mapa_cinto.png";
 	}());
 	// FIM CARREGAR IMAGENS
-	// Menu Handler
-	dom.menu.onclick = function (e) {
-		var sibling, container, opcao;
-		e = e || event;
-		opcao = e.target.id.slice(3);
-		if (menuBotoes.indexOf(opcao) !== -1) {
-			container = dom[opcao];
-			if (container) {
-				container.style.display = "block";
-			}
-			e.target.classList.add('selected');
-			sibling = e.target.parentElement.firstElementChild;
-			while (sibling) {
-				if (sibling !== e.target) {
-					sibling.classList.remove('selected');
-					container = dom[sibling.id.slice(3)];
-					if (container) {
-						container.style.display = "none";
-					}
-				}
-				sibling = sibling.nextElementSibling;
-			}
-		}
-	};
-	// HairStyle Handler
-	dom.cabeloEstilo.onclick = function (e) {
-		var element, id, number;
-		e = e || event;
-		element = e.target;
-		if (element.className === 'img') {
-			element = element.parentElement;
-		}
-		id = element.id;
-		number = parseInt(id.slice(6), 10);
-		if (number > 0 && number <= 20) {
-			form.cabeloEstilo.value = number;
-			atualiza();
-		}
-	};
-	// HairColor Handler
-	dom.cabeloCor.onclick = function (e) {
-		var cor;
-		e = e || event;
-		cor = e.target.id.slice(7);
-		if (cabeloCores.indexOf(cor) !== -1) {
-			dom.cabeloEstilo.className = cor;
-			form.cabeloCor.value = cor;
-			atualiza();
-		}
-	};
-	dom.olhos.onclick = function (e) {
-		var element, num;
-		e = e || event;
-		element = e.target;
-		if (element.id) {
-			num = parseInt(element.id.slice(4), 10);
-			if (num > 0) {
-				form.olhos.value = num;
-				atualiza();
-			}
-		}
-	};
-	dom.pele.onclick = function (e) {
-		var element;
-		e = e || event;
-		element = e.target;
-		if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
-			form.cor_pele.value = element.textContent;
-			if (imgs.mapaPele) {
-				colorAllPixels(imgs.mapaPele, element.textContent);
-			}
-			atualiza();
-		}
-	}
-	dom.cinto.onclick = function (e) {
-		var element;
-		e = e || event;
-		element = e.target;
-		if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
-			form.cor_cinto.value = element.textContent;
-			if (imgs.mapaCinto) {
-				colorAllPixels(imgs.mapaCinto, element.textContent);
-			}
-			atualiza();
-		}
-	}
-	dom.luvas.onclick = function (e) {
-		var element;
-		e = e || event;
-		element = e.target;
-		if (element.tagName.toUpperCase() === "LI" && element.textContent.length === 6) {
-			form.cor_luvas.value = element.textContent;
-			if (imgs.mapaLuvas) {
-				colorAllPixels(imgs.mapaLuvas, element.textContent);
-			}
-			atualiza();
-		}
-	}
 }());
 // vim: ts=4 sts=4 sw=4 expandtab

@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
