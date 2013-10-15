@@ -29,10 +29,10 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	}
 
 	function loadFromSqlArray($a){
-		$this->id = $a['idMensagem'];
-		$this->idTopico = $a['idTopico'];
-		$this->idUsuario = $a['idUsuario'];
-		$this->idMensagemRespondida = $a['idMensagemRespondida'];
+		$this->id = (int) $a['idMensagem'];
+		$this->idTopico = (int) $a['idTopico'];
+		$this->idUsuario = (int) $a['idUsuario'];
+		$this->idMensagemRespondida = (int) $a['idMensagemRespondida'];
 		$this->texto = $a['texto'];
 		$this->data = $a['data'];
 		$this->nomeUsuario = $a['usuario_nome'];
@@ -43,7 +43,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$q = new conexao();
 
 		if($this->salvo == true){
-			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSemHtml				= strip_tags($this->texto);
 			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$q->solicitar("UPDATE ForumMensagem SET texto = '$textoSafe', data = NOW() WHERE idMensagem = '$this->id'");
@@ -51,7 +51,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			$idTopicoSafe				= $q->sanitizaString($this->idTopico);
 			$idUsuarioSafe				= $q->sanitizaString($this->idUsuario);
 			$idMensagemRespondidaSafe	= $q->sanitizaString($this->idMensagemRespondida);
-			$textoSemHtml				= strip_tags($this->texto, "<a><img>");
+			$textoSemHtml				= strip_tags($this->texto);
 			$textoSafe					= $q->sanitizaString($textoSemHtml);
 
 			$idMensagemRespondidaSafe = (($idMensagemRespondidaSafe == -1) ? "NULL" : $idMensagemRespondidaSafe);
@@ -68,6 +68,14 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 				// ps.: se algum dia algum professor de algum colégio reclamar que a timestamp da mensagem postada mudou por 1 segundo eu pago uma cervejada pro nuted todo ~ João - 16/8/13 15:40
 				$q->solicitar("SELECT NOW()");
 				$this->data = $q->resultado['NOW()'];
+
+				foreach ($this->anexos as $arquivo) {
+					$q->solicitar("INSERT INTO ForumMensagemAnexos (idMensagem, idArquivo) 
+									VALUES ({$this->id}, {$arquivo->getId()})");
+					if ($q->erro != '') {
+						throw new Exception("Erro ao inserir anexo (banco de dados) : {$bd->erro}");
+					}
+				}
 			}
 		}
 		
@@ -75,7 +83,30 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			die("Erro na salvar da mensagem1 - $q->erro - $query");
 		}
 	}
-
+	function addAnexo($arquivo) {
+		if (is_numeric($arquivo)) {
+			$arquivo = new Arquivo((int) $arquivo);
+		}
+		if (is_object($arquivo) AND get_class($arquivo) === 'Arquivo') {
+			if ($arquivo->getId() > 0) {
+				if ($this->id > 0) {
+					$bd = new conexao();
+					$bd->solicitar("INSERT INTO ForumMensagemAnexos (idMensagem, idArquivo) 
+									VALUES ({$this->id}, {$arquivo->getId()})");
+					if ($bd->erro != '') {
+						throw new Exception("Erro ao inserir anexo (banco de dados) : {$bd->erro}");
+					}
+				}
+				$this->anexos[] = $aquivo;
+			}
+			else {
+				throw new Exception("Anexo não encontrado.");
+			}
+		}
+		else {
+			throw new Exception("Anexo inválido.");
+		}
+	}
 	function carregar($id){
 		$q = new conexao();
 
@@ -200,7 +231,6 @@ function setIdTurma($arg){$this->idTurma = $arg;}
 function setIdUsuario($arg){$this->idUsuario = $arg;}
 function setTitulo($arg){$this->titulo = $arg;}
 function setDate($arg){$this->date = $arg;}
-
 function setMensagem($indice, $mensagem){
 	$objetoMensagem = NULL;
 
@@ -212,8 +242,6 @@ function setMensagem($indice, $mensagem){
 	
 	$this->mensagens[$indice] = $objetoMensagem;
 }
-
-	
 	function __construct($idTopico, $idTurma = NULL, $idUsuario = NULL, $titulo = "NULL", $date = "", $nomeUsuario = "ERRO 43"){
 		if($idTurma === NULL){// se mandar só a id do topico, abre ele
 			$this->loadTopico($idTopico);
@@ -267,7 +295,7 @@ function setMensagem($indice, $mensagem){
 		if ($this->salvo === true){// atualizar
 			$q = new conexao();
 
-			$tituloSemHtml	= strip_tags($this->titulo, "<a><img>");
+			$tituloSemHtml	= strip_tags($this->titulo);
 			$titulo			= $q->sanitizaString($tituloSemHtml);
 
 			$q->solicitar("UPDATE ForumTopico SET titulo='$titulo', data=NOW() WHERE idTopico = $this->idTopico");
