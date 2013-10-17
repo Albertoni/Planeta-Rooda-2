@@ -37,9 +37,6 @@ if($permissoes === false){
 <script src="../../jquery.js"></script>
 <script src="../../planeta.js"></script>
 <script src="../lightbox.js"></script>
-<script>
-	var deltipo = 0;
-</script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
