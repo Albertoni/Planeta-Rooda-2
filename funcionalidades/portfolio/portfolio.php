@@ -18,13 +18,13 @@ if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
 
 if (isset($_GET['turma']) and $_GET['turma'] != ""){
 	$turma = $_GET['turma'];
-} else $turma = 192; // AAAAAAAAAAAAAAAAAAAAAAAAAA REMOVA ISSO DEPOIS DO CURSO
+}
 
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
 if($perm == false){
-	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
+	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 ?><!DOCTYPE html>
 <html>

@@ -13,7 +13,7 @@ $turma = is_numeric($_POST['turma']) ? $_POST['turma'] : die("Um identificador d
 global $tabela_portfolioProjetos;
 $permissoes = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($permissoes === false){
-	die("Sua turma nao tem permissoes para isso.");
+	die("Os Projetos est&atilde;o desabilitados para a sua turma.");
 }
 $luser = new Usuario();
 $luser->openUsuario($_SESSION['SS_usuario_id']);
