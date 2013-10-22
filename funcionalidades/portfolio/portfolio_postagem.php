@@ -360,7 +360,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 		<div id="centraliza_topo">
 			<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Portfólio", "portfolio_inicio.php", false);
+				$regua->adicionarNivel("Projetos", "portfolio_inicio.php", false);
 				$regua->adicionarNivel("Postagem");
 				$regua->imprimir();
 			?>
@@ -378,9 +378,9 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					 <div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+					<div id="rel"><p id="balao"><b>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
 					Etiam eget ligula eu lectus lobortis condimentum. Aliquam nonummy auctor massa. Pellentesque 
-					habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</p></div>
+					habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.</b></p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
