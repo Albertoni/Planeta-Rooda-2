@@ -290,26 +290,31 @@ class Blog {
 	
 	function Blog($id, $turma){
 		global $tabela_blogs;
-		
 		$q = new conexao();
-		$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id'");
+
+		if($id === "meu_blog"){
+			$userId = $_SESSION['SS_usuario_id'];
+			$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'");
+		}else{
+			$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id' AND Turma = '$turma'");
+		}
 
 		if(!$q->itens){// Não tem blog, precisa criar
-			http_redirect()
+			die("ESSE BLOG PRECISA SER CRIADO VIDE LINHA 298 DO BLOG.CLASS.PHP");
 		}else{
 			$this->setExiste(1);
 		}
 
-		$this->setId($id);
-		$this->setTitle($q->itens[0]['Title']);
-		$this->setOwnersIds(explode(';',$q->itens[0]['OwnersIds']));
+		$this->setId($q->resultado['Id']);
+		$this->setTitle($q->resultado['Title']);
+		$this->setOwnersIds(explode(';',$q->resultado['OwnersIds']));
 		$this->setOwners();
-		$this->setTipo($q->itens[0]['Tipo']);
+		$this->setTipo($q->resultado['Tipo']);
 		$this->setPosts();
 		$this->setSize(sizeof($this->posts));
 		$this->setPaginacao(6);
 		$this->setNumPaginas();
-		$this->setBlogTags($id);
+		$this->setBlogTags($q->resultado['Id']);
 	}
 
 	function getMeuBlog($turma) {

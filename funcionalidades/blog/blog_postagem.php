@@ -16,8 +16,19 @@
 
 	session_start();
 
+	$usuario = new Usuario();
+	$usuario->openUsuario($_SESSION['SS_usuario_id']);
+
+	$turma = (int)(isset($_GET['turma']) ? $_GET['turma'] : 0);
+	$permissoes = checa_permissoes(TIPOBLOG, $turma);
+	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
+	
+	if (!$usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
+		die("Adicionar posts esta desabilitado para a sua turma. Voce nem deveria estar vendo esse erro.");
+	}
+
 	$blog_id = isset($_GET['blog_id']) ? (int)$_GET['blog_id'] : die("não foi fornecido id de blog");
-	$blog = new Blog($blog_id);
+	$blog = new Blog($blog_id, $turma);
 	$post_id = isset($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
 	$post = new Post();
 	
@@ -34,17 +45,6 @@
 	
 	$funcionalidade_tipo = $blog->getTipo();
 	$funcionalidade_id = $blog->getId();
-	
-	$usuario = new Usuario();
-	$usuario->openUsuario($_SESSION['SS_usuario_id']);
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-	$permissoes = checa_permissoes(TIPOBLOG, $turma);
-	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-	
-	if (!$usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
-		die("Adicionar posts esta desabilitado para a sua turma. Voce nem deveria estar vendo esse erro.");
-	}
 ?>
 <!DOCTYPE html>
 <html>

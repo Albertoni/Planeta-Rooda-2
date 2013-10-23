@@ -24,7 +24,7 @@ $turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
 $blog = new Blog($blog_id, $turma); // se não existe, isso cria o blog
 
 if(!is_numeric($blog_id)){
-	die('A id do blog precisa ser num&eacute;rica!');
+	$blog_id = $blog->getId();
 }
 
 $ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
