@@ -400,6 +400,7 @@ function Init() {
 				<div id="info_post" class="bloco">
 					<input type="hidden" name="blog_id" value="<?=$blog_id?>" />
 					<input type="hidden" name="post_id" value="<?=$post->getId()?>" />
+					<input type="hidden" name="turma" value="<?=$turma?>" />
 					<input type="hidden" name="text" value="" />
 					<h1><?=mb_strtoupper($blog->getTitle())?>: NOVA POSTAGEM</h1>
 					<ul class="sem_estilo">

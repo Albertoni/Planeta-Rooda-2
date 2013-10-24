@@ -81,7 +81,7 @@
 				</ul>
 			</div>
 			<div class="bloco" id="blog_coletivo">
-				<h1>WEBFÓLIOSCOLETIVOS</h1>
+				<h1 style="text-indent:8px">WEBFÓLIOS COLETIVOS</h1>
 				<ul class="sem_estilo">
 					<a href="blog_coletivo_lista.php?turma=<?=$turma?>"><img src="images/desenhos/blog_coletivo.png" border="0px" /></a>
 				</ul>
