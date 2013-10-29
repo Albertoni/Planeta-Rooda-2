@@ -10,7 +10,7 @@ $turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("Um identificador de 
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm == false){
-	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
+	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
 // TODO: Consertar o fato que o cara pode hackear o form pra usar a id de uma
@@ -42,7 +42,7 @@ $update			= $consulta->sanitizaString($_POST['update']);
 
 $consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
 if($turma != $consulta->resultado['turma']){
-	die("A identificacao de turma passada para essa pagina nao corresponde com a identificacao de turma que o projeto tem. Isso eh um erro.");
+	die("A identifica&ccedil;&atilde;o de turma passada para essa pagina n&atilde;o corresponde com a identifica&ccedil;&atilde;o de turma que o projeto tem. Isso &eacute; um erro.");
 }
 
 if ($update == 1 and is_numeric($post_id)){

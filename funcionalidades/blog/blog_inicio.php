@@ -77,11 +77,11 @@
 			<div class="bloco" id="meu_blog">
 				<h1>MEU WEBFÓLIO</h1>
 				<ul class="sem_estilo">
-					<a href="blog.php?blog_id=meu_blog&amp;turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
+					<a href="blog.php?id=meu_blog&amp;turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
 				</ul>
 			</div>
 			<div class="bloco" id="blog_coletivo">
-				<h1>WEBFÓLIOSCOLETIVOS</h1>
+				<h1 style="text-indent:8px">WEBFÓLIOS COLETIVOS</h1>
 				<ul class="sem_estilo">
 					<a href="blog_coletivo_lista.php?turma=<?=$turma?>"><img src="images/desenhos/blog_coletivo.png" border="0px" /></a>
 				</ul>

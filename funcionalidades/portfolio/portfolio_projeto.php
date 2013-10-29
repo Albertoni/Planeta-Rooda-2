@@ -71,7 +71,7 @@ if($perm === false){
 	<div id="centraliza_topo">
 		<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Portfólio", "portfolio_inicio.php", false);
+				$regua->adicionarNivel("Projetos", "portfolio_inicio.php", false);
 				$regua->adicionarNivel("Projeto");
 				$regua->imprimir();
 			?>

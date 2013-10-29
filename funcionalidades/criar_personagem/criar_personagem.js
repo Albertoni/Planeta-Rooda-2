@@ -125,7 +125,7 @@
 				// carregar a imagem de cada um dos 20 estilos
 				imgs.cabelos[cabeloCores[i]][j] = new Image();
 				imgs.cabelos[cabeloCores[i]][j].onload = carregou;
-				imgs.cabelos[cabeloCores[i]][j].src = "images/desenhos/cabelos/" + cabeloCores[i] + "/cabelo" + (j + 1).toString(10) + ".png";
+				imgs.cabelos[cabeloCores[i]][j].src = "../../images/desenhos/cabelos/" + cabeloCores[i] + "/cabelo" + (j + 1).toString(10) + ".png";
 			}
 		}
 		// carregando olhos
@@ -133,7 +133,7 @@
 		for (i = 0; i < n_olhos; i += 1) {
 			imgs.olhos[i] = new Image();
 			imgs.olhos[i].onload = carregou;
-			imgs.olhos[i].src = "images/desenhos/olhos/olho" + (i + 1).toString(10) + ".png";
+			imgs.olhos[i].src = "../../images/desenhos/olhos/olho" + (i + 1).toString(10) + ".png";
 		}
 		imgs.corpo = new Image();
 		imgs.corpo.onload = carregou;
@@ -143,10 +143,10 @@
 		imgs.mapaLuvasImg.onload = carregou;
 		imgs.mapaCintoImg = new Image();
 		imgs.mapaCintoImg.onload = carregou;
-		imgs.corpo.src = "images/desenhos/personagem_limpo.png";
-		imgs.mapaPeleImg.src = "images/desenhos/mapa_pele.png";
-		imgs.mapaLuvasImg.src = "images/desenhos/mapa_luvas.png";
-		imgs.mapaCintoImg.src = "images/desenhos/mapa_cinto.png";
+		imgs.corpo.src = "../../images/desenhos/personagem_limpo.png";
+		imgs.mapaPeleImg.src = "../../images/desenhos/mapa_pele.png";
+		imgs.mapaLuvasImg.src = "../../images/desenhos/mapa_luvas.png";
+		imgs.mapaCintoImg.src = "../../images/desenhos/mapa_cinto.png";
 	}());
 	// FIM CARREGAR IMAGENS
 	// Menu Handler

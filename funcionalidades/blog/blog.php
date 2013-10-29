@@ -1,62 +1,59 @@
 <?php
-	 session_start();
-	require_once("../../cfg.php");
-	require_once("../../bd.php");
-	require_once("../../funcoes_aux.php");
-	require_once("../../usuarios.class.php");
-	require_once("../../login.class.php");
+session_start();
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("../../login.class.php");
 //  require_once("verifica_user.php");
-	require_once("blog.class.php");
-	require_once("../../file.class.php");
-	require_once("../../link.class.php");
+require_once("blog.class.php");
+require_once("../../file.class.php");
+require_once("../../link.class.php");
 //  require_once("visualizacao_blog.php");
-	require_once("../../reguaNavegacao.class.php");
-	header('Content-type: text/html; charset=utf-8');
-	$usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
-	if ($usuario_id == 0){
-		die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
-	}
-	
-	$blog_id = isset($_GET['blog_id']) ? $_GET['blog_id'] : die("não foi fornecido id de blog");
-	$blog_id = ($blog_id == "meu_blog") ? getMeuBlog() : $_GET['blog_id'];
-	
-	// Eu amo a linha de código abaixo.
-	 // Re: Se você acha que usar expressoes lógicas como statements é algo bom, boa sorte.
-	true == (is_numeric($blog_id)) or die('A id do blog precisa ser num&eacute;rica!'); // Sabe SQL injection?
-	
-	$blog = new Blog($blog_id); // se não existe, isso cria o blog
-	
-	
-	$ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
-	$ini = $ini < 0 ? 0 : $ini;
-	$ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$blog->getPaginacao() : $ini;
-	
-	$usuario = new Usuario();
-	$usuario->openUsuario($_SESSION['SS_usuario_id']);
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-	$permissoes = checa_permissoes(TIPOBLOG, $turma);
-	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-	
-	// "blog_inserirPost,blog_editarPost,blog_inserirComentarios,blog_excluirPost,blog_adicionarLinks,blog_adicionarArquivos";
+require_once("../../reguaNavegacao.class.php");
+
+header('Content-type: text/html; charset=utf-8');
+$usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
+if ($usuario_id == 0){
+	die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
+}
+
+$blog_id = isset($_GET['id']) ? $_GET['id'] : die("N&atilde;o foi fornecido id de Webf&oacute;lio.");
+$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+
+$blog = new Blog($blog_id, $turma); // se não existe, isso cria o blog
+
+if(!is_numeric($blog_id)){
+	$blog_id = $blog->getId();
+}
+
+$ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
+$ini = $ini < 0 ? 0 : $ini;
+$ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$blog->getPaginacao() : $ini;
+
+$usuario = new Usuario();
+$usuario->openUsuario($_SESSION['SS_usuario_id']);
+
+
+$permissoes = checa_permissoes(TIPOBLOG, $turma);
+if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
+
+// "blog_inserirPost,blog_editarPost,blog_inserirComentarios,blog_excluirPost,blog_adicionarLinks,blog_adicionarArquivos";
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Planeta ROODA 2.0</title>
-<link type="text/css" rel="stylesheet" href="../../planeta.css" />
-<link type="text/css" rel="stylesheet" href="blog.css" />
-
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
+	<title>Planeta ROODA 2.0</title>
+	<link type="text/css" rel="stylesheet" href="../../planeta.css" />
+	<link type="text/css" rel="stylesheet" href="blog.css" />
 </head>
 
 <body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);atualiza('ajusta()');inicia();coment();">
-
 <div id="descricao"></div>
-
 <div id="fundo_lbox"></div>
 <div id="light_box" class="bloco"></div>
-
 <div id="topo">
 <div id="centraliza_topo">
 		<?php 
@@ -311,19 +308,3 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 <![endif]-->
 </body>
 </html>
-
-<?php
-	function getMeuBlog() {
-		global $tabela_blogs;
-		global $usuario_id;
-		$consulta = new conexao();
-		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$usuario_id'");
-		if(!$consulta->itens) {
-			$blog = new Blog(0);
-			$aux_id = $blog->getId();
-		} else {
-			$aux_id = $consulta->itens[0]['Id'];
-		}
-		return $aux_id;
-	}
-?>

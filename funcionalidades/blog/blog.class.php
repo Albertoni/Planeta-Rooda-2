@@ -288,35 +288,47 @@ class Blog {
 	var $existe = 0;
 	var $tags = array();
 	
-	function Blog($id) {
+	function Blog($id, $turma){
 		global $tabela_blogs;
-		if($id==0) {
-			$this->setId(0);
-			$this->setOwnersIds(array($_SESSION['SS_usuario_id']));
-			$this->setTitle('Meu blog');
-			$this->setTipo(1);
-			$q = new conexao();
-			$q->inserir($this->toDBArray(),$tabela_blogs);
-			$this->setId($q->ultimo_id());
+		$q = new conexao();
+
+		if($id === "meu_blog"){
+			$userId = $_SESSION['SS_usuario_id'];
+			$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'");
+		}else{
+			$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id' AND Turma = '$turma'");
 		}
-		
-		$consulta = new conexao();
-		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id'");
-		if(!$consulta->itens)
-			$this->setExiste(0);
-		else
+
+		if(!$q->itens){// Não tem blog, precisa criar
+			die("ESSE BLOG PRECISA SER CRIADO VIDE LINHA 298 DO BLOG.CLASS.PHP");
+		}else{
 			$this->setExiste(1);
-		$q = $consulta;		// PRA QUÊ MUDAR O NOME DA VARIÁVEL?
-		$this->setId($id);
-		$this->setTitle($q->itens[0]['Title']);
-		$this->setOwnersIds(explode(';',$q->itens[0]['OwnersIds']));
+		}
+
+		$this->setId($q->resultado['Id']);
+		$this->setTitle($q->resultado['Title']);
+		$this->setOwnersIds(explode(';',$q->resultado['OwnersIds']));
 		$this->setOwners();
-		$this->setTipo($q->itens[0]['Tipo']);
+		$this->setTipo($q->resultado['Tipo']);
 		$this->setPosts();
 		$this->setSize(sizeof($this->posts));
 		$this->setPaginacao(6);
 		$this->setNumPaginas();
-		$this->setBlogTags($id);
+		$this->setBlogTags($q->resultado['Id']);
+	}
+
+	function getMeuBlog($turma) {
+		global $tabela_blogs;
+		global $usuario_id;
+		$consulta = new conexao();
+		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$usuario_id' and ");
+		if(!$consulta->itens) {
+			$blog = new Blog(0);
+			$aux_id = $blog->getId();
+		}else{
+			$aux_id = $consulta->itens[0]['Id'];
+		}
+		return $aux_id;
 	}
 
 	function toDBArray() {

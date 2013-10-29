@@ -18,13 +18,13 @@ if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
 
 if (isset($_GET['turma']) and $_GET['turma'] != ""){
 	$turma = $_GET['turma'];
-} else $turma = 192; // AAAAAAAAAAAAAAAAAAAAAAAAAA REMOVA ISSO DEPOIS DO CURSO
+}
 
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
 if($perm == false){
-	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
+	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 ?><!DOCTYPE html>
 <html>
@@ -50,7 +50,7 @@ if($perm == false){
 	<div id="centraliza_topo">
 		<?php 
 			$regua = new reguaNavegacao();
-			$regua->adicionarNivel("Portfólio");
+			$regua->adicionarNivel("Projetos");
 			$regua->imprimir();
 		?>
 		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
@@ -67,7 +67,7 @@ if($perm == false){
 		<div id="ajuda_meio">
 			<div id="ajudante">
 				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-				<div id="rel"><p id="balao">Funcionalidade destinada aos formadores e voltada à construção de um histórico da turma através do registro e da publicação de arquivos, possibilitando acompanhar os alunos e as práticas pedagógicas.</p>
+				<div id="rel"><p id="balao">Funcionalidade destinada aos formadores e voltada à construção de um histórico da turma através do registro e da publicação de arquivos, possibilitando acompanhar os alunos e as práticas pedagógicas.<b> NECESSÁRIO UM NOVO TEXTO AQUI?</b></p>
 				</div>
 			</div>
 		</div>

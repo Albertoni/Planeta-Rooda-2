@@ -94,7 +94,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		<div id="imagem_lbox">
 			<h1>INSERIR IMAGEM</h1>
 			<ul class="sem_estilo" style="line-height:25px">
-				<li>Você não pode enviar uma imagem antes de criar o Portfólio. Caso seja necessário, edite o post depois de criá-lo, ou use outro site para dar upload na imagem.</li>
+				<li>Você não pode enviar uma imagem antes de criar o Projeto. Caso seja necessário, edite o post depois de criá-lo, ou use outro site para dar upload na imagem.</li>
 				<li><input type="radio" id="troca_img2" class="select_img" checked name="select_img" value="2" />Imagem da Web</li>
 				<li>
 					<div id="cont_img">
@@ -135,7 +135,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 		<div id="centraliza_topo">
 			<?php 
 				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Portfólio", "portfolio_inicio.php", false);
+				$regua->adicionarNivel("Projetos", "portfolio_inicio.php", false);
 				$regua->adicionarNivel("Novo Projeto");
 				$regua->imprimir();
 			?>
