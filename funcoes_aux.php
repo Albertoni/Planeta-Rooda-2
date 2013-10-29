@@ -1,6 +1,7 @@
 <?php
 require_once("cfg.php");
 require_once("usuarios.class.php");
+require_once("turma.class.php");
 //---------------------------------------------------------------
 //Funções Comuns
 //---------------------------------------------------------------
@@ -354,6 +355,12 @@ function cospeSelectDeTurmas($t=0){
 }
 function usuarioPertenceTurma($usuario,$turma)
 {
+	if (is_object($usuario)) {
+		$usuario = get_class($usuario) === 'Usuario' ? $usuario->getId() : 0;
+	}
+	if (is_object($turma)) {
+		$usuario = get_class($usuario) === 'turma' ? $turma->getId() : 0;
+	}
 	$usuario = (int) $usuario;
 	$turma = (int) $turma;
 	$con = new conexao();

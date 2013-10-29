@@ -317,9 +317,12 @@ var BIBLIOTECA = (function () {
 		if (pode_excluir || this.usuario.id ===  sessao.id) {
 			this.HTMLElemento.appendChild(this.HTMLBotaoExcluir);
 		}
-		this.HTMLTitulo.innerText = this.titulo;
-		this.HTMLInfo.innerText = 'Enviado por ' + this.usuario.nome + ' (' + this.data.toLocaleString() + ')';
-		this.HTMLAutor.innerText = 'Autor: ' + this.autor;
+		this.HTMLTitulo.innerHTML = this.titulo
+			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
+		this.HTMLInfo.innerHTML = 'Enviado por ' + this.usuario.nome + ' (' + this.data.toLocaleString() + ')'
+			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
+		this.HTMLAutor.innerHTML = 'Autor: ' + this.autor
+			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
 		this.HTMLLink.href = 'abrirMaterial.php?id=' + this.id + '';
 	};
 	//var form_edicao_material = document.getElementById('editar_material');

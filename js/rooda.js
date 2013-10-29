@@ -1,3 +1,43 @@
+// faz com que todos os 'file input' fiquem com estilo moderno baseado em 'label'
+function formatFileInput(input) {
+    var label, placeholder;
+    if (input.type === 'file') {
+        // verificar se o elemento já tem label.
+        label = input.parentElement;
+        if (label.tagName.toUpperCase() === 'LABEL') {
+            // guardar o input para preservar handlers associados
+            label.removeChild(input);
+        } else {
+            // se nao tiver, criar um label.
+            label = document.createElement("label");
+            // guardar o input para preservar handlers associados
+            input.parentElement.replaceChild(label,input);
+        }
+        // adiciona texto de auxilio
+        label.classList.add("file_label")
+        label.innerHTML = '<span class="text">Selecionar arquivo:</span>';
+        // placeholder de arquivos selecionados
+        placeholder = document.createElement("span");
+        // atualiza conteudo do placeholder
+        input.addEventListener('change', function () {
+            var i, fileList = [];
+            for (i = 0; i < this.files.length; i++) {
+                fileList.push(this.files[i].name);
+            }
+            placeholder.innerHTML = fileList.join(", ");
+        });
+        // adiciona placeholder ao label
+        label.appendChild(placeholder);
+        // esconde o 'file input' e adiciona ele ao label.
+        input.hidden = false;
+        label.style.position = "relative";
+        input.style.position = "fixed";
+        input.style.opacity = '0';
+        label.appendChild(input);
+    }
+}
+Array.prototype.forEach.call(document.getElementsByTagName("input"), formatFileInput);
+
 var ROODA = {};
 /*
  * ROODA.dom

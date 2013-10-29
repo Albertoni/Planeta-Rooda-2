@@ -23,7 +23,7 @@ class turma{
 	/*
 	* Dados da turma no bd.
 	*/
-	private $id;
+	private $id = 0;
 	private $nome;
 	private $idProfessorResponsavel;
 	private $descricao;

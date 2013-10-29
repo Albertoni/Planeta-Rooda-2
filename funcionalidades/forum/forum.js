@@ -304,11 +304,16 @@ var postDinamico = {
 				</div>\
 			</li>\
 			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
-				<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
-				<div class=\"bts_msg\" align=\"right\">\
-				<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+turma+","+post.idPost+")\"/>\
-				<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
-				</div>\
+				<form action=\"forum_salva_mensagem.php\">\
+					<input type=\"hidden\" name=\"idTopico\" value=\""+document.getElementById("topico").value+"\">
+					<input type=\"hidden\" name=\"idTurma\" value=\""+"\">
+					<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
+					Incluir anexo: <input type=\"file\" name=\"arquivo\">\
+					<div class=\"bts_msg\" align=\"right\">\
+					<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+turma+","+post.idPost+")\"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
+					</div>\
+				</form>
 			</li>\
 		</ul>";
 

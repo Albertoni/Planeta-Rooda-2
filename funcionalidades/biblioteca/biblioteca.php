@@ -190,6 +190,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			};
 		}());
 		</script>
-		<script type="text/javascript" src="biblioteca2.js"></script>
+		<script src="biblioteca2.js"></script>
 	</body>
 </html>
