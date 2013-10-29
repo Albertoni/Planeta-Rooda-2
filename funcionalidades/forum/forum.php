@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -8,24 +6,22 @@ require_once("../../usuarios.class.php");
 
 $user = usuario_sessao();
 if (!$user) die ("Voc&ecirc; n&atilde;o est&aacute; logado");
-$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 
-//require_once("verifica_user.php");
 require_once("sistema_forum.php");
-//require_once("visualizacao_forum.php");
 require_once("../../reguaNavegacao.class.php");
 
-$pagina = (isset($_GET['pagina']))? $_GET['pagina'] : 1;
+$pagina = (isset($_GET['pagina']))? (int) $_GET['pagina'] : 1;
 
 $forum = new visualizacaoForum($turma);
 $forum->carregaTopicos();
 
-//$paginas = array();
-//$paginas = $FORUM->paginas($pagina,10);
-
 $permissoes = checa_permissoes(TIPOFORUM, $turma);
 if($permissoes === false){
 	die("Funcionalidade desabilitada para a sua turma. Favor voltar.");
+}
+if (!usuarioPertenceTurma($user,$turma)) {
+	die("Voc&ecirc; n&atilde;o est&aacute; nesta turma.");
 }
 
 ?>
@@ -39,9 +35,6 @@ if($permissoes === false){
 <script src="../../jquery.js"></script>
 <script src="../../planeta.js"></script>
 <script src="../lightbox.js"></script>
-<script>
-	var deltipo = 0;
-</script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
