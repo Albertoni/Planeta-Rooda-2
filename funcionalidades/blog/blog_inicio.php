@@ -1,20 +1,16 @@
 <?php 
-	require_once("../../cfg.php");
-	require_once("../../bd.php");
-	require_once("../../reguaNavegacao.class.php");
-	require_once("../../funcoes_aux.php");
-	
-	session_start();
-	$usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
-	
-	if ($usuario_id == 0){
-		die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
-	}
-	//$BLOG_ID = $_SESSION['SS_usuario_id'];
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
-	$permissoes = checa_permissoes(TIPOBLOG, $turma);
-	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../reguaNavegacao.class.php");
+require_once("../../funcoes_aux.php");
+
+session_start();
+$usuario = usuario_sessao();
+if (!$usuario) { die("voce nao esta logado"); }
+
+$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+$permissoes = checa_permissoes(TIPOBLOG, $turma);
+if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 ?>
 <!DOCTYPE html>
 <html>
