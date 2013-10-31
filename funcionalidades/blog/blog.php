@@ -13,10 +13,8 @@ require_once("../../link.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 header('Content-type: text/html; charset=utf-8');
-$usuario_id = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
-if ($usuario_id == 0){
-	die("Voc&ecirc; n&atilde;o est&aacute; logado. Por favor volte.");
-}
+$usuario = usuario_sessao();
+if (!$usuario) { die("voce nao esta logado"); }
 
 $blog_id = isset($_GET['id']) ? $_GET['id'] : die("N&atilde;o foi fornecido id de Webf&oacute;lio.");
 $turma = isset($_GET['turma']) ? $_GET['turma'] : 0;

@@ -1,22 +1,27 @@
 <?php
-	session_start();
+require_once("../../cfg.php");
+require_once("../../bd.php");
+require_once("../../funcoes_aux.php");
+require_once("../../usuarios.class.php");
+require_once("blog.class.php");
+require_once("../../file.class.php");
+require_once("../../link.class.php");
+require_once("../../reguaNavegacao.class.php");
 
-	require_once("../../cfg.php");
-	require_once("../../bd.php");
-	require_once("../../funcoes_aux.php");
-	require_once("../../usuarios.class.php");
-	require_once("blog.class.php");
-	require_once("../../file.class.php");
-	require_once("../../link.class.php");
-	require_once("../../reguaNavegacao.class.php");
-	$usuario_id = $_SESSION['SS_usuario_id'];
-	
-	$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+$usuario = usuario_sessao();
+if (!$usuario) { die("voce nao esta logado"); }
+
+$usuario_id = $_SESSION['SS_usuario_id'];
+
+$turma = (int) isset($_GET['turma']) ? $_GET['turma'] : 0;
+$permissoes = checa_permissoes(TIPOBLOG, $turma);
+if($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
@@ -79,38 +84,41 @@ function coment(){
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bts_cima">
 				<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
-				<a href="criar_blog_coletivo.php?turma=<?=$turma?>"><img id="responder_topico" src="../../images/botoes/bt_criar_coletivo.png" align="right"/></a>
 			</div>
 			<div id="meus_coletivos" class="bloco">
 				<h1>TODOS OS WEBFÓLIOS</h1>
 <?php
 $bd = new conexao();
-$bd->solicitar("SELECT * FROM blogblogs AS Bl INNER JOIN TurmasUsuario AS Tu
-				ON Bl.OwnersIds = Tu.codUsuario
-				WHERE codTurma = $turma");
+$bd->solicitar("SELECT * FROM blogblogs WHERE Turma = $turma");
 
 $i = 0; // Para a classe da cor.
 
 foreach($bd->itens as $b) {
-	$b = new Blog($b['Id']);
+	$b = new Blog($b['Id'], $turma);
 	$i = ($i%2)+1;
 ?>
 				<div class="cor<?=$i?>">
 					<div class="lista_esq">
-						<div class="imagem"></div> <!--IMAGEM DO CRIADOR DO BROGUI VAI AQUI GENTE BOA-->
+						<div class="imagem"><img src="image_output.php?blogpic=1&amp;file=<?=$b->getId()?>" /></div> <!--IMAGEM DO CRIADOR DO BROGUI VAI AQUI GENTE BOA-->
 						<ul>
-							<li><a href="blog.php?blog_id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=$b->getTitle()?></a></li>
+							<li><a href="blog.php?id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=$b->getTitle()?></a></li>
 							<li class="mensagens"><?=numeroMensagens($b->getSize())?></li>
 						</ul>
 					</div>
 					<div class="lista_dir">
 						<ul>
-							<li><a href="blog.php?blog_id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=getTextSample($b->getId())?></a></li>
+							<li><a href="blog.php?id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=getTextSample($b->getId())?></a></li>
 							<li class="criado_por">Criado Por: <?=getPrintableOwners($b->getId())?></li>
 							<li>
 								<div align="right">
-									<input type="image" src="images/botoes/bt_editar.png" />
-									<input type="image" src="images/botoes/bt_excluir.png" />
+<?php
+/*if ($usuario->podeAcessar('blog_editarPosts')){
+	echo"									<img class=\"clicavel\" alt=\"Editar\" src=\"images/botoes/bt_editar.png\" onclick=\"editaBlog(".$b->getId().")\"/>"
+}
+if ($usuario->podeAcessar('blog_editarPosts')){
+	echo "									<img class=\"clicavel\" alt=\"Excluir\" src=\"images/botoes/bt_excluir.png\" onclick=\"deletaBlog(".$b->getId().")\" />";
+}*/
+?>
 								</div>
 							</li>
 						</ul>
@@ -121,8 +129,7 @@ foreach($bd->itens as $b) {
 ?>
 			</div>
 			<div class="bts_baixo">
-				<input type="image" src="images/botoes/bt_voltar.png" align="left"/>
-				<input type="image" id="responder_topico" src="images/botoes/bt_criar_coletivo.png" align="right"/>
+				<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
 			</div>
 		</div><!-- Fecha Div conteudo -->
 	</div><!-- Fecha Div conteudo_meio -->   
