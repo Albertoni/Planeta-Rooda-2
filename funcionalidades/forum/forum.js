@@ -221,6 +221,7 @@ function cancelaResposta(id){
 }
 
 function enviaMensagem(forumId,id){
+	AJAXSubmit()
 	var parametros = "idTopico=" + encodeURI(document.getElementById("topico").value);
 	parametros += "&mensagemRespondida=" + encodeURI(id);
 	parametros += "&turma=" + encodeURI(forumId);
@@ -304,16 +305,18 @@ var postDinamico = {
 				</div>\
 			</li>\
 			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
-				<form action=\"forum_salva_mensagem.php\">\
-					<input type=\"hidden\" name=\"idTopico\" value=\""+document.getElementById("topico").value+"\">
-					<input type=\"hidden\" name=\"idTurma\" value=\""+"\">
-					<textarea class=\"msg_dimensao\" rows=\"10\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
+				<form action=\"forum_salva_mensagem.php\" id=\"form_resposta_"+post.idPost+"\">\
+					<input type=\"hidden\" name=\"idTopico\" value=\""+document.getElementById("topico").value+"\">\
+					<input type=\"hidden\" name=\"idTurma\" value=\""+turma+"\">\
+					<input type=\"hidden\" name=\"mensagemRespondida\" value=\""+post.idPost+"\">\
+					<textarea class=\"msg_dimensao\" rows=\"10\" name=\"msg_conteudo\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
 					Incluir anexo: <input type=\"file\" name=\"arquivo\">\
 					<div class=\"bts_msg\" align=\"right\">\
+					<button type=\"submit\" class=\"responder\">Responder</button>\
 					<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+turma+","+post.idPost+")\"/>\
 					<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
 					</div>\
-				</form>
+				</form>\
 			</li>\
 		</ul>";
 
