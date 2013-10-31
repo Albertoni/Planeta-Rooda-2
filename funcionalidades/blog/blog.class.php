@@ -290,17 +290,22 @@ class Blog {
 	
 	function Blog($id, $turma){
 		global $tabela_blogs;
+		$userId = $_SESSION['SS_usuario_id'];
 		$q = new conexao();
 
 		if($id === "meu_blog"){
-			$userId = $_SESSION['SS_usuario_id'];
 			$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'");
 		}else{
 			$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id' AND Turma = '$turma'");
 		}
 
 		if(!$q->itens){// Não tem blog, precisa criar
-			die("ESSE BLOG PRECISA SER CRIADO VIDE LINHA 298 DO BLOG.CLASS.PHP");
+			die("preciso resolver o problema de criar blog");
+			if($q->erro != ""){
+				die("Erro ao criar este blog. Informações técnicas: Erro na inserção dos dados no construtor da classe blog.");
+			}else{
+				$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'"); // eu sei, perdão, é terrivel mas é a maneira mais rápida e fácil de dar manutenção no momento
+			}
 		}else{
 			$this->setExiste(1);
 		}

@@ -4,7 +4,6 @@ require_once("../../bd.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("../../funcoes_aux.php");
 
-session_start();
 $usuario = usuario_sessao();
 if (!$usuario) { die("voce nao esta logado"); }
 

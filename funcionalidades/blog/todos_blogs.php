@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -9,14 +7,15 @@ require_once("blog.class.php");
 require_once("../../file.class.php");
 require_once("../../link.class.php");
 require_once("../../reguaNavegacao.class.php");
+
+$usuario = usuario_sessao();
+if (!$usuario) { die("voce nao esta logado"); }
+
 $usuario_id = $_SESSION['SS_usuario_id'];
 
 $turma = (int) isset($_GET['turma']) ? $_GET['turma'] : 0;
 $permissoes = checa_permissoes(TIPOBLOG, $turma);
 if($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-
-$usuario = usuario_sessao();
-if (!$usuario) { die("voce nao esta logado"); }
 ?>
 <!DOCTYPE html>
 <html>
@@ -85,15 +84,12 @@ function coment(){
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bts_cima">
 				<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
-				<a href="criar_blog_coletivo.php?turma=<?=$turma?>"><img id="responder_topico" src="../../images/botoes/bt_criar_coletivo.png" align="right"/></a>
 			</div>
 			<div id="meus_coletivos" class="bloco">
 				<h1>TODOS OS WEBFÓLIOS</h1>
 <?php
 $bd = new conexao();
-$bd->solicitar("SELECT * FROM blogblogs AS Bl INNER JOIN TurmasUsuario AS Tu
-				ON Bl.OwnersIds = Tu.codUsuario
-				WHERE codTurma = $turma");
+$bd->solicitar("SELECT * FROM blogblogs WHERE Turma = $turma");
 
 $i = 0; // Para a classe da cor.
 
@@ -115,8 +111,14 @@ foreach($bd->itens as $b) {
 							<li class="criado_por">Criado Por: <?=getPrintableOwners($b->getId())?></li>
 							<li>
 								<div align="right">
-									<input type="image" src="images/botoes/bt_editar.png" />
-									<input type="image" src="images/botoes/bt_excluir.png" />
+<?php
+/*if ($usuario->podeAcessar('blog_editarPosts')){
+	echo"									<img class=\"clicavel\" alt=\"Editar\" src=\"images/botoes/bt_editar.png\" onclick=\"editaBlog(".$b->getId().")\"/>"
+}
+if ($usuario->podeAcessar('blog_editarPosts')){
+	echo "									<img class=\"clicavel\" alt=\"Excluir\" src=\"images/botoes/bt_excluir.png\" onclick=\"deletaBlog(".$b->getId().")\" />";
+}*/
+?>
 								</div>
 							</li>
 						</ul>
@@ -127,8 +129,7 @@ foreach($bd->itens as $b) {
 ?>
 			</div>
 			<div class="bts_baixo">
-				<input type="image" src="images/botoes/bt_voltar.png" align="left"/>
-				<input type="image" id="responder_topico" src="images/botoes/bt_criar_coletivo.png" align="right"/>
+				<a href="blog_inicio.php?turma=<?=$turma?>"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
 			</div>
 		</div><!-- Fecha Div conteudo -->
 	</div><!-- Fecha Div conteudo_meio -->   
