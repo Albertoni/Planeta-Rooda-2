@@ -318,11 +318,11 @@ var BIBLIOTECA = (function () {
 			this.HTMLElemento.appendChild(this.HTMLBotaoExcluir);
 		}
 		this.HTMLTitulo.innerHTML = this.titulo
-			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
+			.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		this.HTMLInfo.innerHTML = 'Enviado por ' + this.usuario.nome + ' (' + this.data.toLocaleString() + ')'
-			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
+			.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		this.HTMLAutor.innerHTML = 'Autor: ' + this.autor
-			.replace(/</g,"&gt;").replace(/>/g,"&lt;");
+			.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		this.HTMLLink.href = 'abrirMaterial.php?id=' + this.id + '';
 	};
 	//var form_edicao_material = document.getElementById('editar_material');
