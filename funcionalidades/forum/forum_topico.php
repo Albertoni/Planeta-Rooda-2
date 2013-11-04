@@ -124,10 +124,11 @@
 
 </div><!-- fim da geral -->
 
-<script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../planeta.js"></script>
-<script type="text/javascript" src="../lightbox.js"></script>
-<script type="text/javascript" src="forum.js"></script>
+<script src="../../jquery.js"></script>
+<script src="../../planeta.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../lightbox.js"></script>
+<script src="forum.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->

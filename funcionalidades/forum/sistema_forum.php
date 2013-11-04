@@ -84,9 +84,9 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		}
 	}
 	function addAnexo($arquivo) {
-		if (is_numeric($arquivo)) {
-			$arquivo = new Arquivo((int) $arquivo);
-		}
+		//if (is_numeric($arquivo)) {
+		//	$arquivo = new Arquivo((int) $arquivo);
+		//}
 		if (is_object($arquivo) AND get_class($arquivo) === 'Arquivo') {
 			if ($arquivo->getId() > 0) {
 				if ($this->id > 0) {
@@ -97,7 +97,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 						throw new Exception("Erro ao inserir anexo (banco de dados) : {$bd->erro}");
 					}
 				}
-				$this->anexos[] = $aquivo;
+				$this->anexos[] = $arquivo;
 			}
 			else {
 				throw new Exception("Anexo não encontrado.");

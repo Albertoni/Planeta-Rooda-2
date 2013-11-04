@@ -13,7 +13,7 @@ if($user === false){
 $idMensagem	= ((isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $_POST['idMensagem'] : -1);
 
 $idTopico	= (int) $_POST['idTopico'];
-$idTurma	= (int) $_POST['turma'];
+$idTurma	= (int) $_POST['idTurma'];
 $conteudo	= $_POST['msg_conteudo'];
 $idMensagemRespondida = (int) $_POST['mensagemRespondida'];
 
@@ -39,10 +39,11 @@ if (isset($_FILES['arquivo'])) {
 	try {
 		$arquivo = new Arquivo();
 		$arquivo->setArquivo($_FILES['arquivo']);
+		$arquivo->setIdUsuario($user->getId());
 		$arquivo->salvar();
 		$mensagemResposta->addAnexo($arquivo);
 	} catch (Exception $e) {
-		die('{"erro":"asd"}');
+		die('{"erro":"'.$e->getMessage().'"}');
 	}
 }
 echo json_encode($mensagemResposta->toJson());

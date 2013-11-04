@@ -218,10 +218,35 @@ function responder(id){
 
 function cancelaResposta(id){
 		document.getElementById('li_resposta_'+id).style.display = "none";
+		document.getElementById('msg_txt_'+id).value = "";
 }
-
+// enviarMensagem(formulario)
+var enviaMensagem = (function () {
+	function sucesso() {
+		var resposta;
+		var novoPost;
+		console.log(this.responseText);
+		try {
+			resposta = JSON.parse(this.responseText);
+		}
+		catch (e) {
+			console.dir(e);
+		}
+		console.dir(resposta);
+		novoPost = postDinamico.geraPost(resposta);
+		document.getElementById("bloco_mensagens").appendChild(novoPost);
+		console.dir(novoPost);
+		cancelaResposta(resposta.mensagemRespondida.idPost);
+	}
+	function falha() {
+		console.log(this.responseText);
+	}
+	return function (formulario) {
+		AJAXSubmit(formulario, sucesso, falha);
+	}
+}());
+/*
 function enviaMensagem(forumId,id){
-	AJAXSubmit()
 	var parametros = "idTopico=" + encodeURI(document.getElementById("topico").value);
 	parametros += "&mensagemRespondida=" + encodeURI(id);
 	parametros += "&turma=" + encodeURI(forumId);
@@ -241,7 +266,7 @@ function enviaMensagem(forumId,id){
 	http.setRequestHeader("Content-length", parametros.length);
 	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
 	http.send(parametros);
-}
+}*/
 
 var postDinamico = {
 	geraPost: function (post, profundidadeArvore){
@@ -305,7 +330,7 @@ var postDinamico = {
 				</div>\
 			</li>\
 			<li id=\"li_resposta_"+post.idPost+"\" style=\"display:none;\">\
-				<form action=\"forum_salva_mensagem.php\" id=\"form_resposta_"+post.idPost+"\">\
+				<form action=\"forum_salva_mensagem.php\" enctype=\"multipart/form-data\" method=\"post\" onsubmit=\"enviaMensagem(this); event.preventDefault ? event.preventDefault() : event.returnValue = false; return false;\" id=\"form_resposta_"+post.idPost+"\">\
 					<input type=\"hidden\" name=\"idTopico\" value=\""+document.getElementById("topico").value+"\">\
 					<input type=\"hidden\" name=\"idTurma\" value=\""+turma+"\">\
 					<input type=\"hidden\" name=\"mensagemRespondida\" value=\""+post.idPost+"\">\
@@ -313,7 +338,6 @@ var postDinamico = {
 					Incluir anexo: <input type=\"file\" name=\"arquivo\">\
 					<div class=\"bts_msg\" align=\"right\">\
 					<button type=\"submit\" class=\"responder\">Responder</button>\
-					<input type=\"image\" src=\"../../images/botoes/bt_enviar_pq.png\" onclick=\"enviaMensagem("+turma+","+post.idPost+")\"/>\
 					<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\
 					</div>\
 				</form>\
