@@ -313,8 +313,8 @@ var postDinamico = {
 				<p class=\"data\"><span class=\"data\">"+data[0]+"</span> às <span class=\"data\">"+data[1]+"</span></p>\
 			</div>\
 				<div class=\"bts_msg\" align=\"right\">\
-					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editarMensagem("+turma+","+post.idPost+")\" "+ ((post.podeEditar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
-					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirMensagem("+turma+","+post.idPost+")\" "+ ((post.podeDeletar || (post.idUsuario == userId)) ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_editar.png\" onclick=\"editarMensagem("+turma+","+post.idPost+")\" "+ ((post.podeEditar && post.podeResponder) ? "" : "style=\"display:none\"") +"/>\
+					<input type=\"image\" src=\"../../images/botoes/bt_excluir.png\" onclick=\"excluirMensagem("+turma+","+post.idPost+")\" "+ ((post.podeDeletar) ? "" : "style=\"display:none\"") +"/>\
 				</div>\
 			</li>\
 			<li>\
@@ -324,6 +324,7 @@ var postDinamico = {
 				<li>\
 				"+anexos+"\
 				</li>\
+				" + (post.podeResponder ? ("\
 			<li>\
 				<div align=\"right\">\
 					<input type=\"image\" src=\"../../images/botoes/bt_responder_pq.png\" onclick=\"responder("+post.idPost+")\"/>\
@@ -342,6 +343,7 @@ var postDinamico = {
 					</div>\
 				</form>\
 			</li>\
+			") : "") + "\
 		</ul>";
 
 		container.style.marginLeft = margem+'px';
