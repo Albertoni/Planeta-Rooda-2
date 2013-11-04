@@ -301,7 +301,7 @@ var postDinamico = {
 				var classes = post.anexos[i].tipo.split('/');
 				classes = classes.map(function(e) { return e.split(".").join("-"); });
 				classes.push('arquivo');
-				anexos += '<li class="'+classes.join(' ')+'"><a href="abre_anexo.php?m='+post.idPost+'&amp;a='+post.anexos[i].id+'">'+post.anexos[i].nome+'<span class="icon">&nbsp</span></a></li>';
+				anexos += '<li class="'+classes.join(' ')+'"><a href="abre_anexo.php?m='+post.idPost+'&amp;a='+post.anexos[i].id+'"><span class="icon">&nbsp</span> '+post.anexos[i].nome+'</a></li>';
 			}
 			anexos += '</ul>';
 		}
@@ -336,7 +336,7 @@ var postDinamico = {
 					<input type=\"hidden\" name=\"idTurma\" value=\""+turma+"\">\
 					<input type=\"hidden\" name=\"mensagemRespondida\" value=\""+post.idPost+"\">\
 					<textarea class=\"msg_dimensao\" rows=\"10\" name=\"msg_conteudo\" id=\"msg_txt_"+post.idPost+"\"></textarea>\
-					Incluir anexo: <input type=\"file\" name=\"arquivo\">\
+					"+(post.podeAnexar ? "Incluir anexo: <input type=\"file\" name=\"arquivo\">" : "")+"\
 					<div class=\"bts_msg\" align=\"right\">\
 					<button type=\"submit\" class=\"responder\">Responder</button>\
 					<input type=\"image\" src=\"../../images/botoes/bt_cancelar_pq.png\" onclick=\"cancelaResposta("+post.idPost+")\"/>\

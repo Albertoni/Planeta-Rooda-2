@@ -36,6 +36,7 @@
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
+<link type="text/css" rel="stylesheet" href="../../fileicons.css" />
 </head>
 
 <body onload="atualiza('ajusta()');inicia();">

@@ -17,6 +17,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		<title>Planeta ROODA 2.0</title>
 		<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 		<link type="text/css" rel="stylesheet" href="biblioteca2.css" />
+		<link type="text/css" rel="stylesheet" href="../../fileicons.css" />
 	</head>
 	<body onload="BIBLIOTECA.init();">
 		<div id="topo">

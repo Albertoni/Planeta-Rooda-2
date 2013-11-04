@@ -149,6 +149,8 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$podeEditar = (bool) $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
 		$podeDeletar = (bool) $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
 		$podeResponder = (bool) $user->podeAcessar($permissoes['forum_responderTopico'], $turma);
+		$podeAnexar = (bool) $user->podeAcessar($permissoes['forum_enviarAnexos'], $turma);
+		$podeDeletarAnexo = (bool) $user->podeAcessar($permissoes['forum_excluirAnexos'], $turma);
 		$anexosJson = array();
 		foreach ($this->anexos as $anexo) {
 			$anexosJson[] = $anexo->getAssoc();
@@ -164,6 +166,8 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 			'podeEditar' => $podeEditar,
 			'podeDeletar' => $podeDeletar,
 			'podeResponder' => $podeResponder,
+			'podeAnexar' => $podeAnexar,
+			'podeDeletarAnexo' => $podeDeletarAnexo,
 			'anexos' => $anexosJson
 			);
 

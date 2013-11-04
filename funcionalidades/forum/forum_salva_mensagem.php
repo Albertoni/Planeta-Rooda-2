@@ -17,8 +17,8 @@ $idTurma	= (int) $_POST['idTurma'];
 $conteudo	= $_POST['msg_conteudo'];
 $idMensagemRespondida = (int) $_POST['mensagemRespondida'];
 
-$permissoes = checa_permissoes(TIPOFORUM, $idTurma);
-if($permissoes === false){
+$perm = checa_permissoes(TIPOFORUM, $idTurma);
+if($perm === false){
 	die('{"erro":"Funcionalidade desabilitada para a sua turma."}');
 }
 if (!usuarioPertenceTurma($user,$idTurma)) {
@@ -26,7 +26,7 @@ if (!usuarioPertenceTurma($user,$idTurma)) {
 }
 
 if($idMensagem != -1){ // editando
-	if($user->podeAcessar($perm['forum_editarResposta'], $turma)){
+	if($user->podeAcessar($perm['forum_editarResposta'], $idTurma)){
 		$mensagem = new mensagem($idMensagem);
 		$mensagem->setTexto($conteudo);
 		$mensagem->salvar();
@@ -34,7 +34,7 @@ if($idMensagem != -1){ // editando
 		die('{"erro":"Voc&ecirc; n&atilde;o pode editar mensagens nesta turma."}');
 	}
 }else{ // criando
-	if($user->podeAcessar($perm['forum_responderTopico'], $turma)){
+	if($user->podeAcessar($perm['forum_responderTopico'], $idTurma)){
 		$mensagem = new mensagem(0, $idTopico, $_SESSION['SS_usuario_id'], $conteudo, $idMensagemRespondida);
 		$mensagem->salvar();
 	}else{
