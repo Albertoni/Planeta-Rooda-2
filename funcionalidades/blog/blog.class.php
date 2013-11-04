@@ -287,6 +287,7 @@ class Blog {
 	var $num_paginas = 0;
 	var $existe = 0;
 	var $tags = array();
+	var $turma = 0;
 	
 	function Blog($id, $turma){
 		global $tabela_blogs;
@@ -300,11 +301,13 @@ class Blog {
 		}
 
 		if(!$q->itens){// Não tem blog, precisa criar
-			die("preciso resolver o problema de criar blog");
-			if($q->erro != ""){
-				die("Erro ao criar este blog. Informações técnicas: Erro na inserção dos dados no construtor da classe blog.");
-			}else{
-				$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'"); // eu sei, perdão, é terrivel mas é a maneira mais rápida e fácil de dar manutenção no momento
+			if($id === "meu_blog"){
+				$this->setTitle("Meu Blog");
+				$this->setOwnersIds(array($userId));
+				$this->setTipo(1);
+				$this->setTurma($turma);
+
+				$this->salvarBlog();
 			}
 		}else{
 			$this->setExiste(1);
@@ -345,28 +348,17 @@ class Blog {
 		return($dados);
 	}
 
-	function setExiste($existe) {
-		$this->existe = $existe;
-	}
+	function setExiste($existe)			{$this->existe = $existe;}
+	function setId($id)					{$this->id = $id;}
+	function setTitle($title)			{$this->title = $title;}
+	function setTipo($tipo)				{$this->tipo = $tipo;}
+	function setSize($size)				{$this->size = $size;}
+	function setTurma($turma)			{$this->turma = $turma;}
+	function setNumPaginas()			{$this->num_paginas = ceil($this->getSize()/$this->paginacao);}
+	function setOwnersIds($owners_ids)	{$this->ownersIds = $owners_ids;}
+	function setPaginacao($paginacao)	{$this->paginacao = $paginacao;}
 
-	function setId($id) {
-		$this->id = $id;
-	}
-
-	function setTitle($title) {
-		$this->title = $title;
-	}
-
-	function setTipo($tipo) {
-		$this->tipo = $tipo;
-	}
-
-	function setOwnersIds($owners_ids) {
-		$this->ownersIds = $owners_ids;
-
-	}
-
-	function setOwners() {
+	function setOwners(){
 		foreach($this->ownersIds as $owner_id) {
 			$id = (int)$owner_id;
 			$aux_owner = new Usuario();
@@ -377,65 +369,24 @@ class Blog {
 	
 	function setPosts() {
 		global $tabela_posts;
-		
-		//echo($tabela_blogs . "  " . $id . "  " . $BD_host1."  ".$BD_base1."  ".$BD_user1."  ".$BD_pass1);
 		$consulta = new conexao();
 		$consulta->solicitar("select * from $tabela_posts where BlogId = $this->id ORDER BY Id DESC"); // Ordenando por ID, pra ficar na ordem de criação.
-		/*foreach($consulta->itens as $p) // Does not work, larga warning e não itera por ter um só ou 0 resultados.
-			$this->posts[] = new Post($p['Id'], $p['BlogId'], $p['UserId'], $p['Title'], $p['Text'], $p['IsPublic'], $p['Date']);*/
 		for($i=0 ; $i<count($consulta->itens);$i++) { // Isso funciona pra 0 resultados. I hope.
 			$this->posts[] = new Post($consulta->resultado['Id'], $consulta->resultado['BlogId'], $consulta->resultado['UserId'], $consulta->resultado['Title'], $consulta->resultado['Text'], $consulta->resultado['IsPublic'], $consulta->resultado['Date']);
 			$consulta->proximo();
 		}
 	}
 
-	function setSize($size) {
-		$this->size = $size;
-	}
-
-	function setPaginacao($paginacao) {
-		$this->paginacao = $paginacao;
-	}
-
-	function setNumPaginas() {
-		$this->num_paginas = ceil($this->getSize()/$this->paginacao);	
-	}
-
-	function getTipo() {
-		return $this->tipo;
-	}
-
-	function getOwnersIds() {
-		return $this->ownersIds;
-	}
-
-	function getExiste() {
-		return $this->existe;
-	}
-
-	function getId() {
-		return $this->id;
-	}
-
-	function getTitle() {
-		return $this->title;
-	}
-
-	function getSize() {
-		return $this->size;
-	}
-
-	function getOwners() {
-		return $this->owners;
-	}
-
-	function getPaginacao() {
-		return $this->paginacao;
-	}
-
-	function getNumPaginas() {
-		return $this->num_paginas;
-	}
+	function getTipo()		{return $this->tipo;}
+	function getOwnersIds()	{return $this->ownersIds;}
+	function getExiste()	{return $this->existe;}
+	function getId()		{return $this->id;}
+	function getTitle()		{return $this->title;}
+	function getTurma()		{return $this->turma;}
+	function getSize()		{return $this->size;}
+	function getOwners()	{return $this->owners;}
+	function getPaginacao()	{return $this->paginacao;}
+	function getNumPaginas(){return $this->num_paginas;}
 
 	function mostraPaginacao($post_ini) {
 		if($post_ini>0) {
@@ -488,6 +439,16 @@ class Blog {
 		}
 		return false; // caso nenhuma tenha dado true...
 	}
+
+	function salvarBlog(){
+		$q = new conexao();
+		if($this->existe === 0){ // não foi aberto nem salvo anteriormente
+			$q->solicitar("INSERT INTO blog_blogs (Id, Title, Tipo, OwnersIds, Turma)
+				VALUES (DEFAULT, '$this->title', $this->tipo, '".implode(';',$this->getOwnersIds())."', $this->turma)");
+		}else{
+			$q->solicitar("UPDATE blog_blogs SET Title='$this->title', Tipo='$this->tipo', OwnersIds='".implode(';',$this->getOwnersIds())."' WHERE Id = $this->id");
+		}
+	}
 }
 }
 
@@ -495,10 +456,6 @@ if (class_exists('lista_posts') != true){ // conserta bugs raros mas incomodativ
 class lista_posts{
 	var $lista = array();
 	var $tamanho_lista = 0;
-	
-	/*function lista_posts($id, $tabela){
-		return __construct($id, $tabela); // Caso os caras estejam usando PHP 5.2 ou alguma coisa assim, isso dá backwards compatibility
-	}*/
 	
 	function lista_posts($id, $tabela_posts){
 		$consulta = new conexao();
