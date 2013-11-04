@@ -146,8 +146,8 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	function toJson($resposta = 0){
 		global $user; global $permissoes; global $turma;
 
-		$podeEditar = $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
-		$podeDeletar = $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
+		$podeEditar = (bool) $user->podeAcessar($permissoes['forum_editarResposta'], $turma);
+		$podeDeletar = (bool) $user->podeAcessar($permissoes['forum_excluirResposta'], $turma);
 		$anexosJson = array();
 		foreach ($this->anexos as $anexo) {
 			$anexosJson[] = $anexo->getAssoc();
