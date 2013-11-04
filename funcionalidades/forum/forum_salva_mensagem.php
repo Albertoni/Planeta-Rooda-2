@@ -30,11 +30,15 @@ if($idMensagem != -1){ // editando
 		$mensagem = new mensagem($idMensagem);
 		$mensagem->setTexto($conteudo);
 		$mensagem->salvar();
+	}else{
+		die('{"erro":"Voc&ecirc; n&atilde;o pode editar mensagens nesta turma."}');
 	}
 }else{ // criando
 	if($user->podeAcessar($perm['forum_responderTopico'], $turma)){
 		$mensagem = new mensagem(0, $idTopico, $_SESSION['SS_usuario_id'], $conteudo, $idMensagemRespondida);
 		$mensagem->salvar();
+	}else{
+		die('{"erro":"Voc&ecirc; n&atilde;o responder mensagens nesta turma."}');
 	}
 }
 $mensagemResposta = new mensagem();
