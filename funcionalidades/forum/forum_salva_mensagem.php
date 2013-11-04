@@ -26,12 +26,16 @@ if (!usuarioPertenceTurma($user,$idTurma)) {
 }
 
 if($idMensagem != -1){ // editando
-	$mensagem = new mensagem($idMensagem);
-	$mensagem->setTexto($conteudo);
-	$mensagem->salvar();
+	if($user->podeAcessar($perm['forum_editarResposta'], $turma)){
+		$mensagem = new mensagem($idMensagem);
+		$mensagem->setTexto($conteudo);
+		$mensagem->salvar();
+	}
 }else{ // criando
-	$mensagem = new mensagem(0, $idTopico, $_SESSION['SS_usuario_id'], $conteudo, $idMensagemRespondida);
-	$mensagem->salvar();
+	if($user->podeAcessar($perm['forum_responderTopico'], $turma)){
+		$mensagem = new mensagem(0, $idTopico, $_SESSION['SS_usuario_id'], $conteudo, $idMensagemRespondida);
+		$mensagem->salvar();
+	}
 }
 $mensagemResposta = new mensagem();
 $mensagemResposta->carregar($mensagem->getId());
