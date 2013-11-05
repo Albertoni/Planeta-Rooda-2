@@ -9,15 +9,23 @@ require_once("../../arquivo.class.php");
 class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $id = 0; function getId(){return $this->id;}
 	private $idTopico = 0; function getIdTopico(){return $this->idTopico;}
-	private $idUsuario = 0;
-	private $idMensagemRespondida = 0;
+	private $idUsuario = 0; function getIdUsuario(){return $this->idUsuario;}
+	private $idMensagemRespondida = 0; function getIdMensagemRespondida(){return $this->idMensagemRespondida;}
 	private $texto = ''; function getTexto(){return $this->texto;}
 	private $data = 0;
 	private $salvo = false;
 	private $nomeUsuario = '';
-	private $anexos = array();
-	
-	function __construct($id = 0, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
+	private $anexos = array(); function getAnexos(){return $this->anexos;}
+
+function getIdTurma(){
+	$bd = new conexao();
+	$idTopicoSafe = (int) $this->idTopico;
+	$bd->solicitar(
+		"SELECT idTurma FROM ForumTopico WHERE idTopico = $idTopicoSafe"
+	);
+	return (int) $bd->resultado['idTurma'];
+}
+	function __construct($id = NULL, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
 		if($id != NULL){
 			$this->carregar($id);
 		}else{
@@ -154,7 +162,6 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 		$anexosJson = array();
 		foreach ($this->anexos as $anexo) {
 			$anexosJson[] = $anexo->getAssoc();
-			$anexo->getAssoc();
 		}
 		$arr = array(
 			'idPost' => $this->id,
@@ -231,7 +238,6 @@ class topico{
 	private $nomeUsuario;function getNomeUsuario(){return $this->nomeUsuario;}
 	private $mensagens;	function getMensagens(){return $this->mensagens;}
 	private $salvo = false;
-
 function setIdTopico($arg){$this->idTopico = $arg;}
 function setIdTurma($arg){$this->idTurma = $arg;}
 function setIdUsuario($arg){$this->idUsuario = $arg;}

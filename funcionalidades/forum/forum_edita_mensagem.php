@@ -13,28 +13,28 @@
 
 	$idTopico = -1;
 	
-	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
-	
+	//$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
+	$idMensagem =  (isset($_GET['idMensagem']) and is_numeric($_GET['idMensagem'])) ? (int) $_GET['idMensagem']:'-1';
+	$mensagem = new mensagem($idMensagem);
+	$turma = $mensagem->getIdTurma();
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
 	if($user->podeAcessar($perm['forum_responderTopico'], $turma)){
-		$idMensagem =  (isset($_GET['idMensagem']) and is_numeric($_GET['idMensagem'])) ? $_GET['idMensagem']:'-1';
 		$editar = ($idMensagem != '-1');
 		$titulo = '';
 		$texto = '';
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarResposta'], $turma)){
-				$q = new conexao();
-
 				// dados do topico e primeira mensagem
-				$q->solicitar("SELECT * FROM ForumMensagem
-					WHERE idMensagem = $idMensagem");
 
-				$texto = str_replace("<br>", "\n", $q->resultado['texto']);
-				$idMensagem = $q->resultado['idMensagem'];
-				$idTopico = $q->resultado['idTopico'];
-				$mensagemRespondida = $q->resultado['idMensagemRespondida'];
+				$texto = str_replace("<br>", "\n", $mensagem->getTexto());
+				$idMensagem = $mensagem->getId();
+				$idTopico = $mensagem->getIdTopico();
+				$mensagemRespondida = $mensagem->getIdMensagemRespondida();
+				$anexos = $mensagem->getAnexos();
+				$podeDeletarAnexo = (bool) $user->podeAcessar($perm['forum_excluirAnexos'], $turma);
+				//if ($user0->podeAcessar($perm['forum_enviarAnexos']))
 
 				$argumentosJS = "$turma,$idMensagem,$idTopico";
 			}else{
@@ -54,6 +54,7 @@
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="forum.css" />
+<link type="text/css" rel="stylesheet" href="../../fileicons.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
@@ -110,31 +111,55 @@ else // senão, tá criando.
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
 	
-	<form name="criatop" action="forum_salva_mensagem.php" method="post">
+	<form name="criatop" action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
 		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>)" />
 	</div>
 	
 	<div id="criar_topico" class="bloco">
-<?php
-	if ($editar){
-		echo "<h1>EDITAR MENSAGEM</h1>";
-	}else{
-		echo "<h1>CRIAR MENSAGEM</h1>";
-}?>
-			<ul class="sem_estilo">
-				Mensagem:
-					<textarea name="msg_conteudo" rows="15" class="msg_dimensao" id="textarea"><?php echo $texto?></textarea>
-			</ul>
-			<input type="hidden" name="idTopico" value="<?=$idTopico?>">
-			<input type="hidden" name="turma" value="<?php echo $turma?>" id="idTurma">
-			<input type="hidden" name="mensagemRespondida" value="<?php echo $mensagemRespondida?>">
-<?php
-	if($editar){
-		echo "			<input type=\"hidden\" name=\"idMensagem\" value=\"$idMensagem\">";
-	}
-?>
+		<?php
+		if ($editar){
+			echo "<h1>EDITAR MENSAGEM</h1>";
+		}else{
+			echo "<h1>CRIAR MENSAGEM</h1>";
+		}
+		?>
+		<ul class="sem_estilo">
+			<li>Mensagem:
+				<textarea name="msg_conteudo" rows="15" class="msg_dimensao" id="textarea"><?php echo $texto?></textarea></li>
+			<li>
+				<ul class="anexos">
+					<?php
+					if (count($anexos) > 0) {
+						foreach ($anexos as $a) {
+							$classes = explode("/", $a->getTipo());
+							for ($i=0 ; $i < count($classes) ; $i++) {
+								$classes[$i] = str_replace(".", "-", $classes[$i]);
+							}
+							$classes[] = "arquivo";
+							echo "
+							<li class=\"".implode(" ", $classes)."\">
+								<a href=\"abre_anexo.php?m={$idMensagem}&amp;a={$a->getId()}\"><span class=\"icon\">&nbsp;</span> {$a->getNome()}</a>"
+								.($podeDeletarAnexo ? " &nbsp;
+								<label><input type=\"checkbox\" name=\"deletarAnexo\" value=\"{$a->getId()}\"> remover</label>" 
+								: "")."
+							</li>";
+						}
+					} else {
+						echo "Incluir anexo: <input type=\"file\" name=\"arquivo\">";
+					}
+					?>
+				</ul>
+			</li>
+		</ul>
+		<input type="hidden" name="idTopico" value="<?=$idTopico?>">
+		<input type="hidden" name="turma" value="<?php echo $turma?>" id="idTurma">
+		<?php
+		if($editar){
+			echo "<input type=\"hidden\" name=\"idMensagem\" value=\"$idMensagem\">";
+		}
+		?>
 
 	</div><!-- fim da div criar_topicos -->
 

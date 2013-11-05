@@ -15,7 +15,7 @@ $idMensagem	= ((isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])
 $idTopico	= (int) $_POST['idTopico'];
 $idTurma	= (int) $_POST['idTurma'];
 $conteudo	= $_POST['msg_conteudo'];
-$idMensagemRespondida = (int) $_POST['mensagemRespondida'];
+$idMensagemRespondida = isset($_POST['mensagemRespondida']) (int) $_POST['mensagemRespondida'];
 
 $perm = checa_permissoes(TIPOFORUM, $idTurma);
 if($perm === false){
@@ -26,8 +26,14 @@ if (!usuarioPertenceTurma($user,$idTurma)) {
 }
 
 if($idMensagem != -1){ // editando
+	$mensagem = new mensagem($idMensagem);
+	$idTurma = $mensagem->getIdTurma();
 	if($user->podeAcessar($perm['forum_editarResposta'], $idTurma)){
-		$mensagem = new mensagem($idMensagem);
+		if($user->podeAcessar($perm['forum_excluirAnexos'], $turma)){
+			print_r($_POST['deletarAnexo']);
+		} else {
+			echo "nao pode";
+		}
 		$mensagem->setTexto($conteudo);
 		$mensagem->salvar();
 	}else{

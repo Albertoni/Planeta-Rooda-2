@@ -16,7 +16,7 @@ class Material
 	private $autor        = "";   // Não confundir com as duas abaixo, que são quem deu upload. Esse é o autor do material.
 	private $codUsuario   = false;   // Cod do usuário
 	private $usuario      = NULL; // Obj do usuário
-	private $tipo         = "";
+	private $tipo         = ""; // mimetype
 	private $arquivo      = NULL; // guarda o objeto arquivo (se for arquivo)
 	private $link         = NULL; // quarda o objeto link (se for link)
 	private $data         = 0; // Unix timestamp

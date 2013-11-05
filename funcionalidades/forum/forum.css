@@ -143,6 +143,10 @@ h1{
 .titulo_topico{
 	text-transform: uppercase;
 }
+.anexos .arquivo * {
+	vertical-align: middle;
+	text-decoration: none;
+}
 .anexos .arquivo .icon {
 	display: inline-block;
 	width: 22px;
