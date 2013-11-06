@@ -275,9 +275,9 @@ function setMensagem($indice, $mensagem){
 						WHERE idTopico = $idSafe");
 
 		if($q->erro == ""){
-			$this->idTopico	= $q->resultado['idTopico'];
-			$this->idTurma	= $q->resultado['idTurma'];
-			$this->idUsuario= $q->resultado['idUsuario'];
+			$this->idTopico	= (int) $q->resultado['idTopico'];
+			$this->idTurma	= (int) $q->resultado['idTurma'];
+			$this->idUsuario= (int) $q->resultado['idUsuario'];
 			$this->titulo	= $q->resultado['titulo'];
 			$this->date		= $q->resultado['data'];
 			$this->nomeUsuario = $q->resultado['usuario_nome'];
