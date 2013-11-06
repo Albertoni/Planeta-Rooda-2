@@ -10,10 +10,10 @@ if($user === false){
 	die("Voce tem que estar logado para acessar essa pagina. Favor entrar novamente no sistema.");
 }
 
-$idMensagem	= ((isset($_POST['idMensagem']) and is_numeric($_POST['idMensagem'])) ? $_POST['idMensagem'] : -1);
-
-$idTopico	= (int) $_POST['idTopico'];
-$idTurma	= (int) $_POST['idTurma'];
+$idMensagem	= isset($_POST['idMensagem']) ? (int) $_POST['idMensagem'] : 0;
+$mensagem = new mensagem($idMensagem);
+$idTopico	= $mensagem->getIdTopico();
+$idTurma	= $mensagem->getIdTurma();
 $conteudo	= $_POST['msg_conteudo'];
 $idMensagemRespondida = isset($_POST['mensagemRespondida']) (int) $_POST['mensagemRespondida'];
 
