@@ -9,7 +9,7 @@ class Arquivo {
 	private $titulo = "";
 	private $nome = '';      // nome do arquivo. Deve conter a extensao também
 	private $tipo = ""; // mime-type
-	private $tamanho;
+	private $tamanho = 0;
 	private $conteudo;
 	private $md5;
 	private $data;
@@ -77,7 +77,7 @@ class Arquivo {
 		$this->titulo    = $resultadoBd['titulo'];     // titulo do arquivo
 		$this->nome      = $resultadoBd['nome'];
 		$this->tipo      = $resultadoBd['tipo'];
-		$this->tamanho   = $resultadoBd['tamanho'];
+		$this->tamanho   = (int) $resultadoBd['tamanho'];
 		$this->data      = $resultadoBd['data'];
 		$this->idUsuario = (int) $resultadoBd['idUsuario'];
 	}
