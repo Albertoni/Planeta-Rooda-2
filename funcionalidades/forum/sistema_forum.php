@@ -274,7 +274,7 @@ function setMensagem($indice, $mensagem){
 						INNER JOIN usuarios ON usuarios.usuario_id = ForumTopico.idUsuario
 						WHERE idTopico = $idSafe");
 
-		if($q->erro == ""){
+		if($q->erro == "" && (bool) $q->registros){
 			$this->idTopico	= (int) $q->resultado['idTopico'];
 			$this->idTurma	= (int) $q->resultado['idTurma'];
 			$this->idUsuario= (int) $q->resultado['idUsuario'];
