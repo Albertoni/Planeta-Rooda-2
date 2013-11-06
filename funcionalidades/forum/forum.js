@@ -24,6 +24,9 @@ var amostra_topico = '';
 var edicao_fid = 0;
 var edicao_tid = 0;
 
+var turma = document.getElementById("idTurma").value;
+
+
 $(document).ready(function(){
 	var cor_original = $(".bloco").css("border-top-color");
 	var fala_original = document.getElementById("balao").innerHTML;
@@ -133,6 +136,28 @@ function editarTopico(turma,idTopico){
 function editarMensagem (turma,idMensagem) {
 	document.location = "forum_edita_mensagem.php?turma="+turma+"&idMensagem="+idMensagem;
 }
+
+var confirmaEditarMensagem = (function () {
+	function sucesso() {
+		var resposta;
+		var novoPost;
+		console.log(this.responseText);
+		try {
+			resposta = JSON.parse(this.responseText);
+		}
+		catch (e) {
+			console.dir(e);
+		}
+		console.dir(resposta);
+		//document.location = "forum_topico.php?topico="+resposta.idTopico;
+	}
+	function falha() {
+		console.log(this.responseText);
+	}
+	return function (formulario) {
+		AJAXSubmit(formulario, sucesso, falha);
+	}
+}());
 
 function confirmaEditarMensagem(idTurma, idMensagem, idTopico){
 	var parametros = "turma=" + turma + "&idMensagem=" + idMensagem + "&idTopico=" + idTopico + "&msg_conteudo="+ document.getElementById("textarea").value;
@@ -412,5 +437,3 @@ var postDinamico = {
 		}
 	}
 };
-
-var turma = document.getElementById("idTurma").value;

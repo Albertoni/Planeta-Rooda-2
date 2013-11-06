@@ -106,6 +106,14 @@ button.confirmar {
 	height: 38px;
 	width: 129px;
 }
+button.confirmar.grande {
+	background-image: url('images/botoes/bt_confirm.png');
+	display: inline-block;
+	float: right;
+	vertical-align: top;
+	height: 47px;
+	width: 154px;
+}
 textarea {border:solid 1px #74d3ed;}
 textarea:hover {background-color:#74d3ed}
 

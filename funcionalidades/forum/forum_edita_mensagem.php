@@ -113,7 +113,7 @@ else // senão, tá criando.
 	<form onsubmit="confirmaEditarMensagem(this); event.preventDefault ? event.preventDefault() : event.returnValue = false; return false;" name="criatop" action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
-		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>)" />
+		<button type="submit" class="confirmar grande" align="right">Enviar</button>
 	</div>
 	
 	<div id="criar_topico" class="bloco">
@@ -164,7 +164,8 @@ else // senão, tá criando.
 
 	<div class="bts_baixo">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
-		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>);" />
+		<button type="submit" class="confirmar grande" align="right">Enviar</button>
+		<!--<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>);" />-->
 	</div>
 	
 	</form>
