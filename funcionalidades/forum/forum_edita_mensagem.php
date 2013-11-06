@@ -110,8 +110,7 @@ else // senão, tá criando.
 			conteudo
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
-	
-	<form name="criatop" action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post">
+	<form onsubmit="confirmaEditarMensagem(this); event.preventDefault ? event.preventDefault() : event.returnValue = false; return false;" name="criatop" action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
 		<img align="right" src="../../images/botoes/bt_confirm.png" style="cursor:pointer" onclick="confirmaEditarMensagem(<?=$argumentosJS?>)" />
