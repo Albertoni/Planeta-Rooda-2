@@ -135,7 +135,7 @@ class Arquivo {
 			$campos[]  = 'tipo';
 			$valores[] = $bd->sanitizaString($this->tipo);
 			$campos[]  = 'tamanho';
-			$valores[] = $bd->sanitizaString($this->tamanho);
+			$valores[] = (int) $this->tamanho);
 			$campos[]  = 'arquivo';
 			$valores[] = $bd->sanitizaString($this->conteudo);
 			$campos[]  = 'md5';
@@ -182,7 +182,7 @@ class Arquivo {
 			$campos[]  = 'tipo';
 			$valores[] = $bd->sanitizaString($this->tipo);
 			$campos[]  = 'tamanho';
-			$valores[] = $bd->sanitizaString($this->tamanho);
+			$valores[] = (int) $this->tamanho;
 			$campos[]  = 'arquivo';
 			$valores[] = $bd->sanitizaString($this->conteudo);
 			$campos[]  = 'md5';
