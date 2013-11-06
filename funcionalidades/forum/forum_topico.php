@@ -12,9 +12,11 @@
 		die("Voce tem que estar logado para acessar essa pagina.");
 	}
 	
-	$idTopico = (isset($_GET['topico']) and is_numeric($_GET['topico']))? $_GET['topico'] : die("Favor voltar e tentar novamente.<br>A id do topico nao foi passada corretamente.");
+	$idTopico = isset($_GET['topico']) ? (int) $_GET['topico'] : 0;
+	if (!$idTopico) die("Favor voltar e tentar novamente.<br>A id do topico nao foi passada corretamente.");
+	$topico = new visualizacaoTopico($idTopico);
 	$ordem = (isset($_GET['ordem'])   and is_numeric($_GET['ordem'])) ? $_GET['ordem'] : 1;
-	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma']))? $_GET['turma'] : die("Favor voltar e tentar novamente.<br>A id da turma nao foi passada corretamente.");
+	$turma = $topico->getIdTurma();
 	
 	$link_voltar = "forum.php?turma=$turma";
 	
