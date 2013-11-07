@@ -115,6 +115,22 @@ function getIdTurma(){
 			throw new Exception("Anexo inválido.");
 		}
 	}
+	function removeAnexo($anexo) {
+		if (is_object($anexo)) {
+			if (get_class($anexo) === "Arquivo") {
+				$anexo = $anexo->getId();
+			}
+		}
+		$idAnexo = (int) $anexo;
+		$bd = new conexao();
+		$bd->solicitar("DELETE FROM ForumMensagemAnexos WHERE idMensagem = {$this->id} AND idArquivo = {$idAnexo}");
+		foreach ($this->anexos as $index => $a) {
+			if ($a->getId() === $idAnexo) {
+				unset($this->anexos[$index]);
+				break;
+			}
+		}
+	}
 	function carregar($id){
 		$q = new conexao();
 

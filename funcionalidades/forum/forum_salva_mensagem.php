@@ -29,10 +29,15 @@ if($idMensagem != -1){ // editando
 	$mensagem = new mensagem($idMensagem);
 	$idTurma = $mensagem->getIdTurma();
 	if($user->podeAcessar($perm['forum_editarResposta'], $idTurma)){
+		// pode remover anexos?
 		if($user->podeAcessar($perm['forum_excluirAnexos'], $idTurma)){
-			print_r($_POST['deletarAnexo']);
-		} else {
-			echo "nao pode";
+			// tem anexos marcados para remoção?
+			if(isset($_POST['deletarAnexo'])) {
+				foreach ($_POST['deletarAnexo'] as $idAnexo) {
+					$idAnexo = (int) $idAnexo;
+					$mensagem->removeAnexo($idAnexo);
+				}
+			}
 		}
 		$mensagem->setTexto($conteudo);
 		$mensagem->salvar();
