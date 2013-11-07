@@ -20,11 +20,10 @@ class Arquivo {
 	private $consulta;
 
 	// tabelas que referenciam arquivos e condicao de consulta
-	static $referecias_bd;
-	//  = array(
-	// 	"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
-	// ,	"ForumMensagemAnexos" => "WHERE idArquivo = "
-	// );
+	private static $referecias_bd = array(
+		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
+	,	"ForumMensagemAnexos" => "WHERE idArquivo = "
+	);
 	public function __construct($id = false)
 	{
 		if ($id === false)
@@ -382,6 +381,47 @@ class Arquivo {
 		}
 		$this->limpar();
 		return false;
+	}
+}
+
+class Imagem extends Arquivo {
+	private static $supported_mime_types = array(
+		"image/jpeg"
+	,	"image/png"
+	,	"image/gif"
+	);
+	private $imagem;
+	private $largura;
+	private $altura;
+	function __construct($id = false) {
+		parent:__construct($id);
+		if (false === array_search($this->tipo, self::$supported_mime_types)) {
+			throw new Exception("Arquivo não é um tipo de imagem suportado.");
+		}
+		$this->imagem = imagecreatefromstring($this->conteudo);
+		$this->largura = imagesx($this->image);
+		$this->altura = imagesy($this->image);
+	}
+	function miniatura($max_largura, $max_altura) {
+		$nova_largura = $this->largura;
+		$nova_altura = $this->altura;
+		if ($this->largura > $max_largura || $this->altura > $max_altura) {
+			if (($this->largura / $max_largura) > ($this->altura / $max_altura)) {
+				$ratio = $max_largura/$this->largura;
+				$nova_largura = $max_largura;
+				$nova_altura = round($this->altura * $ratio);
+			} else {
+				$ratio = $max_altura/$this->altura;
+				$nova_largura = round($this->largura * $ratio);
+				$nova_altura = $max_altura;
+			}
+		}
+		$nova_imagem = imagecreatetruecolor($nova_largura, $nova_altura);
+		imagecopyresized($nova_imagem, $this->imagem, 0, 0, 0, 0, $nova_largura, $nova_altura, $this->altura, $this->largura);
+		imagetruecolortopalette($nova_imagem, false, 255);
+		header('Content-type: image/png');
+		imagepng($nova_imagem);
+		imagedestroy($nova_imagem); // free(ram);
 	}
 }
 /* /
