@@ -17,14 +17,7 @@ class mensagem { //estrutura para o item post do forum, chamado de mensagem
 	private $nomeUsuario = '';
 	private $anexos = array(); function getAnexos(){return $this->anexos;}
 
-function getIdTurma(){
-	$bd = new conexao();
-	$idTopicoSafe = (int) $this->idTopico;
-	$bd->solicitar(
-		"SELECT idTurma FROM ForumTopico WHERE idTopico = $idTopicoSafe"
-	);
-	return (int) $bd->resultado['idTurma'];
-}
+	
 	function __construct($id = NULL, $idTopico = NULL, $idUsuario = 0, $texto = '', $idMensagemRespondida = NULL){
 		if($id != NULL){
 			$this->carregar($id);
@@ -35,7 +28,17 @@ function getIdTurma(){
 			$this->texto = $texto;
 		}
 	}
-
+	function getIdTurma(){
+		$bd = new conexao();
+		$idTopicoSafe = (int) $this->idTopico;
+		$bd->solicitar(
+			"SELECT idTurma FROM ForumTopico WHERE idTopico = $idTopicoSafe"
+		);
+		if ($bd->erro !== '') {
+			throw new Exception("BD: " . $bd->erro);
+		}
+		return (int) $bd->resultado['idTurma'];
+	}
 	function loadFromSqlArray($a){
 		$this->id = (int) $a['idMensagem'];
 		$this->idTopico = (int) $a['idTopico'];
@@ -91,46 +94,6 @@ function getIdTurma(){
 			die("Erro na salvar da mensagem1 - $q->erro - $query");
 		}
 	}
-	function addAnexo($arquivo) {
-		//if (is_numeric($arquivo)) {
-		//	$arquivo = new Arquivo((int) $arquivo);
-		//}
-		if (is_object($arquivo) AND get_class($arquivo) === 'Arquivo') {
-			if ($arquivo->getId() > 0) {
-				if ($this->id > 0) {
-					$bd = new conexao();
-					$bd->solicitar("INSERT INTO ForumMensagemAnexos (idMensagem, idArquivo) 
-									VALUES ({$this->id}, {$arquivo->getId()})");
-					if ($bd->erro != '') {
-						throw new Exception("Erro ao inserir anexo (banco de dados) : {$bd->erro}");
-					}
-				}
-				$this->anexos[] = $arquivo;
-			}
-			else {
-				throw new Exception("Anexo não encontrado.");
-			}
-		}
-		else {
-			throw new Exception("Anexo inválido.");
-		}
-	}
-	function removeAnexo($anexo) {
-		if (is_object($anexo)) {
-			if (get_class($anexo) === "Arquivo") {
-				$anexo = $anexo->getId();
-			}
-		}
-		$idAnexo = (int) $anexo;
-		$bd = new conexao();
-		$bd->solicitar("DELETE FROM ForumMensagemAnexos WHERE idMensagem = {$this->id} AND idArquivo = {$idAnexo}");
-		foreach ($this->anexos as $index => $a) {
-			if ($a->getId() === $idAnexo) {
-				unset($this->anexos[$index]);
-				break;
-			}
-		}
-	}
 	function carregar($id){
 		$q = new conexao();
 
@@ -164,8 +127,53 @@ function getIdTurma(){
 				$q->proximo();
 			}
 		} else {
-			die("Erro ao carregar anexos da mensagem");
+			throw new Exception("BD: " . $q->erro);
 		}
+	}
+	function addAnexo($arquivo) {
+		//if (is_numeric($arquivo)) {
+		//	$arquivo = new Arquivo((int) $arquivo);
+		//}
+		if (is_object($arquivo) AND get_class($arquivo) === 'Arquivo') {
+			if ($arquivo->getId() > 0) {
+				if ($this->id > 0) {
+					$bd = new conexao();
+					$bd->solicitar("INSERT INTO ForumMensagemAnexos (idMensagem, idArquivo) 
+									VALUES ({$this->id}, {$arquivo->getId()})");
+					if ($bd->erro != '') {
+						throw new Exception("Erro ao inserir anexo (banco de dados) : {$bd->erro}");
+					}
+				}
+				$this->anexos[] = $arquivo;
+			}
+			else {
+				throw new Exception("Anexo não encontrado.");
+			}
+		}
+		else {
+			throw new Exception("Anexo inválido.");
+		}
+	}
+	function removeAnexo($anexo) {
+		if (is_object($anexo)) {
+			if (get_class($anexo) === "Arquivo") {
+				$anexo = $anexo->getId();
+			}
+		}
+		$idAnexo = (int) $anexo;
+		$bd = new conexao();
+		foreach ($this->anexos as $index => $a) {
+			if ($a->getId() === $idAnexo) {
+				$bd->solicitar(
+					"DELETE FROM ForumMensagemAnexos 
+					WHERE idMensagem = {$this->id} AND idArquivo = {$idAnexo}"
+				);
+				unset($this->anexos[$index]);
+				$a->excluir(); // exclui anexo se ele nao estiver mais sendo usado
+				return true;
+			}
+		}
+		return false;
 	}
 	function toJson($resposta = 0){
 		global $user; global $permissoes; global $turma;

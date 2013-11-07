@@ -11,11 +11,16 @@ if($user === false){
 }
 
 $idMensagem	= isset($_POST['idMensagem']) ? (int) $_POST['idMensagem'] : 0;
-$mensagem = new mensagem($idMensagem);
+$idMensagemRespondida = isset($_POST['mensagemRespondida']) ? (int) $_POST['mensagemRespondida'] : 0;
+if ($idMensagem !== 0) {
+	$mensagem = new mensagem($idMensagem);
+} else {
+	$mensagem = new mensagem($idMensagemRespondida);
+}
 $idTopico	= $mensagem->getIdTopico();
 $idTurma	= $mensagem->getIdTurma();
+
 $conteudo	= $_POST['msg_conteudo'];
-$idMensagemRespondida = isset($_POST['mensagemRespondida']) ? (int) $_POST['mensagemRespondida'] : 0;
 
 $perm = checa_permissoes(TIPOFORUM, $idTurma);
 if($perm === false){
@@ -25,9 +30,7 @@ if (!usuarioPertenceTurma($user,$idTurma)) {
 	die('{"erro":"Voc&ecirc; n&atilde;o est&aacute; nesta turma."}');
 }
 
-if($idMensagem != -1){ // editando
-	$mensagem = new mensagem($idMensagem);
-	$idTurma = $mensagem->getIdTurma();
+if($idMensagem !== 0){ // editando
 	if($user->podeAcessar($perm['forum_editarResposta'], $idTurma)){
 		// pode remover anexos?
 		if($user->podeAcessar($perm['forum_excluirAnexos'], $idTurma)){
