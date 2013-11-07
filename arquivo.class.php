@@ -19,6 +19,12 @@ class Arquivo {
 
 	private $consulta;
 
+	// tabelas que referenciam arquivos e condicao de consulta
+	static $referecias_bd;
+	//  = array(
+	// 	"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
+	// ,	"ForumMensagemAnexos" => "WHERE idArquivo = "
+	// );
 	public function __construct($id = false)
 	{
 		if ($id === false)
@@ -73,7 +79,7 @@ class Arquivo {
 	{
 		$this->id        = (int) $resultadoBd['id'];
 		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
-		$this->md5  = $resultadoBd['md5']; // conteudo do arquivo
+		$this->md5       = $resultadoBd['md5']; // conteudo do arquivo
 		$this->titulo    = $resultadoBd['titulo'];     // titulo do arquivo
 		$this->nome      = $resultadoBd['nome'];
 		$this->tipo      = $resultadoBd['tipo'];
@@ -102,6 +108,9 @@ class Arquivo {
 	{
 		return (0 !== count($this->erros));
 	}
+	// metodo: getAssoc
+	// Gera array associativo simples com informações do arquivo.
+	// Util para geração JSON.
 	public function getAssoc() {
 		$assoc = array();
 		$assoc['id'] = $this->getId();
@@ -125,9 +134,10 @@ class Arquivo {
 			// novo arquivo
 			$bd = new conexao();
 			// sanitizando dados para o banco de dados
-			$md5 = $bd->sanitizaString($this->md5);
-			$nome = $bd->sanitizaString($this->nome);
+			$md5      = $bd->sanitizaString($this->md5);
+			$nome     = $bd->sanitizaString($this->nome);
 			$uploader = (int) $this->idUsuario;
+
 			$campos[]  = 'titulo';
 			$valores[] = $bd->sanitizaString($this->titulo);
 			$campos[]  = 'nome';
@@ -216,7 +226,6 @@ class Arquivo {
 			return false;
 		}
 	}
-	
 	public function setIdUsuario($id) {
 		$id = (int) $id;
 		if ($id === 0)
@@ -253,49 +262,70 @@ class Arquivo {
 	public function setTitulo($titulo){$this->titulo = trim($titulo);}
 	public function setNome($nome){$this->nome = trim($nome);}
 	public function setTipo($tipo){$this->tipo = trim($tipo);}
-	public function excluir() // exception on error
-	{
-		global $tabela_arquivos;
-		if (!$this->upload && $this->download)
-		{
+	// metodo: sendoUsado
+	// Verifica se o arquivo esta sendo usado por alguma funcionalidade
+	public function sendoUsado() {
+		global $tabela_Materiais;
+		$qtd = 0;
+		$bd = new conexao();
+		// verifica ocorrencias do arquivo na biblioteca
+		//$referecias_bd[] = array("tabela", "WHERE condicao");
+		foreach (self::$referecias_bd as $tabela => $condicao) {
+			$bd->solicitar("SELECT count(1) AS num FROM $tabela $condicao" . (int) $this->id);
+			$qtd += (int) $bd->resultado['num'];
+		}
+		return $qtd;
+	}
+	// metodo: excluir
+	// Exclui arquivo se ele nao estiver sendo usado
+	// retorna true se o arquivo foi excluido
+	// retorna false se o arquivo esta sendo usado
+	public function excluir() {
+		if ($this->sendoUsado()) {
+			return false;
+		}
+		if (!$this->upload && $this->download) {
 			$bd = new conexao();
+			$id = (int) $this->id;
 			$bd->solicitar(
-				"DELETE FROM $tabela_arquivos WHERE arquivo_id = {$this->id}"
+				"DELETE FROM $tabela_arquivos WHERE arquivo_id = $id"
 			);
 			if ($bd->erro !== '')
 			{
 				throw new Exception('BD: ' . $this->consulta->erro, 1);
 			}
 		}
+		$this->limpar();
 		return true;
 	}
-	public function sendoUsado() {
-		global $tabela_Materiais;
-		$qtd = 0;
-		$bd = new conexao();
-		// verifica ocorrencias do arquivo na biblioteca
-		$q[] = <<<SQL
-SELECT count(codMaterial) AS num 
-FROM $tabela_Materiais 
-WHERE refMaterial = {$this->id} AND tipoMaterial LIKE 'a'
-SQL;
-		// verifica ocorrencias do arquivo nas mensagens do forum
-		$q[] = <<<SQL
-SELECT count(idMensagem) AS num
-FROM ForumMensagemAnexos
-WHERE idArquivo = {$this->id}
-SQL;
-		foreach ($q as $query) {
-			$bd->solicitar($query);
-			$qtd += (int) $bd->resultado['num'];
-		}
-		return $qtd;
-	}
-	public function abrirUsuario($usuario)
-	{
+	// metodo: excluir
+	// remove todas as referencias do arquivo e exclui o arquivo.
+	public function excluirTudo() {
 		global $tabela_arquivos;
-		if (get_class($usuario) === "Usuario")
-		{
+		if (!$this->upload && $this->download) {
+			$bd = new conexao();
+			foreach (self::$referecias_bd as $tabela => $condicao) {
+				$bd->solicitar("DELETE FROM $tabela $condicao" . (int) $this->id);
+				if ($bd->erro !== '') {
+					throw new Exception('BD: ' . $bd->erro, 1);
+				}
+			}
+			$bd->solicitar(
+				"DELETE FROM $tabela_arquivos WHERE arquivo_id = {$this->id}"
+			);
+			if ($bd->erro !== '') {
+				throw new Exception('BD: ' . $bd->erro, 1);
+			}
+		}
+		$this->limpar();
+		return true;
+	}
+	// metodo: abrirUsuario
+	// Abre consulta com todos os arquivos do usuario
+	// e carrega o primeiro arquivo encontrado
+	public function abrirUsuario($usuario) {
+		global $tabela_arquivos;
+		if (get_class($usuario) === "Usuario") {
 			$usuario = $usuario->getId();
 		}
 		$this->consulta = new conexao();
@@ -320,6 +350,8 @@ SQL;
 		$this->popular($this->consulta->resultado);
 		return $this->consulta->registros;
 	}
+	// metodo: limpar
+	// Limpa os dados do objeto
 	private function limpar() {
 		$this->id = false;
 		$this->idUsuario = 0;
@@ -327,8 +359,13 @@ SQL;
 		$this->nome = '';
 		$this->tipo = '';
 		$this->tamanho = 0;
+		$this->conteudo = '';
 		$this->erros = array();
 	}
+	// metodo: proximo
+	// pega proximo arquivo do usuario até retornar false
+	// só pode ser usado depois de abrir um usuario com o 
+	// metodo abrirUsuario
 	public function proximo() {
 		if ($this->consulta === null) {
 			throw new Exception("A consulta não está aberta.", 1);
