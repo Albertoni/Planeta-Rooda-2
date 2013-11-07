@@ -9,11 +9,15 @@ require_once("../../reguaNavegacao.class.php");
 
 if (isset($_SESSION['SS_usuario_id']) == false){die("Voc&ecirc; precisa estar logado para fazer essa a&ccedil;&atilde;o.");}
 
+$user = usuario_sessao();
+$userId = $_SESSION['SS_usuario_id']
+$turma = (int) (isset($_GET['turma']) ? $_GET['turma'] : 0);
 
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+?><!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
@@ -85,8 +89,6 @@ $nome = new conexao();
 $titulo="";
 
 if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
-	$consulta->solicitar("SELECT codTurma FROM $tabela_turmasUsuario WHERE codUsuario = ".$_SESSION['SS_usuario_id']); // Pega a turma do cara
-	$temp = $consulta->resultado['codTurma'];
 	$consulta->solicitar("SELECT codUsuario FROM $tabela_turmasUsuario WHERE codTurma = $temp"); // Pega a lista de pessoas da turma
 
 	for($i=0; $i<$consulta->registros; $i++)
@@ -108,8 +110,6 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 		if (!in_array($_SESSION['SS_usuario_id'], $membros) and !(checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelAdmin) === 1)){
 			echo "<p align=\"justify\"><b>Você não tem permissão pra executar essa ação. Recomendamos que desista agora. Sua ação foi logada.</b></p>";
 		}else{
-			$consulta->solicitar("SELECT codTurma FROM $tabela_turmasUsuario WHERE codUsuario = ".$_SESSION['SS_usuario_id']); // Pega a turma do cara
-			$temp = $consulta->resultado['codTurma'];
 			$consulta->solicitar("SELECT codUsuario FROM $tabela_turmasUsuario WHERE codTurma = $temp"); // Pega a lista de pessoas da turma
 		
 			for($i=0; $i<$consulta->registros; $i++)
