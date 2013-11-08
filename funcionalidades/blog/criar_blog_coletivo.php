@@ -1,17 +1,15 @@
 <?php
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-if (isset($_SESSION['SS_usuario_id']) == false){die("Voc&ecirc; precisa estar logado para fazer essa a&ccedil;&atilde;o.");}
-
 $user = usuario_sessao();
-$userId = $_SESSION['SS_usuario_id']
+$userId = $_SESSION['SS_usuario_id'];
 $turma = (int) (isset($_GET['turma']) ? $_GET['turma'] : 0);
+
+$permissoes = checa_permissoes(TIPOFORUM, $turma);
 
 ?><!DOCTYPE html>
 <html>
@@ -84,19 +82,17 @@ $turma = (int) (isset($_GET['turma']) ? $_GET['turma'] : 0);
 <?php
 
 $consulta = new conexao();
-$nome = new conexao();
 
 $titulo="";
 
 if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
-	$consulta->solicitar("SELECT codUsuario FROM $tabela_turmasUsuario WHERE codTurma = $temp"); // Pega a lista de pessoas da turma
+	$consulta->solicitar("SELECT usuario_nome, codUsuario FROM $tabela_usuarios INNER JOIN $tabela_turmasUsuario ON codUsuario = usuario_id WHERE codTurma = $turma"); // Pega a lista de pessoas da turma
 
 	for($i=0; $i<$consulta->registros; $i++)
 	{
 		$id = $consulta->resultado['codUsuario'];
-		$nome->solicitar("SELECT usuario_nome FROM $tabela_usuarios WHERE usuario_id = $id");
 	?>
-								<li class="enviado<?=alterna()?>"><input type="checkbox" name="<?=$id?>" /><?=$nome->resultado['usuario_nome']?></li>
+								<li class="enviado<?=alterna()?>"><input type="checkbox" name="<?=$id?>" /><?=$consulta->resultado['usuario_nome']?></li>
 	<?php
 		$consulta->proximo();
 	}
@@ -108,21 +104,20 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 		$titulo = $membrosBlog->resultado['Title'];
 		
 		if (!in_array($_SESSION['SS_usuario_id'], $membros) and !(checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelAdmin) === 1)){
-			echo "<p align=\"justify\"><b>Você não tem permissão pra executar essa ação. Recomendamos que desista agora. Sua ação foi logada.</b></p>";
+			echo "<p align=\"justify\"><b>Você não tem permissão pra executar essa ação.</b></p>";
 		}else{
-			$consulta->solicitar("SELECT codUsuario FROM $tabela_turmasUsuario WHERE codTurma = $temp"); // Pega a lista de pessoas da turma
+			$consulta->solicitar("SELECT usuario_nome, codUsuario FROM $tabela_usuarios INNER JOIN $tabela_turmasUsuario ON codUsuario = usuario_id WHERE codTurma = $turma");
 		
 			for($i=0; $i<$consulta->registros; $i++)
 			{
 				$id = $consulta->resultado['codUsuario'];
-				$nome->solicitar("SELECT usuario_nome FROM $tabela_usuarios WHERE usuario_id = $id");
 				if (in_array($id, $membros)){
 				?>
-									<li class="enviado<?=alterna()?>"><input type="checkbox" checked="1" name="<?=$id?>" /><?=$nome->resultado['usuario_nome']?></li>
+									<li class="enviado<?=alterna()?>"><input type="checkbox" checked="1" name="<?=$id?>" /><?=$consulta->resultado['usuario_nome']?></li>
 				<?php
 				}else{
 				?>
-									<li class="enviado<?=alterna()?>"><input type="checkbox" name="<?=$id?>" /><?=$nome->resultado['usuario_nome']?></li>
+									<li class="enviado<?=alterna()?>"><input type="checkbox" name="<?=$id?>" /><?=$consulta->resultado['usuario_nome']?></li>
 				<?php
 				}
 				$consulta->proximo();
@@ -134,10 +129,6 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 }
 unset($temp); // sei lá, vamos fazer do jeito certo.
 unset($consulta);
-
-/*							<li class="enviado1"><input type="checkbox" />Fulaninho de Tal da Silva</li>
-							<li class="enviado2"><input type="checkbox" />Fulaninho João da Fonseca</li>
-							<li class="enviado1"><input type="checkbox" />Fulaninho de Taubaté</li>*/
 
 ?>
 						</ul>
@@ -153,7 +144,7 @@ if ($titulo != ''){// tão editando
 ?>
 						<li>Título</li>
 						<li><input type="text" name="titulo" class="blog_info" value="<?=$titulo?>"/></li>
-						<input type="hidden" name="edicao" value="<?=$_GET['editId']?>">
+						<input type="hidden" name="edicao" value="<?= (int) $_GET['editId']?>">
 <?php
 } else {
 ?>
@@ -175,6 +166,7 @@ if ($titulo != ''){// tão editando
 				<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
 				<input type="image" id="responder_topico" src="images/botoes/bt_confirm.png" align="right"/>
 			</div>
+			<input type="hidden" name="turma" value="<?=$turma?>">
 			</form>
 		</div><!-- Fecha Div conteudo -->
 		</div><!-- Fecha Div conteudo_meio -->   
