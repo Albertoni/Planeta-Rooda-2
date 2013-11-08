@@ -110,7 +110,7 @@ else // senão, tá criando.
 			conteudo
 ***************************** -->
 	<div id="conteudo"> <!-- tem que estar dentro da div 'conteudo_meio' -->
-	<form onsubmit="confirmaEditarMensagem(this); event.preventDefault ? event.preventDefault() : event.returnValue = false; return false;" name="criatop" action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post">
+	<form action="forum_salva_mensagem.php" enctype="multipart/form-data" method="post" onsubmit="confirmaEditarMensagem(this); event.preventDefault ? event.preventDefault() : event.returnValue = false; return false;" name="criatop">
 	<div class="bts_cima">
 		<img align="left" id="voltar" src="../../images/botoes/bt_voltar.png" style="cursor:pointer" onclick="history.go(-1)"/>
 		<button type="submit" class="confirmar grande" align="right">Enviar</button>
@@ -141,7 +141,7 @@ else // senão, tá criando.
 							<li class=\"".implode(" ", $classes)."\">
 								<a href=\"abre_anexo.php?m={$idMensagem}&amp;a={$a->getId()}\"><span class=\"icon\">&nbsp;</span> {$a->getNome()}</a>"
 								.($podeDeletarAnexo ? " &nbsp;
-								<label><input type=\"checkbox\" name=\"deletarAnexo\" value=\"{$a->getId()}\"> remover</label>" 
+								<label><input type=\"checkbox\" name=\"deletarAnexo[]\" value=\"{$a->getId()}\"> remover</label>" 
 								: "")."
 							</li>";
 						}
@@ -178,6 +178,7 @@ else // senão, tá criando.
 
 
 </div><!-- fim da geral -->
-<script type="text/javascript" src="forum.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="forum.js"></script>
 </body>
 </html>

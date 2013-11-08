@@ -149,7 +149,7 @@ var confirmaEditarMensagem = (function () {
 			console.dir(e);
 		}
 		console.dir(resposta);
-		//document.location = "forum_topico.php?topico="+resposta.idTopico;
+		document.location = "forum_topico.php?topico="+resposta.idTopico;
 	}
 	function falha() {
 		console.log(this.responseText);
@@ -158,33 +158,6 @@ var confirmaEditarMensagem = (function () {
 		AJAXSubmit(formulario, sucesso, falha);
 	}
 }());
-
-function confirmaEditarMensagem(idTurma, idMensagem, idTopico){
-	var parametros = "turma=" + turma + "&idMensagem=" + idMensagem + "&idTopico=" + idTopico + "&msg_conteudo="+ document.getElementById("textarea").value;
-
-	http.abort();
-	http.open("POST", "forum_salva_mensagem.php", true);
-	http.onreadystatechange=function() {
-		if((http.readyState == 4)&&(http.status == 200 )) {
-			try{
-				JSON.parse(http.responseText);
-			}
-			catch(e){
-				if (e instanceof SyntaxError){
-					/*alert("Erro desconhecido, por favor tente editar a mensagem novamente.")
-					document.location = "forum.php?turma="+turma;*/
-
-					console.log(e);
-				}
-			}
-
-			document.location = "forum_topico.php?turma="+turma+"&topico="+idTopico;
-		}
-	}
-	http.setRequestHeader("Content-length", parametros.length);
-	http.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
-	http.send(parametros);
-}
 
 function colore(elemento){
 	quantidade = document.getElementById(elemento).getElementsByTagName('span').length -1;
