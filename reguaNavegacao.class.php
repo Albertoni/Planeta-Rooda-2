@@ -54,7 +54,7 @@ class reguaNavegacao {
 		$this->linksNiveis = array();
 		$this->tiposLinksNiveis = array();
 		$this->fecharColorboxNiveis = array();
-		$this->adicionarNivel("Planeta ROODA", "http://sideshowbob/asd/");
+		$this->adicionarNivel("Planeta ROODA", $linkServidor);
 		
 		$idUsuario = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
 		$conexaoTerreno = new conexao();
