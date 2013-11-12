@@ -17,7 +17,7 @@ $usuario = usuario_sessao();
 if (!$usuario) { die("voce nao esta logado"); }
 
 $blog_id = isset($_GET['id']) ? $_GET['id'] : die("N&atilde;o foi fornecido id de Webf&oacute;lio.");
-$turma = isset($_GET['turma']) ? $_GET['turma'] : 0;
+$turma = (int) (isset($_GET['turma']) ? $_GET['turma'] : 0);
 
 $blog = new Blog($blog_id, $turma); // se não existe, isso cria o blog
 
