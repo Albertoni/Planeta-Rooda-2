@@ -3,21 +3,21 @@ require_once("cfg.php");
 require_once("bd.php");
 require_once("usuarios.class.php");
 class Arquivo {
-	private $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
-	private $idUsuario;
+	protected $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
+	protected $idUsuario;
 
-	private $titulo = "";
-	private $nome = '';      // nome do arquivo. Deve conter a extensao também
-	private $tipo = ""; // mime-type
-	private $tamanho = 0;
-	private $conteudo;
-	private $md5;
-	private $data;
-	private $erros = array();
-	private $upload = false;
-	private $download = false;
+	protected $titulo = "";
+	protected $nome = '';      // nome do arquivo. Deve conter a extensao também
+	protected $tipo = ""; // mime-type
+	protected $tamanho = 0;
+	protected $conteudo;
+	protected $md5;
+	protected $data;
+	protected $erros = array();
+	protected $upload = false;
+	protected $download = false;
 
-	private $consulta;
+	protected $consulta;
 
 	// tabelas que referenciam arquivos e condicao de consulta
 	private static $referecias_bd = array(
@@ -393,19 +393,34 @@ class Imagem extends Arquivo {
 	private $imagem;
 	private $largura;
 	private $altura;
+	private $transparent_color; // for gif images
+
 	function __construct($id = false) {
-		parent:__construct($id);
+		parent::__construct($id);
 		if (false === array_search($this->tipo, self::$supported_mime_types)) {
-			throw new Exception("Arquivo não é um tipo de imagem suportado.");
+			throw new Exception("Arquivo não é um tipo de imagem suportado. {$this->tipo}");
 		}
+		// carrega imagem
 		$this->imagem = imagecreatefromstring($this->conteudo);
-		$this->largura = imagesx($this->image);
-		$this->altura = imagesy($this->image);
+		$this->largura = imagesx($this->imagem);
+		$this->altura = imagesy($this->imagem);
+		// adiciona suporte a transparencia
+		imagealphablending($this->imagem, true);
+		imagesavealpha($this->imagem, true);
+
 	}
-	function miniatura($max_largura, $max_altura) {
+
+	function __destruct() {
+		// free(ram)
+		imagedestroy($this->imagem);
+	}
+
+	// cria miniatura em png
+	function miniatura($max_largura = 0, $max_altura = 0) {
 		$nova_largura = $this->largura;
 		$nova_altura = $this->altura;
-		if ($this->largura > $max_largura || $this->altura > $max_altura) {
+		if ($max_largura && $max_altura)
+		if (($this->largura > $max_largura) || ($this->altura > $max_altura)) {
 			if (($this->largura / $max_largura) > ($this->altura / $max_altura)) {
 				$ratio = $max_largura/$this->largura;
 				$nova_largura = $max_largura;
@@ -417,12 +432,20 @@ class Imagem extends Arquivo {
 			}
 		}
 		$nova_imagem = imagecreatetruecolor($nova_largura, $nova_altura);
-		imagecopyresized($nova_imagem, $this->imagem, 0, 0, 0, 0, $nova_largura, $nova_altura, $this->altura, $this->largura);
-		imagetruecolortopalette($nova_imagem, false, 255);
+
+		// com transparencia
+		imagealphablending($nova_imagem, true);
+		imagesavealpha($nova_imagem, true);
+		$transparent = imagecolorallocatealpha($nova_imagem, 0, 0, 0, 127);
+		imagefill($nova_imagem, 0, 0, $transparent);
+		// copia imagem com novo tamanho
+		imagecopyresized($nova_imagem, $this->imagem, 0, 0, 0, 0, $nova_largura, $nova_altura, $this->largura, $this->altura);
 		header('Content-type: image/png');
+		//header("Content-length: {$this->getTamanho()}");
 		imagepng($nova_imagem);
 		imagedestroy($nova_imagem); // free(ram);
 	}
+	//function ()
 }
 /* /
 $arquivo = new Arquivo(222);
