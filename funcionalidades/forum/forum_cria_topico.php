@@ -13,7 +13,7 @@
 
 	$idTopico = -1;
 	
-	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
+	$turma = (isset($_GET['turma']) and is_numeric($_GET['turma'])) ? (int) $_GET['turma'] : die("Uma id de turma incorreta (nao-numerica) foi passada para essa pagina.");
 	
 	$perm = checa_permissoes(TIPOFORUM, $turma);
 	
@@ -22,6 +22,9 @@
 		$editar = ($idTopico != '-1');
 		$titulo = '';
 		$texto = '';
+
+		$podeDeletarAnexo = (bool) $user->podeAcessar($perm['forum_excluirAnexos'], $turma);
+		$podeEnviarAnexo = (bool) $user->podeAcessar($perm['forum_enviarAnexos'], $turma);
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarTopico'], $turma)){
@@ -33,6 +36,7 @@
 					WHERE ForumTopico.idTopico = $idTopico
 					ORDER BY idMensagem ASC LIMIT 1");
 
+				if ((int) $q->resultado['idTurma'] === (int) $idTurma)
 				$texto = str_replace("<br>", "\n", $q->resultado['texto']);
 				$titulo = $q->resultado['titulo'];
 				$idMensagem = $q->resultado['idMensagem'];
@@ -142,6 +146,7 @@ else // senão, tá criando.
 	if($editar){
 		echo "			<input type=\"hidden\" name=\"idMensagem\" value=\"$idMensagem\">";
 	}
+
 ?>
 
 	</div><!-- fim da div criar_topicos -->

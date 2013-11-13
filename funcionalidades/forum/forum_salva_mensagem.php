@@ -57,6 +57,7 @@ if($idMensagem !== 0){ // editando
 }
 $mensagemResposta = new mensagem();
 $mensagemResposta->carregar($mensagem->getId());
+if($user->podeAcessar($perm['forum_enviarAnexos'], $idTurma))
 if (isset($_FILES['arquivo'])) {
 	try {
 		$arquivo = new Arquivo();

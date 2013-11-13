@@ -294,17 +294,23 @@ var postDinamico = {
 		}
 		var anexos = '';
 		if (post.anexos.length > 0) {
-			anexos = '<ul class="anexos">';
+			anexos = '<ul class="anexos"><li class="titulo">Anexos:</li>';
 			for (var i = 0; i < post.anexos.length; i+=1) {
 				var classes = post.anexos[i].tipo.split('/');
 				classes = classes.map(function(e) { return e.split(".").join("-"); });
 				classes.push('arquivo');
-				anexos += '<li class="'+classes.join(' ')+'"><a href="abre_anexo.php?m='+post.idPost+'&amp;a='+post.anexos[i].id+'"><span class="icon">&nbsp</span> '+post.anexos[i].nome+'</a></li>';
+				console.log(post.anexos[i].tipo);
+				if (post.anexos[i].tipo.search(/^image\/(jpeg|gif|png)$/) === -1) {
+					anexos += '<li class="'+classes.join(' ')+'"><a href="anexo.php?m='+post.idPost+'&amp;a='+post.anexos[i].id+'"><span class="icon">&nbsp</span> '+post.anexos[i].nome+'</a></li>';
+				} else {
+					anexos += '<li class="miniatura"><a href="anexo.php?img&amp;m='+post.idPost+'&amp;a='+post.anexos[i].id+'" target="_blank"><image src="anexo.php?thumb&amp;w=200&amp;h=200&amp;m='+post.idPost+'&amp;a='+post.anexos[i].id+'"></a></li>'
+				}
 			}
 			anexos += '</ul>';
-		}
-
-		container.innerHTML = "<ul>\
+		}/*
+image/jpg
+image/gif
+*/		container.innerHTML = "<ul>\
 			<li class=\"tabela\">\
 			<div class=\"info\">\
 				<p class=\"nome\"><b>"+post.nomeUsuario+"</b></p>\

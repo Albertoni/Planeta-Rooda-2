@@ -143,12 +143,44 @@ h1{
 .titulo_topico{
 	text-transform: uppercase;
 }
-.anexos .arquivo * {
+#bloco_mensagens ul.anexos {
+	display: inline-block;
+	min-width: 50%;
+	margin: 0;
+}
+#bloco_mensagens ul.anexos * {
+	float: none;
+}
+#bloco_mensagens ul.anexos  li {
+	margin: 5px;
+}
+ul.anexos {
+	background: rgb(223, 236, 227);
+	border: 1px solid #C2C2C2;
+	margin: 0;
+}
+ul.anexos li {
+	margin: 15px;
+}
+ul.anexos li.titulo {
+	font-weight: bold;
+}
+ul.anexos li.arquivo {
+	padding-left: 55px;
+}
+ul.anexos li.arquivo * {
 	vertical-align: middle;
 	text-decoration: none;
 }
-.anexos .arquivo .icon {
+ul.anexos li.arquivo .icon {
 	display: inline-block;
 	width: 22px;
 	height: 22px;
+}
+ul.anexos li.miniatura a {
+	display: inline-block;
+	padding: 4px;
+}
+ul.anexos li.miniatura a:hover {
+	background-color: #C8E2DF;
 }

@@ -23,6 +23,8 @@
 		$editar = ($idMensagem != '-1');
 		$titulo = '';
 		$texto = '';
+		$podeDeletarAnexo = (bool) $user->podeAcessar($perm['forum_excluirAnexos'], $turma);
+		$podeEnviarAnexo = (bool) $user->podeAcessar($perm['forum_enviarAnexos'], $turma);
 		
 		if ($editar){
 			if($user->podeAcessar($perm['forum_editarResposta'], $turma)){
@@ -145,7 +147,7 @@ else // senão, tá criando.
 								: "")."
 							</li>";
 						}
-					} else {
+					} elseif ($podeEnviarAnexo) {
 						echo "Incluir anexo: <input type=\"file\" name=\"arquivo\">";
 					}
 					?>
