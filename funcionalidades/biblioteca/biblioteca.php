@@ -148,7 +148,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			var buscar_materiais = document.getElementById("buscar_materiais");
 		}());
 
-
 		var label_radio_arquivo = document.getElementById("label_arquivo");
 		var radio_arquivo = label_radio_arquivo.control;
 		var label_radio_link = document.getElementById("label_link");
@@ -191,6 +190,8 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			};
 		}());
 		</script>
+		<script src="../../jquery.js"></script>
+		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
 	</body>
 </html>
