@@ -8,7 +8,7 @@ require_once("cfg.php");
 require_once("bd.php");
 //require_once("class/planeta.php");
 
-
+if (class_exists('Usuario') != true){
 class Usuario { //estrutura para o item post do blog
 	var $id = 0;
 	var $user = "";
@@ -301,4 +301,5 @@ class Usuario { //estrutura para o item post do blog
 		}
 		echo implode(", ", $buffer);
 	}
+}
 }

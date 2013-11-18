@@ -222,9 +222,14 @@ require_once("turma.class.php");
 	}
 
 	function magic_redirect($extra){
+		/*
 		$host	= $_SERVER['HTTP_HOST']; // Pega o endereço do site, http://www.nuted.ufrgs.br/
 		$uri	= rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Pega o caminho relativo da pasta que o script tá rodando, planeta2/funcionalidades/portfolio
-		header("Location: http://$host$uri/$extra"); // Magia.
+		*/
+		// Alexandre falou que isso poderia dar problemas com symlink. Agora é baseado na URL do cfg.php
+
+		global $linkServidor;
+		header("Location: $linkServidor".$extra); // Magia.
 	}
 	function redireciona_externo($url) {
 		global $linkServidor;
@@ -343,13 +348,15 @@ function cospeSelectDeTurmas($t=0){
 	$usuario = new usuario();
 	$usuario->openUsuario($_SESSION['SS_usuario_id']);
 	$turmas = $usuario->getTurmas();
+
+	print_r($turmas);
 	/*foreach($_SESSION['SS_turmas'] as $turma){*/
 	foreach($turmas as $turma){
 		//$nome->solicitar("SELECT nomeTurma FROM $tabela_turmas WHERE codTurma = $turma");
 		if ($turma['codTurma'] == $t){
-			echo "\n					<option selected value=\"$turma\">".$turma['nomeTurma']."</option>";
+			echo "\n					<option selected value=\"".$turma['codTurma']."\">".$turma['nomeTurma']."</option>";
 		}else{
-			echo "\n					<option value=\"$turma\">".$turma['nomeTurma']."</option>";
+			echo "\n					<option value=\"".$turma['codTurma']."\">".$turma['nomeTurma']."</option>";
 		}
 	}
 }
