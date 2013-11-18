@@ -1,0 +1,38 @@
+.arquivo .icon,
+.link .icon {
+        background: url('images/fileicons/unknown.png');
+}
+/*image*/
+.arquivo.image .icon {
+        background: url('images/fileicons/image.png');
+}
+.arquivo.image.vnd-adobe-photoshop .icon{
+        background: url('images/fileicons/image-x-psd.png');
+}
+/*text*/
+.arquivo.text .icon {
+        background: url('images/fileicons/txt.png');
+}
+.arquivo.text.html .icon {
+        background: url('images/fileicons/text-html.png');
+}
+/*application*/
+.arquivo.application .icon {
+        background: url('images/fileicons/binary.png');
+}
+.arquivo.application.javascript .icon {
+        background: url('images/fileicons/application-javascript.png');
+}
+.arquivo.application.vnd-oasis-opendocument-text .icon {
+        background: url('images/fileicons/x-office-document.png');
+}
+.arquivo.application.msword .icon,
+.arquivo.application.vnd-openxmlformats-officedocument-wordprocessingml-document .icon {
+        background: url('images/fileicons/application-msword.png');
+}
+.arquivo.application.pdf .icon {
+        background: url('images/fileicons/application-pdf.png');
+}
+.link .icon {
+        background: url('images/fileicons/www.png')
+}
