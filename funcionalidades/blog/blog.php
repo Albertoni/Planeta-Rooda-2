@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -28,10 +27,6 @@ if(!is_numeric($blog_id)){
 $ini = isset($_GET['ini']) && $_GET['ini'] >= 0 ? floor($_GET['ini']/$blog->getPaginacao())*$blog->getPaginacao() : 0;
 $ini = $ini < 0 ? 0 : $ini;
 $ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$blog->getPaginacao() : $ini;
-
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
-
 
 $permissoes = checa_permissoes(TIPOBLOG, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
