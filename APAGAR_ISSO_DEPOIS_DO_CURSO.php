@@ -3,10 +3,9 @@ header('Content-type: text/html; charset=utf-8');
 require_once("cfg.php");
 require_once("bd.php");
 require_once("funcoes_aux.php");
-session_start();
-if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
-	die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
-}
+
+$usuario = usuario_sessao();
+if (!$usuario) { die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>"); })
 
 /* APAGAR ISSO DEPOIS DO CURSO */
 
@@ -17,8 +16,14 @@ if (isset($_POST['codTurma']) and isset($_POST['codAluno']) and isset($_POST['ni
 	$nivel = (int) $_POST['nivel'];
 
 	// o cara tem que ser professor na turma para adicionar alunos
-	$q = new conexao();
-	$q->solicitar("INSERT INTO TurmasUsuario VALUES ($codTurma, $codAluno, $nivel)");
+	global $nivelProfessor;
+	$nivel = $usuario->getNivel($codTurma);
+	if($nivel == $nivelProfessor){
+		$q = new conexao();
+		$q->solicitar("INSERT INTO TurmasUsuario VALUES ($codTurma, $codAluno, $nivel)");
+	}else{
+		die("S&oacute; professores podem adicionar usuarios a uma turma.");
+	}
 }
 
 ?>
