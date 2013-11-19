@@ -5,7 +5,7 @@ require_once("bd.php");
 require_once("funcoes_aux.php");
 
 $usuario = usuario_sessao();
-if (!$usuario) { die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>"); })
+if(!$usuario){die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>"); }
 
 /* APAGAR ISSO DEPOIS DO CURSO */
 
