@@ -15,7 +15,8 @@ if (isset($_POST['codTurma']) and isset($_POST['codAluno']) and isset($_POST['ni
 	$codTurma = (int) $_POST['codTurma'];
 	$codAluno = (int) $_POST['codAluno'];
 	$nivel = (int) $_POST['nivel'];
-	
+
+	// o cara tem que ser professor na turma para adicionar alunos
 	$q = new conexao();
 	$q->solicitar("INSERT INTO TurmasUsuario VALUES ($codTurma, $codAluno, $nivel)");
 }
