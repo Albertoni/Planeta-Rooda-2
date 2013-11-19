@@ -394,8 +394,8 @@ function Init() {
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<form name="fConteudo" method="post" action="_blog_escreve_postagem.php" onsubmit="javascript:gravaConteudo();">
 			<div class="bts_cima">
-			<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
-			<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 				<div id="info_post" class="bloco">
 					<input type="hidden" name="blog_id" value="<?=$blog_id?>" />
@@ -423,9 +423,10 @@ function Init() {
 						<li><iframe class="blog_info" id="iView" style="border:solid 1px #74d3ed; background-color:#fff; height:400px"></iframe></li>
 					</ul>
 				</div>
+			<div style="clear:both"><!-- um terrivel hack porque a margem do de baixo não funciona logo apos um elemento em float --></div>
 			<div class="bts_baixo">
-			<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
-			<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 		</form>
 		<div style="clear:both;"></div>
