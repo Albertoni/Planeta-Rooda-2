@@ -71,32 +71,5 @@ class Planeta extends PlanetaBD{
 	public function __get($propriedade_param){
 		return $this->$propriedade_param;
 	}
-	
-	/**
-	* 
-	*/
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
-
-
 ?>

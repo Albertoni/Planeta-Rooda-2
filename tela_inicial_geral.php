@@ -71,8 +71,12 @@
 				</script>
 				<?php
 					$planetasQuePodeAcessar = $usuario->getPlanetasQuePodeAcessar();
+
+					print_r($planetasQuePodeAcessar);
 					foreach($planetasQuePodeAcessar as $planeta){
 						$idPlaneta = $planeta->__get("IdTerenoPrincipal");
+						$turmaPlaneta = $planeta->__get("Turma");
+						echo $turmaPlaneta;
 						$nomePlaneta = $planeta->__get("Nome");
 						switch($planeta->__get("Aparencia")){
 							case PlanetaBD::APARENCIA_VERDE:

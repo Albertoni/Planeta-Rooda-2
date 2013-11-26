@@ -190,7 +190,6 @@ class Usuario { //estrutura para o item post do blog
 										WHERE TU.codUsuario = ".($this->id)."
 										GROUP BY P.Nome");
 		
-		//print_r($conexaoIdsPlanetas);
 		$planetasInseridos = 0;
 		for($i=0; $i<$conexaoIdsPlanetas->registros; $i++){
 			$planeta = Planeta::getPorId($conexaoIdsPlanetas->resultado['Id']);
