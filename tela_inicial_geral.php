@@ -8,21 +8,16 @@
 	require_once("turma.class.php");
 	require_once("AlteracoesTurmasUsuario.php");
 	
-	session_start();
+	$usuario = usuario_sessao();
 	
-	if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
+	if (!$usuario){ // Se isso não estiver setado, o usuario não está logado
 		die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
 	}
-	
-	
-	$usuario = new Usuario();
-	$usuario->openUsuario($_SESSION['SS_usuario_id']);
-	
 ?>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta charset="utf-8">
 		<!-- CSS -->
 		<link href="tela_inicial_geral.css" rel="stylesheet" type="text/css">
 	</head>
