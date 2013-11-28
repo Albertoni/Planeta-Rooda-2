@@ -42,7 +42,7 @@ class Planeta extends PlanetaBD{
 		$conexao->solicitar("SELECT *
 							FROM ".PlanetaBD::NOME_TABELA."
 							WHERE Id = ".$id_param);
-		$resultado = (0 < $conexao->registros? PlanetaBD::deTupla($conexao->resultado) : null);
+		$resultado = (($conexao->registros > 0) ? PlanetaBD::deTupla($conexao->resultado) : null);
 		return $resultado;
 	}
 

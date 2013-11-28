@@ -72,7 +72,7 @@ class Usuario { //estrutura para o item post do blog
 	public function getName()		{return $this->name;}
 	public function getEmail()		{return $this->email;}
 	public function getPersonagemId(){return $this->personagemId;}
-	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
+	public function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
 	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}

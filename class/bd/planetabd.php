@@ -28,19 +28,21 @@ class PlanetaBD extends ObjetoBD{
 	protected $Nome;
 	protected $Aparencia;
 	protected $EhVisitante;
-	protected $IdTerenoPrincipal;
+	protected $IdTerrenoPrincipal;
 	protected $IdTerrenoPatio;
+	protected $IdTurma;
 	const NOME_TABELA = "Planetas";
 
 //métodos
 	protected function PlanetaBD($id_param = self::ID_OBJETO_NAO_SALVO, $nome_param, $aparencia_param, 
-			$ehVisitante_param, $idTerrenoPrincipal_param = self::ID_OBJETO_NAO_SALVO, $idTerrenoPatio_param = self::ID_OBJETO_NAO_SALVO){
+			$ehVisitante_param, $idTerrenoPrincipal_param = self::ID_OBJETO_NAO_SALVO, $idTerrenoPatio_param = self::ID_OBJETO_NAO_SALVO, $idTurma_param = self::ID_OBJETO_NAO_SALVO){
 		$this->Id = $id_param;
 		$this->Nome = $nome_param;
 		$this->Aparencia = $aparencia_param;
 		$this->EhVisitante = $ehVisitante_param;
-		$this->IdTerenoPrincipal = $idTerrenoPrincipal_param;
+		$this->IdTerrenoPrincipal = $idTerrenoPrincipal_param;
 		$this->IdTerrenoPatio = $idTerrenoPatio_param;
+		$this->IdTurma = $idTurma_param;
 	}
 	
 	/**
@@ -50,7 +52,7 @@ class PlanetaBD extends ObjetoBD{
 	*/
 	protected static function deTupla($array_param){
 		return new PlanetaBD(	$array_param['Id'], $array_param['Nome'], $array_param['Aparencia'], $array_param['EhVisitante'], 
-								$array_param['IdTerrenoPrincipal'], $array_param['IdTerrenoPatio']);
+								$array_param['IdTerrenoPrincipal'], $array_param['IdTerrenoPatio'], $array_param['Turma']);
 	}
 	
 	/**
@@ -74,14 +76,14 @@ class PlanetaBD extends ObjetoBD{
 	*/
 	public function inserir($conexao_param=""){
 		$conexao = ($conexao_param == ""? new conexao() : $conexao_param);
-		if($this->IdTerenoPrincipal == self::ID_OBJETO_NAO_SALVO){
-			$this->IdTerenoPrincipal = Terreno::getIdNovo(TerrenoBD::TIPO_PRINCIPAL);
+		if($this->IdTerrenoPrincipal == self::ID_OBJETO_NAO_SALVO){
+			$this->IdTerrenoPrincipal = Terreno::getIdNovo(TerrenoBD::TIPO_PRINCIPAL);
 		}
 		if($this->IdTerrenoPatio == self::ID_OBJETO_NAO_SALVO){
 			$this->IdTerrenoPatio = Terreno::getIdNovo(TerrenoBD::TIPO_PATIO);
 		}
 		$conexao->solicitar("INSERT INTO ".self::NOME_TABELA." (Nome, Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio)
-							VALUES ('".$this->Nome."', ".$this->Aparencia.", ".$this->EhVisitante.", ".$this->IdTerenoPrincipal.", ".$this->IdTerrenoPatio.")");
+							VALUES ('".$this->Nome."', ".$this->Aparencia.", ".$this->EhVisitante.", ".$this->IdTerrenoPrincipal.", ".$this->IdTerrenoPatio.")");
 		if($conexao->erro != ""){
 			throw new Exception($conexao->erro);
 		} else {
@@ -95,7 +97,7 @@ class PlanetaBD extends ObjetoBD{
 	*/
 	public function atualizar($conexao_param=""){
 		$conexao = ($conexao_param == ""? new conexao() : $conexao_param);
-		$terrenoPrincipal = Terreno::getPorId($this->IdTerenoPrincipal);
+		$terrenoPrincipal = Terreno::getPorId($this->IdTerrenoPrincipal);
 		$terrenoPatio = Terreno::getPorId($this->IdTerrenoPatio);
 		$terrenoPrincipal->atualizar($conexao);
 		$terrenoPatio->atualizar($conexao);
@@ -103,7 +105,7 @@ class PlanetaBD extends ObjetoBD{
 							SET Nome = ".$this->Nome.", 
 								Aparencia = ".$this->Aparencia.",
 								EhVisitante = ".$this->EhVisitante.",
-								IdTerenoPrincipal = ".$this->IdTerenoPrincipal.",
+								IdTerrenoPrincipal = ".$this->IdTerrenoPrincipal.",
 								IdTerrenoPatio = ".$this->IdTerrenoPatio."
 							WHERE Id = ".$this->Id);
 		if($conexao->erro != ""){
@@ -117,7 +119,7 @@ class PlanetaBD extends ObjetoBD{
 	*/
 	public function deletar($conexao_param=""){
 		$conexao = ($conexao_param == ""? new conexao() : $conexao_param);
-		$terrenoPrincipal = Terreno::getPorId($this->IdTerenoPrincipal);
+		$terrenoPrincipal = Terreno::getPorId($this->IdTerrenoPrincipal);
 		$terrenoPatio = Terreno::getPorId($this->IdTerrenoPatio);
 		$terrenoPrincipal->deletar($conexao);
 		$terrenoPatio->deletar($conexao);

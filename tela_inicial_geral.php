@@ -72,12 +72,11 @@
 				<?php
 					$planetasQuePodeAcessar = $usuario->getPlanetasQuePodeAcessar();
 
-					print_r($planetasQuePodeAcessar);
 					foreach($planetasQuePodeAcessar as $planeta){
-						$idPlaneta = $planeta->__get("IdTerenoPrincipal");
-						$turmaPlaneta = $planeta->__get("Turma");
-						echo $turmaPlaneta;
+						$idPlaneta = $planeta->__get("IdTerrenoPrincipal");
+						$turmaPlaneta = $planeta->__get("IdTurma");
 						$nomePlaneta = $planeta->__get("Nome");
+
 						switch($planeta->__get("Aparencia")){
 							case PlanetaBD::APARENCIA_VERDE:
 							case PlanetaBD::APARENCIA_GRAMA:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
@@ -91,7 +90,7 @@
 							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
 						}
 					
-						echo "<script> menuPlanetas.adicionarLinkPlaneta(new LinkPlaneta(".$idPlaneta.", ".$tipoPlaneta.", '".$nomePlaneta."')); </script>";
+						echo "<script> menuPlanetas.adicionarLinkPlaneta(new LinkPlaneta(".$turmaPlaneta.", ".$tipoPlaneta.", '".$nomePlaneta."')); </script>";
 					}
 				?>
 				<script>
