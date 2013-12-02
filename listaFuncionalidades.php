@@ -8,18 +8,10 @@ require_once("funcoes_aux.php");
 if (!isset($_SESSION['SS_usuario_id'])){ // Se isso não estiver setado, o usuario não está logado
 	die('<a href="index.php">Por favor volte e entre em sua conta.</a>');
 }
-$terreno = isset($_GET['terreno']) ? (int) $_GET['terreno'] : 0;
-if ($terreno <= 0) {
-	die("Turma não encontrada. <a href=\"index.php\">Voltar</a> 1");
+$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+if ($turma <= 0) {
+	die("Turma não encontrada. <a href=\"index.php\">Voltar</a>");
 }
-$consulta = new conexao();
-$consulta->solicitar(
-	"SELECT Turma FROM Planetas AS P INNER JOIN terrenos AS T ON P.IdTerrenoPrincipal = T.terreno_id WHERE terreno_id = '$terreno'"
-);
-if ($consulta->registros !== 1) {
-	die("Turma não encontrada. <a href=\"index.php\">Voltar</a> 2 ".$consulta->registros);
-}
-$turma = $consulta->resultado['Turma'];
 ?>
 <!DOCTYPE html>
 <html>

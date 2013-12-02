@@ -1,12 +1,11 @@
 /**
 * Redireciona para a tela de desenvolvimento, iniciando o flash e entrando em um terreno.
 * @param _idPlanetaDestino O id, no banco de dados, do planeta para o qual deseja-se ir. 
-* Em caso de omissão, o usuário irá para o último planeta que acessou.
+* Em caso de omissão, //o usuário irá para o último planeta que acessou.// não sei
 */
 function redirecionarParaDesenvolvimento(_idPlanetaDestino){
 	if(0 < arguments.length){
-		document.location = 'listaFuncionalidades.php?terreno='+_idPlanetaDestino;
-		//document.location = 'desenvolvimento/index.php?terreno_id_tela_inicial_geral='+_idPlanetaDestino;
+		document.location = 'listaFuncionalidades.php?turma='+_idPlanetaDestino;
 	} else {
 		//document.location = 'desenvolvimento/index.php';
 	}
