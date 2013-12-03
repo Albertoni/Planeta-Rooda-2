@@ -12,31 +12,38 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-
-$projeto_id = isset($_GET['projeto_id']) and is_numeric($_GET['projeto_id']) ? '<input type="hidden" name="projeto_id" value="'.$_GET['projeto_id'].'" />' : NULL;
-
-if (isset($_GET['turma']) and $_GET['turma'] != ""){
-	$turma = $_GET['turma'];
-}
-
+$user = usuario_sessao();
 $id_usuario = $_SESSION['SS_usuario_id'];
 
-$user = new Usuario();
-$user->openUsuario($id_usuario);
+if (isset($_GET['turma'])){
+	$turma = (int) $_GET['turma'];
+}
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm == false){
 	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
 }
-if(!$_SESSION['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
-	die("Desculpe, voce nao pode inserir posts nessa turma.");
+
+$editar = isset($_GET['projeto_id']);
+
+if($editar){
+	$projeto_id = (int) $_GET['projeto_id'];
+
+	if(!$user->podeAcessar($perm['portfolio_editarPost'], $turma)){
+		die("Desculpe, voce nao pode inserir posts nessa turma.");
+	}
+}else{
+	if(!$user['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+		die("Desculpe, voce nao pode inserir posts nessa turma.");
+	}
 }
+
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8" />
 	<title>Planeta ROODA 2.0</title>
 
 	<link type="text/css" rel="stylesheet" href="../../planeta.css" />

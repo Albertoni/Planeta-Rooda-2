@@ -350,9 +350,7 @@ function cospeSelectDeTurmas($t=0){
 	$turmas = $usuario->getTurmas();
 
 	print_r($turmas);
-	/*foreach($_SESSION['SS_turmas'] as $turma){*/
 	foreach($turmas as $turma){
-		//$nome->solicitar("SELECT nomeTurma FROM $tabela_turmas WHERE codTurma = $turma");
 		if ($turma['codTurma'] == $t){
 			echo "\n					<option selected value=\"".$turma['codTurma']."\">".$turma['nomeTurma']."</option>";
 		}else{

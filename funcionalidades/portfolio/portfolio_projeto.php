@@ -108,11 +108,11 @@ if($perm === false){
 	
 <div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+			<a href="portfolio.php?turma=<?=$turma?>">
+				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
+				<img src="../../images/botoes/bt_postagem.png" border="0"/>
 			</a>
 		</div>
 		<div id="esq">
@@ -366,11 +366,11 @@ if($perm === false){
 			</div>
 		</div>
 		<div class="bts_baixo">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+			<a href="portfolio.php?turma=<?=$turma?>">
+				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
+				<img src="../../images/botoes/bt_postagem.png" border="0"/>
 			</a>
 		</div>
 	</div><!-- Fecha Div conteudo -->
