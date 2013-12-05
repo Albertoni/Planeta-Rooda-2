@@ -32,8 +32,12 @@ if($editar){
 	if(!$user->podeAcessar($perm['portfolio_editarPost'], $turma)){
 		die("Desculpe, voce nao pode inserir posts nessa turma.");
 	}
+
+	$projeto = new projeto($projeto_id);
 }else{
-	if(!$user['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+	$projeto_id = "";
+
+	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
 		die("Desculpe, voce nao pode inserir posts nessa turma.");
 	}
 }
