@@ -4,9 +4,7 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 
-session_start();
-
-//print_r($_POST);
+$user = usuario_sessao();
 
 $turma = is_numeric($_POST['turma']) ? $_POST['turma'] : die("Um identificador de turma inv&aacute;lido foi enviado para essa p&aacute;gina.");
 
@@ -15,9 +13,13 @@ $permissoes = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($permissoes === false){
 	die("Os Projetos est&atilde;o desabilitados para a sua turma.");
 }
-$luser = new Usuario();
-$luser->openUsuario($_SESSION['SS_usuario_id']);
-if(!$luser->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
+
+global nivelProfessor;
+if($user->getNivel($turma) != $nivelProfessor){
+	die("Somente professores podem fazer isso, e voc&ecirc; n&atilde;o tem essa permiss&atilde;o.");
+}
+
+if(!$user->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
 	die("Voce nao tem permissoes para isso.");
 }
 

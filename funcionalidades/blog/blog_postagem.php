@@ -1,50 +1,40 @@
 <?php
-
-/*\
- *
- * funcionalidades/blog/blog_postagem.php
- *
-\*/
 	require_once("../../cfg.php");
 	require_once("../../bd.php");
 	require_once("../../funcoes_aux.php");
 	require_once("../../reguaNavegacao.class.php");
 	require_once("../../usuarios.class.php");
 	require_once("blog.class.php");
-//	require_once("verifica_user.php");
-//	require_once("visualizacao_blog.php");
 
-	session_start();
+$usuario = usuario_sessao();
+if (!$usuario) { die("voce nao esta logado"); }
 
-	$usuario = new Usuario();
-	$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$turma = (int)(isset($_GET['turma']) ? $_GET['turma'] : 0);
+$permissoes = checa_permissoes(TIPOBLOG, $turma);
+if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
-	$turma = (int)(isset($_GET['turma']) ? $_GET['turma'] : 0);
-	$permissoes = checa_permissoes(TIPOBLOG, $turma);
-	if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-	
-	if (!$usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
-		die("Adicionar posts esta desabilitado para a sua turma. Voce nem deveria estar vendo esse erro.");
-	}
+if (!$usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
+	die("Adicionar posts esta desabilitado para a sua turma. Voce nem deveria estar vendo esse erro.");
+}
 
-	$blog_id = isset($_GET['blog_id']) ? (int)$_GET['blog_id'] : die("não foi fornecido id de blog");
-	$blog = new Blog($blog_id, $turma);
-	$post_id = isset($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
-	$post = new Post();
-	
-	
-	if($post_id!=0) {
-		$post->open($post_id);
-		$edita = true;
-		$tags = str_replace(', ',';', $post->printPostTags($post->getPostTags($post->id, 1)));
-	} else {
-		$edita = false;
-		$tags = '';
-	}
-	
-	
-	$funcionalidade_tipo = $blog->getTipo();
-	$funcionalidade_id = $blog->getId();
+$blog_id = isset($_GET['blog_id']) ? (int)$_GET['blog_id'] : die("não foi fornecido id de blog");
+$blog = new Blog($blog_id, $turma);
+$post_id = isset($_GET['post_id']) ? (int)$_GET['post_id'] : 0;
+$post = new Post();
+
+
+if($post_id!=0) {
+	$post->open($post_id);
+	$edita = true;
+	$tags = str_replace(', ',';', $post->printPostTags($post->getPostTags($post->id, 1)));
+} else {
+	$edita = false;
+	$tags = '';
+}
+
+
+$funcionalidade_tipo = $blog->getTipo();
+$funcionalidade_id = $blog->getId();
 ?>
 <!DOCTYPE html>
 <html>
@@ -394,8 +384,8 @@ function Init() {
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<form name="fConteudo" method="post" action="_blog_escreve_postagem.php" onsubmit="javascript:gravaConteudo();">
 			<div class="bts_cima">
-			<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
-			<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 				<div id="info_post" class="bloco">
 					<input type="hidden" name="blog_id" value="<?=$blog_id?>" />
@@ -423,9 +413,10 @@ function Init() {
 						<li><iframe class="blog_info" id="iView" style="border:solid 1px #74d3ed; background-color:#fff; height:400px"></iframe></li>
 					</ul>
 				</div>
+			<div style="clear:both"><!-- um terrivel hack porque a margem do de baixo não funciona logo apos um elemento em float --></div>
 			<div class="bts_baixo">
-			<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
-			<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<a href="javascript:history.go(-1)"><img src="../../images/botoes/bt_cancelar.png" align="left"/></a>
+				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 		</form>
 		<div style="clear:both;"></div>

@@ -10,7 +10,7 @@ function atualiza(str){ //função que atualiza os ajustes da tela sem interrup�
 }
 
 function ajusta(){
-
+	console.log((window.document.getElementById("conteudo").offsetHeight) - 23 + "px");
 	document.getElementById("conteudo_meio").style.height = (window.document.getElementById("conteudo").offsetHeight) - 23 + "px";
 		//document.getElementById('comentarios').style.marginTop = (pegaScroll()) - document.getElementById('comentarios').offsetHeight/2 + 'px';
 		//document.getElementById('light_box').style.marginTop = (pegaScroll()) + 'px';

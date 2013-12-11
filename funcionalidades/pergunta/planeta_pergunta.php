@@ -61,7 +61,7 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 	<div id="ajuda">
 		<div id="ajuda_meio">
 			<div id="ajudante">
-				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
+				<div id="personagem"><img src="../../images/desenhos/ajudante.png" height="145" align="left" alt="Ajudante" /></div>
 				<div id="rel"><p id="balao">O Planeta Pergunta é uma funcionalidade que permite a criação de questionários com exercícios que podem variar entre Perguntas, Verdadeiro ou Falso e Múltipla Escolha. </p></div>
 			</div>
 		</div>

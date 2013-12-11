@@ -302,12 +302,14 @@ class Blog {
 
 		if(!$q->itens){// Não tem blog, precisa criar
 			if($id === "meu_blog"){
-				$this->setTitle("Meu Blog");
+				$this->setTitle("Meu Webfólio");
 				$this->setOwnersIds(array($userId));
 				$this->setTipo(1);
 				$this->setTurma($turma);
 
 				$this->salvarBlog();
+			}else{
+				die("Ops, aconteceu um erro (o dono do webf&oacute;lio ainda n&atildeo entrou nele), tente novamente mais tarde.");
 			}
 		}else{
 			$this->setExiste(1);

@@ -8,7 +8,7 @@ require_once("cfg.php");
 require_once("bd.php");
 //require_once("class/planeta.php");
 
-
+if (class_exists('Usuario') != true){
 class Usuario { //estrutura para o item post do blog
 	var $id = 0;
 	var $user = "";
@@ -72,7 +72,7 @@ class Usuario { //estrutura para o item post do blog
 	public function getName()		{return $this->name;}
 	public function getEmail()		{return $this->email;}
 	public function getPersonagemId(){return $this->personagemId;}
-	private function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
+	public function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
 	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}
@@ -190,7 +190,6 @@ class Usuario { //estrutura para o item post do blog
 										WHERE TU.codUsuario = ".($this->id)."
 										GROUP BY P.Nome");
 		
-		//print_r($conexaoIdsPlanetas);
 		$planetasInseridos = 0;
 		for($i=0; $i<$conexaoIdsPlanetas->registros; $i++){
 			$planeta = Planeta::getPorId($conexaoIdsPlanetas->resultado['Id']);
@@ -308,4 +307,5 @@ class Usuario { //estrutura para o item post do blog
 		$con->solicitar("SELECT '1' FROM TurmasUsuario WHERE codUsuario='$usuario' AND codTurma='$turma'");
 		return ($con->registros > 0);
 	}
+}
 }

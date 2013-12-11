@@ -49,7 +49,7 @@ class reguaNavegacao {
 		global $tabela_terrenos;
 		global $tabela_usuarios;
 		global $tabela_personagens;
-        global $linkServidor;
+		global $linkServidor;
 		
 		$this->nomesNiveis = array();
 		$this->linksNiveis = array();

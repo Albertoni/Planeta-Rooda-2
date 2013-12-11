@@ -84,12 +84,12 @@ if($perm == false){
 ***************************** -->
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
-			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" style="float:right" >
+				<img src="../../images/botoes/bt_postagem.png" border="0"/>
 			</a>
 		</div>&nbsp;<!--NÃO REMOVA ESSE NON-BREAKING SPACE-->
 <?php
-if(sizeof($_SESSION['SS_turmas']) > 1){
+if(sizeof($user->getTurmas()) > 1){
 	selecionaTurmas($turma);
 }
 ?>
@@ -115,7 +115,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 				</h1>
 <?php
 			if(!$user->podeAcessar($perm['portfolio_visualizarPost'], $turma)){
-				die("Voce nao tem permissoes para visualizar posts.");
+				die("Voce nao tem permissoes para visualizar os projetos.");
 			}
 
 			$consulta = new conexao();
@@ -162,8 +162,14 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 									<span class="valor"><?=$consulta->resultado['descricao'] ? $consulta->resultado['descricao'] : "Sem descrição" ?></span>
 								</li>
 <?php
-if ($consulta->resultado['emAndamento']==true)
+if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
+	echo "								<a class=\"encerrar\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
+	&amp;turma=".$consulta->resultado['turma']."\">[Editar projeto]</a>";
+}
+
+if($consulta->resultado['emAndamento']==true){
 	echo "								<a class=\"encerrar\" onclick=\"fechaProjeto($projeto_id, $i);\">[Encerrar projeto]</a>";
+}
 ?>
 							</ul>
 						</div>
@@ -183,8 +189,8 @@ if ($consulta->resultado['emAndamento']==true)
 			</div> <!-- fim da div de id="projetos" -->
 		</div>
 		<div class="bts_baixo">
-			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" align="right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0" align="right"/>
+			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" style="float:right" >
+				<img src="../../images/botoes/bt_postagem.png" border="0"/>
 			</a>
 		</div>
 		<div style="clear:both;"></div>
