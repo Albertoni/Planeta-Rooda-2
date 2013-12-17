@@ -153,12 +153,12 @@ exports.AJAXSubmit = (function () {
 })();
 
 exports.AJAXOpen = function (url, handler) {
-	var oAjaxReq = new XMLHttpRequest();
-	if (typeof handler === "function") {
-		oAjaxReq.onreadystatechange = handler;
-	}
-	oAjaxReq.open("GET",url);
-	oAjaxReq.send();
+  var oAjaxReq = new XMLHttpRequest();
+  if (typeof handler === "function") {
+    oAjaxReq.onreadystatechange = handler;
+  }
+  oAjaxReq.open("GET",url);
+  oAjaxReq.send();
 };
 
 // AJAXGet("http://google.com/", { success: function () { alert("success"); }, fail: function () { alert("fail"); } });
@@ -169,7 +169,7 @@ exports.AJAXGet = function (url, handlers) {
       // requisição em andamento, não fazer nada.
       return;
     }
-    if (this.status === 200) {
+    if (this.status === 200 && this.status < 400) {
       if (typeof handlers.success === 'function')
       {
         handlers.success.call(this);
@@ -188,6 +188,23 @@ exports.AJAXPost = function(url,handler,dataObject) {
   var i, values = [], body = "", oAjaxReq = new XMLHttpRequest();
   if (typeof handler === "function") {
     oAjaxReq.onreadystatechange = handler;
+  } else {
+    oAjaxReq.onreadystatechange = function () {
+      if (this.readyState !== this.DONE) {
+        // requisição em andamento, não fazer nada.
+        return;
+      }
+      if (this.status >= 200 && this.status < 400) {
+        if (typeof handler.success === 'function')
+        {
+          handler.success.call(this);
+        }
+      } else {
+        if (typeof handler.fail === 'function') {
+          handler.fail.call(this);
+        }
+      }
+    }
   }
   if (typeof dataObject === "object") {
     for (i in dataObject) {
@@ -199,6 +216,7 @@ exports.AJAXPost = function(url,handler,dataObject) {
   body = values.join("&");
   oAjaxReq.open("POST",url);
   oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+  oAjaxReq.setRequestHeader("Connection", "close");
   oAjaxReq.send(body);
 }
 }(window));

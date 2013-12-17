@@ -16,7 +16,7 @@ class Material
 	private $autor        = "";   // Não confundir com as duas abaixo, que são quem deu upload. Esse é o autor do material.
 	private $codUsuario   = false;   // Cod do usuário
 	private $usuario      = NULL; // Obj do usuário
-	private $tipo         = ""; // mimetype
+	private $tipo         = ""; // MATERIAL_LINK ou MATERIAL_ARQUIVO
 	private $arquivo      = NULL; // guarda o objeto arquivo (se for arquivo)
 	private $link         = NULL; // quarda o objeto link (se for link)
 	private $data         = 0; // Unix timestamp
@@ -153,6 +153,7 @@ WHERE codMaterial = $id"
 			if ($bd->erro !== '') {
 				$this->erros[] = $bd->erro;
 			}
+			$this->id = (int) $bd->ultimoId();
 			$this->novo = false;
 		}
 		elseif ($this->id) {
@@ -456,6 +457,20 @@ ORDER BY codMaterial DESC";
 		$bd->solicitar(
 			"DELETE FROM $tabela_Materiais WHERE codMaterial = {$this->id}"
 		);
+		switch ($this->tipo) {
+		 	case MATERIAL_ARQUIVO:
+		 		// exclui se nao estiver sendo usado ()
+		 		$this->arquivo->excluir();
+		 		break;
+		 	
+		 	case MATERIAL_LINK:
+		 		# code...
+		 		break;
+		 	
+		 	default:
+		 		# code...
+		 		break;
+		}
 	}
 }
 ?>

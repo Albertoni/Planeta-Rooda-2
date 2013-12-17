@@ -1,112 +1,105 @@
 <?php
-class Comment {
-	var $id = 0;
-	var $postId = 0;
-	var $userId = 0;
-	var $text = 0;
-	var $date = '';
-	var $author = "?";
-	var $e = false; // ERROS VÃO AQUI
-
-	function open($id_comment) {
-		global $tabela_biblioComentarios;
-		$q = new conexao();
-		$q->solicitar("SELECT * FROM $tabela_biblioComentarios WHERE codComentario = $id_comment");
-		if(isset($q->itens[0])) {
-			$a = $q->itens[0];
-			$this->id = $a['codComentario'];
-			$this->postId = $a['codMaterial'];
-			$this->userId = $a['codUsuario'];
-			$this->text = $a['comentario'];
-			$this->date = $a['data'];
-			$this->author = new Usuario();
-			$this->author->openUsuario($this->userId);
+require_once("../../cfg.php");
+require_once("../../bd.php");
+class Comentario {
+	// TABELA ONDE FICAM GUARDADOS OS COMENTÁRIOS -------------
+	public static $tabelaBD = "";
+	// --------------------------------------------------------
+	protected $id = false;
+	protected $idRef = false;
+	protected $idUsuario = false;
+	protected $mensagem = '';
+	protected $data;
+	private $salvo = false; // flag: se alguma mudança foi feita e não foi salva.
+	private $consultaRef = false;
+	public function __construct($id = false) {
+		if (!(Comentario::$tabelaBD)) {
+			throw new Exception('"Comentario::$tabelaBD" não está definida');
+		}
+		if ($id) {
+			$this->abrir($id);
+		}
+	}
+	public function abrir($id) {
+		if (!is_integer($id))
+			throw new Exception("Error Processing Request");
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT * FROM " . Comentario::$tabelaBD . " WHERE id = $id"
+		);
+		if ($bd->erro)
+			throw new Exception("Erro na consulta: " . $bd->erro, 1);
+		if ($bd->registros !== 1)
+			return;
+		$this->carregaAssoc($bd->resultado);
+	}
+	public function abrirComentarios($idRef) {
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT * FROM " . Comentario::$tabelaBD . " WHERE idRef = $idRef"
+		);
+		if ($bd->erro)
+			throw new Exception("Erro na consulta: " . $bd->erro, 1);
+		$this->consultaRef = $bd;
+		$this->carregaAssoc($bd->resultado);
+	}
+	public function proximo() {
+		if ($this->consultaRef === false)
+			throw new Exception("Nenhuma referencia aberta");
+		$this->consultaRef->proximo();
+		$this->carregaAssoc($this->consultaRef->resultado);
+	}
+	public function setUsuario($idUsuario) {
+		if ($this->id !== false)
+			throw new Exception("Não pode mudar o usuário de uma mensagem existente.");
+		if (is_object($idUsuario))
+			if (get_class($idUsuario) === 'Usuario')
+				$idUsuario = $idUsuario->getId();
+		if (!is_integer($idUsuario)) 
+			throw new Exception("Usuário inválido");
+		$this->idUsuario = $idUsuario;
+	}
+	public function setIdRef($idRef) {
+		if ($this->id !== false)
+			throw new Exception("Não pode mudar idRef de mensagem existente.");
+		if (!is_integer($idRef))
+			throw new Exception("Error Processing Request", 1);
+		$this->idRef = $idRef;
+	}
+	public function setMensagem($mensagem) {
+		$this->mensagem = (string) $mensagem;
+		$this->salvo = false;
+	}
+	public function salvar() {
+		if ($this->salvo)
+			return;
+		if ($this->id === false) {
+			$this->data = time();
+			$bd = new conexao();
+			$mensagemSql = $bd->sanitizaString($this->mensagem);
+			$bd->solicitar(
+				"INSERT INTO " . Comentario::$tabelaBD . " (idRef, idUsuario, mensagem, data)
+				VALUES ({$this->idRef}, {$this->idUsuario}, '{$mensagemSql}', {$this->data})"
+			);
+			if ($bd->erro)
+				throw new Exception("Erro na consulta: " . $bd->erro, 1);
 		} else {
-			$this->e = "Id informado não existe na tabela de comentarios";
+			$bd = new conexao();
+			$mensagemSql = $bd->sanitizaString($this->mensagem);
+			$bd->solicitar(
+				"UPDATE " . Comentario::$tabelaBD . "
+				SET mensagem = '{$mensagemSql}' WHERE id = {$this->id}"
+			);
 		}
 	}
-
-	function save() {
-		global $tabela_biblioComentarios;
-		$q = new conexao();
-		if($this->id == 0) {
-			$q->inserir($this->toDBArray(),$tabela_biblioComentarios);
-			$this->id = $q->ultimo_id();
-		} else
-			$q->atualizar($this->id,$this->toDBArray(),$tabela_biblioComentarios);
-	}
-
-	function toDBArray() {
-		unset($dados);
-		$dados['codComentario']	= $this->id;
-		$dados['codMaterial']	= $this->postId;
-		$dados['codUsuario']	= $this->userId;
-		$dados['comentario']	= $this->text;
-		$dados['data']			= $this->date;
-		return($dados);
-	}
-	
-	function Comment($id=0, $desenho_id="", $user_id="", $text="", $date=""){
-		if($text != ""){
-			$this->id = $id;
-			$this->postId = $desenho_id;
-			$this->userId = $user_id;
-			$this->text = $text;
-			$this->date = $date;
-			$this->author = new Usuario();
-			if($this->userId != "")
-				$this->author->openUsuario($this->userId);
-		}
-	}
-	
-	function getDate($format="d/m/Y H:i:s") {
-		if($format=="")
-			$r = $this->date;
-		else
-			$r = date($format,strtotime($this->date));
-		return $r;
-	}
-
-	function setId($id)	{$this->id = $id;}
-
-	function getId()	{return $this->id;}
-	function getText()	{return $this->text;}
-	function getAuthor(){return $this->author;}
-	function getUserId(){return $this->userId;} // Necessário pra deletar comments
-}
-
-class listaComment{
-	var $lista = array();
-	var $tamLista = 0;
-	var $titulo = "";
-	var $id = 0;
-	
-	private function setId($id){$this->id = $id;}
-	public function getId(){return $this->id;}
-	
-	function listaComment($idPost){
-		global $tabela_biblioComentarios;
-		$this->setId($idPost);
-		$pegador = new conexao();
-		$pegador->solicitar("SELECT codComentario FROM $tabela_biblioComentarios WHERE codMaterial = $idPost"); // Pega todos os comentários
-		for ($i=0; $i < $pegador->registros; $i++){
-			$this->lista[$i] = new Comment();
-			$this->lista[$i]->open($pegador->resultado['codComentario']); // Bota eles em uma lista
-			$pegador->proximo();
-		}
-		$this->tamLista = sizeof($this->lista); // tamanho da lista
-	}
-	
-	function getTitle(){
-		if ($this->titulo === ""){
-			global $tabela_Materiais;
-			$tit = new conexao(); // boobiez
-			$tit->solicitar("SELECT titulo FROM $tabela_Materiais WHERE codMaterial = ".$this->id);
-			$this->titulo = $tit->resultado['titulo'];
-			return $this->titulo;
-		}else{
-			return $this->titulo;
-		}
+	private function carregaAssoc($assoc) {
+		$this->id        = $assoc['id']        ? (int) $assoc['id']        : false;
+		$this->idRef     = $assoc['idRef']     ? (int) $assoc['idRef']     : false;
+		$this->idUsuario = $assoc['idUsuario'] ? (int) $assoc['idUsuario'] : false;
+		$this->mensagem  = $assoc['mensagem'];
+		$this->data      = (int) $assoc['data'];
+		$this->salvo     = true;
 	}
 }
-?>
+Comentario::$tabelaBD = "BibliotecaComentarios";
+print_r(Comentario::$tabelaBD);

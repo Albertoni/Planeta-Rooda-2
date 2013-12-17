@@ -300,5 +300,12 @@ class Usuario { //estrutura para o item post do blog
 		}
 		echo implode(", ", $buffer);
 	}
+	public function pertenceTurma($turma) {
+		$turma = (int) $turma;
+		$usuario = $this->id;
+		$con = new conexao();
+		$con->solicitar("SELECT '1' FROM TurmasUsuario WHERE codUsuario='$usuario' AND codTurma='$turma'");
+		return ($con->registros > 0);
+	}
 }
 }
