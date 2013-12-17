@@ -13,18 +13,6 @@ class Comentario {
 	protected $data = 0;
 	protected $usuario = null;
 	private $salvo = false; // flag: se alguma mudança foi feita e não foi salva.
-	private $consultaRef = false;
-
-	public function getId() { return $this->id; }
-	public function getIdRef() { return $this->idRef; }
-	public function getIdUsuario() { return $this->idUsuario; }
-	public function getMensagem() { return $this->mensagem; }
-	public function getData() { return $this->data; }
-	public function getUsuario() { return $this->usuario; }
-
-	public function existe() {
-		return (bool) ($this->id && $this->salvo);
-	}
 
 	public function __construct($id = false) {
 		if (!(Comentario::$tabelaBD)) {
@@ -34,6 +22,42 @@ class Comentario {
 			$this->abrir($id);
 		}
 	}
+
+	// retorna o numero de comentarios no objeto
+	public static function numeroComentarios($idRef) {
+		$idRef = (int) $idRef;
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD . " WHERE idRef = $idRef"
+		);
+		return (int) $bd->resultado['num'];
+	}
+
+	// propriedades do objeto voltam ao valor inicial
+	private function limpa() {
+		$this->salvo = false;
+		$this->id = false;
+		$this->idRef = false;
+		$this->idUsuario = false;
+		$this->mensagem = '';
+		$this->data = 0;
+		$this->usuario = null;
+		$this->salvo = false;
+		//$this->consultaRef = false;
+	}
+
+	// retorna true se o objeto está no banco de dados (se ele tiver um id)
+	public function existe() {
+		return (bool) ($this->id);
+	}
+
+	public function getId() { return $this->id; }
+	public function getIdRef() { return $this->idRef; }
+	public function getIdUsuario() { return $this->idUsuario; }
+	public function getMensagem() { return $this->mensagem; }
+	public function getData() { return $this->data; }
+	public function getUsuario() { return $this->usuario; }
+
 	public function abrir($id) {
 		if (!is_integer($id))
 			throw new Exception("Error Processing Request");
@@ -43,18 +67,13 @@ class Comentario {
 		);
 		if ($bd->erro)
 			throw new Exception("Erro na consulta: " . $bd->erro);
-		if ($bd->registros !== 1)
+		if ($bd->registros !== 1) {
+			$this->limpa();
 			return;
+		}
 		$this->carregaAssoc($bd->resultado);
 	}
-	public static function numeroComentarios($idRef) {
-		$idRef = (int) $idRef;
-		$bd = new conexao();
-		$bd->solicitar(
-			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD . " WHERE idRef = $idRef"
-		);
-		return (int) $bd->resultado['num'];
-	}
+
 	public function abrirComentarios($idRef, $ultimoId = 0) {
 		$idRef = (int) $idRef;
 		$ultimoId = (int) $ultimoId;
@@ -70,14 +89,16 @@ class Comentario {
 			$this->carregaAssoc($bd->resultado);
 		}
 	}
+
 	public function proximo() {
 		if ($this->consultaRef === false)
 			throw new Exception("Nenhuma referencia aberta");
 		$this->consultaRef->proximo();
 		$this->carregaAssoc($this->consultaRef->resultado);
 	}
+
 	public function setUsuario($idUsuario) {
-		if ($this->id !== false)
+		if ($this->existe())
 			throw new Exception("Não pode mudar o usuário de uma mensagem existente.");
 		if (is_object($idUsuario))
 			if (get_class($idUsuario) === 'Usuario')
@@ -92,21 +113,25 @@ class Comentario {
 		$this->usuario = $usuario;
 		$this->idUsuario = $usuario->getId();
 	}
+
 	public function setIdRef($idRef) {
-		if ($this->id !== false)
+		if ($this->existe())
 			throw new Exception("Não pode mudar idRef de mensagem existente.");
 		if (!is_integer($idRef))
 			throw new Exception("Error Processing Request");
 		$this->idRef = $idRef;
 	}
+
 	public function setMensagem($mensagem) {
 		$this->mensagem = trim($mensagem);
 		$this->salvo = false;
 	}
+
 	public function salvar() {
 		if ($this->salvo)
 			return;
-		if ($this->id === false) {
+		if ($this->existe() === false) {
+			// se o comentario nao existe, cria ele no banco de dados e atribue um id.
 			$this->data = time();
 			$bd = new conexao();
 			$mensagemSql = $bd->sanitizaString($this->mensagem);
@@ -119,6 +144,7 @@ class Comentario {
 			$this->id = (int) $bd->ultimoId();
 			$this->salvo = true;
 		} else {
+			// se o comentario existe, atualiza ele.
 			$bd = new conexao();
 			$mensagemSql = $bd->sanitizaString($this->mensagem);
 			$bd->solicitar(
@@ -127,12 +153,11 @@ class Comentario {
 			);
 			if ($bd->erro)
 				throw new Exception("Erro na consulta: " . $bd->erro, 1);
+			$this->salvo = true;
 		}
 	}
 	private function carregaAssoc($assoc) {
-		if (!is_array($assoc)) {
-			$this->limpa();
-		}
+		$this->limpa();
 		$this->idRef     = isset($assoc['idRef'])     ? (int) $assoc['idRef']     : false;
 		if (isset($assoc['idUsuario'])) {
 			$this->setUsuario((int) $assoc['idUsuario']);
@@ -140,21 +165,10 @@ class Comentario {
 			$this->idUsuario = false;
 			$this->usuario = null;
 		}
-		$this->mensagem  = isset($assoc['mensagem'])  ?  trim($assoc['mensagem'])  : '';
+		$this->mensagem  = isset($assoc['mensagem'])  ?  trim($assoc['mensagem']) : '';
 		$this->data      = isset($assoc['data'])      ? (int) $assoc['data']      : 0;
 		$this->id        = isset($assoc['id'])        ? (int) $assoc['id']        : false;
 		$this->salvo     = true;
-	}
-	private function limpa() {
-		$this->salvo = false;
-		$this->id = false;
-		$this->idRef = false;
-		$this->idUsuario = false;
-		$this->mensagem = '';
-		$this->data = 0;
-		$this->usuario = null;
-		$this->salvo = false;
-		$this->consultaRef = false;
 	}
 	public function getAssoc() {
 		if (!$this->salvo) {
