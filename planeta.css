@@ -356,6 +356,7 @@ ul.listaFun li a {
 .bloco h1 .bt_fechar {
 	margin: 5px 5px;
 }
+.comentario button[name=excluir],
 .bt_fechar,
 .bt_excluir {
 	background: transparent url('images/botoes/bt_x.png') no-repeat top left;
@@ -369,4 +370,27 @@ ul.listaFun li a {
 	overflow: hidden;
 	text-indent: -999px;
 	vertical-align: middle;
+}
+
+.comentarios {
+	background: #EEF5F5;
+	max-height: 230px;
+	overflow-y: auto;
+}
+.comentarios > h1 {
+	background: #53686F;
+	color: #fff;
+	margin: 0;
+	padding: 0;
+}
+.comentarios > ul {
+	margin: 0;
+	padding: 1px;
+}
+.comentarios > ul > li {
+	margin: 0;
+	padding: 1px;
+}
+.comentarios > ul > li:nth-child(2n) {
+	background: #cdf4f4;
 }
