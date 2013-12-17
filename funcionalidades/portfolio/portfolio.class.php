@@ -12,32 +12,33 @@ class post{
 	private $dataCriacao;
 	private $dataUltMod;
 
-	function salvar($conexao = NULL){
+	function salvar(){
 		$q = new conexao();
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioPosts SET 
-				projeto_id = '$projeto_id',
-				user_id = '$user_id',
-				titulo = '$titulo',
-				texto = '$texto',
-				tags = '$tags',
-				dataCriacao = '$dataCriacao',
-				dataUltMod = '$dataUltMod'
-			WHERE id = '$id'";
+				projeto_id = '$this->projeto_id',
+				user_id = '$this->user_id',
+				titulo = '$this->titulo',
+				texto = '$this->texto',
+				tags = '$this->tags',
+				dataCriacao = '$this->dataCriacao',
+				dataUltMod = '$this->dataUltMod'
+			WHERE id = '$this->id'";
 		}else{
 			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
-				'$projeto_id',
-				'$user_id',
-				'$titulo',
-				'$texto',
-				'$tags',
-				'$dataCriacao',
-				'$dataUltMod')";
+				'$this->projeto_id',
+				'$this->user_id',
+				'$this->titulo',
+				'$this->texto',
+				'$this->tags',
+				'$this->dataCriacao',
+				'$this->dataUltMod')";
 		}
 		
+		$q->solicitar($query);
 		if($q->erro == ""){
-			# code...
+			die("N&atilde;o foi possivel SALVAR o post de id '$this->id'.");
 		}
 	}
 }
@@ -46,8 +47,8 @@ class post{
 class projeto{
 	private $id = 0;
 	private $title = "";
-	private $dataInicio;
-	private $dataFim;
+	private $dataCriacao;
+	private $dataEncerramento;
 	private $ownersIds = array();
 
 	private $posts = array();
@@ -59,16 +60,16 @@ class projeto{
 	function __construct(	$id = 0,
 							$title = "",
 							$palavras = "",
-							$dataInicio = 0;
-							$dataFim = 0;
+							$dataCriacao = 0;
+							$dataEncerramento = 0;
 							$ownersIds = array()
 						){
 		if($id === 0){
 			$this->id = 0;
 			$this->title = $title;
 			$this->palavras = $palavras;
-			$this->dataInicio = $dataInicio;
-			$this->dataFim = $dataFim;
+			$this->dataCriacao = $dataCriacao;
+			$this->dataEncerramento = $dataEncerramento;
 			$this->ownersIds = $ownersIds;
 		}else{
 			$this->carrega($id);
@@ -84,8 +85,8 @@ class projeto{
 			$this->id = $idProjeto;
 			$this->title = $q->resultado['titulo'];
 			$this->palavras = $q->resultado['tags'];
-			$this->dataInicio = $q->resultado['dataCriacao'];
-			$this->dataFim = $q->resultado['dataEncerramento'];
+			$this->dataCriacao = $q->resultado['dataCriacao'];
+			$this->dataEncerramento = $q->resultado['dataEncerramento'];
 			$this->ownersIds = explode(",", $q->resultado['owner_ids']);
 			$this->existe = 1;
 
@@ -120,15 +121,35 @@ class projeto{
 		$q = new conexao();
 
 		if($this->existe){
-			$query = "UPDATE $tabela_portfolioPosts SET 
-			projeto_id = ,
-			user_id = ,
-			titulo = ,
-			texto = ,
-			tags = ,
-			"
+			$query = "UPDATE $tabela_portfolioProjetos SET 
+				titulo = $this->title,
+				tags = ".implode(',', $this->palavras).",
+				owner_id = ".implode(',', $this->ownersIds).",
+				dataCriacao = $this->dataCriacao,
+				dataEncerramento = $this->dataEncerramento,
+				turma = $this->turma
+			WHERE
+				id = $this->id";
 		}else{
-			# code...
+			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
+				'$this->id',
+				'$this->titulo',
+				'".implode(',', $this->palavras)."',
+				'1',
+				'$this->dataCriacao',
+				'$this->dataEncerramento',
+				'".implode(',', $this->ownersIds)."',
+				'$this->turma')";
+		}
+		
+		if($q->erro == ""){
+			$numeroPosts = count($this->posts);
+
+			for($i=0; $i < $numeroPosts; $i++){
+				$this->posts[$i]->salvar();
+			}
+		}else{
+			die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
 		}
 		
 	}
