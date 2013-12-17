@@ -8,6 +8,7 @@ require_once("../../reguaNavegacao.class.php");
 $usuario = usuario_sessao();
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 if (!$usuario) { die("voce nao esta logado"); }
+if (!$usuario->pertenceTurma($turma)) { die("voce nao esta nessa turma"); }
 $assocUsuario = $usuario->getSimpleAssoc();
 ?>
 <!DOCTYPE html>
@@ -119,7 +120,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			<div id="conteudo_base"></div><!-- para a imagem de fundo da base -->
 		</div>
 		<!-- JAVASCRIPT -->
-		<script src="../../jquery-1.10.2.min.js"></script>
 		<script src="../../js/rooda.js"></script>
 		<script src="../../js/ajax.js"></script>
 		<script src="../../js/ajaxFileManager.js"></script>
@@ -193,5 +193,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		<script src="../../jquery.js"></script>
 		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
+		<script src="../../comentarios.js"></script>
 	</body>
 </html>
