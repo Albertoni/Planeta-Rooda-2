@@ -169,7 +169,7 @@ exports.AJAXGet = function (url, handlers) {
       // requisição em andamento, não fazer nada.
       return;
     }
-    if (this.status === 200 && this.status < 400) {
+    if (this.status === 200) {
       if (typeof handlers.success === 'function')
       {
         handlers.success.call(this);
@@ -189,12 +189,13 @@ exports.AJAXPost = function(url,handler,dataObject) {
   if (typeof handler === "function") {
     oAjaxReq.onreadystatechange = handler;
   } else {
-    oAjaxReq.onreadystatechange = function () {
+    oAjaxReq.onreadystatechange = function (e) {
+      e = e || event;
       if (this.readyState !== this.DONE) {
         // requisição em andamento, não fazer nada.
         return;
       }
-      if (this.status >= 200 && this.status < 400) {
+      if (this.status === 200) {
         if (typeof handler.success === 'function')
         {
           handler.success.call(this);
@@ -220,3 +221,65 @@ exports.AJAXPost = function(url,handler,dataObject) {
   oAjaxReq.send(body);
 }
 }(window));
+
+
+var AJAX = {};
+(function (exports) {
+exports.post = function(url, dataObject, handler) {
+  var i, values = [], body = "", oAjaxReq = new XMLHttpRequest();
+  if (typeof handler === "function") {
+    oAjaxReq.onreadystatechange = handler;
+  } else {
+    oAjaxReq.onreadystatechange = function (e) {
+      e = e || event;
+      if (this.readyState !== this.DONE) {
+        // requisição em andamento, não fazer nada.
+        return;
+      }
+      if (this.status === 200) {
+        if (typeof handler.success === 'function')
+        {
+          handler.success.call(this);
+        }
+      } else {
+        if (typeof handler.fail === 'function') {
+          handler.fail.call(this);
+        }
+      }
+    }
+  }
+  if (typeof dataObject === "object") {
+    for (i in dataObject) {
+      if (dataObject.hasOwnProperty(i)) {
+        values.push(encodeURIComponent(i) + "=" + encodeURIComponent(dataObject[i]));
+      }
+    }
+  }
+  body = values.join("&");
+  oAjaxReq.open("POST",url);
+  oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
+  oAjaxReq.setRequestHeader("Connection", "close");
+  oAjaxReq.send(body);
+}
+exports.get = function (url, handlers) {
+  var oAjaxReq = new XMLHttpRequest();
+  oAjaxReq.onreadystatechange = function () {
+    if (this.readyState !== this.DONE) {
+      // requisição em andamento, não fazer nada.
+      return;
+    }
+    if (this.status === 200) {
+      if (typeof handlers.success === 'function')
+      {
+        handlers.success.call(this);
+      }
+    } else {
+      if (typeof handlers.fail === 'function') {
+        handlers.fail.call(this);
+      }
+    }
+  }
+  oAjaxReq.open("GET",url);
+  oAjaxReq.send();
+};
+}(AJAX));

@@ -80,7 +80,7 @@ ul#ul_materiais li h2 {
 	margin: 0;
 	padding: 0;
 }
-ul#ul_materiais li:nth-child(2n+1) {
+ul#ul_materiais > li:nth-child(2n+1) {
 	background: #cdf4f4;
 }
 ul#ul_materiais li.nao_aprovado {
