@@ -1,46 +1,39 @@
 <?php
-
+// ARQUIVO GERAL PARA TODAS AS FUNCIONALIDADES, VERIFIQUE O ARQUIVO DE MESMO NOME NA FUNCIONALIDADE DESEJADA
 if (!class_exists("Comentario") || !function_exists("turmaDaRef")) {
 	exit("Uso inadequado.");
 }
-
 /** 
 * permissoesComentarios(@param idUsuario, @param idTurma)
+* -- retorna uma array associativa com as permissoes do usuario
 * @return array(
 *         	'visualizar' => bool,
 *         	'comentar' => bool, 
 *         	'excluir' => bool
 *         )
-*/ 
+*/
 function permissoesComentarios($usuario,$turma) {
-	global $funcionalidade;
-	global $permissaoVer;
-	global $permissaoComentar;
-	global $permissaoExcluir;
-	global $json;
-
 	if (is_numeric($usuario)) {
 		$usuario_id = (int) $usuario;
 		$usuario = new Usuario();
 		$usuario->openUsuario($usuario_id);
 	}
-
 	if (!is_object($usuario))
 		throw new Exception("Error Processing Request", 1);
 
 	if (get_class($usuario) !== 'Usuario')
 		throw new Exception("Error Processing Request", 1);
-	
+
 	$return  = array('ver' => false, 'comentar' => false, 'excluir' => false);;
-	$perm = checa_permissoes($funcionalidade, $turma);
+	$perm = checa_permissoes(FUNCIONALIDADE, $turma);
 	if ($perm) {
-		if ($usuario->podeAcessar($perm[$permissaoVer], $turma)) {
+		if ($usuario->podeAcessar($perm[PERM_COMENT_VER], $turma)) {
 			$return['ver'] = true;
 		}
-		if ($usuario->podeAcessar($perm[$permissaoComentar], $turma)) {
+		if ($usuario->podeAcessar($perm[PERM_COMENT_INSERIR], $turma)) {
 			$return['comentar'] = true;
 		}
-		if ($usuario->podeAcessar($perm[$permissaoExcluir], $turma)) {
+		if ($usuario->podeAcessar($perm[PERM_COMENT_EXCLUIR], $turma)) {
 			$return['excluir'] = true;
 		}
 	}
@@ -66,12 +59,13 @@ $mensagem = isset($_POST['mensagem']) ? trim($_POST['mensagem']) : "";
 
 // keep it simple, stupid!
 switch ($acao) {
-	// retorna usuario com permissoes nos comentarios
-	case 'verificar':
+	// retorna usuario com permissoes de comentario na turma/funcionalidade
+	case 'permissoes':
 		$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 		$json['usuario']['permissoes'] = $permissoesComentarios($usuario, $turma);
 		break;
 
+	// retorna lista de comentarios do recurso
 	case 'listar':
 		$turma = turmaDaRef($idRef);
 		if (!$usuario->pertenceTurma($turma)) {
@@ -83,12 +77,13 @@ switch ($acao) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
 		}
+		$ultimo = isset($_GET['ultimo']) ? (int) $_GET['ultimo'] : 0;
 		$json['idRef'] = $idRef;
 		$json['turma'] = $turma;
 		$json['usuario']['permissoes'] = $permissoes;
 		$json['comentarios'] = array();
 		$comentario = new Comentario();
-		$comentario->abrirComentarios($idRef);
+		$comentario->abrirComentarios($idRef, $ultimo);
 		while ($comentario->existe()) {
 			$json['comentarios'][] = $comentario->getAssoc();
 			$comentario->proximo();

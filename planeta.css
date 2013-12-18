@@ -373,17 +373,22 @@ ul.listaFun li a {
 }
 
 .comentarios {
-	background: #EEF5F5;
-	max-height: 230px;
-	overflow-y: auto;
+	background: #A9E2E2;
+	border-radius: 7px;
+}
+.comentarios button {
+	vertical-align: middle;
 }
 .comentarios > h1 {
 	background: #53686F;
+	border-radius: 7px 7px 0 0;
 	color: #fff;
 	margin: 0;
-	padding: 0;
+	padding: 3px 0;
 }
 .comentarios > ul {
+	max-height: 200px;
+	overflow-y: auto;
 	margin: 0;
 	padding: 1px;
 }
@@ -393,4 +398,7 @@ ul.listaFun li a {
 }
 .comentarios > ul > li:nth-child(2n) {
 	background: #cdf4f4;
+}
+.comentarios > ul > li > .info > .data {
+	float: right;
 }

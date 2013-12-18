@@ -252,6 +252,7 @@ var BIBLIOTECA = (function () {
 		this.data = new Date(1000 * obj.data); // javascript trabalha com milissegundos
 		this.aprovado = obj.aprovado;
 		this.HTMLElemento = document.createElement('li');
+		this.HTMLElemento.id = 'material_' + this.id;
 		if (this.tipo === 'arquivo') {
 			var classes = obj.arquivo.tipo.split('/');
 			classes = classes.map(function(e) { return e.split(".").join("-"); });
@@ -294,8 +295,9 @@ var BIBLIOTECA = (function () {
 		this.HTMLLink.target = '_blank';
 		this.atualizarHTML();
 	}
-	Material.prototype = {titulo:'',autor:''};
+	Material.prototype = {id:0,titulo:'',tipo:0,autor:'',usuario:null,};
 	Material.prototype.atualizarHTML = function() {
+		var that = this;
 		if (!this.aprovado) {
 			this.HTMLElemento.classList.add('nao_aprovado');
 		} else {
@@ -324,6 +326,9 @@ var BIBLIOTECA = (function () {
 		this.HTMLAutor.innerHTML = 'Autor: ' + this.autor
 			.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		this.HTMLLink.href = 'abrirMaterial.php?id=' + this.id + '';
+		COMENTARIOS.abrir(this.id, function (comentarios) {
+			$(that.HTMLElemento).append(comentarios)
+		})
 	};
 	//var form_edicao_material = document.getElementById('editar_material');
 	function ulDinamica_onclick(e) {

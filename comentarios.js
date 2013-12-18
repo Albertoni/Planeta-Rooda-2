@@ -1,8 +1,9 @@
 /**
- * COMENTARIOS.open(idRef, callback)
+ * COMENTARIOS.abrir(idRef, callback)
  *  idRef    := number
  *  callback := function (jQuery)
- * COMENTARIOS.send(idRef, mensagem)
+
+ * COMENTARIOS.enviar(idRef, mensagem)
  *  idRef    := number
  *  mensagem := string
  */
@@ -14,8 +15,15 @@ var COMENTARIOS = {};
 		id: 0
 	,	nome: ''
 	};
-	var janelaComentarios = $('<div>').addClass('comentarios');
-	janelaComentarios.append($('<h1>').text('Comentarios')).append($('<ul>'));
+	var janelaComentarios = $('<div>').addClass('comentarios')
+		.append($('<h1>').text('Comentarios'))
+		.append($('<ul>'))
+		.append(
+			$('<form>')
+			.append($('<input>').attr('type', 'text'))
+			.append($('<button>').attr('type', 'submit').addClass('comentar'))
+		);
+
 	function Comentario (obj) {
 		this.html = Comentario.baseHTML.clone();
 		this.id = obj.id;
@@ -43,7 +51,7 @@ var COMENTARIOS = {};
 	Comentario.prototype.atualizaHTML = function () {
 		this.html.attr('id', 'comentario_' + this.id.toString());
 		this.html.contents('.info').contents('.usuario').text(this.usuario.nome);
-		this.html.contents('.info').contents('.data').text('(' + this.data.toLocaleString() + ')');
+		this.html.contents('.info').contents('.data').text(this.data.toLocaleString());
 		this.html.contents('.mensagem').text(this.mensagem);
 		if (usuario.permissoes.excluir)
 			this.html.contents('.info').contents('.excluir').val(this.id);
@@ -56,19 +64,19 @@ var COMENTARIOS = {};
 			$('<p>')
 				.addClass('info')
 				.append(
-					$('<span>').addClass('usuario')
+					$('<button>').addClass('excluir')
+						.text('excluir').attr('name', 'excluir')
 				)
 				.append(
 					$('<span>').addClass('data')
 				)
 				.append(
-					$('<button>').addClass('excluir')
-						.text('excluir').attr('name', 'excluir')
+					$('<span>').addClass('usuario')
 				)
 		)
 		.append($('<p>').addClass('mensagem'));
 
-	exports.open = (function () {
+	exports.abrir = (function () {
 		var callbacks = {};
 		function successHandler() {
 			var json;
@@ -82,11 +90,17 @@ var COMENTARIOS = {};
 			}
 			if (!json.erro) {
 				usuario = json.usuario;
-				loaded[json.idRef] = { html:janelaComentarios.clone(), comentarios:[] };
+				loaded[json.idRef] = { html: janelaComentarios.clone(), comentarios: [] };
+				loaded[json.idRef].html.contents('form').submit(function (event) {
+					event.preventDefault();
+					var input = $(this).contents('input');
+					console.log(input.val());
+					input.val('');
+					input.focus();
+				})
 				json.comentarios.forEach(function (obj) {
 					loaded[json.idRef].comentarios.push(new Comentario(obj));
 				});
-				var janela = janelaComentarios.clone();
 				loaded[json.idRef].comentarios.forEach(function (comentario) {
 					loaded[json.idRef].html.contents('ul').append(comentario.html);
 				})
@@ -101,5 +115,6 @@ var COMENTARIOS = {};
 				{ success: successHandler });
 		}
 	}());
+	exports.enviar(idRef, mensagem)
 	exports.Comentario = Comentario;
 }(COMENTARIOS));

@@ -70,23 +70,23 @@ a.abrir_material {
 	text-indent: -370px;
 	position: relative;
 }
-ul#ul_materiais li {
+ul#ul_materiais > li {
 	position: relative;
 	background: #;
 	margin: 5px;
 	padding: 5px;
 }
-ul#ul_materiais li h2 {
+ul#ul_materiais > li h2 {
 	margin: 0;
 	padding: 0;
 }
 ul#ul_materiais > li:nth-child(2n+1) {
 	background: #cdf4f4;
 }
-ul#ul_materiais li.nao_aprovado {
+ul#ul_materiais > li.nao_aprovado {
 	background: #efdede;
 }
-ul#ul_materiais li.nao_aprovado:nth-child(2n+1) {
+ul#ul_materiais > li.nao_aprovado:nth-child(2n+1) {
 	background: #f2cdcd;
 }
 .arquivo .abrir_material .icon,
