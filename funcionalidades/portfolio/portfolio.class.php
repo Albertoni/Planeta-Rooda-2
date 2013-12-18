@@ -41,6 +41,51 @@ class post{
 			die("N&atilde;o foi possivel SALVAR o post de id '$this->id'.");
 		}
 	}
+	function getId(){return $this->id;}
+	function getIdProjeto(){return $this->projeto_id;}
+	function getIdUsuario(){return $this->user_id;}
+	function getTitulo(){return $this->titulo;}
+	function getTexto(){return $this->texto;}
+	function getTags(){return $this->tags;}
+	function getDataCriacao(){return $this->dataCriacao;}
+	function getDataUltMod(){return $this->dataUltMod;}
+
+	function setId($arg){$this->id = $arg;}
+	function setIdProjeto($arg){$this->projeto_id = $arg;}
+	function setIdUsuario($arg){$this->user_id = $arg;}
+	function setTitulo($arg){$this->titulo = $arg;}
+	function setTexto($arg){$this->texto = $arg;}
+	function setTags($arg){$this->tags = $arg;}
+	function setDataCriacao($arg){$this->dataCriacao = $arg;}
+	function setDataUltMod($arg){$this->dataUltMod = $arg;}
+
+	function geraHtmlPost(){
+		$html = "
+		<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">
+					<ul class=\"sem_estilo\">
+						<li class=\"tabela_port\">
+							<span class=\"titulo\">
+								<div class=\"textitulo\">".$this->titulo."</div>
+							</span>
+							<span class=\"data\">
+								".$this->dataCriacao."
+								<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>
+							</span>
+						</li>
+						<li class=\"tabela_port postagem\">
+						<p>
+							".$this->texto."
+						</p>
+						</li>
+						<li class=\"tabela_port\">
+							<a class=\"bt_abre_coment\" onclick=\"abreComentarios($this->id)\" id=\"abre_coment_$this->id\">Ver comentários</a>
+						</li>
+					</ul>
+				</div>
+		"
+
+		return $html;
+	}
 }
 
 
