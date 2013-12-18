@@ -24,6 +24,43 @@ var COMENTARIOS = {};
 			.append($('<button>').attr('type', 'submit').addClass('comentar'))
 		);
 
+
+	function BoxComentarios (idRef) {
+		this.idRef = idRef;
+		this.Comentarios = [];
+		this.html = BoxComentarios.baseHTML.clone();
+	}
+	BoxComentarios.prototype = {
+		'idRef' : 0
+	,	'ultimo' : 0 // id do ultimo comentario carregado
+	,	'comentarios' : null
+	,	'html' : null
+	,	'intervalId' : 0
+	}
+	BoxComentarios.prototype.baixaComentarios = 
+	function () {
+		var that = this;
+		AJAX.get("comentarios.json.php?acao=listar&idRef=" + parseInt(this.idRef),
+		{ 
+			success: function(e) {} 
+		});
+	}
+	BoxComentarios.prototype.carregaStats = function () {
+		var that = this;
+		AJAX.get('comntarios.json.php?acao=stats&refId=' + parseInt(this.refId),
+		{
+			success: function (e) {}
+		});
+	}
+	BoxComentarios.baseHTML = $('<div>').addClass('comentarios')
+		.append($('<h1>').text('Comentarios'))
+		.append($('<ul>'))
+		.append(
+			$('<form>')
+			.append($('<input>').attr('type', 'text'))
+			.append($('<button>').attr('type', 'submit').addClass('comentar'))
+		);
+
 	function Comentario (obj) {
 		this.html = Comentario.baseHTML.clone();
 		this.id = obj.id;
