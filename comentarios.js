@@ -34,31 +34,32 @@ var COMENTARIOS = {};
 		'idRef' : 0
 	,	'ultimo' : 0 // id do ultimo comentario carregado
 	,	'comentarios' : null
+	,	'numComentarios' : null
 	,	'html' : null
 	,	'intervalId' : 0
 	}
-	BoxComentarios.prototype.baixaComentarios = 
-	function () {
+	BoxComentarios.prototype.baixaComentarios = function () {
 		var that = this;
 		AJAX.get("comentarios.json.php?acao=listar&idRef=" + parseInt(this.idRef),
 		{ 
 			success: function(e) {} 
 		});
-	}
+	};
 	BoxComentarios.prototype.carregaStats = function () {
 		var that = this;
 		AJAX.get('comntarios.json.php?acao=stats&refId=' + parseInt(this.refId),
 		{
 			success: function (e) {}
 		});
-	}
+	};
+	BoxComentarios.prototype.statsReqHandler = function () {};
 	BoxComentarios.baseHTML = $('<div>').addClass('comentarios')
 		.append($('<h1>').text('Comentarios'))
 		.append($('<ul>'))
 		.append(
 			$('<form>')
 			.append($('<input>').attr('type', 'text'))
-			.append($('<button>').attr('type', 'submit').addClass('comentar'))
+			.append($('<button>').text('Enviar').attr('type', 'submit').addClass('comentar'))
 		);
 
 	function Comentario (obj) {

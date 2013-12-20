@@ -64,7 +64,20 @@ switch ($acao) {
 		$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 		$json['usuario']['permissoes'] = $permissoesComentarios($usuario, $turma);
 		break;
-
+	case 'stats':
+		$turma = turmaDaRef($idRef);
+		if (!$usuario->pertenceTurma($turma)) {
+			$json['erro'] = 'Você não tem permissão para acessar esse recurso.';
+			break;
+		}
+		$permissoes = permissoesComentarios($usuario, $turma);
+		if (!$permissoes['ver']) {
+			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
+			break;
+		}
+		$json['usuario']['permissoes'] = $permissoes;
+		$json['idRef'] = $idRef;
+		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
 	// retorna lista de comentarios do recurso
 	case 'listar':
 		$turma = turmaDaRef($idRef);
