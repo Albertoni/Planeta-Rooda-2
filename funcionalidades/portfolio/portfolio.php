@@ -26,6 +26,48 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
+
+function imprimeListaProjetos($nomeDiv, $resultado){
+	global $user; global $perm; global $turma;
+
+	echo "<div id=\"$nomeDiv\">\n";
+	for ($i=0 ; $i < count($resultado) ; $i++){
+		$projeto_id = $resultado['id'];
+?>
+						<div class="cor<?=($i%2)+1?>" id="proj_id<?=$projeto_id?>">
+							<ul class="sem_estilo">
+								<li class="texto_port">
+									<span class="valor">
+										<a class="port_titulo" href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$resultado['turma']?>">
+											<?=$resultado['titulo'] ?>
+										</a>
+									</span>
+								</li>
+								<li class="texto_port">
+									<span class="dados">Autor:</span>
+									<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+								</li>
+								<li>
+									<span class="dados">Descrição:</span>
+									<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+								</li>
+<?php
+if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
+	echo "								<a class=\"encerrar\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
+	&amp;turma=".$resultado['turma']."\">[Editar projeto]</a>\n";
+}
+
+if($resultado['emAndamento']==true){
+	echo "								<a class=\"encerrar\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
+}
+?>
+							</ul>
+						</div>
+<?php
+	}
+	echo "</div>";
+}
+
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -110,8 +152,8 @@ if(sizeof($user->getTurmas()) > 1){
 			</div>
 			<div id="projetos" class="bloco">
 				<h1>
-					<div class="abas_port aberto" id="aba_andamento"> PROJETOS EM ANDAMENTO</div>
-					<div class="abas_port fechado" id="aba_encerrado"> PROJETOS ENCERRADOS</div>
+					<div class="abas_port aberto" id="aba_andamento">MEUS PROJETOS</div>
+					<div class="abas_port fechado" id="aba_encerrado">PROJETOS DOS COLEGAS</div>
 				</h1>
 <?php
 			if(!$user->podeAcessar($perm['portfolio_visualizarPost'], $turma)){
@@ -137,53 +179,17 @@ if(sizeof($user->getTurmas()) > 1){
 				}
 			}
 			
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE $condicao ORDER BY id DESC");
-			
-			
-			$projOpcao = "proj_andamento";
-			for($opcao=1 ; $opcao<=2 ; $opcao++){
-				echo "<div id=\"$projOpcao\">";
-				for ($i=0 ; $i < count($consulta->itens) ; $i++){
-					if ((($opcao==1) and ($consulta->resultado['emAndamento']==true)) or (($opcao==2) and ($consulta->resultado['emAndamento']==false)) ){
-						$projeto_id = $consulta->resultado['id'];
-?>
-						<div class="cor<?=alterna() /*funcoes_aux.php*/?>" id="proj_id<?=$i?>">
-							<ul class="sem_estilo">
-								<li class="texto_port">
-									<span class="valor">
-										<a class="port_titulo" href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$consulta->resultado['turma']?>">
-											<?=$consulta->resultado['titulo'] ?>
-										</a>
-									</span>
-								</li>
-								<li class="texto_port"><span class="dados">Autor:</span><span class="valor"><?=$consulta->resultado['autor'] ?></span></li>
-								<li>
-									<span class="dados">Descrição:</span>
-									<span class="valor"><?=$consulta->resultado['descricao'] ? $consulta->resultado['descricao'] : "Sem descrição" ?></span>
-								</li>
-<?php
-if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
-	echo "								<a class=\"encerrar\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
-	&amp;turma=".$consulta->resultado['turma']."\">[Editar projeto]</a>";
-}
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id = $id_usuario AND turma = $turma ORDER BY id DESC");
+			imprimeListaProjetos("proj_andamento", $consulta->resultado);
 
-if($consulta->resultado['emAndamento']==true){
-	echo "								<a class=\"encerrar\" onclick=\"fechaProjeto($projeto_id, $i);\">[Encerrar projeto]</a>";
-}
-?>
-							</ul>
-						</div>
-<?php
-					}
-					
-					$consulta->proximo();
-				} //fim for de dentro (consulta de itens)
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY id DESC");
+			imprimeListaProjetos("proj_encerrados", $consulta->resultado);
+			
 ?>
 					</div>
 <?php
-				$consulta->primeiro();
-				$projOpcao = "proj_encerrados";
-			}//fim for de fora (troca das opcoes)
+			$consulta->primeiro();
+			$projOpcao = "proj_encerrados";
 ?>
 
 			</div> <!-- fim da div de id="projetos" -->
