@@ -78,12 +78,13 @@ class reguaNavegacao {
 	* Coloca a régua na página, com um simples echo.
 	*/
 	public function imprimir(){
-		echo "<p id=\"hist\">";
+		echo "<p id=\"hist\">\n";
 		foreach($this->nomesNiveis as $nomeNivel){
 			$this->imprimirNivel($nomeNivel, $this->linksNiveis[$nomeNivel], $this->tiposLinksNiveis[$nomeNivel], $this->fecharColorboxNiveis[$nomeNivel]);
-			echo " &gt; ";
+			echo " &gt; \n";
 		}
-		echo "</p>";
+		echo "</p>\n";
+		echo "<a id=\"logout\" href=\"../../index.php?action=log0001\">Sair</a>";
 	}
 	
 	/*
