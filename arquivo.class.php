@@ -250,14 +250,17 @@ class Arquivo {
 		{
 			$this->tamanho = (int) $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
-			$this->setConteudo(fread($arquivo, filesize($FILE['tmp_name'])));
+			$this->setConteudo(fread($arquivo, $FILE['size']));
 			$this->setNome($FILE['name']);
 			$this->setTipo($FILE['type']);
 			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
 		}
 	}
 	// ex: $arquivo->setConteudo($blob);
-	public function setConteudo($conteudo){$this->conteudo = $conteudo; $this->md5 = md5($conteudo); }
+	private function setConteudo($conteudo){
+		$this->conteudo = $conteudo;
+		$this->md5 = md5($conteudo);
+	}
 	public function setTitulo($titulo){$this->titulo = trim($titulo);}
 	public function setNome($nome){$this->nome = trim($nome);}
 	public function setTipo($tipo){$this->tipo = trim($tipo);}
@@ -382,6 +385,15 @@ class Arquivo {
 		$this->limpar();
 		return false;
 	}
+	
+	function baixar($download = true) {
+		header("Content-length: {$this->getTamanho()}");
+		header("Content-type: {$this->getTipo()}");
+		if ($download)
+			header("Content-Disposition: attachment; filename={$this->getNome()}");
+		print $this->getConteudo();
+		return;
+	}
 }
 
 class Imagem extends Arquivo {
@@ -445,7 +457,6 @@ class Imagem extends Arquivo {
 		imagepng($nova_imagem);
 		imagedestroy($nova_imagem); // free(ram);
 	}
-	//function ()
 }
 /* /
 $arquivo = new Arquivo(222);
