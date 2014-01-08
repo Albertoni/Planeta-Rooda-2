@@ -326,9 +326,6 @@ var BIBLIOTECA = (function () {
 		this.HTMLAutor.innerHTML = 'Autor: ' + this.autor
 			.replace(/</g,"&lt;").replace(/>/g,"&gt;");
 		this.HTMLLink.href = 'abrirMaterial.php?id=' + this.id + '';
-		COMENTARIOS.abrir(this.id, function (comentarios) {
-			$(that.HTMLElemento).append(comentarios)
-		})
 	};
 	//var form_edicao_material = document.getElementById('editar_material');
 	function ulDinamica_onclick(e) {
