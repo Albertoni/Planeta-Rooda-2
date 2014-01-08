@@ -192,3 +192,5 @@ input[type="text"] { width:100%}
 #text_post {border:1px solid #74D3ED; background-color:#FFF; height:400px}
 
 #posts > div > .sem_estilo {width:384px; overflow:auto;} /*div de dentro dos posts*/
+
+.corVermelha{background-color:#BBB; border-top: 1px solid black}

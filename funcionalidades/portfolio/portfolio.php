@@ -51,8 +51,10 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 		$resultado = $conexao->resultado;
 
 		$projeto_id = $resultado['id'];
+
+		$cor = $resultado['emAndamento'] == true ? ($i%2)+1 : "Vermelha";
 ?>
-					<div class="cor<?=($i%2)+1?>" id="proj_id<?=$projeto_id?>">
+					<div class="cor<?=$cor?>" id="proj_id<?=$projeto_id?>">
 						<ul class="sem_estilo">
 							<li class="texto_port">
 								<span class="valor">
@@ -202,7 +204,7 @@ if(sizeof($user->getTurmas()) > 1){
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id = $id_usuario AND turma = $turma ORDER BY id DESC");
 			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY id DESC");
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY emAndamento DESC, id DESC");
 			imprimeListaProjetos("proj_encerrados", $consulta, "Seus colegas ainda não fizeram nenhum projeto.");
 ?>
 
