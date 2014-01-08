@@ -27,11 +27,29 @@ if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
-function imprimeListaProjetos($nomeDiv, $resultado){
+function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 	global $user; global $perm; global $turma;
 
+
 	echo "				<div id=\"$nomeDiv\">\n";
-	for ($i=0 ; $i < count($resultado) ; $i++){
+
+	$numItens = count($conexao->itens);
+
+	if ($numItens === 0) {
+		echo "
+					<div class=\"cor1\">
+						<ul class=\"sem_estilo\">
+							<li class=\"texto_port\">
+								$mensagemSemProjetos
+							</li>
+						</ul>
+					</div>
+		";
+	}
+
+	for ($i=0 ; $i < $numItens ; $i++){
+		$resultado = $conexao->resultado;
+
 		$projeto_id = $resultado['id'];
 ?>
 					<div class="cor<?=($i%2)+1?>" id="proj_id<?=$projeto_id?>">
@@ -64,6 +82,8 @@ if($resultado['emAndamento']==true){
 							</ul>
 						</div>
 <?php
+
+	$conexao->proximo();
 	}
 	echo "				</div>\n";
 }
@@ -180,10 +200,10 @@ if(sizeof($user->getTurmas()) > 1){
 			}
 			
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id = $id_usuario AND turma = $turma ORDER BY id DESC");
-			imprimeListaProjetos("proj_andamento", $consulta->resultado);
+			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY id DESC");
-			imprimeListaProjetos("proj_encerrados", $consulta->resultado);
+			imprimeListaProjetos("proj_encerrados", $consulta, "Seus colegas ainda não fizeram nenhum projeto.");
 ?>
 
 			</div> <!-- fim da div de id="projetos" -->
