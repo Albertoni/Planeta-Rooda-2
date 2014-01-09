@@ -75,12 +75,12 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 					<a href="blog.php?id=meu_blog&amp;turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
 				</ul>
 			</div>
-			<div class="bloco" id="blog_coletivo">
+			<!--div class="bloco" id="blog_coletivo">
 				<h1 style="text-indent:8px">WEBFÓLIOS COLETIVOS</h1>
 				<ul class="sem_estilo">
 					<a href="blog_coletivo_lista.php?turma=<?=$turma?>"><img src="images/desenhos/blog_coletivo.png" border="0px" /></a>
 				</ul>
-			</div>
+			</div-->
 			<div class="bloco" id="outros_blogs">
 				<h1>OUTROS WEBFÓLIOS</h1>
 				<ul class="sem_estilo">

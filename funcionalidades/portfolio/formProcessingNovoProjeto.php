@@ -14,7 +14,7 @@ if($permissoes === false){
 	die("Os Projetos est&atilde;o desabilitados para a sua turma.");
 }
 
-global nivelProfessor;
+global $nivelProfessor;
 if($user->getNivel($turma) != $nivelProfessor){
 	die("Somente professores podem fazer isso, e voc&ecirc; n&atilde;o tem essa permiss&atilde;o.");
 }
