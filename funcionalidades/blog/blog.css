@@ -51,11 +51,9 @@ body { background-image:url(images/fundos/fundo3.png); background-color:#B5D5E6}
 text-decoration:none; color:#666666; outline:none}
 .mais_link a:hover {color:#CC6600;}
 
-#meu_blog {width:216px; margin-right:12px; float:left}
+#meu_blog {width:300px; margin-right:12px; float:left; display:inline-block; text-indent: 0px;}
 
-#blog_coletivo {width:216px; margin-right:12px; float:left}
-
-#outros_blogs {width:216px; float:right}
+#outros_blogs {width:300px; float:right; display:inline-block; text-indent: 0px;}
 
 #importar_arq {width:100%; margin-bottom:12px; float:left}
 

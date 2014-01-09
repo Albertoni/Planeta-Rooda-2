@@ -68,25 +68,18 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 	<!-- **************************
 				conteudo
 	***************************** -->
-		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
+		<div id="conteudo" style="text-align:center"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bloco" id="meu_blog">
-				<h1>MEU WEBFÓLIO</h1>
+				<h1 style="text-indent:0px">MEU WEBFÓLIO</h1>
 				<ul class="sem_estilo">
 					<a href="blog.php?id=meu_blog&amp;turma=<?=$turma?>"><img src="images/desenhos/meu_blog.png" border="0px" /></a>
 				</ul>
 			</div>
-			<!--div class="bloco" id="blog_coletivo">
-				<h1 style="text-indent:8px">WEBFÓLIOS COLETIVOS</h1>
-				<ul class="sem_estilo">
-					<a href="blog_coletivo_lista.php?turma=<?=$turma?>"><img src="images/desenhos/blog_coletivo.png" border="0px" /></a>
-				</ul>
-			</div-->
 			<div class="bloco" id="outros_blogs">
-				<h1>OUTROS WEBFÓLIOS</h1>
+				<h1 style="text-indent:0px">WEBFÓLIOS DOS COLEGAS</h1>
 				<ul class="sem_estilo">
 					<a href="todos_blogs.php?turma=<?=$turma?>"><img src="images/desenhos/outros_blogs.png" border="0px" /></a>
 				</ul>
-
 			</div>
 			<div style="clear:both;"></div>
 		</div><!-- Fecha Div conteudo -->
