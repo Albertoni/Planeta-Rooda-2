@@ -27,30 +27,50 @@ if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
-function imprimeListaProjetos($nomeDiv, $resultado){
+function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 	global $user; global $perm; global $turma;
 
-	echo "<div id=\"$nomeDiv\">\n";
-	for ($i=0 ; $i < count($resultado) ; $i++){
+
+	echo "				<div id=\"$nomeDiv\">\n";
+
+	$numItens = count($conexao->itens);
+
+	if ($numItens === 0) {
+		echo "
+					<div class=\"cor1\">
+						<ul class=\"sem_estilo\">
+							<li class=\"texto_port\">
+								$mensagemSemProjetos
+							</li>
+						</ul>
+					</div>
+		";
+	}
+
+	for ($i=0 ; $i < $numItens ; $i++){
+		$resultado = $conexao->resultado;
+
 		$projeto_id = $resultado['id'];
+
+		$cor = $resultado['emAndamento'] == true ? ($i%2)+1 : "Vermelha";
 ?>
-						<div class="cor<?=($i%2)+1?>" id="proj_id<?=$projeto_id?>">
-							<ul class="sem_estilo">
-								<li class="texto_port">
-									<span class="valor">
-										<a class="port_titulo" href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$resultado['turma']?>">
-											<?=$resultado['titulo'] ?>
-										</a>
-									</span>
-								</li>
-								<li class="texto_port">
-									<span class="dados">Autor:</span>
-									<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
-								</li>
-								<li>
-									<span class="dados">Descrição:</span>
-									<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
-								</li>
+					<div class="cor<?=$cor?>" id="proj_id<?=$projeto_id?>">
+						<ul class="sem_estilo">
+							<li class="texto_port">
+								<span class="valor">
+									<a class="port_titulo" href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$resultado['turma']?>">
+										<?=$resultado['titulo'] ?>
+									</a>
+								</span>
+							</li>
+							<li class="texto_port">
+								<span class="dados">Autor:</span>
+								<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+							</li>
+							<li>
+								<span class="dados">Descrição:</span>
+								<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+							</li>
 <?php
 if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
 	echo "								<a class=\"encerrar\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
@@ -64,8 +84,10 @@ if($resultado['emAndamento']==true){
 							</ul>
 						</div>
 <?php
+
+	$conexao->proximo();
 	}
-	echo "</div>";
+	echo "				</div>\n";
 }
 
 ?><!DOCTYPE html>
@@ -180,16 +202,10 @@ if(sizeof($user->getTurmas()) > 1){
 			}
 			
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id = $id_usuario AND turma = $turma ORDER BY id DESC");
-			imprimeListaProjetos("proj_andamento", $consulta->resultado);
+			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY id DESC");
-			imprimeListaProjetos("proj_encerrados", $consulta->resultado);
-			
-?>
-					</div>
-<?php
-			$consulta->primeiro();
-			$projOpcao = "proj_encerrados";
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY emAndamento DESC, id DESC");
+			imprimeListaProjetos("proj_encerrados", $consulta, "Seus colegas ainda não fizeram nenhum projeto.");
 ?>
 
 			</div> <!-- fim da div de id="projetos" -->
