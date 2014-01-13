@@ -331,7 +331,7 @@ class Blog {
 		global $tabela_blogs;
 		global $usuario_id;
 		$consulta = new conexao();
-		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$usuario_id' and ");
+		$consulta->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$usuario_id' AND Tipo = 1");
 		if(!$consulta->itens) {
 			$blog = new Blog(0);
 			$aux_id = $blog->getId();
