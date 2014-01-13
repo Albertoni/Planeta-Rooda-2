@@ -36,6 +36,7 @@ class Arquivo {
 			$this->abrir($id);
 		}
 	}
+
 	private function abrir($id) {
 		global $tabela_arquivos;
 		$id = (int) $id;
@@ -74,8 +75,8 @@ class Arquivo {
 				$this->erros[] = "[arquivo] Vários arquivos encontrados";
 		}
 	}
-	private function popular($resultadoBd)
-	{
+
+	private function popular($resultadoBd){
 		$this->id        = (int) $resultadoBd['id'];
 		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
 		$this->md5       = $resultadoBd['md5']; // conteudo do arquivo
@@ -86,6 +87,7 @@ class Arquivo {
 		$this->data      = $resultadoBd['data'];
 		$this->idUsuario = (int) $resultadoBd['idUsuario'];
 	}
+
 	public function getId() { return $this->id; }
 	public function getConteudo() { return $this->conteudo; }
 	public function getTitulo() { return $this->titulo; }
@@ -94,8 +96,7 @@ class Arquivo {
 	public function getTamanho() { return $this->tamanho; }
 	public function getData() { return $this->data; }
 	public function getIdUsuario() { return $this->idUsuario; }
-	public function getErros()
-	{
+	public function getErros(){
 		$erros = array();
 		foreach ($this->erros as $value)
 		{
@@ -103,8 +104,8 @@ class Arquivo {
 		}
 		return $erros;
 	}
-	public function temErros()
-	{
+
+	public function temErros(){
 		return (0 !== count($this->erros));
 	}
 	// metodo: getAssoc
@@ -236,6 +237,7 @@ class Arquivo {
 			$this->idUsuario = $id;
 		}
 	}
+
 	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name'])
@@ -256,11 +258,13 @@ class Arquivo {
 			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
 		}
 	}
+
 	// ex: $arquivo->setConteudo($blob);
 	private function setConteudo($conteudo){
 		$this->conteudo = $conteudo;
 		$this->md5 = md5($conteudo);
 	}
+
 	public function setTitulo($titulo){$this->titulo = trim($titulo);}
 	public function setNome($nome){$this->nome = trim($nome);}
 	public function setTipo($tipo){$this->tipo = trim($tipo);}
@@ -278,6 +282,7 @@ class Arquivo {
 		}
 		return $qtd;
 	}
+
 	// metodo: excluir
 	// Exclui arquivo se ele nao estiver sendo usado
 	// retorna true se o arquivo foi excluido
@@ -300,6 +305,7 @@ class Arquivo {
 		$this->limpar();
 		return true;
 	}
+
 	// metodo: excluir
 	// remove todas as referencias do arquivo e exclui o arquivo.
 	public function excluirTudo() {
@@ -322,6 +328,7 @@ class Arquivo {
 		$this->limpar();
 		return true;
 	}
+
 	// metodo: abrirUsuario
 	// Abre consulta com todos os arquivos do usuario
 	// e carrega o primeiro arquivo encontrado
@@ -352,6 +359,7 @@ class Arquivo {
 		$this->popular($this->consulta->resultado);
 		return $this->consulta->registros;
 	}
+
 	// metodo: limpar
 	// Limpa os dados do objeto
 	private function limpar() {
@@ -364,6 +372,7 @@ class Arquivo {
 		$this->conteudo = '';
 		$this->erros = array();
 	}
+
 	// metodo: proximo
 	// pega proximo arquivo do usuario até retornar false
 	// só pode ser usado depois de abrir um usuario com o 
