@@ -445,11 +445,13 @@ class Blog {
 	function salvarBlog(){
 		$q = new conexao();
 		if($this->existe === 0){ // não foi aberto nem salvo anteriormente
-			$q->solicitar("INSERT INTO blog_blogs (Id, Title, Tipo, OwnersIds, Turma)
+			$q->solicitar("INSERT INTO blogblogs (Id, Title, Tipo, OwnersIds, Turma)
 				VALUES (DEFAULT, '$this->title', $this->tipo, '".implode(';',$this->getOwnersIds())."', $this->turma)");
 		}else{
-			$q->solicitar("UPDATE blog_blogs SET Title='$this->title', Tipo='$this->tipo', OwnersIds='".implode(';',$this->getOwnersIds())."' WHERE Id = $this->id");
+			$q->solicitar("UPDATE blogblogs SET Title='$this->title', Tipo='$this->tipo', OwnersIds='".implode(';',$this->getOwnersIds())."' WHERE Id = $this->id");
 		}
+
+		echo "DEBUG".$q->erro;
 	}
 }
 }
