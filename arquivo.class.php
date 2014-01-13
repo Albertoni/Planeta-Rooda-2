@@ -3,11 +3,18 @@ require_once("cfg.php");
 require_once("bd.php");
 require_once("usuarios.class.php");
 class Arquivo {
+
+	// tabelas que referenciam arquivos e condicao de consulta
+	private static $referencias_bd = array(
+		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
+	,	"ForumMensagemAnexos" => "WHERE idArquivo = "
+	);
+
 	protected $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
 	protected $idUsuario;
 
 	protected $titulo = "";
-	protected $nome = '';      // nome do arquivo. Deve conter a extensao também
+	protected $nome = ''; // nome do arquivo. Deve conter a extensao também
 	protected $tipo = ""; // mime-type
 	protected $tamanho = 0;
 	protected $conteudo;
@@ -19,11 +26,6 @@ class Arquivo {
 
 	protected $consulta;
 
-	// tabelas que referenciam arquivos e condicao de consulta
-	private static $referecias_bd = array(
-		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
-	,	"ForumMensagemAnexos" => "WHERE idArquivo = "
-	);
 	public function __construct($id = false)
 	{
 		if ($id === false)
@@ -275,8 +277,8 @@ class Arquivo {
 		$qtd = 0;
 		$bd = new conexao();
 		// verifica ocorrencias do arquivo na biblioteca
-		//$referecias_bd[] = array("tabela", "WHERE condicao");
-		foreach (self::$referecias_bd as $tabela => $condicao) {
+		//$referencias_bd[] = array("tabela", "WHERE condicao");
+		foreach (self::$referencias_bd as $tabela => $condicao) {
 			$bd->solicitar("SELECT count(1) AS num FROM $tabela $condicao" . (int) $this->id);
 			$qtd += (int) $bd->resultado['num'];
 		}
@@ -312,7 +314,7 @@ class Arquivo {
 		global $tabela_arquivos;
 		if (!$this->upload && $this->download) {
 			$bd = new conexao();
-			foreach (self::$referecias_bd as $tabela => $condicao) {
+			foreach (self::$referencias_bd as $tabela => $condicao) {
 				$bd->solicitar("DELETE FROM $tabela $condicao" . (int) $this->id);
 				if ($bd->erro !== '') {
 					throw new Exception('BD: ' . $bd->erro, 1);
