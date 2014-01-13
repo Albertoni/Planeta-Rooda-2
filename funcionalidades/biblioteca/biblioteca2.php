@@ -110,7 +110,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
-							<li>carregando materiais...</li>
+							<li>Carregando materiais...</li>
 						</ul>
 					</div>
 				</div>

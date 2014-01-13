@@ -457,6 +457,8 @@ var BIBLIOTECA = (function () {
 					json.materiais.forEach(addMaterial);
 					//atualizaLista(materiais);
 					busca.atualizar();
+				} else if (mais_novo === 0) {
+					ulDinamica.innerHTML = "<li>Nenhum material nesta biblioteca.</li>";
 				}
 				setTimeout(request_newer, 60000);
 			}
