@@ -242,6 +242,8 @@ class Arquivo {
 
 	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
+		$maxFileSize = $this->getTamanhoMaximo();
+
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name'])
 		{
 			$this->erros[] = "[arquivo] Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
@@ -249,6 +251,10 @@ class Arquivo {
 		if(!filesize($FILE['tmp_name']))
 		{
 			$this->erros[] = "[arquivo] Arquivo vazio ou inv&aacute;lido.";
+		}
+		if($maxFileSize < $FILE['size'])
+		{
+			$this->erros[] = "[arquivo] Arquivo maior que o tamanho aceitável.";
 		}
 		else
 		{
@@ -404,6 +410,28 @@ class Arquivo {
 			header("Content-Disposition: attachment; filename={$this->getNome()}");
 		print $this->getConteudo();
 		return;
+	}
+
+	private function getTamanhoMaximo($value = ini_get('upload_max_filesize')){
+		if(is_numeric($value)){
+			return $value;
+		}else{
+			$value_length = strlen($value);
+			$qty = substr($value, 0, $value_length - 1);
+			$unit = strtolower(substr($value, $value_length - 1));
+			switch($unit){
+				case 'k':
+					$qty *= 1024;
+					break;
+				case 'm':
+					$qty *= 1048576;
+					break;
+				case 'g':
+					$qty *= 1073741824;
+					break;
+			}
+			return $qty;
+		}
 	}
 }
 
