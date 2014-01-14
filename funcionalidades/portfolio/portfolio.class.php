@@ -121,6 +121,10 @@ class projeto{
 		}
 	}
 
+	function getTurma() {
+		return $this->turma;
+	}
+
 	function carrega($idProjeto){
 		$q = new conexao();
 		$idProjeto = $q->sanitizaString($idProjeto);
