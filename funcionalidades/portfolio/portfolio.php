@@ -53,7 +53,7 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 		$projeto_id = $resultado['id'];
 
 		$CSScor = $resultado['emAndamento'] == true ? ('cor'.(($i%2)+1)) : "encerrado";
-		$CSSencerrado = ($cor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
+		$CSSencerrado = ($CSScor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
 ?>
 					<div class="<?=$CSScor?>" id="proj_id<?=$projeto_id?>">
 						<ul class="sem_estilo">
