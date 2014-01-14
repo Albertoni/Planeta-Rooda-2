@@ -52,11 +52,10 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 
 		$projeto_id = $resultado['id'];
 
-		$cor = $resultado['emAndamento'] == true ? ('cor'.(($i%2)+1)) : "encerrado";
-
-		$encerrado = ($cor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
+		$CSScor = $resultado['emAndamento'] == true ? ('cor'.(($i%2)+1)) : "encerrado";
+		$CSSencerrado = ($cor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
 ?>
-					<div class="<?=$cor?>" id="proj_id<?=$projeto_id?>">
+					<div class="<?=$CSScor?>" id="proj_id<?=$projeto_id?>">
 						<ul class="sem_estilo">
 							<li class="texto_port">
 								<span class="valor">
@@ -75,12 +74,12 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 							</li>
 <?php
 if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
-	echo "								<a class=\"$encerrado\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
+	echo "								<a class=\"$CSSencerrado\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
 	&amp;turma=".$resultado['turma']."\">[Editar projeto]</a>\n";
 }
 
 if($resultado['emAndamento']==true){
-	echo "								<a class=\"$encerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
+	echo "								<a class=\"$CSSencerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
 }
 ?>
 							</ul>
