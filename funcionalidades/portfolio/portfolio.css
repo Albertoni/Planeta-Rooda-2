@@ -135,8 +135,19 @@ textarea.port_info {margin-top:0px}
 .port_titulo { font-size:20px; color:#666}
 .valor { display:table-cell; width:auto}
 /*.encerrar { color:#09C; text-decoration:none; text-indent:8px; margin-left:8px; display:table-cell}*/
-.encerrar { color:#09C; text-decoration:none; margin-left:8px; display:table-cell; float:right; margin-bottom:15px}
+.encerrar {
+	color:#09C;
+	text-decoration:none;
+	margin-left:8px;
+	display:table-cell;
+	float:right;
+	margin-bottom:15px;
+}
 .encerrar:hover { color:#069}
+.textoLegivel{
+	background-color:#BBB;
+	padding: 3px;
+}
 
 #enviar_proj { width:680px}
 textarea {width:100%}
@@ -193,4 +204,9 @@ input[type="text"] { width:100%}
 
 #posts > div > .sem_estilo {width:384px; overflow:auto;} /*div de dentro dos posts*/
 
-.corVermelha{background-color:#BBB; border-top: 1px solid black}
+.encerrado{
+	background-color:#BBB;
+	background-image: url('../../images/desenhos/faixa_encerrado.png');
+	background-repeat:no-repeat;
+	background-position:right top;
+	border-top: 1px solid black}
