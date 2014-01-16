@@ -195,3 +195,13 @@ ROODA.ui.confirm = function(str, fun_yes, fun_no) {
     div.innerHTML = html.join("\n");
     document.body.appendChild(div);
 };
+ROODA.Usuario = function (id) {
+}
+ROODA.Usuario.prototype = {
+    'id': 0,
+    'login': '',
+    'nome': ''
+    'toString': function() {
+        return (this.nome || this.login);
+    }
+}

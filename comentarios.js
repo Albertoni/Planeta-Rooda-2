@@ -156,3 +156,45 @@ var COMENTARIOS = {};
 	exports.enviar(idRef, mensagem)
 	exports.Comentario = Comentario;
 }(COMENTARIOS));
+
+var COMM = {};
+(function (exports) {
+	function Comentario(obj) {
+	}
+	Comentario.prototype = {
+		'id': 0,
+		'usuario' = {};
+	}
+	function Comentarios(idRef) {
+		this.idRef = parseInt(idRef,10);
+		this.comenarios = [];
+		this.getStats();
+	}
+	Comentarios.layout = {};
+	Comentarios.layout.botaoAbrir =  $('<button class="abrirComentarios">');
+	Comentarios.prototype = {
+		'idRef': 0,
+		'idTurma': 0,
+		'idUsuario': 0,
+		'numComentarios': 0,
+		'ultimoComentario': 0,
+		'comentarios': null,
+		'layout': null
+	}
+	Comentarios.prototype.failHandler = function (e) {};
+	Comentarios.prototype.getStatsHandler = function (e) {
+		var j,e;
+		try {
+			j = JSON.parse(this.responseText);
+		}
+		catch (e) {
+			ROODA.ui.alert("Erro no servidor.");
+			console.dir(e);
+			return;
+		}
+	};
+	Comentarios.prototype.getStats = function () {
+		AJAX.get("",
+			{ success: Comentarios.});
+	};
+}(COMM));
