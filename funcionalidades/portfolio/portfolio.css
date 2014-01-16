@@ -206,7 +206,7 @@ input[type="text"] { width:100%}
 
 .encerrado{
 	background-color:#BBB;
-	background-image: url('../../images/desenhos/faixa_encerrado.png');
-	background-repeat:no-repeat;
-	background-position:right top;
-	border-top: 1px solid black}
+	border-top: 1px solid black;
+}
+
+.divisor_encerrados

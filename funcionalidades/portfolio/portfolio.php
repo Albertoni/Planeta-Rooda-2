@@ -29,6 +29,7 @@ if($perm == false){
 
 function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 	global $user; global $perm; global $turma;
+	$entrouNosEncerrados = false;
 
 
 	echo "				<div id=\"$nomeDiv\">\n";
@@ -51,6 +52,11 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 		$resultado = $conexao->resultado;
 
 		$projeto_id = $resultado['id'];
+
+		if(($resultado['emAndamento'] != true) and ($entrouNosEncerrados != true)){
+			$entrouNosEncerrados = true;
+			echo "<div class=\"divisor_encerrados\">PROJETOS ENCERRADOS</div>";
+		}
 
 		$CSScor = $resultado['emAndamento'] == true ? ('cor'.(($i%2)+1)) : "encerrado";
 		$CSSencerrado = ($CSScor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
