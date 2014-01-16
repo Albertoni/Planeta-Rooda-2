@@ -412,10 +412,14 @@ class Arquivo {
 		return;
 	}
 
+<<<<<<< HEAD
+	public static function getTamanhoMaximo($value = ini_get('upload_max_filesize')){
+=======
 	private function getTamanhoMaximo($value = false){
 		if ($value === false) {
 			$value = ini_get('upload_max_filesize');
 		}
+>>>>>>> ae07f6562bea0aaebb1b21566d66f14a7adba505
 		if(is_numeric($value)){
 			return $value;
 		}else{

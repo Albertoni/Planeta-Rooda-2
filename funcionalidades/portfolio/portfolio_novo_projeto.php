@@ -196,16 +196,8 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 					<ul class="sem_estilo">
 						<li>Título <span class="exemplo">(Obrigatório)</span></li>
 						<li><textarea name="titulo_projeto" type="text" class="port_info" rows="1"/></textarea></li>
-						<li>Descrição</li>
+						<li>Descrição <span class="exemplo">(Obrigatório)</span></li>
 						<li><textarea name="descricao_projeto" type="text" class="port_info"/></textarea></li>
-						<li>Objetivos <span class="exemplo">(Obrigatório)</span></li>
-						<li><textarea name="objetivos_projeto" type="text" class="port_info"/></textarea></li>
-						<li>Conteúdos Abordados</li>
-						<li><textarea name="conteudos_projeto" type="text" class="port_info" rows="1"/></textarea></li>
-						<li>Metodologia</li>
-						<li><textarea name="metodologia_projeto" type="text" class="port_info" rows="1"/></textarea></li>
-						<li>Público-Alvo</li>
-						<li><textarea name="publicoAlvo_projeto" type="text" class="port_info" rows="1"/></textarea></li>
 						<li>Autor <span class="exemplo">(Obrigatório)</span></li>
 						<li><textarea name="autor_projeto" type="text" class="port_info" rows="1"/></textarea></li>
 						<li>Tags <span class="exemplo">(Escreva as tags separadas por ponto e vírgula. Ex: Matemática; Português; Artes)</span></li>
