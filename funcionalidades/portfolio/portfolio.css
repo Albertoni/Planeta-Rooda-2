@@ -209,4 +209,12 @@ input[type="text"] { width:100%}
 	border-top: 1px solid black;
 }
 
-.divisor_encerrados
+.divisor_encerrados{
+	color:white;
+	background-color: #53686F;
+	padding:6px 0px;
+	font-family: Tahoma,Verdana;
+	font-size: 15px;
+	font-weight: bold;
+	text-indent: 22px;
+}
