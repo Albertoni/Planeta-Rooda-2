@@ -1,6 +1,9 @@
 <?php
 // ARQUIVO GERAL PARA TODAS AS FUNCIONALIDADES, VERIFIQUE O ARQUIVO DE MESMO NOME NA FUNCIONALIDADE DESEJADA
-if (!class_exists("Comentario") || !function_exists("turmaDaRef")) {
+if (   !class_exists("Comentario") 
+	|| !function_exists("tituloDaRef")
+	|| !function_exists("turmaDaRef")
+	|| !function_exists("usuarioDaRef")) {
 	exit("Uso inadequado.");
 }
 /** 
@@ -78,6 +81,7 @@ switch ($acao) {
 		$json['usuario']['permissoes'] = $permissoes;
 		$json['idRef'] = $idRef;
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
+		$json['titulo'] = tituloDaRef($idRef);
 	// retorna lista de comentarios do recurso
 	case 'listar':
 		$turma = turmaDaRef($idRef);
