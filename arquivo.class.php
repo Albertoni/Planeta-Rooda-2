@@ -242,7 +242,7 @@ class Arquivo {
 
 	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
-		$maxFileSize = $this->getTamanhoMaximo();
+		$maxFileSize = self::getTamanhoMaximo();
 
 		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name'])
 		{
@@ -412,14 +412,11 @@ class Arquivo {
 		return;
 	}
 
-<<<<<<< HEAD
-	public static function getTamanhoMaximo($value = ini_get('upload_max_filesize')){
-=======
-	private function getTamanhoMaximo($value = false){
+	static function getTamanhoMaximo($value = false){
 		if ($value === false) {
 			$value = ini_get('upload_max_filesize');
 		}
->>>>>>> ae07f6562bea0aaebb1b21566d66f14a7adba505
+
 		if(is_numeric($value)){
 			return $value;
 		}else{
