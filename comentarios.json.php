@@ -15,7 +15,7 @@ if (   !class_exists("Comentario")
 *         	'excluir' => bool
 *         )
 */
-function permissoesComentarios($usuario,$turma) {
+function permissoesComentarios($idRef, $usuario) {
 	if (is_numeric($usuario)) {
 		$usuario_id = (int) $usuario;
 		$usuario = new Usuario();
@@ -26,8 +26,14 @@ function permissoesComentarios($usuario,$turma) {
 
 	if (get_class($usuario) !== 'Usuario')
 		throw new Exception("Error Processing Request", 1);
-
 	$return  = array('ver' => false, 'comentar' => false, 'excluir' => false);;
+
+	$turma = turmaDaRef($idRef);
+	if (!$usuario->pertenceTurma($turma)) {
+		// usuario nao pertence à turma, portanto nao possui nenhuma permissao.
+		$return['aaa'] = 3;
+		return $return;
+	}
 	$perm = checa_permissoes(FUNCIONALIDADE, $turma);
 	if ($perm) {
 		if ($usuario->podeAcessar($perm[PERM_COMENT_VER], $turma)) {
@@ -36,7 +42,10 @@ function permissoesComentarios($usuario,$turma) {
 		if ($usuario->podeAcessar($perm[PERM_COMENT_INSERIR], $turma)) {
 			$return['comentar'] = true;
 		}
-		if ($usuario->podeAcessar($perm[PERM_COMENT_EXCLUIR], $turma)) {
+		if ($usuario->podeAcessar($perm[PERM_COMENT_EXCLUIR], $turma)
+			|| $usuario->getId() === usuarioDaRef($idRef)) {
+			// usuario deve poder excluir se tiver permissao 
+			// ou for quem postou o objeto comentado (post, material)
 			$return['excluir'] = true;
 		}
 	}
@@ -68,12 +77,7 @@ switch ($acao) {
 		$json['usuario']['permissoes'] = $permissoesComentarios($usuario, $turma);
 		break;
 	case 'stats':
-		$turma = turmaDaRef($idRef);
-		if (!$usuario->pertenceTurma($turma)) {
-			$json['erro'] = 'Você não tem permissão para acessar esse recurso.';
-			break;
-		}
-		$permissoes = permissoesComentarios($usuario, $turma);
+		$permissoes = permissoesComentarios($idRef, $usuario);
 		if (!$permissoes['ver']) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
@@ -82,6 +86,7 @@ switch ($acao) {
 		$json['idRef'] = $idRef;
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
 		$json['titulo'] = tituloDaRef($idRef);
+		break;
 	// retorna lista de comentarios do recurso
 	case 'listar':
 		$turma = turmaDaRef($idRef);

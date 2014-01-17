@@ -11,12 +11,31 @@ define('FUNCIONALIDADE',      TIPOBLOG);
 define('PERM_COMENT_VER',     'blog_verComentarios');
 define('PERM_COMENT_INSERIR', 'blog_inserirComentarios');
 define('PERM_COMENT_EXCLUIR', 'blog_excluirComentarios');
+
+require_once("blog.class.php");
 // recebe o id do recurso que pode ter comentarios e retorna o titulo
-function tituloDaRef($idRef) {}
+function tituloDaRef($idRef) {
+	$post = new Post();
+	$post->open($idRef);
+	return $post->getTitle();
+}
 // recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
-function usuarioDaRef($idRef) {}
+function usuarioDaRef($idRef) {
+	$post = new Post();
+	$post->open($idRef);
+	return $post->getAuthor()->getId();
+}
 // recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
-function turmaDaRef($idRef) {}
+function turmaDaRef($idRef) {
+	$bd = new conexao();
+	$bd->solicitar(
+		"SELECT bb.Turma as turma FROM blogposts as bp 
+			INNER JOIN blogblogs as bb
+			ON bb.id = bp.BlogId
+		WHERE bp.id = $idRef"
+	);
+	return $bd->resultado['turma'];
+}
 /*---------------------------------------------------------------
 	NAO MUDAR NADA ABAIXO SE FOR APENAS PORTAR
 ------------------------------------------ --------------------*/

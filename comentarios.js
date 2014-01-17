@@ -7,6 +7,7 @@
  *  idRef    := number
  *  mensagem := string
  */
+ /*
 var COMENTARIOS = {};
 (function (exports) {
 	'use strict';
@@ -156,45 +157,60 @@ var COMENTARIOS = {};
 	exports.enviar(idRef, mensagem)
 	exports.Comentario = Comentario;
 }(COMENTARIOS));
-
+*/
 var COMM = {};
 (function (exports) {
 	function Comentario(obj) {
 	}
 	Comentario.prototype = {
 		'id': 0,
-		'usuario' = {};
+		'usuario' : {}
 	}
 	function Comentarios(idRef) {
 		this.idRef = parseInt(idRef,10);
 		this.comenarios = [];
 		this.getStats();
 	}
-	Comentarios.layout = {};
-	Comentarios.layout.botaoAbrir =  $('<button class="abrirComentarios">');
+	// partes do layout que mudam de conteudo
+	Comentarios.layoutDinamico = {
+		titulo : $("<span>")
+	,	listaComentarios : $("<ul>")
+	,	numeroComentarios : $("<span>").text("0")
+	};
 	Comentarios.prototype = {
 		'idRef': 0,
 		'idTurma': 0,
 		'idUsuario': 0,
+		'titulo' : '',
 		'numComentarios': 0,
 		'ultimoComentario': 0,
 		'comentarios': null,
-		'layout': null
+		'link': null
 	}
-	Comentarios.prototype.failHandler = function (e) {};
-	Comentarios.prototype.getStatsHandler = function (e) {
-		var j,e;
-		try {
-			j = JSON.parse(this.responseText);
-		}
-		catch (e) {
-			ROODA.ui.alert("Erro no servidor.");
-			console.dir(e);
-			return;
-		}
-	};
 	Comentarios.prototype.getStats = function () {
-		AJAX.get("",
-			{ success: Comentarios.});
+		var that = this;
+		AJAX.get("comentarios.json.php?acao=stats&idRef=" + this.idRef,
+			{
+				success: function() {
+					var e, j;
+					try {
+						var j = JSON.parse(this.responseText);
+						that.getStatsHandler(j);
+					}
+					catch (e) {
+						ROODA.alert("Erro no servidor.");
+						console.dir(e);
+						return;
+					}
+
+				},
+				fail: function() {
+					setTimeout(that.getStats.bind(that), 1000);
+				}
+			})
 	};
+	Comentarios.prototype.getStatsHandler = function (response) {
+
+	};
+	exports.Comentarios = Comentarios;
 }(COMM));
