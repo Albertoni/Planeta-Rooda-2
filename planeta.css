@@ -375,6 +375,14 @@ ul.listaFun li a {
 .comentarios {
 	background: #A9E2E2;
 	border-radius: 7px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	width: 500px;
+	height: 300px;
+	margin-left: -250px;
+	margin-top: -150px;
+	z-index: 10;
 }
 .comentarios button {
 	vertical-align: middle;
