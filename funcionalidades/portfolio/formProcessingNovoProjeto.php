@@ -28,26 +28,17 @@ if(!$user->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
 }
 
 $usuario_id	=$user->getId();
-$titulo		=$_POST['titulo_projeto'] or die("Um titulo &eacute; necessario para criar um projeto.");
+$titulo		=($_POST['titulo_projeto'] or die("Um titulo &eacute; necessario para criar um projeto."));
 $tags		=$_POST['tags_projeto'];
 $text		=$_POST['text'];
 $dataInicio	=$_POST['data_inicio_projeto'];
 $dataEncerramento=$_POST['data_encerramento_projeto'];
-$donos		=$_POST['owner_ids'];
+$donos		=explode(';', $_POST['owner_ids']);
 
 print_r($_POST);
 
-//$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos);
-
-/*$consulta->solicitar("INSERT INTO $tabela_portfolioProjetos
-(titulo,		autor,		descricao,		objetivos,		conteudosAbordados,		metodologia,		publicoAlvo,		tags,		dataCriacao,	owner_id,		turma) VALUES
-('$titulo',		'$autor',	'$descricao',	'$objetivos',	'$conteudos',			'$metodologia',		'$publicoAlvo',		'$tags',	NOW(),			$usuario_id,	$turma)");
-
-$projeto_id = $consulta->ultimoId();
-
-$consulta->solicitar("INSERT INTO $tabela_portfolioPosts
-(projeto_id,		titulo,			tags,		texto,		user_id,		dataCriacao) VALUES
-('$projeto_id',		'$titulo',		'$tags',	'$text',	$usuario_id,	NOW());");*/
+$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos);
+$projeto->salvar();
 
 //magic_redirect("portfolio.php?turma=$turma");
 

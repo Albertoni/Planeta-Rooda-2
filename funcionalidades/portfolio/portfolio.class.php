@@ -140,7 +140,7 @@ class post{
 
 class projeto{
 	private $id = 0;
-	private $title = "";
+	private $titulo = "";
 	private $dataCriacao;
 	private $dataEncerramento;
 	private $ownersIds = array();
@@ -152,7 +152,7 @@ class projeto{
 	private $turma = 0;
 
 	function __construct(	$id = 0,
-							$title = "",
+							$titulo = "",
 							$palavras = "",
 							$dataCriacao = 0,
 							$dataEncerramento = 0,
@@ -160,11 +160,11 @@ class projeto{
 						){
 		if($id === 0){
 			$this->id = 0;
-			$this->title = $title;
-			$this->palavras = trim(explode(';', $palavras));
+			$this->titulo = $titulo;
+			$this->palavras = explode(';', $palavras);
 			$this->dataCriacao = $dataCriacao;
 			$this->dataEncerramento = $dataEncerramento;
-			$this->ownersIds = explode(';', $ownersIds);
+			$this->ownersIds = is_array($ownersIds) ? $ownersIds : explode(';', $ownersIds);
 		}else{
 			$this->carrega($id);
 		}
@@ -184,7 +184,7 @@ class projeto{
 
 		if($q->registros > 0){
 			$this->id = $idProjeto;
-			$this->title = $q->resultado['titulo'];
+			$this->titulo = $q->resultado['titulo'];
 			$this->palavras = explode(';', $q->resultado['tags']);
 			$this->dataCriacao = $q->resultado['dataCriacao'];
 			$this->dataEncerramento = $q->resultado['dataEncerramento'];
@@ -220,21 +220,23 @@ class projeto{
 	}
 
 	function salvar(){
+		global $tabela_portfolioPosts; global $tabela_portfolioProjetos;
+
 		$q = new conexao();
 
 		$this->id = $q->sanitizaString($this->id);
 		$this->titulo = $q->sanitizaString($this->titulo);
-		$this->palavras = $q->sanitizaString($this->palavras);
+		$palavrasImplodido = $q->sanitizaString(implode(';', $this->palavras));
 		$this->dataCriacao = $q->sanitizaString($this->dataCriacao);
 		$this->dataEncerramento = $q->sanitizaString($this->dataEncerramento);
-		$this->ownersIds = $q->sanitizaString($this->ownersIds);
+		$ownersIdsImplodido = $q->sanitizaString(implode(';', $this->ownersIds));
 		$this->turma = $q->sanitizaString($this->turma);
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioProjetos SET 
-				titulo = $this->title,
-				tags = ".implode(';', $this->palavras).",
-				owner_id = ".implode(';', $this->ownersIds).",
+				titulo = $this->titulo,
+				tags = $palavrasImplodido,
+				owner_id = $ownersIdsImplodido,
 				dataCriacao = $this->dataCriacao,
 				dataEncerramento = $this->dataEncerramento,
 				turma = $this->turma
@@ -244,11 +246,11 @@ class projeto{
 			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
 				'$this->id',
 				'$this->titulo',
-				'".implode(';', $this->palavras)."',
+				'$palavrasImplodido',
 				'1',
 				'$this->dataCriacao',
 				'$this->dataEncerramento',
-				'".implode(';', $this->ownersIds)."',
+				'$ownersIdsImplodido',
 				'$this->turma')";
 		}
 		
@@ -261,6 +263,5 @@ class projeto{
 		}else{
 			die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
 		}
-		
 	}
 }

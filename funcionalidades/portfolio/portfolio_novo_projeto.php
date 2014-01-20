@@ -13,6 +13,11 @@ require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 $user = usuario_sessao();
+
+if($user === false){
+	die("Voce nao esta logado em sua conta. Por favor volte e logue.");
+}
+
 $id_usuario = $_SESSION['SS_usuario_id'];
 
 if (isset($_GET['turma'])){
