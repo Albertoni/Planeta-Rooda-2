@@ -38,7 +38,7 @@ session_start();
 $projeto_id	= isset($_GET['projeto_id'])	? $_GET['projeto_id']	: NULL;
 $post_id	= isset($_GET['post_id'])		? $_GET['post_id']		: 0;
 
-if (!is_numeric($projeto_id) or !is_numeric($post_id))die("</head>\n<body>\n<h2><center>WARNING WARNING WILL ROBINSON<br />\nA ID DO PROJETO ESTA INCORRETA PROVAVELMENTE PORQUE FOI DIGITADA A MAO\n</h2></center>\n</html>");
+if (!is_numeric($projeto_id) or !is_numeric($post_id))die("</head>\n<body>\n<h2>A ID DO PROJETO NÃO É UM NUMERO\n</h2></center>\n</html>");
 
 $update = isset($_GET['update']) ? "1" : "0";
 

@@ -5,6 +5,7 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("portfolio.class.php");
 
 global $tabela_portfolioProjetos;
 $id_usuario = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
@@ -52,6 +53,7 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 		$resultado = $conexao->resultado;
 
 		$projeto_id = $resultado['id'];
+		$projeto = new projeto($projeto_id);
 
 		if(($resultado['emAndamento'] != true) and ($entrouNosEncerrados != true)){
 			$entrouNosEncerrados = true;
@@ -70,13 +72,17 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 									</a>
 								</span>
 							</li>
-							<li class="texto_port">
-								<span class="dados">Autor:</span>
-								<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+							<li>
+								<span class="dados">Data de criação:</span>
+								<span class="valor"><?=$projeto->getDataCriacao()?></span>
 							</li>
 							<li>
-								<span class="dados">Descrição:</span>
-								<span class="valor">ASSIM Ó TEM QUE VER O QUE VAI AQUI</span>
+								<span class="dados">Data de Encerramento:</span>
+								<span class="valor"><?=$projeto->getDataEncerramento()?></span>
+							</li>
+							<li>
+								<span class="dados">Palavras:</span>
+								<span class="valor"><?=$projeto->getPalavras()?></span>
 							</li>
 <?php
 if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
@@ -208,10 +214,10 @@ if(sizeof($user->getTurmas()) > 1){
 				}
 			}
 			
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id = $id_usuario AND turma = $turma ORDER BY id DESC");
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_ids = $id_usuario AND turma = $turma ORDER BY id DESC");
 			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_id <> $id_usuario AND turma = $turma ORDER BY emAndamento DESC, id DESC");
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_ids <> $id_usuario AND turma = $turma ORDER BY emAndamento DESC, id DESC");
 			imprimeListaProjetos("proj_encerrados", $consulta, "Seus colegas ainda não fizeram nenhum projeto.");
 ?>
 

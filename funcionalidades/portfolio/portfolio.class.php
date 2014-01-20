@@ -82,7 +82,7 @@ class post{
 						</li>
 					</ul>
 				</div>
-		"
+		";
 
 		return $html;
 	}
@@ -105,8 +105,8 @@ class projeto{
 	function __construct(	$id = 0,
 							$title = "",
 							$palavras = "",
-							$dataCriacao = 0;
-							$dataEncerramento = 0;
+							$dataCriacao = 0,
+							$dataEncerramento = 0,
 							$ownersIds = array()
 						){
 		if($id === 0){
@@ -121,11 +121,13 @@ class projeto{
 		}
 	}
 
-	function getTurma() {
-		return $this->turma;
-	}
+	function getTurma(){return $this->turma;}
+	function getDataCriacao(){return $this->dataCriacao;}
+	function getDataEncerramento(){return $this->dataEncerramento;}
+	function getPalavras(){return implode(', ', $this->palavras);}
 
 	function carrega($idProjeto){
+		global $tabela_portfolioProjetos;
 		$q = new conexao();
 		$idProjeto = $q->sanitizaString($idProjeto);
 		$q->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $idProjeto");
@@ -133,7 +135,7 @@ class projeto{
 		if($q->registros > 0){
 			$this->id = $idProjeto;
 			$this->title = $q->resultado['titulo'];
-			$this->palavras = $q->resultado['tags'];
+			$this->palavras = explode(';', $q->resultado['tags']);
 			$this->dataCriacao = $q->resultado['dataCriacao'];
 			$this->dataEncerramento = $q->resultado['dataEncerramento'];
 			$this->ownersIds = explode(",", $q->resultado['owner_ids']);
@@ -155,8 +157,9 @@ class projeto{
 	}
 
 	function carregaPosts(){
+		global $tabela_portfolioPosts;
 		$q = new conexao();
-		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = ".$this->projeto_id);
+		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = ".$this->id);
 
 		for($i=0; $i < $q->registros; $i++){
 			$newPost = new post($q->resultado['']);
