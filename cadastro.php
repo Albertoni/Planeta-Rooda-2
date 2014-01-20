@@ -38,7 +38,8 @@
 	$email		= $registrar->sanitizaString($_POST['email']);
 	$nivel		= $registrar->sanitizaString($_POST['nivel']);
 	$sexo		= $registrar->sanitizaString($_POST['sexo']);
-	$password	= md5($_POST['criar_senha']);// insert evil code to steal passwords here
+	$password = crypt($_POST['criar_senha'], "$2y$07$".gen_salt(22));
+	//$password	= md5($_POST['criar_senha']);// insert evil code to steal passwords here
 	
 	
 	$registrar->solicitar("SELECT * FROM $tabela_usuarios WHERE usuario_login='$login'");
@@ -52,20 +53,20 @@
 		$data .= '{ "valor":"1", "texto":"Nível inválido"}'; //goto gambi;
 		$erro = 1;
 	}
-
+/*
 	if($erro != 1){
 		$registrar->solicitar("INSERT INTO Chats (nome) VALUES ('$usuario')");
 		$idChat = $registrar->ultimo_id();
 		if ($registrar->erro != ""){
-			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código cadastro_chat, valor '.$usuario.'"}'; //goto gambi;
+			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código cadastro_chat, valor '.$usuario.' - '.$registrar->erro.'"}'; //goto gambi;
 			$erro = 1;
 		}
 	}
-	
+*/
 	if($erro != 1){
 		//Primeiro grava o usuário na tabela personagens, definindo o id da tabela de usuários - Guto - 10.05.10
 		$registrar->solicitar("INSERT INTO $tabela_personagens (personagem_nome, personagem_avatar_1, chat_id)
-								VALUES ('$usuario', '$sexo', $idChat)");
+								VALUES ('$usuario', '$sexo', 0)"); // chat_id = 0 por que isso é legado do flash
 		if($registrar->erro != ""){
 			$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código 1. Detalhes:'.$registrar->erro.'"}'; //goto gambi;
 			$erro = 1;
