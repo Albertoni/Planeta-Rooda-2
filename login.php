@@ -41,7 +41,7 @@
 		/*
 		FIM
 		*/
-
+		
 		//inicia variaveis de sessao
 		$_SESSION['SS_usuario_id'] = $idusuario;
 		$_SESSION['SS_usuario_nome'] = $usuario;
@@ -62,13 +62,6 @@
 			$_SESSION['SS_turmas'][] = $turmas->resultado['codTurma'];
 			$turmas->proximo();
 		}
-		
-		/*
-		//algum dia esse trecho devia ter tido algum uso
-		if ($password1 === $npassword){
-			$pesquisa1->solicitar("update $tabela_usuarios set usuario_nova_senha='usuario' , usuario_senha = '$npassword' where usuario_id = '$idusuario'");
-		}*/
-		
 		$data = '{ "valor":"0", "texto":"tela_inicial_geral.php"}';
 	}
 
