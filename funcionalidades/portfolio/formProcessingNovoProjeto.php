@@ -36,7 +36,7 @@ $dataEncerramento=$_POST['data_encerramento_projeto'];
 
 print_r($_POST);
 
-//$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos)
+//$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos);
 
 /*$consulta->solicitar("INSERT INTO $tabela_portfolioProjetos
 (titulo,		autor,		descricao,		objetivos,		conteudosAbordados,		metodologia,		publicoAlvo,		tags,		dataCriacao,	owner_id,		turma) VALUES
