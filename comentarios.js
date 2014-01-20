@@ -161,11 +161,17 @@ var COMENTARIOS = {};
 var COMM = {};
 (function (exports) {
 	function Comentario(obj) {
-		this.usuario = obj.usuario;
-		this.mensagem = obj.mensagem;
+		this.id = obj.id;
+		this.usuario = new ROODA.Usuario(obj.usuario.id, obj.usuario.usuario, usuario.usuario.nome);
 		this.data = new Date(obj.data * 1000); // transformanado em milisegundos
+		this.mensagem = obj.mensagem;
 		this.htmlDinamico = {};
-		this.htmlDinamico.usuario = $("<span>")
+		this.htmlDinamico.usuario = $('<span>');
+		this.htmlDinamico.mensagem = $('<p>').addClass('mensagem').text(this.mensagem);
+		this.html = $('<li>')
+			.append($("<p>").addClass('info')
+				.append(this.htmlDinamico.usuario)
+				.append(this.htmlDinamico.));
 	}
 	Comentario.prototype = {
 		'id': 0
