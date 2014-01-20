@@ -78,23 +78,19 @@ switch ($acao) {
 		break;
 	case 'stats':
 		$permissoes = permissoesComentarios($idRef, $usuario);
+		$json['usuario']['permissoes'] = $permissoes;
 		if (!$permissoes['ver']) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
 		}
-		$json['usuario']['permissoes'] = $permissoes;
 		$json['idRef'] = $idRef;
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
 		$json['titulo'] = tituloDaRef($idRef);
 		break;
 	// retorna lista de comentarios do recurso
 	case 'listar':
-		$turma = turmaDaRef($idRef);
-		if (!$usuario->pertenceTurma($turma)) {
-			$json['erro'] = 'Você não tem permissão para acessar esse recurso.';
-			break;
-		}
-		$permissoes = permissoesComentarios($usuario, $turma);
+		$permissoes = permissoesComentarios($idRef, $usuario);
+		$json['usuario']['permissoes'] = $permissoes;
 		if (!$permissoes['ver']) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
@@ -102,7 +98,6 @@ switch ($acao) {
 		$ultimo = isset($_GET['ultimo']) ? (int) $_GET['ultimo'] : 0;
 		$json['idRef'] = $idRef;
 		$json['turma'] = $turma;
-		$json['usuario']['permissoes'] = $permissoes;
 		$json['comentarios'] = array();
 		$comentario = new Comentario();
 		$comentario->abrirComentarios($idRef, $ultimo);
@@ -113,12 +108,7 @@ switch ($acao) {
 		break;
 	
 	case 'enviar':
-		$turma = turmaDaRef($idRef);
-		if (!$usuario->pertenceTurma($turma)) {
-			$json['erro'] = 'Você não tem permissão para acessar esse recurso.';
-			break;
-		}
-		$permissoes = permissoesComentarios($usuario, $turma);
+		$permissoes = permissoesComentarios($idRef, $usuario);
 		if (!$permissoes['comentar']) {
 			$json['erro'] = 'Você não tem permissão para comentar aqui.';
 			break;
@@ -144,13 +134,7 @@ switch ($acao) {
 			$json['erro'] = $e->getMessage();
 			break;
 		}
-		$turma = turmaDaRef($idRef);
-		$json['turma'] = $turma;
-		if (!$usuario->pertenceTurma($turma)) {
-			$json['erro'] = 'Você não tem permissão para acessar esse recurso.';
-			break;
-		}
-		$permissoes = permissoesComentarios($usuario, $turma);
+		$permissoes = permissoesComentarios($idRef, $usuario);
 		if (!$permissoes['excluir']) {
 			$json['erro'] = 'Você não tem permissão para excluir esse comentário.';
 		}
