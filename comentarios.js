@@ -163,33 +163,69 @@ var COMM = {};
 	function Comentario(obj) {
 	}
 	Comentario.prototype = {
-		'id': 0,
-		'usuario' : {}
+		'id': 0
+	,	'usuario' : null
+	,	'mensagem' : ''
+	,	'data' : 0
 	}
 	function Comentarios(idRef) {
+		var comentarios = this;
 		this.idRef = parseInt(idRef,10);
 		this.comenarios = [];
 		this.getStats();
+		this.htmlNumComentarios = $('<span>');
+		this.link = $('<a>').text('Ver comentários ').append(this.htmlNumComentarios);
+		this.link.on("click") = this.abrir.bind(this);
+		this.permissoes = { ver: false, comentar: false, excluir: false };
 	}
 	// partes do layout que mudam de conteudo
-	Comentarios.layoutDinamico = {
-		titulo : $("<span>")
-	,	listaComentarios : $("<ul>")
-	,	numeroComentarios : $("<span>").text("0")
+	Comentarios.htmlDinamico = {
+		titulo : $('<span>')
+	,	listaComentarios : $('<ul>')
+	,	formulario : $('<form>')
+	,	inputMensagem : $('<input type="text">')
+	,	botaoFechar : $('<button type="button" class="bt_fechar">fechar</button>')
 	};
+	Comentarios.htmlDinamico.botaoFechar.on('click', function () {
+		Comentarios.html.hide();
+	});
+	Comentarios.html = $('<div>').addClass('comentarios')
+			.append($('<h1>').append('Comentarios - ')
+			                 .append(Comentarios.htmlDinamico.titulo)
+			                 .append(Comentarios.htmlDinamico.botaoFechar))
+			.append(Comentarios.htmlDinamico.listaComentarios)
+			.append($("<form>").append(Comentarios.htmlDinamico.inputMensagem));
+	$(document.body).append(Comentarios.html);
+	Comentarios.html.hide();
 	Comentarios.prototype = {
-		'idRef': 0,
-		'idTurma': 0,
-		'idUsuario': 0,
-		'titulo' : '',
-		'numComentarios': 0,
-		'ultimoComentario': 0,
-		'comentarios': null,
-		'link': null
+		'idRef': 0
+	,	'idTurma': 0
+	,	'idUsuario': 0
+	,	'permissoes': null
+	,	'titulo' : ''
+	,	'numComentarios': 0
+	,	'ultimoComentario': 0
+	,	'comentarios': null
+	,	'link': null
+	}
+	Comentarios.prototype.setNumComentarios = function (n) {
+		if (typeof n !== 'number') throw new Error("numComentarios precisa ser numero.");
+		this.numComentarios = n;
+		this.htmlNumComentarios.text('(' + n + ')');
+		if (Comentarios.aberto === this) {
+			// se esses comentarios estão sendo atualizados, verificar se precisa carregar novos comentários...
+			if (this.comentarios.length < n) {
+				// precisa carregar mais comentários
+			} else if (this.comantarios.length > n) {
+				// algum comentário foi apagado
+			} else {
+				// parece que tudo está certo...
+			}
+		}
 	}
 	Comentarios.prototype.getStats = function () {
 		var that = this;
-		AJAX.get("comentarios.json.php?acao=stats&idRef=" + this.idRef,
+		AJAX.get('comentarios.json.php?acao=stats&idRef=' + this.idRef,
 			{
 				success: function() {
 					var e, j;
@@ -198,19 +234,51 @@ var COMM = {};
 						that.getStatsHandler(j);
 					}
 					catch (e) {
-						ROODA.alert("Erro no servidor.");
+						ROODA.alert('Erro no servidor.');
 						console.dir(e);
 						return;
 					}
-
 				},
 				fail: function() {
 					setTimeout(that.getStats.bind(that), 1000);
+					if (Comentarios.aberto === that) {
+						// este é o comentario sendo visualizado no momento
+						// mostrar algum aviso de que à falha na conexão.
+					}
 				}
-			})
+			});
 	};
 	Comentarios.prototype.getStatsHandler = function (response) {
-
+		if (!response.usuario
+			|| !response.usuario.permissoes
+			|| !response.usuario.permissoes.ver) {
+			this.link.empty();
+			return;
+		}
+		this.setNumComentarios(response.numComentarios);
+		if (this.titulo !== response.titulo) {
+			this.titulo = response.titulo;
+		}
 	};
+	Comentarios.prototype.enviar = function (mensagem) {
+		if (!mensagem || typeof mensagem !== 'string') return;
+		// AJAX.post();
+	};
+	Comentarios.prototype.abrir = function () {
+		// esvaziar a janela de comentarios
+		Comentarios.htmlDinamico.listaComentarios.empty();
+		// atualizar titulo
+		Comentarios.htmlDinamico.titulo.text(this.titulo);
+		// 
+		Comentarios.html.show();
+		if (this.numComentarios > 0) {
+			if (this.comentarios.length > 0) {
+				// mostrar comentários já carregados
+			}
+			if (this.numComentarios > this.comentarios.length) {
+				// carregar mais comentários
+			}
+		}
+	}
 	exports.Comentarios = Comentarios;
-}(COMM));
+}(ROODA));
