@@ -10,7 +10,7 @@ function test(){
 }
 
 function atualiza(str){ //função que atualiza os ajustes da tela sem interrupções como clearInterval
-	window.setInterval(str, 10);
+	//window.setInterval(str, 10);
 }
 
 function ajusta(){

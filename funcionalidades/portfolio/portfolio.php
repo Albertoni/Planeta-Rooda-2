@@ -111,7 +111,6 @@ if($resultado['emAndamento']==true){
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="portfolio.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
@@ -121,7 +120,7 @@ if($resultado['emAndamento']==true){
 
 </head>
 
-<body onload="atualiza('ajusta()');inicia();">
+<body onload="inicia();">
 
 <div id="topo">
 	<div id="centraliza_topo">
