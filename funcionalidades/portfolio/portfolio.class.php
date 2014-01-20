@@ -32,6 +32,17 @@ class post{
 		$q = new conexao();
 		$q->solicitar('SELECT * FROM $tabela_portfolioPosts WHERE id = $id');
 
+		if ($q->erro != ""){
+			$this->id			= "Esse post não existe!";
+			$this->projeto_id	= "Esse post não existe!";
+			$this->user_id		= "Esse post não existe!";
+			$this->titulo		= "Esse post não existe!";
+			$this->texto		= "Esse post não existe!";
+			$this->tags			= "Esse post não existe!";
+			$this->dataCriacao	= "Esse post não existe!";
+			$this->dataUltMod	= "Esse post não existe!";
+		}
+
 		$this->id			= $dados['id'];
 		$this->projeto_id	= $dados['projeto_id'];
 		$this->user_id		= $dados['user_id'];
@@ -44,6 +55,14 @@ class post{
 
 	function salvar(){
 		$q = new conexao();
+
+		$this->projeto_id = $q->sanitizaString($this->projeto_id);
+		$this->user_id = $q->sanitizaString($this->user_id);
+		$this->titulo = $q->sanitizaString($this->titulo);
+		$this->texto = $q->sanitizaString($this->texto);
+		$this->tags = $q->sanitizaString($this->tags);
+		$this->dataCriacao = $q->sanitizaString($this->dataCriacao);
+		$this->dataUltMod = $q->sanitizaString($this->dataUltMod);
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioPosts SET 
@@ -202,6 +221,14 @@ class projeto{
 
 	function salvar(){
 		$q = new conexao();
+
+		$this->id = $q->sanitizaString($this->id);
+		$this->titulo = $q->sanitizaString($this->titulo);
+		$this->palavras = $q->sanitizaString($this->palavras);
+		$this->dataCriacao = $q->sanitizaString($this->dataCriacao);
+		$this->dataEncerramento = $q->sanitizaString($this->dataEncerramento);
+		$this->ownersIds = $q->sanitizaString($this->ownersIds);
+		$this->turma = $q->sanitizaString($this->turma);
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioProjetos SET 
