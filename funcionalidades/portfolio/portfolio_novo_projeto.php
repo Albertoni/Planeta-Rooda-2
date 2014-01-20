@@ -159,6 +159,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 ?>			<br />
 			<form name="fConteudo" id="postFormId" action="formProcessingNovoProjeto.php" onsubmit="return gravaConteudo()" method="post">
 			<input type="hidden" name="text" value="" />
+			<input type="hidden" name="owner_ids" id="owner_ids" value="" />
 			<input type="hidden" name="turma" value="<?=$turma?>" />
 			<div class="bts_cima">
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
@@ -181,7 +182,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 				<div id="add_colegas" class="bloco">
 					<h1>ESCOLHER COLEGAS</h1>
 					<ul class="sem_estilo">
-						<ul class="info_importada">
+						<ul id="lista_usuarios">
 <?php
 
 $consulta = new conexao();
@@ -314,10 +315,21 @@ $.datepicker.regional['pt'] = {
 	yearSuffix: ''
 };
 $.datepicker.setDefaults($.datepicker.regional['pt']);
-
-
 $("#data_inicio").datepicker();
 $("#data_encerramento").datepicker();
+
+// setando o formulário
+document.getElementById('postFormId').onsubmit = function(){
+	var selected = new Array();
+	$('#lista_usuarios input:checked').each(function(){
+		selected.push($(this).attr('name'));
+	});
+	document.getElementById('owner_ids').value = selected.join(';');
+
+	gravaConteudo();
+
+	return true;
+};
 </script>
 
 </html>

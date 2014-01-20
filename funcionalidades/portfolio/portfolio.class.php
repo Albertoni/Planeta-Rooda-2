@@ -12,6 +12,36 @@ class post{
 	private $dataCriacao;
 	private $dataUltMod;
 
+	function __construct($id, $dados = false){
+		if($dados !== false){
+			$this->id			= $dados['id'];
+			$this->projeto_id	= $dados['projeto_id'];
+			$this->user_id		= $dados['user_id'];
+			$this->titulo		= $dados['titulo'];
+			$this->texto		= $dados['texto'];
+			$this->tags			= $dados['tags'];
+			$this->dataCriacao	= $dados['dataCriacao'];
+			$this->dataUltMod	= $dados['dataUltMod'];
+		}else{
+			$this->carrega($id);
+		}
+	}
+
+	function carrega($id){
+		global $tabela_portfolioPosts;
+		$q = new conexao();
+		$q->solicitar('SELECT * FROM $tabela_portfolioPosts WHERE id = $id');
+
+		$this->id			= $dados['id'];
+		$this->projeto_id	= $dados['projeto_id'];
+		$this->user_id		= $dados['user_id'];
+		$this->titulo		= $dados['titulo'];
+		$this->texto		= $dados['texto'];
+		$this->tags			= $dados['tags'];
+		$this->dataCriacao	= $dados['dataCriacao'];
+		$this->dataUltMod	= $dados['dataUltMod'];
+	}
+
 	function salvar(){
 		$q = new conexao();
 
@@ -112,10 +142,10 @@ class projeto{
 		if($id === 0){
 			$this->id = 0;
 			$this->title = $title;
-			$this->palavras = $palavras;
+			$this->palavras = trim(explode(';', $palavras));
 			$this->dataCriacao = $dataCriacao;
 			$this->dataEncerramento = $dataEncerramento;
-			$this->ownersIds = $ownersIds;
+			$this->ownersIds = explode(';', $ownersIds);
 		}else{
 			$this->carrega($id);
 		}
@@ -124,7 +154,8 @@ class projeto{
 	function getTurma(){return $this->turma;}
 	function getDataCriacao(){return $this->dataCriacao;}
 	function getDataEncerramento(){return $this->dataEncerramento;}
-	function getPalavras(){return implode(', ', $this->palavras);}
+	function getPalavras(){return $this->palavras;}
+	function getPalavrasString(){return implode(', ', $this->palavras);}
 
 	function carrega($idProjeto){
 		global $tabela_portfolioProjetos;
@@ -138,7 +169,7 @@ class projeto{
 			$this->palavras = explode(';', $q->resultado['tags']);
 			$this->dataCriacao = $q->resultado['dataCriacao'];
 			$this->dataEncerramento = $q->resultado['dataEncerramento'];
-			$this->ownersIds = explode(",", $q->resultado['owner_ids']);
+			$this->ownersIds = explode(";", $q->resultado['owner_ids']);
 			$this->existe = 1;
 
 			$this->carregaPosts();
@@ -175,8 +206,8 @@ class projeto{
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioProjetos SET 
 				titulo = $this->title,
-				tags = ".implode(',', $this->palavras).",
-				owner_id = ".implode(',', $this->ownersIds).",
+				tags = ".implode(';', $this->palavras).",
+				owner_id = ".implode(';', $this->ownersIds).",
 				dataCriacao = $this->dataCriacao,
 				dataEncerramento = $this->dataEncerramento,
 				turma = $this->turma
@@ -186,11 +217,11 @@ class projeto{
 			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
 				'$this->id',
 				'$this->titulo',
-				'".implode(',', $this->palavras)."',
+				'".implode(';', $this->palavras)."',
 				'1',
 				'$this->dataCriacao',
 				'$this->dataEncerramento',
-				'".implode(',', $this->ownersIds)."',
+				'".implode(';', $this->ownersIds)."',
 				'$this->turma')";
 		}
 		

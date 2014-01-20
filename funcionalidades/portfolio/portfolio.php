@@ -82,7 +82,7 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 							</li>
 							<li>
 								<span class="dados">Palavras:</span>
-								<span class="valor"><?=$projeto->getPalavras()?></span>
+								<span class="valor"><?=$projeto->getPalavrasString()?></span>
 							</li>
 <?php
 if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){

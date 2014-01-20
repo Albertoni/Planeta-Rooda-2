@@ -33,6 +33,7 @@ $tags		=$_POST['tags_projeto'];
 $text		=$_POST['text'];
 $dataInicio	=$_POST['data_inicio_projeto'];
 $dataEncerramento=$_POST['data_encerramento_projeto'];
+$donos		=$_POST['owner_ids'];
 
 print_r($_POST);
 
