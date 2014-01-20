@@ -161,18 +161,25 @@ var COMENTARIOS = {};
 var COMM = {};
 (function (exports) {
 	function Comentario(obj) {
+		this.usuario = obj.usuario;
+		this.mensagem = obj.mensagem;
+		this.data = new Date(obj.data * 1000); // transformanado em milisegundos
+		this.htmlDinamico = {};
+		this.htmlDinamico.usuario = $("<span>")
 	}
 	Comentario.prototype = {
 		'id': 0
 	,	'usuario' : null
 	,	'mensagem' : ''
 	,	'data' : 0
+	,	'html' : null
+	,	'htmlDinamico' : null
 	}
 	function Comentarios(idRef) {
 		var comentarios = this;
 		this.idRef = parseInt(idRef,10);
 		this.comenarios = [];
-		this.getStats();
+		this.atualizar();
 		this.htmlNumComentarios = $('<span>');
 		this.link = $('<a>').text('Ver comentários ').append(this.htmlNumComentarios);
 		this.link.on("click") = this.abrir.bind(this);
@@ -208,8 +215,44 @@ var COMM = {};
 	,	'comentarios': null
 	,	'link': null
 	}
-	Comentarios.prototype.setNumComentarios = function (n) {
-		if (typeof n !== 'number') throw new Error("numComentarios precisa ser numero.");
+	Comentarios.prototype.atualizar = function () {
+		var that = this;
+		AJAX.get('comentarios.json.php?acao=stats&idRef=' + this.idRef,
+			{
+				success: function() {
+					var e, j;
+					try {
+						var j = JSON.parse(this.responseText);
+						that.atualizarHandler(j);
+					}
+					catch (e) {
+						ROODA.alert('Erro no servidor.');
+						console.dir(e);
+						return;
+					}
+				},
+				fail: function() {
+					setTimeout(that.atualizar.bind(that), 1000);
+					if (Comentarios.aberto === that) {
+						// este é o comentario sendo visualizado no momento
+						// mostrar algum aviso de que à falha na conexão.
+					}
+				}
+			});
+	};
+	Comentarios.prototype.atualizarHandler = function (response) {
+		if (!response.usuario
+			|| !response.usuario.permissoes
+			|| !response.usuario.permissoes.ver) {
+			this.link.empty();
+			return;
+		}
+		if (this.titulo !== response.titulo) {
+			this.titulo = response.titulo;
+		}
+		// essa função pede para carregar os comentarios se precisar
+		var n = response.numComentarios;
+		// if (typeof n !== 'number') throw new Error("numComentarios precisa ser numero.");
 		this.numComentarios = n;
 		this.htmlNumComentarios.text('(' + n + ')');
 		if (Comentarios.aberto === this) {
@@ -222,63 +265,38 @@ var COMM = {};
 				// parece que tudo está certo...
 			}
 		}
-	}
-	Comentarios.prototype.getStats = function () {
-		var that = this;
-		AJAX.get('comentarios.json.php?acao=stats&idRef=' + this.idRef,
-			{
-				success: function() {
+	};
+	Comentarios.prototype.enviar = function (mensagem) {
+		if (!mensagem || typeof mensagem !== 'string') return;
+		AJAX.post("comentarios.json.php?acao=enviar&idRef=" + this.idRef, 
+			{ 'mensagem' : mensagem }
+		,	{
+				success:function () {
 					var e, j;
 					try {
 						var j = JSON.parse(this.responseText);
-						that.getStatsHandler(j);
+						that.atualizarHandler(j);
 					}
 					catch (e) {
 						ROODA.alert('Erro no servidor.');
 						console.dir(e);
 						return;
 					}
-				},
-				fail: function() {
-					setTimeout(that.getStats.bind(that), 1000);
-					if (Comentarios.aberto === that) {
-						// este é o comentario sendo visualizado no momento
-						// mostrar algum aviso de que à falha na conexão.
-					}
 				}
-			});
-	};
-	Comentarios.prototype.getStatsHandler = function (response) {
-		if (!response.usuario
-			|| !response.usuario.permissoes
-			|| !response.usuario.permissoes.ver) {
-			this.link.empty();
-			return;
-		}
-		this.setNumComentarios(response.numComentarios);
-		if (this.titulo !== response.titulo) {
-			this.titulo = response.titulo;
-		}
-	};
-	Comentarios.prototype.enviar = function (mensagem) {
-		if (!mensagem || typeof mensagem !== 'string') return;
+			}
+		);
 		// AJAX.post();
 	};
 	Comentarios.prototype.abrir = function () {
+		Comentarios.html.hide();
+		Comentarios.aberto = this;
 		// esvaziar a janela de comentarios
 		Comentarios.htmlDinamico.listaComentarios.empty();
 		// atualizar titulo
 		Comentarios.htmlDinamico.titulo.text(this.titulo);
 		// 
+		this.atualizar();
 		Comentarios.html.show();
-		if (this.numComentarios > 0) {
-			if (this.comentarios.length > 0) {
-				// mostrar comentários já carregados
-			}
-			if (this.numComentarios > this.comentarios.length) {
-				// carregar mais comentários
-			}
-		}
 	}
 	exports.Comentarios = Comentarios;
 }(ROODA));
