@@ -195,12 +195,18 @@ ROODA.ui.confirm = function(str, fun_yes, fun_no) {
     div.innerHTML = html.join("\n");
     document.body.appendChild(div);
 };
-ROODA.Usuario = function (id) {
+ROODA.Usuario = function (id, login, nome) {
+    if (typeof id === 'number') this.id = id;
+    if (typeof login === 'string') this.login = login;
+    if (typeof nome === 'string') this.nome = nome;
+    if (id && !(nome || login)) {
+        // pegar dados via ajax (futuro)
+    }
 }
 ROODA.Usuario.prototype = {
     'id': 0,
     'login': '',
-    'nome': ''
+    'nome': '',
     'toString': function() {
         return (this.nome || this.login);
     }
