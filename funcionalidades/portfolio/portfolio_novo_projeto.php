@@ -187,8 +187,6 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 $consulta = new conexao();
 $consulta->solicitar("SELECT usuario_nome, codUsuario FROM $tabela_usuarios INNER JOIN $tabela_turmasUsuario ON codUsuario = usuario_id WHERE codTurma = $turma"); // Pega a lista de pessoas da turma
 
-$titulo="";
-
 if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 
 	for($i=0; $i<$consulta->registros; $i++)
@@ -202,16 +200,15 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 }else{
 	if (is_numeric($_GET['editId'])){
 		$membrosProjeto = new conexao();
-		$membrosProjeto->solicitar("SELECT OwnersIds, Title FROM $tabela_blogs WHERE id=".$_GET['editId']);
-		$membros = explode(";",$membrosProjeto->resultado['OwnersIds']);
-		$titulo = $membrosProjeto->resultado['Title'];
+		$membrosProjeto->solicitar("SELECT owner_ids FROM PortfolioProjetos WHERE id=".$_GET['editId']);
+		$membros = explode(";",$membrosProjeto->resultado['owner_ids']);
 		
 		for($i=0; $i<$consulta->registros; $i++)
 		{
 			$id = $consulta->resultado['codUsuario'];
 			if (in_array($id, $membros)){
 			?>
-								<li class="enviado<?=alterna()?>"><input type="checkbox" checked="1" name="<?=$id?>" /><?=$consulta->resultado['usuario_nome']?></li>
+								<li class="enviado<?=alterna()?>"><input type="checkbox" checked="checked" name="<?=$id?>" /><?=$consulta->resultado['usuario_nome']?></li>
 			<?php
 			}else{
 			?>
