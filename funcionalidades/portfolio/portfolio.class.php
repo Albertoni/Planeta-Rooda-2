@@ -212,7 +212,7 @@ class projeto{
 		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = ".$this->id);
 
 		for($i=0; $i < $q->registros; $i++){
-			$newPost = new post($q->resultado['']);
+			$newPost = new post(0, $q->resultado);
 
 			array_push($this->posts, $newPost);
 			$q->proximo();
