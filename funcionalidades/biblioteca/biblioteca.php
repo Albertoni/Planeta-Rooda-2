@@ -34,7 +34,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		<div id="geral">
 
 			<noscript>
-				<p>O seu javascript está desabilitado, essa pagina depende de javascript para funcionar corretamente.</p>
+				<p>O seu javascript está desabilitado, esta pagina depende de javascript para funcionar corretamente.</p>
 			</noscript>
 			<!-- **************************
 						cabecalho
