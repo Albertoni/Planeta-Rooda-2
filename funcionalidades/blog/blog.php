@@ -42,7 +42,7 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 	<link type="text/css" rel="stylesheet" href="blog.css" />
 </head>
 
-<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);atualiza('ajusta()');inicia();coment();">
+<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);inicia();coment();">
 <div id="descricao"></div>
 <div id="fundo_lbox"></div>
 <div id="light_box" class="bloco"></div>
@@ -283,6 +283,8 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 		</div>
 	</div>
 
+
+
 <script src="../../jquery.js"></script>
 <script src="../../js/compatibility.js"></script>
 <script src="../../js/rooda.js"></script>
@@ -295,6 +297,7 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 <script src="../lightbox.js"></script>
 <script src="blog_ajax2.js"></script>
 <script src="../../js/thumbnailImages.js"></script>
+<script src="../../comentarios.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
