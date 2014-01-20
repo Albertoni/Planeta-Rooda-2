@@ -59,39 +59,13 @@ if($editar){
 	<script type="text/javascript" src="portfolio.js"></script>
 	<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 	<script type="text/javascript" src="../lightbox.js"></script>
+
+	<link type="text/css" rel="stylesheet" href="ui-lightness/jquery-ui-1.10.4.custom.min.css" />
 	<script type="text/javascript" src="jquery-ui-1.10.4.custom.min.js"></script>
 
 	<!--[if IE 6]>
 	<script type="text/javascript" src="planeta_ie6.js"></script>
 	<![endif]-->
-
-<script type="text/javascript">
-function ajusta_img() { 
-	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-		$('#cont_img3').css('width','436px');
-		$('#cont_img3').css('padding-right','20px');
-		$('#cont_img').css('height','170px');
-	}
-}
-
-var objContent;
-var objHolder;
-
-function Init() {
-	var ua = navigator.appName; 
-	objHolder = document.getElementById('text_post');
-	if(ua == "Netscape") {
-		objContent = objHolder.contentDocument;
-	} else {
-		objContent = objHolder.document;
-	}
-	objContent.designMode = "On";
-
-	objContent.body.style.fontFamily = 'Verdana';
-	objContent.body.style.fontSize = '11px';
-}
-modo=2;
-</script>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();Init(); checar(); ajusta_img();">
@@ -196,13 +170,13 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 					<h1>NOVO PROJETO</h1>
 					<ul class="sem_estilo">
 						<li>Título <span class="exemplo">(Obrigatório)</span></li>
-						<li><textarea name="titulo_projeto" type="text" class="port_info" rows="1"/></textarea></li>
-						<li>Descrição <span class="exemplo">(Obrigatório)</span></li>
-						<li><textarea name="descricao_projeto" type="text" class="port_info"/></textarea></li>
-						<li>Autor <span class="exemplo">(Obrigatório)</span></li>
-						<li><textarea name="autor_projeto" type="text" class="port_info" rows="1"/></textarea></li>
+						<li><input name="titulo_projeto" type="text" class="port_info"></li>
 						<li>Tags <span class="exemplo">(Escreva as tags separadas por ponto e vírgula. Ex: Matemática; Português; Artes)</span></li>
 						<li><input name="tags_projeto" type="text" class="port_info"/></li>
+						<li>Data de início <span class="exemplo">(Obrigatório)</span></li>
+						<li><input name="data_inicio_projeto" type="text" class="port_info" id="data_inicio"></li>
+						<li>Data de Encerramento <span class="exemplo">(Obrigatório)</span></li>
+						<li><input name="data_encerramento_projeto" type="text" class="port_info" id="data_encerramento"></li>
 							<li style="height:22px; margin-bottom:4px; margin-top:10px">
 								<div class="tool_bt" id="alt_negrito"><img src="../../images/botoes/tool_negrito.png" onClick="doBold()" /></div>
 								<div class="tool_bt" id="alt_italico"><img src="../../images/botoes/tool_italico.png" onClick="doItalic()" /></div>
@@ -241,4 +215,59 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 		</div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
 </body>
+
+<script type="text/javascript">
+function ajusta_img() { 
+	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
+		$('#cont_img3').css('width','436px');
+		$('#cont_img3').css('padding-right','20px');
+		$('#cont_img').css('height','170px');
+	}
+}
+
+var objContent;
+var objHolder;
+
+function Init() {
+	var ua = navigator.appName; 
+	objHolder = document.getElementById('text_post');
+	if(ua == "Netscape") {
+		objContent = objHolder.contentDocument;
+	} else {
+		objContent = objHolder.document;
+	}
+	objContent.designMode = "On";
+
+	objContent.body.style.fontFamily = 'Verdana';
+	objContent.body.style.fontSize = '11px';
+}
+modo=2;
+
+
+$.datepicker.regional['pt'] = {
+	closeText: 'Fechar',
+	prevText: '&#x3c;Anterior',
+	nextText: 'Seguinte',
+	currentText: 'Hoje',
+	monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
+	'Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+	monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun',
+	'Jul','Ago','Set','Out','Nov','Dez'],
+	dayNames: ['Domingo','Segunda-feira','Terça-feira','Quarta-feira','Quinta-feira','Sexta-feira','Sábado'],
+	dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+	dayNamesMin: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'],
+	weekHeader: 'Sem',
+	dateFormat: 'dd/mm/yy',
+	firstDay: 0,
+	isRTL: false,
+	showMonthAfterYear: false,
+	yearSuffix: ''
+};
+$.datepicker.setDefaults($.datepicker.regional['pt']);
+
+
+$("#data_inicio").datepicker();
+$("#data_encerramento").datepicker();
+</script>
+
 </html>
