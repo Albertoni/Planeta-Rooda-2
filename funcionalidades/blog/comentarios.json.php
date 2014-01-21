@@ -5,7 +5,7 @@ require_once("../../comentarios.class.php");
 	PARA PORTAR PARA OUTRA FUNCIONALIDADE, MUDAR SOMENTE ABAIXO
 ------------------------------------------ --------------------*/
 // tabela onde ficam os comentarios dessa funcionalidade
-Comentario::$tabelaBD = "WebfolioComentarios";
+Comentario::$tabelaBD = "blogComentarios";
 // para verificação de permissões: identificador da funcionalidade e nome das permissoes
 define('FUNCIONALIDADE',      TIPOBLOG);
 define('PERM_COMENT_VER',     'blog_verComentarios');
