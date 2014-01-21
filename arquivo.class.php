@@ -26,15 +26,11 @@ class Arquivo {
 
 	protected $consulta;
 
-	public function __construct($id = false)
-	{
-		if ($id === false)
-		{
+	public function __construct($id = false) {
+		if ($id === false) {
 			$this->data = date('Y-m-d');
 			$this->upload = true;
-		}
-		else
-		{
+		} else {
 			$this->abrir($id);
 		}
 	}
@@ -57,28 +53,24 @@ class Arquivo {
 			FROM $tabela_arquivos
 			WHERE arquivo_id = '$id'"
 		);
-		if ($bd->erro)
-		{
+		if ($bd->erro) {
 			// erro na consulta;
 			$this->erros[] = "mysql: " . $bd->erro;
 		}
-		if ($bd->registros === 1)
-		{
+		if ($bd->registros === 1) {
 			// carrega arquivo encontrado
 			$this->id = $id;
 			$this->popular($bd->resultado);
 			$this->upload = false;
 			$this->download = true;
-		}
-		else
-		{
+		} else {
 			$this->erros[] = "[arquivo] Arquivo n&atilde;o encontrado";
 			if ($bd->registros > 1)
 				$this->erros[] = "[arquivo] Vários arquivos encontrados";
 		}
 	}
 
-	private function popular($resultadoBd){
+	private function popular($resultadoBd) {
 		$this->id        = (int) $resultadoBd['id'];
 		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
 		$this->md5       = $resultadoBd['md5']; // conteudo do arquivo
@@ -100,8 +92,7 @@ class Arquivo {
 	public function getIdUsuario() { return $this->idUsuario; }
 	public function getErros(){
 		$erros = array();
-		foreach ($this->erros as $value)
-		{
+		foreach ($this->erros as $value) {
 			$erros[] = $value;
 		}
 		return $erros;
@@ -123,16 +114,14 @@ class Arquivo {
 		return $assoc;
 	}
 	// METODOS RELACIONSADOS A UPLOAD
-	public function salvar()
-	{
+	public function salvar() {
 		global $tabela_arquivos;
 		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUsuario) {
 			$this->errors[] = '[arquivo] Arquivo não pode ser enviado.';
 			return false;
 		}
 		// NOVO ARQUIVO
-		if ($this->upload && !$this->download)
-		{
+		if ($this->upload && !$this->download) {
 			// novo arquivo
 			$bd = new conexao();
 			// sanitizando dados para o banco de dados
@@ -170,12 +159,9 @@ class Arquivo {
 				"INSERT INTO $tabela_arquivos (" . implode(", ", $campos) . ")
 				VALUES ('" . implode("', '", $valores) . "')"
 			);
-			if ($bd->erro !== "")
-			{
+			if ($bd->erro !== "") {
 				$this->erros[] = "[arquivo] BD: {$bd->erro}";
-			}
-			else
-			{
+			} else {
 				$this->id = $bd->ultimo_id();
 				$this->upload = false;
 				$this->download = true;
@@ -183,8 +169,7 @@ class Arquivo {
 			}
 		}
 		// MUDANDO ARQUIVO ANTIGO
-		else if ($this->download && !$this->upload)
-		{
+		else if ($this->download && !$this->upload) {
 			$bd = new conexao();
 			// sanitizando dados para o banco de dados
 			$campos[]  = 'titulo';
@@ -205,8 +190,7 @@ class Arquivo {
 			$valores[] = (int) $this->idUsuario;
 			$sqlset = array();
 			// construindo a sintaxe do sql
-			foreach ($campos as $num => $campo)
-			{
+			foreach ($campos as $num => $campo) {
 				$sqlset[] = "{$campo} = '{$valores[$num]}'";
 			}
 			// executando consulta
@@ -215,27 +199,21 @@ class Arquivo {
 				SET " . implode(", ", $sqlset) . "
 				WHERE arquivo_id = {$this->id}"
 			);
-			if ($bd->erro !== '')
-			{
+			if ($bd->erro !== '') {
 				$this->erros[] = $bd->erro;
 				return false;
 			}
 			return true;
-		}
-		else
-		{
+		} else {
 			$this->erros[] = "[arquivo] Este arquivo não pode ser enviado";
 			return false;
 		}
 	}
 	public function setIdUsuario($id) {
 		$id = (int) $id;
-		if ($id === 0)
-		{
+		if ($id === 0) {
 			$this->erros[] = "[arquivo] Id inválido (nulo)";
-		}
-		else
-		{
+		} else {
 			$this->idUsuario = $id;
 		}
 	}
@@ -243,32 +221,28 @@ class Arquivo {
 	// ex: $arquivo->setArquivo($_FILES['arquivo']);
 	public function setArquivo($FILE) {
 		$maxFileSize = self::getTamanhoMaximo();
-
-		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name'])
-		{
+		if (!isset($FILE['tmp_name']) || !$FILE['tmp_name']) {
 			$this->erros[] = "[arquivo] Parametro inv&aacute;lido (Arquivo::setArquivo($FILE))";
 		}
-		if(!filesize($FILE['tmp_name']))
-		{
+		if(!filesize($FILE['tmp_name'])) {
 			$this->erros[] = "[arquivo] Arquivo vazio ou inv&aacute;lido.";
 		}
-		if($maxFileSize < $FILE['size'])
-		{
+		if($maxFileSize < $FILE['size']) {
 			$this->erros[] = "[arquivo] Arquivo maior que o tamanho aceitável.";
-		}
-		else
-		{
+		} else {
 			$this->tamanho = (int) $FILE['size'];
 			$arquivo = fopen($FILE['tmp_name'], 'r');
 			$this->setConteudo(fread($arquivo, $FILE['size']));
 			$this->setNome($FILE['name']);
 			$this->setTipo($FILE['type']);
-			if (!$this->getTitulo()) $this->setTitulo($FILE['name']);
+			if (!$this->getTitulo()) {
+				$this->setTitulo($FILE['name']);
+			}
 		}
 	}
 
 	// ex: $arquivo->setConteudo($blob);
-	private function setConteudo($conteudo){
+	private function setConteudo($conteudo) {
 		$this->conteudo = $conteudo;
 		$this->md5 = md5($conteudo);
 	}
@@ -305,8 +279,7 @@ class Arquivo {
 			$bd->solicitar(
 				"DELETE FROM $tabela_arquivos WHERE arquivo_id = $id"
 			);
-			if ($bd->erro !== '')
-			{
+			if ($bd->erro !== '') {
 				throw new Exception('BD: ' . $this->consulta->erro, 1);
 			}
 		}
@@ -419,7 +392,7 @@ class Arquivo {
 
 		if(is_numeric($value)){
 			return $value;
-		}else{
+		} else {
 			$value_length = strlen($value);
 			$qty = substr($value, 0, $value_length - 1);
 			$unit = strtolower(substr($value, $value_length - 1));
@@ -462,7 +435,6 @@ class Imagem extends Arquivo {
 		// adiciona suporte a transparencia
 		imagealphablending($this->imagem, true);
 		imagesavealpha($this->imagem, true);
-
 	}
 
 	function __destruct() {
