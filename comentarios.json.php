@@ -78,27 +78,28 @@ switch ($acao) {
 		break;
 	case 'stats':
 		$permissoes = permissoesComentarios($idRef, $usuario);
-		$json['usuario']['permissoes'] = $permissoes;
+		$json['permissoes'] = $permissoes;
 		if (!$permissoes['ver']) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
 		}
 		$json['idRef'] = $idRef;
+		$json['turma'] = turmaDaRef($idRef);
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
+		$json['ultimoId'] = Comentario::ultimoId($idRef);
 		$json['novosComentarios'] = Comentario::numeroComentarios($idRef,$ultimo);
 		$json['titulo'] = tituloDaRef($idRef);
 		break;
 	// retorna lista de comentarios do recurso
 	case 'listar':
 		$permissoes = permissoesComentarios($idRef, $usuario);
-		$json['usuario']['permissoes'] = $permissoes;
+		$json['permissoes'] = $permissoes;
 		if (!$permissoes['ver']) {
 			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
 			break;
 		}
-		$ultimo = isset($_GET['ultimo']) ? (int) $_GET['ultimo'] : 0;
 		$json['idRef'] = $idRef;
-		$json['turma'] = $turma;
+		$json['turma'] = turmaDaRef($idRef);
 		$json['comentarios'] = array();
 		$comentario = new Comentario();
 		$comentario->abrirComentarios($idRef, $ultimo);
@@ -107,14 +108,31 @@ switch ($acao) {
 			$comentario->proximo();
 		}
 		break;
-	
+
+	case 'listarIds' :
+		$permissoes = permissoesComentarios($idRef, $usuario);
+		if (!$permissoes['ver']) {
+			$json['erro'] = 'Você não tem permissão para ver estes comentários.';
+			break;
+		}
+		$json['idRef'] = $idRef;
+		$json['turma'] = turmaDaRef($idRef);
+		$json['ids'] = array();
+		$comentario = new Comentario();
+		$comentario->abrirComentarios($idRef, $ultimo);
+		while ($comentario->existe()) {
+			$json['ids'][] = $comentario->getId();
+			$comentario->proximo();
+		}
+		break;
+
 	case 'enviar':
 		$permissoes = permissoesComentarios($idRef, $usuario);
 		if (!$permissoes['comentar']) {
 			$json['erro'] = 'Você não tem permissão para comentar aqui.';
 			break;
 		}
-		$json['turma'] = $turma;
+		$json['turma'] = turmaDaRef($idRef);
 		$comentario = new Comentario();
 		try {
 			$comentario->setIdRef($idRef);

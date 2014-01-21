@@ -31,10 +31,19 @@ class Comentario {
 		$ultimoId = (int) $ultimoId;
 		$bd = new conexao();
 		$bd->solicitar(
-			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD 
-			. " WHERE idRef = $idRef" . ($ultimoId > 0 ? " AND id > $ultimoId" : '')
+			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD .
+			" WHERE idRef = $idRef" . ($ultimoId > 0 ? " AND id > $ultimoId" : '')
 		);
 		return (int) $bd->resultado['num'];
+	}
+	public static function ultimoId($idRef) {
+		$idRef = (int) $idRef;
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT id FROM " . Comentario::$tabelaBD .
+			" WHERE idRef = $idRef ORDER BY id DESC LIMIT 1"
+		);
+		return (int) $bd->resultado['id'];
 	}
 
 	// propriedades do objeto voltam ao valor inicial
@@ -83,7 +92,8 @@ class Comentario {
 		$ultimoId = (int) $ultimoId;
 		$bd = new conexao();
 		$bd->solicitar(
-			"SELECT * FROM " . Comentario::$tabelaBD . " WHERE idRef = $idRef and id > $ultimoId"
+			"SELECT * FROM " . Comentario::$tabelaBD .
+			" WHERE idRef = $idRef and id > $ultimoId ORDER BY id ASC"
 		);
 		$this->salvo = false;
 		if ($bd->erro)

@@ -224,16 +224,16 @@ var COMENTARIOS = {};
 			+ '&ultimo=' + this.ultimoComentario;
 		AJAX.get(url, {
 			success: function() {
-				var e, j;
+				var j, e;
 				try {
-					var j = JSON.parse(this.responseText);
-					that.atualizarHandler(j);
+					j = JSON.parse(this.responseText);
 				}
 				catch (e) {
 					ROODA.ui.alert('Erro no servidor.');
 					console.dir(e);
 					return;
 				}
+				that.atualizarHandler(j);
 			},
 			fail: function() {
 				setTimeout(that.atualizar.bind(that), 1000);
@@ -244,6 +244,38 @@ var COMENTARIOS = {};
 			}
 		});
 	};
+	Comentarios.prototype.carregar = function () {
+		var that = this;
+		var url = 'comentarios.json.php?acao=listar&idRef' + this.idRef
+			+ '&ultimo=' +this.ultimoComentario;
+		AJAX.get(url, {});
+	}
+	Comentarios.prototype.verificarApagados = function () {
+		var that = this;
+		var url = 'comentarios.json.php?acao=listarIds&idRef' + this.idRef;
+		AJAX.get(url, {
+			success : function () {
+				// resposta do servidor veio com sucesso, parsear o json...
+				var j, e;
+				try {
+					j = JSON.parse(this.responseText);
+				}
+				catch (e) {
+					ROODA.ui.alert('Erro no servidor.');
+					console.dir(e);
+					return;
+				}
+				that.verificarApagadosHandler(j);
+			},
+			fail : function () {}
+		});
+	}
+	Comentarios.prototype.verificarApagadosHandler = function (response) {
+		if (!response.ids) {
+			
+		}
+	}
+
 	Comentarios.prototype.atualizarHandler = function (response) {
 		if (!response.usuario
 			|| !response.usuario.permissoes
