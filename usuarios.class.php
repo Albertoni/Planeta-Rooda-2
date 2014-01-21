@@ -111,19 +111,18 @@ class Usuario { //estrutura para o item post do blog
 			// FALLBACK: blowfish antigo (PHP 4)
 			$salt = "$2a$07$".gen_salt(22);
 			$this->pass =  crypt($password, $salt);
-		}
 
-		if (!$this->checkPassword($password)) {
-			// FALLBACK: md5 (PHP 4)
-			$salt = "$1$".gen_salt(12);
-			$this->pass = crypt($password, $salt);
-		}
+			if (!$this->checkPassword($password)) {
+				// FALLBACK: md5 (PHP 4)
+				$salt = "$1$".gen_salt(12);
+				$this->pass = crypt($password, $salt);
 
-		if (!$this->checkPassword($password)) {
-			// FALLBACK: md5 unsalted
-			$this->pass = md5($password);
+				if (!$this->checkPassword($password)) {
+					// FALLBACK: md5 unsalted
+					$this->pass = md5($password);
+				}
+			}
 		}
-
 		// salvar nova senha se o usuario tiver um id (está cadastrado)
 		$id = (int) $this->id;
 		if ($id) {

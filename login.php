@@ -8,7 +8,6 @@
 	$pesquisa1 = new conexao();
 
 	$login1 = $pesquisa1->sanitizaString($_POST['login1']);
-	$password1 = md5($_POST['password1']);
 
 	$objUsuario = new Usuario();
 	$objUsuario->openUsuario($login1);
