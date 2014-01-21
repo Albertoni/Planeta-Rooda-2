@@ -158,20 +158,18 @@ var COMENTARIOS = {};
 	exports.Comentario = Comentario;
 }(COMENTARIOS));
 */
-var COMM = {};
 (function (exports) {
+	'use sctrict';
 	function Comentario(obj) {
 		this.id = obj.id;
 		this.usuario = new ROODA.Usuario(obj.usuario.id, obj.usuario.usuario, usuario.usuario.nome);
 		this.data = new Date(obj.data * 1000); // transformanado em milisegundos
 		this.mensagem = obj.mensagem;
-		this.htmlDinamico = {};
-		this.htmlDinamico.usuario = $('<span>');
-		this.htmlDinamico.mensagem = $('<p>').addClass('mensagem').text(this.mensagem);
 		this.html = $('<li>')
 			.append($("<p>").addClass('info')
-				.append(this.htmlDinamico.usuario)
-				.append(this.htmlDinamico.));
+				.append(this.usuario.toHTML())
+				.append($("<span>").addClass("data").text(this.data.toLocaleString())))
+			.append($('<p>').addClass('mensagem').text(this.mensagem));
 	}
 	Comentario.prototype = {
 		'id': 0
@@ -179,17 +177,16 @@ var COMM = {};
 	,	'mensagem' : ''
 	,	'data' : 0
 	,	'html' : null
-	,	'htmlDinamico' : null
 	}
 	function Comentarios(idRef) {
-		var comentarios = this;
+		//var comentarios = this;
 		this.idRef = parseInt(idRef,10);
 		this.comenarios = [];
-		this.atualizar();
 		this.htmlNumComentarios = $('<span>');
 		this.link = $('<a>').text('Ver comentários ').append(this.htmlNumComentarios);
-		this.link.on("click") = this.abrir.bind(this);
+		this.link.on("click", this.abrir.bind(this));
 		this.permissoes = { ver: false, comentar: false, excluir: false };
+		this.atualizar();
 	}
 	// partes do layout que mudam de conteudo
 	Comentarios.htmlDinamico = {
@@ -223,28 +220,29 @@ var COMM = {};
 	}
 	Comentarios.prototype.atualizar = function () {
 		var that = this;
-		AJAX.get('comentarios.json.php?acao=stats&idRef=' + this.idRef,
-			{
-				success: function() {
-					var e, j;
-					try {
-						var j = JSON.parse(this.responseText);
-						that.atualizarHandler(j);
-					}
-					catch (e) {
-						ROODA.alert('Erro no servidor.');
-						console.dir(e);
-						return;
-					}
-				},
-				fail: function() {
-					setTimeout(that.atualizar.bind(that), 1000);
-					if (Comentarios.aberto === that) {
-						// este é o comentario sendo visualizado no momento
-						// mostrar algum aviso de que à falha na conexão.
-					}
+		var url = 'comentarios.json.php?acao=stats&idRef=' + this.idRef
+			+ '&ultimo=' + this.ultimoComentario;
+		AJAX.get(url, {
+			success: function() {
+				var e, j;
+				try {
+					var j = JSON.parse(this.responseText);
+					that.atualizarHandler(j);
 				}
-			});
+				catch (e) {
+					ROODA.ui.alert('Erro no servidor.');
+					console.dir(e);
+					return;
+				}
+			},
+			fail: function() {
+				setTimeout(that.atualizar.bind(that), 1000);
+				if (Comentarios.aberto === that) {
+					// este é o comentario sendo visualizado no momento
+					// mostrar algum aviso de que à falha na conexão.
+				}
+			}
+		});
 	};
 	Comentarios.prototype.atualizarHandler = function (response) {
 		if (!response.usuario

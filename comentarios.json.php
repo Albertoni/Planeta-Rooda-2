@@ -65,9 +65,9 @@ $json['usuario'] = $usuario->getSimpleAssoc();
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $idRef = isset($_GET['idRef']) ? (int) $_GET['idRef'] : 0;
+$ultimo = isset($_GET['ultimo']) ? (int) $_GET['ultimo'] : 0;
 $acao = isset($_GET['acao']) ? trim($_GET['acao']) : "";
 $mensagem = isset($_POST['mensagem']) ? trim($_POST['mensagem']) : "";
-
 
 // keep it simple, stupid!
 switch ($acao) {
@@ -85,6 +85,7 @@ switch ($acao) {
 		}
 		$json['idRef'] = $idRef;
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
+		$json['novosComentarios'] = Comentario::numeroComentarios($idRef,$ultimo);
 		$json['titulo'] = tituloDaRef($idRef);
 		break;
 	// retorna lista de comentarios do recurso

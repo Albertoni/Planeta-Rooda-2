@@ -14,6 +14,7 @@ class Comentario {
 	protected $usuario = null;
 	private $salvo = false; // flag: se alguma mudança foi feita e não foi salva.
 
+	// carrega comentário se id for passada.
 	public function __construct($id = false) {
 		if (!(Comentario::$tabelaBD)) {
 			throw new Exception('"Comentario::$tabelaBD" não está definida');
@@ -23,12 +24,15 @@ class Comentario {
 		}
 	}
 
-	// retorna o numero de comentarios no objeto
-	public static function numeroComentarios($idRef) {
+	// retorna quantos comentários há na referencia de id 'idRef'
+	// depois do comentario de id '$ultimoId'
+	public static function numeroComentarios($idRef, $ultimoId = 0) {
 		$idRef = (int) $idRef;
+		$ultimoId = (int) $ultimoId;
 		$bd = new conexao();
 		$bd->solicitar(
-			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD . " WHERE idRef = $idRef"
+			"SELECT count(1) AS num FROM " . Comentario::$tabelaBD 
+			. " WHERE idRef = $idRef" . ($ultimoId > 0 ? " AND id > $ultimoId" : '')
 		);
 		return (int) $bd->resultado['num'];
 	}
@@ -98,6 +102,7 @@ class Comentario {
 	}
 
 	public function setUsuario($idUsuario) {
+		// não pode ser mudado se a mensagem já existe (tem id)
 		if ($this->existe())
 			throw new Exception("Não pode mudar o usuário de uma mensagem existente.");
 		if (is_object($idUsuario))
@@ -115,6 +120,7 @@ class Comentario {
 	}
 
 	public function setIdRef($idRef) {
+		// não pode ser mudado se o comentário já está no banco de dados.
 		if ($this->existe())
 			throw new Exception("Não pode mudar idRef de mensagem existente.");
 		if (!is_integer($idRef))
