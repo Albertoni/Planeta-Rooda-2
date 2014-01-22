@@ -207,10 +207,20 @@ ROODA.Usuario.prototype = {
     'id': 0,
     'usuario': '',
     'nome': '',
+    'jQuery': null,
     'toString': function() {
-        return (this.nome || this.usuario);
+        return (this.nome || this.usuario || '');
     },
-    'toHtml' : function () {
-        return (this.nome || this.usuario);
+    'toHTML': function () {
+        var j = $('<b>').text(this.toString());
+        if (this.jQuery) {
+            this.jQuery.add(j);
+        } else {
+            this.jQuery = j;
+        }
+        return j;
+    },
+    'updateHtml': function () {
+        this.jQuery.text(this.toString);
     }
 }

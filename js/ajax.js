@@ -258,12 +258,12 @@ exports.post = function(url, dataObject, handler) {
   body = values.join("&");
   oAjaxReq.open("POST",url);
   oAjaxReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-  oAjaxReq.setRequestHeader("Connection", "close");
   oAjaxReq.send(body);
 }
 exports.get = function (url, handlers) {
   var oAjaxReq = new XMLHttpRequest();
   oAjaxReq.onreadystatechange = function () {
+    if (!handlers) return;
     if (this.readyState !== this.DONE) {
       // requisição em andamento, não fazer nada.
       return;
