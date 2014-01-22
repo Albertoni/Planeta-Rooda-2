@@ -683,7 +683,7 @@ function imprimePost($post, $blog_id, $cor, $donos, $usuario_id, $usuario, $perm
 	
 	
 
-	echo"\n						<a onmousedown=\"carregaHTML('light_box','ver_comentarios','post_id=".$post->getId()."');abreFechaLB()\">Ver comentários</a><br />
+	echo"\n						<input type=\"hidden\" name=\"comentarios\" value=\"".$post->getId()."\"><br />
 						Tags: ".$post->printPostTags($post->getPostTags($post->getId()))."
 					</li>
 				</ul>

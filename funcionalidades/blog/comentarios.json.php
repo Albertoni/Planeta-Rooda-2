@@ -19,11 +19,11 @@ function tituloDaRef($idRef) {
 	$post->open($idRef);
 	return $post->getTitle();
 }
-// recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
+// recebe o id do recurso que pode ter comentarios e retorna o id do usuario dono/autor do recurso
 function usuarioDaRef($idRef) {
 	$post = new Post();
 	$post->open($idRef);
-	return $post->getAuthor()->getId();
+	return (int) $post->getAuthor()->getId();
 }
 // recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
 function turmaDaRef($idRef) {
@@ -34,7 +34,7 @@ function turmaDaRef($idRef) {
 			ON bb.id = bp.BlogId
 		WHERE bp.id = $idRef"
 	);
-	return $bd->resultado['turma'];
+	return (int) $bd->resultado['turma'];
 }
 /*---------------------------------------------------------------
 	NAO MUDAR NADA ABAIXO SE FOR APENAS PORTAR
