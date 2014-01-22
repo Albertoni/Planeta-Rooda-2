@@ -1,17 +1,17 @@
 <?php
 // ARQUIVO GERAL PARA TODAS AS FUNCIONALIDADES, VERIFIQUE O ARQUIVO DE MESMO NOME NA FUNCIONALIDADE DESEJADA
-if (   !class_exists("Comentario") 
+if (   !class_exists("Comentario")
 	|| !function_exists("tituloDaRef")
 	|| !function_exists("turmaDaRef")
 	|| !function_exists("usuarioDaRef")) {
 	exit("Uso inadequado.");
 }
-/** 
+/**
 * permissoesComentarios(@param idUsuario, @param idTurma)
 * -- retorna uma array associativa com as permissoes do usuario
 * @return array(
 *         	'visualizar' => bool,
-*         	'comentar' => bool, 
+*         	'comentar' => bool,
 *         	'excluir' => bool
 *         )
 */
@@ -44,7 +44,7 @@ function permissoesComentarios($idRef, $usuario) {
 		}
 		if ($usuario->podeAcessar($perm[PERM_COMENT_EXCLUIR], $turma)
 			|| $usuario->getId() === usuarioDaRef($idRef)) {
-			// usuario deve poder excluir se tiver permissao 
+			// usuario deve poder excluir se tiver permissao
 			// ou for quem postou o objeto comentado (post, material)
 			$return['excluir'] = true;
 		}
@@ -84,11 +84,12 @@ switch ($acao) {
 			break;
 		}
 		$json['idRef'] = $idRef;
+		$json['idUsuario'] = usuarioDaRef($idRef);
 		$json['turma'] = turmaDaRef($idRef);
+		$json['titulo'] = tituloDaRef($idRef);
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
 		$json['ultimoId'] = Comentario::ultimoId($idRef);
 		$json['novosComentarios'] = Comentario::numeroComentarios($idRef,$ultimo);
-		$json['titulo'] = tituloDaRef($idRef);
 		break;
 	// retorna lista de comentarios do recurso
 	case 'listar':
@@ -117,13 +118,7 @@ switch ($acao) {
 		}
 		$json['idRef'] = $idRef;
 		$json['turma'] = turmaDaRef($idRef);
-		$json['ids'] = array();
-		$comentario = new Comentario();
-		$comentario->abrirComentarios($idRef, $ultimo);
-		while ($comentario->existe()) {
-			$json['ids'][] = $comentario->getId();
-			$comentario->proximo();
-		}
+		$json['ids'] = Comentario::listaIds($idRef);
 		break;
 
 	case 'enviar':
@@ -153,9 +148,13 @@ switch ($acao) {
 			$json['erro'] = $e->getMessage();
 			break;
 		}
+		$idRef = $comentario->getIdRef();
 		$permissoes = permissoesComentarios($idRef, $usuario);
-		if (!$permissoes['excluir']) {
+		if (!$permissoes['excluir']
+			&& $usuario->getId() !== usuarioDaRef($idRef)
+			&& $usuario->getId() !== $comentario->getIdUsuario()) {
 			$json['erro'] = 'Você não tem permissão para excluir esse comentário.';
+			break;
 		}
 		try {
 			$comentario->excluir();

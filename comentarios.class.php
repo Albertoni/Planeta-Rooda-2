@@ -45,6 +45,20 @@ class Comentario {
 		);
 		return (int) $bd->resultado['id'];
 	}
+	public static function listaIds($idRef) {
+		$idRef = (int) $idRef;
+		$bd = new conexao();
+		$bd->solicitar(
+			"SELECT id FROM " . Comentario::$tabelaBD .
+			" WHERE idRef = $idRef ORDER BY id ASC"
+		);
+		$ids = array();
+		while ($bd->resultado) {
+			$ids[] = (int) $bd->resultado['id'];
+			$bd->proximo();
+		}
+		return $ids;
+	}
 
 	// propriedades do objeto voltam ao valor inicial
 	private function limpa() {
@@ -118,7 +132,7 @@ class Comentario {
 		if (is_object($idUsuario))
 			if (get_class($idUsuario) === 'Usuario')
 				$idUsuario = $idUsuario->getId();
-		if (!is_integer($idUsuario)) 
+		if (!is_integer($idUsuario))
 			throw new Exception("Usuário inválido");
 		$usuario = new Usuario();
 		$usuario->openUsuario($idUsuario);
@@ -170,6 +184,16 @@ class Comentario {
 			if ($bd->erro)
 				throw new Exception("Erro na consulta: " . $bd->erro, 1);
 			$this->salvo = true;
+		}
+	}
+	public function excluir() {
+		if ($this->salvo) {
+			$bd = new conexao();
+			$id = (int) $this->id;
+			$bd->solicitar("DELETE FROM " . Comentario::$tabelaBD . " WHERE id = $id");
+			if ($bd->erro) {
+				throw new Exception("Erro na consulta: " . $bd->erro, 1);
+			}
 		}
 	}
 	private function carregaAssoc($assoc) {

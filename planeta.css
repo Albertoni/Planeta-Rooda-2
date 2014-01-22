@@ -382,6 +382,7 @@ ul.listaFun li a {
 	height: 300px;
 	margin-left: -250px;
 	margin-top: -150px;
+	padding: 0;
 	z-index: 10;
 }
 .comentarios button {
@@ -395,7 +396,7 @@ ul.listaFun li a {
 	padding: 3px 0;
 }
 .comentarios > ul {
-	max-height: 200px;
+	max-height: 245px;
 	overflow-y: auto;
 	margin: 0;
 	padding: 1px;
@@ -408,7 +409,18 @@ ul.listaFun li a {
 	background: #cdf4f4;
 }
 .comentarios > ul > li > .info > .data {
+	color: rgb(113, 134, 151);
 	float: right;
+	font-size: 11px;
+}
+.comentarios > form > input {
+	border-radius: 0 0 7px 7px;
+	display: inline-block;
+	position: absolute;
+	bottom: 0;
+	width: 490px;
+	padding: 4px 4px;
+	margin: 0;
 }
 
 #logout{
