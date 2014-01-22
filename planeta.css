@@ -359,7 +359,7 @@ ul.listaFun li a {
 .comentario button[name=excluir],
 .bt_fechar,
 .bt_excluir {
-	background: transparent url('images/botoes/bt_x.png') no-repeat top left;
+	background: transparent url('images/botoes/bt_x.png') no-repeat bottom left;
 	border: 0 none;
 	display: inline-block;
 	float: right;
@@ -393,7 +393,7 @@ ul.listaFun li a {
 	border-radius: 7px 7px 0 0;
 	color: #fff;
 	margin: 0;
-	padding: 3px 0;
+	padding: 3px 5px 3px 0px;
 }
 .comentarios > ul {
 	max-height: 245px;

@@ -77,6 +77,7 @@ switch ($acao) {
 		$json['usuario']['permissoes'] = $permissoesComentarios($usuario, $turma);
 		break;
 	case 'stats':
+		$json['turma'] = turmaDaRef($idRef);
 		$permissoes = permissoesComentarios($idRef, $usuario);
 		$json['permissoes'] = $permissoes;
 		if (!$permissoes['ver']) {
@@ -85,7 +86,6 @@ switch ($acao) {
 		}
 		$json['idRef'] = $idRef;
 		$json['idUsuario'] = usuarioDaRef($idRef);
-		$json['turma'] = turmaDaRef($idRef);
 		$json['titulo'] = tituloDaRef($idRef);
 		$json['numComentarios'] = Comentario::numeroComentarios($idRef);
 		$json['ultimoId'] = Comentario::ultimoId($idRef);

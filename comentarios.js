@@ -20,7 +20,38 @@
 	,	'html' : null
 	,	'excluir' : function () {
 			var url = 'comentarios.json.php?acao=excluir&id=' + this.id;
-			AJAX.get(url);
+			var that = this;
+			that.html.slideUp(function () {
+				AJAX.get(url, {
+					success: function () {
+						var j, e;
+						try {
+							j = JSON.parse(this.responseText);
+						}
+						catch (e) {
+							that.html.slideDown();
+							ROODA.ui.alert("Comentário não excluído: erro no servidor.");
+							console.dir(e);
+							return;
+						}
+						if (j.erro) {
+							that.html.slideDown();
+							ROODA.ui.alert("Comentário não excluído: " + j.erro);
+							return;
+						}
+						// deu certo.
+						if (j.comentarioExcluido === that.id) {
+							that.html.remove();
+							return;
+						}
+						ROODA.ui.alert("Ops. a resposta do servidor não permite dizer se o comentário foi excluído ou não.");
+					},
+					fail: function () {
+						that.html.slideDown();
+						ROODA.ui.alert("Comentário não excluído: servidor não respondeu.")
+					}
+				});
+			});
 		}
 	}
 	function Comentarios(idRef) {
