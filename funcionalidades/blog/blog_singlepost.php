@@ -100,7 +100,7 @@ function coment(){
 ***************************** -->
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
-			<a href="blog.php?blog_id=<?=$blog_id?>&amp;turma=<?=$idTurma?>"><img src="images/botoes/bt_voltar.png" align="left"/></a>
+			<a href="blog.php?id=<?=$blog_id?>&amp;turma=<?=$idTurma?>"><img src="images/botoes/bt_voltar.png" align="left"/></a>
 		</div>
 		<div id="esq" class="margem_paginas">
 			<div class="bloco" id="identsingle">
