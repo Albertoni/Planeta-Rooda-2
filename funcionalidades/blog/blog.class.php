@@ -682,7 +682,7 @@ function imprimePost($post, $blog_id, $cor, $donos, $usuario_id, $usuario, $perm
 	}
 	
 	
-
+	// placeholder para link dos comentários (vai ser substituido via javascript)
 	echo"\n						<input type=\"hidden\" name=\"comentarios\" value=\"".$post->getId()."\"><br />
 						Tags: ".$post->printPostTags($post->getPostTags($post->getId()))."
 					</li>
