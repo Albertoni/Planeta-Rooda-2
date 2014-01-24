@@ -28,17 +28,18 @@ if(!$user->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
 }
 
 $usuario_id	=$user->getId();
-$titulo		=($_POST['titulo_projeto'] or die("Um titulo &eacute; necessario para criar um projeto."));
+$titulo		=$_POST['titulo_projeto'];
 $tags		=$_POST['tags_projeto'];
 $text		=$_POST['text'];
 $dataInicio	=$_POST['data_inicio_projeto'];
 $dataEncerramento=$_POST['data_encerramento_projeto'];
 $donos		=explode(';', $_POST['owner_ids']);
+$turma		=$_POST['turma'];
 
 print_r($_POST);
 
-$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos);
-$projeto->salvar();
+$projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos, $turma);
+echo $projeto->salvar();
 
 //magic_redirect("portfolio.php?turma=$turma");
 

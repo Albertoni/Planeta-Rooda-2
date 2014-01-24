@@ -87,7 +87,7 @@ class post{
 		
 		$q->solicitar($query);
 		if($q->erro == ""){
-			die("N&atilde;o foi possivel SALVAR o post de id '$this->id'.");
+			return $q->erro;
 		}
 	}
 	function getId(){return $this->id;}
@@ -156,7 +156,8 @@ class projeto{
 							$palavras = "",
 							$dataCriacao = 0,
 							$dataEncerramento = 0,
-							$ownersIds = array()
+							$ownersIds = array(),
+							$turma = 0
 						){
 		if($id === 0){
 			$this->id = 0;
@@ -165,6 +166,7 @@ class projeto{
 			$this->dataCriacao = $dataCriacao;
 			$this->dataEncerramento = $dataEncerramento;
 			$this->ownersIds = is_array($ownersIds) ? $ownersIds : explode(';', $ownersIds);
+			$this->turma = $turma;
 		}else{
 			$this->carrega($id);
 		}
@@ -243,8 +245,9 @@ class projeto{
 			WHERE
 				id = $this->id";
 		}else{
-			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
-				'$this->id',
+			$query = "INSERT INTO $tabela_portfolioProjetos 
+				(titulo, tags, emAndamento, dataCriacao, dataEncerramento, owner_ids, turma)
+			VALUES(
 				'$this->titulo',
 				'$palavrasImplodido',
 				'1',
@@ -253,15 +256,19 @@ class projeto{
 				'$ownersIdsImplodido',
 				'$this->turma')";
 		}
-		
+
+		$q->solicitar($query);
 		if($q->erro == ""){
+			print_r($this);
+
 			$numeroPosts = count($this->posts);
 
 			for($i=0; $i < $numeroPosts; $i++){
 				$this->posts[$i]->salvar();
 			}
 		}else{
-			die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
+			return $q->erro;
+			//die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
 		}
 	}
-}
+}	

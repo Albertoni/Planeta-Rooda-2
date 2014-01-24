@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -8,11 +7,14 @@ require_once("../../reguaNavegacao.class.php");
 require_once("portfolio.class.php");
 
 global $tabela_portfolioProjetos;
-$id_usuario = isset($_SESSION['SS_usuario_id']) ? $_SESSION['SS_usuario_id'] : 0;
 $nome_usuario = isset($_SESSION['SS_usuario_nome']) ? $_SESSION['SS_usuario_nome'] : "";
 
-$user = new Usuario();
-$user->openUsuario($id_usuario);
+$user = usuario_sessao();
+if($user === false){
+	die("Voce precisa estar logado para criar um projeto.");
+}
+
+$id_usuario = $user->getId();
 
 if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
 	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
@@ -213,7 +215,13 @@ if(sizeof($user->getTurmas()) > 1){
 				}
 			}
 			
-			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_ids = $id_usuario AND turma = $turma ORDER BY id DESC");
+			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE 
+				
+					owner_ids = $id_usuario 
+					OR owner_ids LIKE '%$id_usuario%'
+				
+				AND turma = $turma ORDER BY id DESC");
+
 			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE owner_ids <> $id_usuario AND turma = $turma ORDER BY emAndamento DESC, id DESC");
