@@ -304,6 +304,7 @@ class Blog {
 			if($id === "meu_blog"){
 				$this->setTitle("Meu Webfólio");
 				$this->setOwnersIds(array($userId));
+				$this->setOwners();
 				$this->setTipo(1);
 				$this->setTurma($turma);
 
@@ -313,18 +314,17 @@ class Blog {
 			}
 		}else{
 			$this->setExiste(1);
+			$this->setId($q->resultado['Id']);
+			$this->setTitle($q->resultado['Title']);
+			$this->setOwnersIds(explode(';',$q->resultado['OwnersIds']));
+			$this->setOwners();
+			$this->setTipo($q->resultado['Tipo']);
+			$this->setPosts();
+			$this->setSize(sizeof($this->posts));
+			$this->setPaginacao(6);
+			$this->setNumPaginas();
+			$this->setBlogTags($q->resultado['Id']);
 		}
-
-		$this->setId($q->resultado['Id']);
-		$this->setTitle($q->resultado['Title']);
-		$this->setOwnersIds(explode(';',$q->resultado['OwnersIds']));
-		$this->setOwners();
-		$this->setTipo($q->resultado['Tipo']);
-		$this->setPosts();
-		$this->setSize(sizeof($this->posts));
-		$this->setPaginacao(6);
-		$this->setNumPaginas();
-		$this->setBlogTags($q->resultado['Id']);
 	}
 
 	function getMeuBlog($turma) {
@@ -447,11 +447,13 @@ class Blog {
 		if($this->existe === 0){ // não foi aberto nem salvo anteriormente
 			$q->solicitar("INSERT INTO blogblogs (Id, Title, Tipo, OwnersIds, Turma)
 				VALUES (DEFAULT, '$this->title', $this->tipo, '".implode(';',$this->getOwnersIds())."', $this->turma)");
+			$this->setId((int) $q->ultimo_id());
+			$this->setExiste(1);
 		}else{
 			$q->solicitar("UPDATE blogblogs SET Title='$this->title', Tipo='$this->tipo', OwnersIds='".implode(';',$this->getOwnersIds())."' WHERE Id = $this->id");
 		}
 
-		echo "DEBUG".$q->erro;
+		// echo "DEBUG".$q->erro;
 	}
 }
 }
