@@ -7,11 +7,10 @@ require_once("../../funcoes_aux.php");
 require_once("lista_posts.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("portfolio.class.php");
 $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
-
-// print_r(get_defined_constants()); // Descomente isso para rir.
 
 if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
 	die("Voce precisa estar logado para acessar essa p&aacute;gina. <a href=\"../../\">Favor voltar.</a>");
@@ -28,6 +27,14 @@ $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm === false){
 	die("Desculpe, mas o Portf&oacute;lio esta desabilitado para esta turma.");
 }
+
+$projeto = new projeto($projeto_id);
+$titulo = $projeto->getTitulo();
+$dataCriacao = $projeto->getDataCriacao();
+$dataEncerramento = $projeto->getDataEncerramento();
+$palavras = $projeto->getPalavrasString();
+
+//print_r($projeto);
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -38,18 +45,6 @@ if($perm === false){
 </head>
 
 <body onload="thumbnailImgsFromClass('postagem',150,380,true);atualiza('ajusta()');inicia();coment();">
-
-<?php
-		global $tabela_portfolioProjetos;
-		$consulta= new conexao();
-		$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
-		$titulo = $consulta->resultado['titulo'];
-		$descricao = $consulta->resultado['descricao'];
-		$objetivos = $consulta->resultado['objetivos'];
-		$conteudosAbordados = $consulta->resultado['conteudosAbordados'];
-		$metodologia = $consulta->resultado['metodologia'];
-		$publicoAlvo = $consulta->resultado['publicoAlvo'];
-?>
 <div id="box_comentarios" style="display:none;">
 	<h1><span id="tituloComentarios">Titulo do post</span><button type="button" class="bt_fechar">fechar</button></h1>
 	<ul id="container_comentarios">
@@ -72,7 +67,7 @@ if($perm === false){
 		<?php 
 				$regua = new reguaNavegacao();
 				$regua->adicionarNivel("Projetos", "portfolio_inicio.php", false);
-				$regua->adicionarNivel("Projeto");
+				$regua->adicionarNivel($titulo);
 				$regua->imprimir();
 			?>
 		<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
@@ -119,56 +114,30 @@ if($perm === false){
 			<div id="projeto" class="bloco">
 				<h1 ><a class="toggle" id="toggle_projeto">▼</a> PROJETO</h1>
 				<ul class="sem_estilo" id="caixa_projeto">
-<?php
-	if ($descricao != "")
-		echo "				  <li>
-						<span class=\"dados\">Descrição:
-						</span>
-					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$descricao
-						</span>
-					</li>";
-?>
 					<li>
-						<span class="dados">Objetivos:
+						<span class="dados">Data de início:
 						</span>
 					</li>
 					<li class="texto_port">
-						<span class="valor"><?=$objetivos?>
+						<span class="valor"><?=$dataCriacao?>
 						</span>
 					</li>
-<?php
-	if ($conteudosAbordados != "")
-		echo "				  <li>
-						<span class=\"dados\">Conteúdos Abordados:
+					<li>
+						<span class="dados">Data de encerramento:
 						</span>
 					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$conteudosAbordados
-						</span>
-					</li>";
-
-	if ($metodologia != "")
-		echo "				  <li>
-						<span class=\"dados\">Metodologia:
+					<li class="texto_port">
+						<span class="valor"><?=$dataEncerramento?>
 						</span>
 					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$metodologia
-						</span>
-					</li>";
-	if ($publicoAlvo != "")
-		echo "				  <li>
-						<span class=\"dados\">Publico-Alvo:
+					<li>
+						<span class="dados">Palavras-chave:
 						</span>
 					</li>
-					<li class=\"texto_port\">
-						<span class=\"valor\">$publicoAlvo
+					<li class="texto_port">
+						<span class="valor"><?=$palavras?>
 						</span>
-					</li>";
-?>
-					
+					</li>
 				</ul>
 			</div> <!-- fim da div projeto -->
 			<div id="postagens" class="bloco">

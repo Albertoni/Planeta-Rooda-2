@@ -173,6 +173,7 @@ class projeto{
 	}
 
 	function getTurma(){return $this->turma;}
+	function getTitulo(){return $this->titulo;}
 	function getDataCriacao(){return $this->dataCriacao;}
 	function getDataEncerramento(){return $this->dataEncerramento;}
 	function getPalavras(){return $this->palavras;}
@@ -271,4 +272,4 @@ class projeto{
 			//die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
 		}
 	}
-}	
+}

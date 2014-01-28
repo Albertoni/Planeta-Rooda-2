@@ -31,12 +31,10 @@ $usuario_id	=$user->getId();
 $titulo		=$_POST['titulo_projeto'];
 $tags		=$_POST['tags_projeto'];
 $text		=$_POST['text'];
-$dataInicio	=$_POST['data_inicio_projeto'];
-$dataEncerramento=$_POST['data_encerramento_projeto'];
+$dataInicio	=DateTime::createFromFormat('d/m/Y', $_POST['data_inicio_projeto'])->format('Y-m-d H:i:s');
+$dataEncerramento=DateTime::createFromFormat('d/m/Y', $_POST['data_encerramento_projeto'])->format('Y-m-d H:i:s');
 $donos		=explode(';', $_POST['owner_ids']);
 $turma		=$_POST['turma'];
-
-print_r($_POST);
 
 $projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos, $turma);
 echo $projeto->salvar();
