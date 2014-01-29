@@ -28,6 +28,8 @@ $BD_pass1 = "root";
 
 $linkServidor = "http://sideshowbob/Planeta-Rooda-2/";
 
+$upload_max_filesize = ini_get('upload_max_filesize');
+
 //constantes
 define("NL","<BR />\n");	//constante nova linha
 define("TIPOBLOG",1);

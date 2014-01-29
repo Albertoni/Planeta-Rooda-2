@@ -4,67 +4,66 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 
-session_start();
+$user = usuario_sessao();
 
-$turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("Um identificador de turma inv&aacute;lido foi enviado para essa p&aacute;gina.");
+$turma = is_numeric($_POST['turma']) ? $_POST['turma'] : die("Um identificador de turma inv&aacute;lido foi enviado para essa p&aacute;gina.");
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
-// TODO: Consertar o fato que o cara pode hackear o form pra usar a id de uma
-//		turma na qual ele tem permissões para postar e bypassar isso.
-
-// CONSERTADO! @ line 43
-
-/* PS: A todos que verem isso, have an e-cookie:
-    _.:::::._
-  .:::'_|_':::.
- /::' --|-- '::\
-|:" .---"---. ':|
-|: ( H A C K ) :|
-|:: `-------' ::|
- \:::.......:::/
-  ':::::::::::'
-     `'"""'`
-*/
-
-global $tabela_portfolioPosts; global $tabela_portfolioProjetos;
 $consulta = new conexao();
+$projeto_id_sanitizado = $consulta->sanitizaString($_POST['projeto_id']);
 
-$text_post		= $consulta->sanitizaString($_POST['text']);
-$titulo_post	= $consulta->sanitizaString($_POST['titulo_post']);
-$tags_post		= $consulta->sanitizaString($_POST['tags_post']);
-$projeto_id		= $consulta->sanitizaString($_POST['projeto_id']);
-$post_id		= $consulta->sanitizaString($_POST['post_id']);
-$update			= $consulta->sanitizaString($_POST['update']);
-
-$consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id");
+$consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id_sanitizado");
 if($turma != $consulta->resultado['turma']){
 	die("A identifica&ccedil;&atilde;o de turma passada para essa pagina n&atilde;o corresponde com a identifica&ccedil;&atilde;o de turma que o projeto tem. Isso &eacute; um erro.");
 }
 
-if ($update == 1 and is_numeric($post_id)){
-
-	if(!$_SESSION['user']->podeAcessar($perm['portfolio_editarPost'], $turma)){
-		die("Desculpe, voce nao pode editar posts nessa turma.");
+/*function __construct($id, $dados = false){
+		if($dados !== false){
+			$this->id			= $dados['id'];
+			$this->projeto_id	= $dados['projeto_id'];
+			$this->user_id		= $dados['user_id'];
+			$this->titulo		= $dados['titulo'];
+			$this->texto		= $dados['texto'];
+			$this->tags			= $dados['tags'];
+			$this->dataCriacao	= $dados['dataCriacao'];
+			$this->dataUltMod	= $dados['dataUltMod'];
+		}else{
+			$this->carrega($id);
+		}
 	}
 
-	$consulta->solicitar("UPDATE $tabela_portfolioPosts
-						SET titulo='$titulo_post', tags='$tags_post', texto='$text_post', dataUltMod=NOW()
-						WHERE projeto_id='$projeto_id' AND id='$post_id';");
+Array
+(
+    [text] => 5hureingkjfdgfd
+    [x] => 129
+    [y] => 7
+    [titulo_post] => dasdasdasdas
+    [tags_post] => dsadas
+    [projeto_id] => 44
+    [post_id] => 0
+    [update] => 0
+    [turma] => 1081
+)
 
-}else{
 
-	if(!$_SESSION['user']->podeAcessar($perm['portfolio_inserirPost'], $turma)){
-		die("Desculpe, voce nao pode inserir posts nessa turma.");
-	}
+	*/
 
-	$consulta->solicitar("INSERT INTO $tabela_portfolioPosts
-						(projeto_id,	titulo,			tags,		texto,			dataCriacao) VALUES
-						('$projeto_id',	'$titulo_post','$tags_post','$text_post',	NOW());");
-}
+$dados = array(
+	'id' => $_POST['post_id'],
+	'projeto_id' => $_POST['projeto_id'],
+	'user_id' => $user->getId(),
+	'titulo' => $_POST['titulo'],
+	'texto' => $_POST['text'],
+	'tags' => $_POST['tags'],
+	// DATAS!!!
+	);
 
-magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");
+print_r($_POST);
+
+
+//magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");
 ?>

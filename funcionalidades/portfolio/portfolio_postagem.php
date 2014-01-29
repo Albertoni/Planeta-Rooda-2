@@ -11,7 +11,12 @@ require_once("../../funcoes_aux.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("../../usuarios.class.php");
 
-session_start();
+global $upload_max_filesize;
+
+$user = usuario_sessao();
+if($user === false){
+	die("Voce precisa estar logado para postar em um projeto.");
+}
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +40,7 @@ session_start();
 <![endif]-->
 <?php
 
-$projeto_id	= isset($_GET['projeto_id'])	? $_GET['projeto_id']	: NULL;
+$projeto_id	= isset($_GET['projeto_id'])	? $_GET['projeto_id']	: 0;
 $post_id	= isset($_GET['post_id'])		? $_GET['post_id']		: 0;
 
 if (!is_numeric($projeto_id) or !is_numeric($post_id))die("</head>\n<body>\n<h2>A ID DO PROJETO NÃO É UM NUMERO\n</h2></center>\n</html>");
@@ -44,9 +49,6 @@ $update = isset($_GET['update']) ? "1" : "0";
 
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
-
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
-	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
 
 $turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("</head>\n<body>\n<h2><center>A id da turma precisa estar setada para acessar, por favor volte.\n</h2></center>\n</html>");
 
@@ -236,7 +238,7 @@ function Init() {
 	<div id="light_box" class="bloco">
 		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
 <?php
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
+if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 {
 ?>
 		<div id="imagem_lbox">
@@ -301,7 +303,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 					<div id="cont_arq">
 						<ul id="cont_arq1">
 							<li id="procurar_arq">
-								Adicionar novo arquivo:
+								Adicionar novo arquivo (tamanho máximo <?=$upload_max_filesize?>):
 								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
 									<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
 									<input type="hidden" name="gambiarra" value="3337333" />
@@ -393,7 +395,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 				conteudo
 	***************************** -->
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
-		<form name="fConteudo" id="postFormId" action="formProcessing.php?turma=<?=$turma?>" onsubmit="return gravaConteudo()" method="post">
+		<form name="fConteudo" id="postFormId" action="formProcessing.php" onsubmit="return gravaConteudo()" method="post">
 			<input type="hidden" name="text" value="" />
 			<div class="bts_cima">
 				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
@@ -405,23 +407,23 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 				<h1>NOVA POSTAGEM</h1>
 				<ul class="sem_estilo">
 					<li>Título</li>
-					<li><input name="titulo_post" type="text" class="port_info"/></li>
+					<li><input name="titulo" type="text" class="port_info"/></li>
 					<li>Tags <span class="exemplo">(Escreva as tags separadas por ponto e vírgula. Ex: Matemática; Português; Artes)</span></li>
-					<li><input name="tags_post" type="text" class="port_info"/></li>
+					<li><input name="tags" type="text" class="port_info"/></li>
 						<li style="height:22px; margin-bottom:4px; margin-top:10px">
 							<div class="tool_bt" id="alt_negrito"><img src="../../images/botoes/tool_negrito.png" onClick="doBold()" /></div>
 							<div class="tool_bt" id="alt_italico"><img src="../../images/botoes/tool_italico.png" onClick="doItalic()" /></div>
 							<div class="tool_bt" id="alt_sublinhado"><img src="../../images/botoes/tool_sublinhado.png" onClick="doUnderline()" /></div>
 							<div class="tool_bt" id="alt_tamanho"><img src="../../images/botoes/tool_tamanho.png" onClick="doSize()" /></div>
 <?php
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
+if($user->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 {
 ?>
 							<div class="tool_bt" id="alt_link"><img src="../../images/botoes/tool_link.png" /></div>
 <?php
 }
 
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
+if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 {
 ?>
 							<div class="tool_bt" id="alt_arquivo"><img src="../../images/botoes/tool_arquivo.png" /></div>
@@ -434,10 +436,11 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 					<input type="hidden" name="projeto_id" value="<?=$projeto_id?>"> <!--Para posterior edição-->
 					<input type="hidden" name="post_id" value="<?=$post_id?>">
 					<input type="hidden" name="update" value="<?=$update?>">
+					<input type="hidden" name="turma" value="<?=$turma?>">
 				</ul>
 			</div>
 			<div class="bts_baixo">
-				<a href="portfolio_projeto.php?projeto_id=<?=$_GET['projeto_id']?>&amp;turma=<?=$turma?>" align="left" >
+				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
 					<img src="../../images/botoes/bt_cancelar.png" border="0" align="left"/>
 				</a>
 				<input type="image" onClick="postForm.submit()" src="../../images/botoes/bt_confirm.png" align="right"/>
