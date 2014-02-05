@@ -3,6 +3,7 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
+require_once ('portfolio.class.php');
 
 $user = usuario_sessao();
 
@@ -50,19 +51,42 @@ Array
 )
 
 
+
+Notice: Undefined index: dataCriacao in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 23
+
+Notice: Undefined index: dataUltMod in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 24
+
+Notice: Undefined property: post::$existe in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 67
+
+Notice: Undefined variable: tabela_portfolioPosts in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 79
+Array ( [text] => dsadsadas [x] => 43 [y] => 29 [titulo] => dasdas [tags] => dasdas [projeto_id] => 44 [post_id] => 0 [update] => 0 [turma] => 1081 [dataAtual] => 1391545396 ) 
+
+
 	*/
 
-$dados = array(
-	'id' => $_POST['post_id'],
-	'projeto_id' => $_POST['projeto_id'],
-	'user_id' => $user->getId(),
-	'titulo' => $_POST['titulo'],
-	'texto' => $_POST['text'],
-	'tags' => $_POST['tags'],
-	// DATAS!!!
-	);
+if ($_POST['update'] == 1){
+	$post = new post($_POST['post_id']);
+	
+	$post->setTitulo($_POST['titulo']);
+	$post->setTexto($_POST['text']);
+	$post->setTags($_POST['tags']);
 
-print_r($_POST);
+	echo $post->salvar();
+}else{
+	$dados = array(
+		'id' => $_POST['post_id'],
+		'projeto_id' => $_POST['projeto_id'],
+		'user_id' => $user->getId(),
+		'titulo' => $_POST['titulo'],
+		'texto' => $_POST['text'],
+		'tags' => $_POST['tags']
+		);
+
+	$post = new post(0, $dados);
+	echo $post->salvar();
+}
+
+print_r($post);
 
 
 //magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");

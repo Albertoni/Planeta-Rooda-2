@@ -12,6 +12,8 @@ class post{
 	private $dataCriacao;
 	private $dataUltMod;
 
+	private $existe;
+
 	function __construct($id, $dados = false){
 		if($dados !== false){
 			$this->id			= $dados['id'];
@@ -20,8 +22,8 @@ class post{
 			$this->titulo		= $dados['titulo'];
 			$this->texto		= $dados['texto'];
 			$this->tags			= $dados['tags'];
-			$this->dataCriacao	= $dados['dataCriacao'];
-			$this->dataUltMod	= $dados['dataUltMod'];
+
+			$this->existe = false;
 		}else{
 			$this->carrega($id);
 		}
@@ -41,19 +43,22 @@ class post{
 			$this->tags			= "Esse post não existe!";
 			$this->dataCriacao	= "Esse post não existe!";
 			$this->dataUltMod	= "Esse post não existe!";
-		}
 
-		$this->id			= $dados['id'];
-		$this->projeto_id	= $dados['projeto_id'];
-		$this->user_id		= $dados['user_id'];
-		$this->titulo		= $dados['titulo'];
-		$this->texto		= $dados['texto'];
-		$this->tags			= $dados['tags'];
-		$this->dataCriacao	= $dados['dataCriacao'];
-		$this->dataUltMod	= $dados['dataUltMod'];
+			$this->existe = false;
+		}else{
+			$this->id			= $dados['id'];
+			$this->projeto_id	= $dados['projeto_id'];
+			$this->user_id		= $dados['user_id'];
+			$this->titulo		= $dados['titulo'];
+			$this->texto		= $dados['texto'];
+			$this->tags			= $dados['tags'];
+			
+			$this->existe = true;
+		}
 	}
 
 	function salvar(){
+		global $tabela_portfolioPosts;
 		$q = new conexao();
 
 		$this->projeto_id = $q->sanitizaString($this->projeto_id);
@@ -61,8 +66,6 @@ class post{
 		$this->titulo = $q->sanitizaString($this->titulo);
 		$this->texto = $q->sanitizaString($this->texto);
 		$this->tags = $q->sanitizaString($this->tags);
-		$this->dataCriacao = $q->sanitizaString($this->dataCriacao);
-		$this->dataUltMod = $q->sanitizaString($this->dataUltMod);
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioPosts SET 
@@ -72,22 +75,27 @@ class post{
 				texto = '$this->texto',
 				tags = '$this->tags',
 				dataCriacao = '$this->dataCriacao',
-				dataUltMod = '$this->dataUltMod'
+				dataUltMod = NOW()
 			WHERE id = '$this->id'";
 		}else{
-			$query = "INSERT INTO $tabela_portfolioPosts VALUES(
+			$query = "INSERT INTO $tabela_portfolioPosts 
+				(projeto_id, user_id, titulo, texto, tags, dataCriacao, dataUltMod)
+			VALUES(
 				'$this->projeto_id',
 				'$this->user_id',
 				'$this->titulo',
 				'$this->texto',
 				'$this->tags',
-				'$this->dataCriacao',
-				'$this->dataUltMod')";
+				NOW(),
+				NOW())";
 		}
 		
 		$q->solicitar($query);
 		if($q->erro == ""){
 			return $q->erro;
+		}else{
+			$this->existe = true;
+			return $query;
 		}
 	}
 	function getId(){return $this->id;}
