@@ -267,7 +267,7 @@ var BIBLIOTECA = (function () {
 			this.HTMLElemento.classList.add('link');
 			// adiciona mimetype à classe do elemento (para icones de tipo de arquivo via css)
 		}
-		this.HTMLTitulo = document.createElement("h2");
+		this.HTMLTitulo = document.createElement("span");
 		this.HTMLInfo = document.createElement("small");
 		this.HTMLLink = document.createElement("a");
 		this.HTMLBotaoAprovar = document.createElement("button");
@@ -291,7 +291,8 @@ var BIBLIOTECA = (function () {
 		this.HTMLAutor = document.createElement("p");
 		this.HTMLLink = document.createElement("a");
 		this.HTMLLink.classList.add("abrir_material");
-		this.HTMLLink.innerHTML = 'Abrir Material <span class="icon">&nbsp;</span>'
+		this.HTMLLink.innerHTML = '<span class="icon">&nbsp;</span> '
+		this.HTMLLink.appendChild(this.HTMLTitulo);
 		this.HTMLLink.target = '_blank';
 		this.atualizarHTML();
 	}
@@ -306,10 +307,9 @@ var BIBLIOTECA = (function () {
 		while (this.HTMLElemento.firstElementChild) {
 			this.HTMLElemento.removeChild(this.HTMLElemento.firstElementChild);
 		}
-		this.HTMLElemento.appendChild(this.HTMLTitulo);
+		this.HTMLElemento.appendChild(this.HTMLLink);
 		this.HTMLElemento.appendChild(this.HTMLInfo);
 		this.HTMLElemento.appendChild(this.HTMLAutor);
-		this.HTMLElemento.appendChild(this.HTMLLink);
 		if (pode_aprovar && !this.aprovado) {
 			this.HTMLElemento.appendChild(this.HTMLBotaoAprovar);
 		}
