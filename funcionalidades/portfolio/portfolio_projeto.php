@@ -45,23 +45,6 @@ $palavras = $projeto->getPalavrasString();
 </head>
 
 <body onload="thumbnailImgsFromClass('postagem',150,380,true);atualiza('ajusta()');inicia();coment();">
-<div id="box_comentarios" style="display:none;">
-	<h1><span id="tituloComentarios">Titulo do post</span><button type="button" class="bt_fechar">fechar</button></h1>
-	<ul id="container_comentarios">
-		<li class="postComentario">Fulano - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eu dolor nisi, elementum fringilla erat. Donec sagittis volutpat pharetra. Nunc bibendum nulla sit amet dui malesuada semper. Mauris erat lacus, faucibus et rhoncus ac, tincidunt non metus. Etiam suscipit bibendum mi, quis ultrices sem sollicitudin ac. Nunc sollicitudin ligula id odio porta ac gravida quam molestie. Vestibulum a quam ut nisl ornare consectetur sed eget libero. <button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-		<li class="postComentario">Fulano - mensagem<button type="button" class="bt_excluir">excluir</button></li>
-	</ul>
-	<div class="form_container">
-		<form id="formComentario">
-			<input type="hidden" id="formComentarioCodPost" name="codPost" value="0"/>
-			<textarea id="formComentarioMensagem" name="mensagem" placeholder="Digite sua mensagem."></textarea>
-			<button type="button" id="formComentarioBotaoEnviar" class="submit" name="upload" value="Enviar">Enviar</button>
-		</form>
-	</div>
-</div>
 <div id="topo">
 	<div id="centraliza_topo">
 		<?php 
@@ -324,7 +307,7 @@ $palavras = $projeto->getPalavrasString();
 						</p>
 						</li>
 						<li class="tabela_port">
-							<a class="bt_abre_coment" onclick="abreComentarios(<?=$postId?>)" id="abre_coment_<?=$postId?>">Ver comentários</a>
+							<input type="hidden" name="comentarios" value="<?=$postId?>">teste1
 						</li>
 					</ul>
 				</div>
@@ -359,8 +342,8 @@ $palavras = $projeto->getPalavrasString();
 <script src="../../js/ajax.js"></script>
 <script src="../../js/ajaxFileManager.js"></script>
 <script src="portfolio_ajax.js"></script>
-<script src="comentarios.js"></script>
 <script src="../../jquery.js"></script>
+<script src="../../comentarios.js"></script>
 <script src="../../planeta.js"></script>
 <script src="portfolio.js"></script>
 <script src="../lightbox.js"></script>

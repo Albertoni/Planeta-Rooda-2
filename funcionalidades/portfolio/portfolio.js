@@ -269,25 +269,6 @@ function botaoAdicionar(id){
 	}
 };
 
-function abreComments(pars){
-	var a = newAjax();
-	var obj = document.getElementById("light_box");
-	if(a) {
-		a.open("POST","ver_comentarios.php",true);
-		a.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-		a.send(pars);
-		a.onreadystatechange = function() {
-			if(a.readyState == 4) {
-				if(a.status == 200) {
-					obj.innerHTML = a.responseText;
-					abreFechaLB();
-				} else {
-					alert('Erro com a solicitação! (AJAX)');
-				}
-			}
-		}
-	}
-}
 
 function newAjax() {
 	if (window.XMLHttpRequest) { // Mozilla, Safari, ...

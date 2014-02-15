@@ -32,20 +32,21 @@ class post{
 	function carrega($id){
 		global $tabela_portfolioPosts;
 		$q = new conexao();
-		$q->solicitar('SELECT * FROM $tabela_portfolioPosts WHERE id = $id');
+		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE id = $id");
 
 		if ($q->erro != ""){
-			$this->id			= "Esse post não existe!";
-			$this->projeto_id	= "Esse post não existe!";
-			$this->user_id		= "Esse post não existe!";
-			$this->titulo		= "Esse post não existe!";
-			$this->texto		= "Esse post não existe!";
-			$this->tags			= "Esse post não existe!";
-			$this->dataCriacao	= "Esse post não existe!";
-			$this->dataUltMod	= "Esse post não existe!";
+			$this->id			= $q->erro;
+			$this->projeto_id	= $q->erro;
+			$this->user_id		= $q->erro;
+			$this->titulo		= $q->erro;
+			$this->texto		= $q->erro;
+			$this->tags			= $q->erro;
+			$this->dataCriacao	= $q->erro;
+			$this->dataUltMod	= $q->erro;
 
 			$this->existe = false;
 		}else{
+			$dados = $q->resultado;
 			$this->id			= $dados['id'];
 			$this->projeto_id	= $dados['projeto_id'];
 			$this->user_id		= $dados['user_id'];
@@ -135,7 +136,7 @@ class post{
 						</p>
 						</li>
 						<li class=\"tabela_port\">
-							<a class=\"bt_abre_coment\" onclick=\"abreComentarios($this->id)\" id=\"abre_coment_$this->id\">Ver comentários</a>
+							<input type=\"hidden\" name=\"comentarios\" value=\"{$this->id}\" />
 						</li>
 					</ul>
 				</div>
@@ -204,7 +205,7 @@ class projeto{
 
 			$this->carregaPosts();
 		}else{
-			die("Esse projeto não existe.");
+			die("Esse projeto não existe. $idProjeto");
 		}
 	}
 

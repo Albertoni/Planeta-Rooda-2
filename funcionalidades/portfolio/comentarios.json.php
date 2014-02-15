@@ -13,10 +13,16 @@ define('PERM_COMENT_INSERIR', 'portfolio_inserirComentarios');
 define('PERM_COMENT_EXCLUIR', 'portfolio_excluirComentarios');
 // recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
 require("portfolio.class.php");
-function tituloDaRef($idRef) {}
-function usuarioDaRef($idRef) {}
+function tituloDaRef($idRef) {
+	$post = new post((int)$idRef);
+	return $post->getTitulo();
+}
+function usuarioDaRef($idRef) {
+	$post = new post((int)$idRef);
+	return $post->getIdUsuario();
+}
 function turmaDaRef($idRef) {
-	$post = new post($idRef);
+	$post = new post((string)$idRef);
 	$proj = new projeto($post->getIdProjeto());
 	return $proj->getTurma();
 }
