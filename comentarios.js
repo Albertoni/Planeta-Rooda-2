@@ -132,14 +132,15 @@
 					j = JSON.parse(this.responseText);
 				}
 				catch (e) {
-					ROODA.ui.alert('Erro no servidor.');
+					ROODA.ui.alert('Erro nos comentarios.');
+					that.atualizar = function () {};
 					console.dir(e);
 					return;
 				}
 				that.atualizarHandler(j);
 			},
 			fail: function() {
-				setTimeout(that.atualizar.bind(that), 1000);
+				//setTimeout(that.atualizar.bind(that), 1000);
 				if (Comentarios.aberto === that) {
 					// este é o comentario sendo visualizado no momento
 					// mostrar algum aviso de que à falha na conexão.
