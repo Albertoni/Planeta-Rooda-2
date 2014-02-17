@@ -222,14 +222,18 @@ require_once("turma.class.php");
 	}
 
 	function magic_redirect($extra){
-		/*
-		$host	= $_SERVER['HTTP_HOST']; // Pega o endereço do site, http://www.nuted.ufrgs.br/
-		$uri	= rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Pega o caminho relativo da pasta que o script tá rodando, planeta2/funcionalidades/portfolio
-		*/
-		// Alexandre falou que isso poderia dar problemas com symlink. Agora é baseado na URL do cfg.php
+		// IMPORTANTE: .replace simula um redirect de navegador. window.location.href = x simula um clique. 
+		// Fazendo assim, se previne problemas com  o botão voltar.
+		echo "
+<script>
+	var paraOndeVai = '$extra';
+	var enderecoAtual = window.location.href;
 
-		global $linkServidor;
-		header("Location: $linkServidor".$extra); // Magia.
+	enderecoAtual = enderecoAtual.substring(0, (enderecoAtual.lastIndexOf('/') + 1));
+
+	window.location.replace(enderecoAtual+paraOndeVai);
+</script>";
+
 	}
 	function redireciona_externo($url) {
 		global $linkServidor;
