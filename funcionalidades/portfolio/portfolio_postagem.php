@@ -399,7 +399,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 			<input type="hidden" name="text" value="" />
 			<div class="bts_cima">
 				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
-					<img src="../../images/botoes/bt_cancelar.png" border="0" align="left"/>
+					<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 				</a>
 				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
@@ -441,7 +441,7 @@ if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 			</div>
 			<div class="bts_baixo">
 				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
-					<img src="../../images/botoes/bt_cancelar.png" border="0" align="left"/>
+					<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 				</a>
 				<input type="image" onClick="postForm.submit()" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>

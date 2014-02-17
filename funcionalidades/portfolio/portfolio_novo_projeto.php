@@ -168,7 +168,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 			<input type="hidden" name="turma" value="<?=$turma?>" />
 			<div class="bts_cima">
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_cancelar.png" border="0" align="left"/>
+				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 			<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
@@ -259,7 +259,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 				</div>
 			<div class="bts_baixo">
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
-				<img src="../../images/botoes/bt_cancelar.png" border="0" align="left"/>
+				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 			<input type="image" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
