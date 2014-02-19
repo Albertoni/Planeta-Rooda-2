@@ -33,8 +33,6 @@ $titulo = $projeto->getTitulo();
 $dataCriacao = $projeto->getDataCriacao();
 $dataEncerramento = $projeto->getDataEncerramento();
 $palavras = $projeto->getPalavrasString();
-
-//print_r($projeto);
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -307,7 +305,7 @@ $palavras = $projeto->getPalavrasString();
 						</p>
 						</li>
 						<li class="tabela_port">
-							<input type="hidden" name="comentarios" value="<?=$postId?>">teste1
+							<input type="hidden" name="comentarios" value="<?=$postId?>">
 						</li>
 					</ul>
 				</div>

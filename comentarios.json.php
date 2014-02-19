@@ -49,6 +49,7 @@ function permissoesComentarios($idRef, $usuario) {
 			$return['excluir'] = true;
 		}
 	}
+
 	return $return;
 }
 
@@ -74,7 +75,7 @@ switch ($acao) {
 	// retorna usuario com permissoes de comentario na turma/funcionalidade
 	case 'permissoes':
 		$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
-		$json['usuario']['permissoes'] = $permissoesComentarios($usuario, $turma);
+		$json['usuario']['permissoes'] = permissoesComentarios($usuario, $turma);
 		break;
 	case 'stats':
 		$json['turma'] = turmaDaRef($idRef);

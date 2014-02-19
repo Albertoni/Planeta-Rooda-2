@@ -201,6 +201,7 @@ class projeto{
 			$this->dataCriacao = $q->resultado['dataCriacao'];
 			$this->dataEncerramento = $q->resultado['dataEncerramento'];
 			$this->ownersIds = explode(";", $q->resultado['owner_ids']);
+			$this->turma = $q->resultado['turma'];
 			$this->existe = 1;
 
 			$this->carregaPosts();
