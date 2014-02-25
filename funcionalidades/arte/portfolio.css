@@ -63,7 +63,7 @@ text-decoration:none; color:#666666; outline:none}
 
 #outros_port {width:332px;}
 
-.abas_port { float:left; width:240px; border-bottom:0; padding-top:5px;; margin-top:-7px; padding-bottom:6px; cursor:pointer}
+.abas_port { float:left; width:50%; border-bottom:0; padding-top:5px;; margin-top:-7px; padding-bottom:6px; cursor:pointer}
 
 .aberto {color:#cc6600; background-color:#EEF5F5}
 .fechado {color:#ffffff;}

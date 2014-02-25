@@ -39,7 +39,6 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
-<link type="text/css" rel="stylesheet" href="../forum/forum.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
 <link type="text/css" rel="stylesheet" href="arte.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
@@ -127,8 +126,8 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 			<a href="planeta_arte_desenho.php?turma=<?php echo $turma;?>"><img style="margin-bottom:30px" src="../../images/botoes/bt_criar_desenho.png" /></a>
 			<div id="projetos" class="bloco">
 				<h1>
-					<div class="abas_port aberto" id="aba_andamento"> MEUS DESENHOS</div>
-					<div class="abas_port fechado" id="aba_encerrado"> DESENHOS DOS COLEGAS</div>
+					<div class="abas_port aberto" id="aba_andamento">MEUS DESENHOS</div>
+					<div class="abas_port fechado" id="aba_encerrado">DESENHOS DOS COLEGAS</div>
 				</h1>
 
 
