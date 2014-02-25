@@ -1,6 +1,6 @@
 body { background-image:url(../../images/fundos/fundo6.png); background-repeat:repeat-x; background-attachment:fixed}
 .traco {border: 2px solid transparent;}
-#esq { float:left}
+#esq { }
 #dir { float:right}
 div .lista_imagem {
 	background-color:#FFF;
@@ -20,8 +20,12 @@ div .lista_imagem {
 #botoes {
 	background-color:#EEF5F5;
 	width:130px;
-	height:200px;
+	height:400px;
 	margin-left:15px;
+}
+
+#botoes img {
+	cursor : pointer;
 }
 
 .tamanho_traco{

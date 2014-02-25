@@ -19,8 +19,8 @@ body{
 }
 #tela_div{
 	position:absolute;
-	top: 90px;
-	left: 110px;
+	top: 140px;
+	left: 70px;
 	border: 1px solid silver;
 }
 #tela_svg{
@@ -34,8 +34,8 @@ body{
 }
 
 .tela{
-	width:550px;
-	height:270px;
+	width:635px;
+	height:395px;
 }
 
 textarea{

@@ -18,8 +18,8 @@
 *	}
 */
 // Proporções da tela do desenho
-var telaWidth = 550;
-var telaHeight = 270;
+var telaWidth = 635;
+var telaHeight = 395;
 
 // Canvas e Raphael
 var canvas;
@@ -127,9 +127,6 @@ var borracha = {				// dados da borracha
 	cor : "#FFF",
 	largura : 10
 }
-
-var imagem_inicial;
-
 
 //	configura o http_salvar conforme o navegador
 if(navigator.appName == "Microsoft Internet Explorer") {
@@ -1275,7 +1272,8 @@ jQuery(document).ready(function(){
 
 // Atualiza a posição guardada do mouse
 	$(document).mousemove(function(e){
-		posicaoXdaTela = (document.getElementById("conteudo").offsetLeft + document.getElementById("tela_div").offsetLeft + document.getElementById("geral").offsetLeft);
+		posicaoXdaTela = (document.getElementById("tela_div").offsetLeft + document.getElementById("geral").offsetLeft);
+//		posicaoXdaTela = (document.getElementById("conteudo").offsetLeft + document.getElementById("tela_div").offsetLeft + document.getElementById("geral").offsetLeft);
 		posicaoYdaTela = (document.getElementById("tela_div").offsetTop + document.getElementById("geral").offsetTop + document.getElementById("conteudo_meio").offsetTop + document.getElementById("conteudo").offsetTop);
 		mouse.posicao.x = e.pageX - posicaoXdaTela;
 		mouse.posicao.y = e.pageY - posicaoYdaTela;

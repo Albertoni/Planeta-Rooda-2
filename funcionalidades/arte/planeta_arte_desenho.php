@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-require_once("../../cfg.php");
-require_once("../../bd.php");
-require_once("../../funcoes_aux.php");
-require_once("../../usuarios.class.php");
-require_once("comentario.class.php");
-require_once("desenho.class.php");
-require_once("../../reguaNavegacao.class.php");
+require("../../cfg.php");
+require("../../bd.php");
+require("../../funcoes_aux.php");
+require("../../usuarios.class.php");
+require("comentario.class.php");
+require("desenho.class.php");
+require("../../reguaNavegacao.class.php");
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
@@ -40,9 +40,9 @@ if ($existente != 0){
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
-<link type="text/css" rel="stylesheet" href="../portfolio/portfolio.css" />
+<link type="text/css" rel="stylesheet" href="portfolio.css" />
 <link type="text/css" rel="stylesheet" href="../forum/forum.css" />
-<link type="text/css" rel="stylesheet" href="../blog/blog.css" />
+<link type="text/css" rel="stylesheet" href="blog.css" />
 <link type="text/css" rel="stylesheet" href="arte.css" />
 <link type="text/css" rel="stylesheet" href="arte_desenho.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
@@ -144,9 +144,9 @@ if ($existente != 0){
 				<div id="tela_canvas_div"><canvas id="tela_canvas" class="tela"></canvas></div>
 				<canvas id="canvas_auxiliar" class="tela"></canvas>
 			</div>
-			<div class="sem_estilo">
+			<div class="sem_estilo" style= "padding-bottom:0px;">
 				Título:
-				<div id="progresso_envio_imagem_container" style="position:absolute; right: 20px; margin-bottom:2px; display:none">
+				<div id="progresso_envio_imagem_container" style="position:absolute; right: 70px; margin-bottom:2px; top:50px; display:none">
 					<span style="font-size: 8pt; color: #777;"> Salvando</span>
 					<div style="display: inline-block; width:100px; height:5px; border: 1px solid gray;">
 						<div id="progresso_envio_imagem" style="width:40%; height:100%;  background-color: #6050D0;"></div>
@@ -157,7 +157,7 @@ if ($existente != 0){
 			</div>
 
 <!--			<div id="botoes" style="width:80px; text-align:center; padding: 5px;"> -->
-			<div id="botoes" style="width:80px; padding: 5px;">
+			<div id="botoes" style="width:500px; padding: 5px;">
 				<img src="icones/novo.png" style="margin:1px;"  onclick="selecionaFerramenta(0);" width="35"/>
 <!--				<img src="icones/salvar.png" style="margin:1px;"  onclick="salvar();" width="35"/> -->
 				<img src="icones/salvar.png" style="margin:1px;"  onclick="salvarEmPartes();" width="35"/>
@@ -442,7 +442,7 @@ if ($existente != 0){
 				</div>
 			</div>
 		</div>
-<?php
+<?
 	}
 ?>
 </body>

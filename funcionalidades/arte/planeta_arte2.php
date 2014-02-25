@@ -1,11 +1,11 @@
 <?php
-require_once("../../cfg.php");
-require_once("../../bd.php");
-require_once("../../funcoes_aux.php");
-require_once("../../usuarios.class.php");
-require_once("comentario.class.php");
-require_once("desenho.class.php");
-require_once("../../reguaNavegacao.class.php");
+require("../../cfg.php");
+require("../../bd.php");
+require("../../funcoes_aux.php");
+require("../../usuarios.class.php");
+require("comentario.class.php");
+require("desenho.class.php");
+require("../../reguaNavegacao.class.php");
 
 session_start();
 
@@ -38,9 +38,9 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
-<link type="text/css" rel="stylesheet" href="../portfolio/portfolio.css" />
+<link type="text/css" rel="stylesheet" href="portfolio.css" />
 <link type="text/css" rel="stylesheet" href="../forum/forum.css" />
-<link type="text/css" rel="stylesheet" href="../blog/blog.css" />
+<link type="text/css" rel="stylesheet" href="blog.css" />
 <link type="text/css" rel="stylesheet" href="arte.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
