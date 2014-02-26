@@ -3,11 +3,14 @@ require("../../cfg.php");
 require("../../bd.php");
 require("../../funcoes_aux.php");
 require("../../usuarios.class.php");
-require("comentario.class.php");
 require("desenho.class.php");
 require("../../reguaNavegacao.class.php");
 
-session_start();
+$user = usuario_sessao();
+
+if ($user === false){
+	echo "xora";
+}
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
@@ -29,8 +32,6 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 	}
 }
 
-//print_r($_SESSION);
-//echo $user_id.":";
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,7 +45,6 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="p_arte.js"></script>
-<script type="text/javascript" src="../blog/blog.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
@@ -197,7 +197,7 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 			<li class="texto_port"><a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><span class="dados"><?php echo $titulo; ?></span></a></li>
 			<li class="texto_port"><span class="dados">Autor:</span><span class="valor"><?php echo $autor; ?></span></li>
 			<li><span class="dados">Data:</span><span class="valor"><?php echo $data; ?></span></li>
-			<a onmousedown="loadComentarios('light_box', 'comentarios.php', 'post_id=<?php echo $id ?>');abreFechaLB()" class="encerrar">[Ver comentários]</a>
+			<span class="encerrar"><input type="hidden" name="comentarios" value="<?=$id?>"></span>
 		</ul>
 	</div>
 
@@ -214,5 +214,10 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 	<div id="conteudo_base">
 	</div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
+
+	<script src="../../js/compatibility.js"></script>
+	<script src="../../js/rooda.js"></script>
+	<script src="../../js/ajax.js"></script>
+	<script type="text/javascript" src="../../comentarios.js"></script>
 </body>
 </html>

@@ -34,22 +34,12 @@ class Desenho {
 	var $comentarios = array();
 
 	function Desenho($id=0, $user_id="", $turma=0, $desenho="", $titulo="", $tags=""){ // construtor da classe
-		global $tabela_ArteComentarios;
 		global $tabela_ArteDesenhos;
 
-		unset($this->comentarios);
-		$this->comentarios = array();
-//echo "id: $id\n";
 		if ($id != 0){ // Se tem id, é pra abrir.
-			// Esse é o código de carregar os comentários.
-			// Dá uma olhada na conexao $dados ali, creio que ela seja útil.
 			$dados = new conexao();
-			$queryComentarios = new conexao();
-			$dados->solicitar("SELECT * FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" ); // Pega os dados do desenho
-//			echo "SELECT * FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1\n";
-			if ($dados->registros > 0){
-				$queryComentarios->solicitar("SELECT * FROM $tabela_ArteComentarios WHERE CodDesenho = $id");// E os comentarios dele
-//				echo "SELECT * FROM $tabela_ArteComentarios WHERE CodDesenho = $id\n";
+						$dados->solicitar("SELECT * FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" );
+			if($dados->registros > 0){
 				$this->id = $id;
 				$this->criador = new Aluno($dados->resultado['CodUsuario']);
 				$this->desenho = $dados->resultado['Arquivo'];
@@ -59,19 +49,8 @@ class Desenho {
 				$this->status = $dados->resultado['Status'];
 				$this->turma = $dados->resultado['CodTurma'];
 				$this->valido = true;
-
-				for ($i = 0; $i < $queryComentarios->registros; $i++){
-					$this->comentarios[] = new Comment($queryComentarios->resultado['CodComentario'], $queryComentarios->resultado['CodDesenho'], $queryComentarios->resultado['CodUsuario'], $queryComentarios->resultado['Comentario'], $queryComentarios->resultado['Data']);
-					$queryComentarios->proximo();
-				}
 			}
-			/*
-			unset($this->comentarios); // limpa a lista de comentários
-			foreach($queryComentarios->itens as $c){ // Gera um objeto comentario pra cada comentario
-				$this->comentarios[] = new Comment($c['CodComentario'], $c['CodDesenho'], $c['CodUsuario'], $c['Comentario'], $c['Data']);
-			}
-			*/
-		} else {
+		}else{
 			$this->criador = new Aluno($user_id);
 			$this->desenho = $desenho;
 			$this->titulo = $titulo;

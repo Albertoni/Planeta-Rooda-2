@@ -11,7 +11,7 @@ define('FUNCIONALIDADE',      TIPOARTE);
 define('PERM_COMENT_VER',     'arte_verComentarios');
 define('PERM_COMENT_INSERIR', 'arte_inserirComentarios');
 define('PERM_COMENT_EXCLUIR', 'arte_excluirComentarios');
-// require("portfolio.class.php");
+
 function tituloDaRef($idRef) {
 	$bd = new conexao();
 	$bd->solicitar("SELECT Titulo FROM ArtesDesenhos WHERE CodDesenho = $idRef");

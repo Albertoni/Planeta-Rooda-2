@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-type: text/html; charset=utf-8');
 require_once("../../cfg.php");
 require_once("../../bd.php");
@@ -8,6 +7,9 @@ require_once("lista_posts.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("portfolio.class.php");
+
+$user = usuario_sessao();
+
 $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
@@ -21,7 +23,6 @@ if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 	die("Voce n&atilde;o passou a ID da sua turma para a p&aacute;gina, favor voltar e tentar novamente.");
 }
 
-$user = new Usuario();
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 
 if($perm === false){
