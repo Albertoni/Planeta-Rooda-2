@@ -10,7 +10,7 @@ body { background-image:url(../../images/fundos/fundo4.png); background-color:#C
 
 #projeto {width:236px; height:100%; margin-bottom:12px;}
 
-#projetos {width:680px; height:100%; margin-bottom:12px; border-top:30px solid #53686F}
+#projetos {width:680px; height:100%; margin-bottom:12px; border-top:30px solid #53686F; margin-top:30px;}
 
 #postagens {width:236px; height:100%; margin-bottom:12px;}
 
@@ -190,3 +190,5 @@ input[type="text"] { width:100%}
 #text_post {border:1px solid #74D3ED; background-color:#FFF; height:400px}
 
 #posts > div > .sem_estilo {width:384px; overflow:auto;} /*div de dentro dos posts*/
+
+h1{height:20px;}

@@ -46,6 +46,8 @@ class Usuario { //estrutura para o item post do blog
 			if ($q->registros > 0) {
 				$this->popular($q->resultado);
 				return;
+			}else{
+				return $q->erro;
 			}
 		}
 		if (is_numeric($param)) {
@@ -53,9 +55,9 @@ class Usuario { //estrutura para o item post do blog
 			$q->solicitar("SELECT *
 						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 						  WHERE usuario_id = '$id'");
-			$numItens= count($q->itens);
-			if($numItens == 0)
-				return "Usuario inexistente (Id=$id)" ;
+			
+			if($q->registros == 0)
+				return "Usuario inexistente (Id=$id, erro= $q->erro )" ;
 			else {
 				$this->popular($q->resultado);
 				return;

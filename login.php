@@ -11,6 +11,7 @@
 
 	$objUsuario = new Usuario();
 	$objUsuario->openUsuario($login1);
+	
 	if (!$objUsuario->getId()) {
 		$data = '{ "valor":"1", "texto":"Usuário não cadastrado"}';
 	}
