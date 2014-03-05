@@ -89,7 +89,7 @@ $palavras = $projeto->getPalavrasString();
 				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
 			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
-				<img src="../../images/botoes/bt_postagem.png" border="0"/>
+				<img src="../../images/botoes/bt_criar_postagem.png" border="0"/>
 			</a>
 		</div>
 		<div id="esq">
@@ -321,7 +321,7 @@ $palavras = $projeto->getPalavrasString();
 				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
 			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
-				<img src="../../images/botoes/bt_postagem.png" border="0"/>
+				<img src="../../images/botoes/bt_criar_postagem.png" border="0"/>
 			</a>
 		</div>
 	</div><!-- Fecha Div conteudo -->
