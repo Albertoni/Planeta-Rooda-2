@@ -127,7 +127,7 @@ class post{
 								<div class=\"textitulo\">".$this->titulo."</div>
 							</span>
 							<span class=\"data\">
-								".$this->dataCriacao."
+								".$this->getDataCriacaoFormatada()."
 								<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>
 							</span>
 						</li>
@@ -190,6 +190,7 @@ class projeto{
 	function getDataEncerramentoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataEncerramento));}
 	function getPalavras(){return $this->palavras;}
 	function getPalavrasString(){return implode(', ', $this->palavras);}
+	function getPosts(){return $this->posts;}
 
 	function carrega($idProjeto){
 		global $tabela_portfolioProjetos;

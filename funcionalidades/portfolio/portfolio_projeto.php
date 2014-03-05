@@ -249,40 +249,22 @@ $palavras = $projeto->getPalavrasString();
 			<div id="posts" class="bloco" >
 				<h1 id="nome_projeto"><?=$titulo?></h1>
 				<?php
+				$postsProjeto = $projeto->getPosts();
+				$numPosts = count($postsProjeto);
+				
+				for ($i=0; $i < $numPosts; $i++){
+						echo $postsProjeto[$i]->geraHtmlPost();
+				}
+
+				/*
 					global $tabela_portfolioPosts;
 					$consulta = new conexao();
 					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
 					
 					//print_r($consulta);
 					
-					for ($i = 0 ; $i < $consulta->registros; $i++){
-						$postId = $consulta->resultado['id'];
-				?>
-				<div class="cor<?=alterna()?>" id="postDiv<?=$postId?>" >
-					<ul class="sem_estilo">
-						<li class="tabela_port">
-							<span class="titulo">
-								<div class="textitulo"><?=$consulta->resultado['titulo']?></div>
-							</span>
-							<span class="data">
-								<?=$consulta->resultado['dataCriacao'] ?>
-								<button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(<?=$postId?>); });">Excluir</button>
-							</span>
-						</li>
-						<li class="tabela_port postagem">
-						<p>
-							<?=$consulta->resultado['texto']?>
-						</p>
-						</li>
-						<li class="tabela_port">
-							<input type="hidden" name="comentarios" value="<?=$postId?>">
-						</li>
-					</ul>
-				</div>
-				<?php
-						$consulta->proximo();
-					} //fim do for de geração de posts
-				?>
+					
+				*/?>
 			</div>
 		</div>
 		<div class="bts_baixo">
