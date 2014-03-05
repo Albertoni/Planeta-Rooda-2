@@ -93,35 +93,6 @@ $palavras = $projeto->getPalavrasString();
 			</a>
 		</div>
 		<div id="esq">
-			<div id="projeto" class="bloco">
-				<h1 ><a class="toggle" id="toggle_projeto">▼</a> PROJETO</h1>
-				<ul class="sem_estilo" id="caixa_projeto">
-					<li>
-						<span class="dados">Data de início:
-						</span>
-					</li>
-					<li class="texto_port">
-						<span class="valor"><?=$dataCriacao?>
-						</span>
-					</li>
-					<li>
-						<span class="dados">Data de encerramento:
-						</span>
-					</li>
-					<li class="texto_port">
-						<span class="valor"><?=$dataEncerramento?>
-						</span>
-					</li>
-					<li>
-						<span class="dados">Palavras-chave:
-						</span>
-					</li>
-					<li class="texto_port">
-						<span class="valor"><?=$palavras?>
-						</span>
-					</li>
-				</ul>
-			</div> <!-- fim da div projeto -->
 			<div id="postagens" class="bloco">
 				<h1 ><a class="toggle" id="toggle_posts">▼</a> POSTAGENS</h1>
 				<div class="bloqueia">
