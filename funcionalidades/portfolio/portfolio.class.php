@@ -183,8 +183,10 @@ class projeto{
 
 	function getTurma(){return $this->turma;}
 	function getTitulo(){return $this->titulo;}
-	function getDataCriacao(){return $this->dataCriacao;}
-	function getDataEncerramento(){return $this->dataEncerramento;}
+	function getDataCriacaoBruta(){return $this->dataCriacao;}
+	function getDataEncerramentoBruta(){return $this->dataEncerramento;}
+	function getDataCriacaoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataCriacao));}
+	function getDataEncerramentoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataEncerramento));}
 	function getPalavras(){return $this->palavras;}
 	function getPalavrasString(){return implode(', ', $this->palavras);}
 

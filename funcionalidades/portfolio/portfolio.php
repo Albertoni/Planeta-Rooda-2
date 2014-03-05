@@ -76,11 +76,11 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 							</li>
 							<li>
 								<span class="dados">Data de criação:</span>
-								<span class="valor"><?=$projeto->getDataCriacao()?></span>
+								<span class="valor"><?=$projeto->getDataCriacaoFormatada()?></span>
 							</li>
 							<li>
 								<span class="dados">Data de Encerramento:</span>
-								<span class="valor"><?=$projeto->getDataEncerramento()?></span>
+								<span class="valor"><?=$projeto->getDataEncerramentoFormatada()?></span>
 							</li>
 							<li>
 								<span class="dados">Palavras:</span>
