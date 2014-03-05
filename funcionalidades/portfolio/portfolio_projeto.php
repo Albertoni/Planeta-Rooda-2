@@ -31,8 +31,6 @@ if($perm === false){
 
 $projeto = new projeto($projeto_id);
 $titulo = $projeto->getTitulo();
-$dataCriacao = $projeto->getDataCriacao();
-$dataEncerramento = $projeto->getDataEncerramento();
 $palavras = $projeto->getPalavrasString();
 ?><!DOCTYPE html>
 <html>

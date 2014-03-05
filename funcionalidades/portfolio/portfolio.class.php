@@ -105,7 +105,8 @@ class post{
 	function getTitulo(){return $this->titulo;}
 	function getTexto(){return $this->texto;}
 	function getTags(){return $this->tags;}
-	function getDataCriacao(){return $this->dataCriacao;}
+	function getDataCriacaoBruta(){return $this->dataCriacao;}
+	function getDataCriacaoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataCriacao));}
 	function getDataUltMod(){return $this->dataUltMod;}
 
 	function setId($arg){$this->id = $arg;}
