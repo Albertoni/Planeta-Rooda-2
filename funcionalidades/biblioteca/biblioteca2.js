@@ -291,7 +291,7 @@ var BIBLIOTECA = (function () {
 		this.HTMLAutor = document.createElement("p");
 		this.HTMLLink = document.createElement("a");
 		this.HTMLLink.classList.add("abrir_material");
-		this.HTMLLink.innerHTML = '<span class="icon">&nbsp;</span> '
+		this.HTMLLink.innerHTML = '<span class="icon"> </span> '
 		this.HTMLLink.appendChild(this.HTMLTitulo);
 		this.HTMLLink.target = '_blank';
 		this.atualizarHTML();

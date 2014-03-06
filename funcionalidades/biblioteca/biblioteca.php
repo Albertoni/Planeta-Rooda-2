@@ -162,7 +162,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			label_material_link.control.required = false;
 			if (radio_arquivo.checked) {
 				label_radio_arquivo.classList.add('checked');
-				label_link.classList.remove('checked');
+				label_radio_link.classList.remove('checked');
 				label_material_arquivo.style.display = "inline-block";
 				label_material_arquivo.control.required = true;
 				label_material_link.control.value = "";
@@ -186,6 +186,16 @@ $assocUsuario = $usuario->getSimpleAssoc();
 					enviarDiv.style.display = 'none';
 				} else {
 					enviarDiv.style.display = 'block';
+					label_radio_arquivo.classList.remove('checked');
+					label_radio_link.classList.remove('checked');
+					label_radio_arquivo.control.checked = false;
+					label_radio_link.control.checked = false;
+					label_material_arquivo.control.required = true;
+					label_material_link.control.required = true;
+					label_material_arquivo.style.display = "none";
+					label_material_link.style.display = "none";
+					label_material_arquivo.control.value = "";
+					label_material_link.control.value = "";
 				}
 			};
 		}());
@@ -193,6 +203,5 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		<script src="../../jquery.js"></script>
 		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
-		<script src="../../comentarios.js"></script>
 	</body>
 </html>

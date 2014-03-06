@@ -58,12 +58,16 @@ label {
 	height: 30px;
 	margin: 5px;
 }
+a.abrir_material > span {
+	text-decoration: underline;
+}
 a.abrir_material {
 	border: 0 none;
+	color: #0000FF;
 	display: block;
 	font-size: 20px;
-	font-weight: bold;
 	text-decoration: none;
+	font-weight: bold;
 	margin: 0;
 	padding: 0;
 }
