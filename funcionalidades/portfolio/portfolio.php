@@ -92,7 +92,8 @@ if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
 	&amp;turma=".$resultado['turma']."\">[Editar projeto]</a>\n";
 }
 
-if($resultado['emAndamento']==true){
+global $nivelProfessor;
+if(($resultado['emAndamento']==true) && ($user->getNivel($turma)>=$nivelProfessor)){
 	echo "								<a class=\"$CSSencerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
 }
 ?>
