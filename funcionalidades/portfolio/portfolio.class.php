@@ -154,6 +154,7 @@ class projeto{
 	private $dataCriacao;
 	private $dataEncerramento;
 	private $ownersIds = array();
+	private $emAndamento;
 
 	private $posts = array();
 	private $tags = array();
@@ -207,6 +208,7 @@ class projeto{
 			$this->ownersIds = explode(";", $q->resultado['owner_ids']);
 			$this->turma = $q->resultado['turma'];
 			$this->existe = 1;
+			$this->emAndamento = $q->resultado['emAndamento'];
 
 			$this->carregaPosts();
 		}else{
@@ -285,5 +287,50 @@ class projeto{
 			return $q->erro;
 			//die("Erro ao salvar o projeto, por favor tente novamente em um momento.");
 		}
+	}
+
+	function geraHTMLProjeto($user, $turma, $perm, $CSScor, $CSSencerrado){
+
+		$projeto_id = $this->id;
+
+if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
+	$editarProjeto = "								<a class=\"$CSSencerrado\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
+	&amp;turma=$turma\">[Editar projeto]</a>\n";
+}else{
+	$editarProjeto = "";
+}
+
+global $nivelProfessor;
+if(($this->emAndamento == true) && ($user->getNivel($turma)>=$nivelProfessor)){
+	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
+}else{
+	$encerrarProjeto = "";
+}
+
+echo "					<div class=\"$CSScor\" id=\"proj_id$projeto_id\">
+						<ul class=\"sem_estilo\">
+							<li class=\"texto_port\">
+								<span class=\"valor\">
+									<a class=\"port_titulo\" href=\"portfolio_projeto.php?projeto_id=$projeto_id&amp;turma=$turma\">
+										$this->titulo
+									</a>
+								</span>
+							</li>
+							<li>
+								<span class=\"dados\">Data de criação:</span>
+								<span class=\"valor\">".$this->getDataCriacaoFormatada()."</span>
+							</li>
+							<li>
+								<span class=\"dados\">Data de Encerramento:</span>
+								<span class=\"valor\">".$this->getDataEncerramentoFormatada()."</span>
+							</li>
+							<li>
+								<span class=\"dados\">Palavras:</span>
+								<span class=\"valor\">".$this->getPalavrasString()."</span>
+							</li>
+$editarProjeto
+$encerrarProjeto
+							</ul>
+						</div>";
 	}
 }

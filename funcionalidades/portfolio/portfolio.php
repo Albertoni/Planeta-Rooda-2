@@ -64,44 +64,10 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 
 		$CSScor = $resultado['emAndamento'] == true ? ('cor'.(($i%2)+1)) : "encerrado";
 		$CSSencerrado = ($CSScor == "encerrado") ? "encerrar textoLegivel" : "encerrar";
-?>
-					<div class="<?=$CSScor?>" id="proj_id<?=$projeto_id?>">
-						<ul class="sem_estilo">
-							<li class="texto_port">
-								<span class="valor">
-									<a class="port_titulo" href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$resultado['turma']?>">
-										<?=$resultado['titulo'] ?>
-									</a>
-								</span>
-							</li>
-							<li>
-								<span class="dados">Data de criação:</span>
-								<span class="valor"><?=$projeto->getDataCriacaoFormatada()?></span>
-							</li>
-							<li>
-								<span class="dados">Data de Encerramento:</span>
-								<span class="valor"><?=$projeto->getDataEncerramentoFormatada()?></span>
-							</li>
-							<li>
-								<span class="dados">Palavras:</span>
-								<span class="valor"><?=$projeto->getPalavrasString()?></span>
-							</li>
-<?php
-if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
-	echo "								<a class=\"$CSSencerrado\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
-	&amp;turma=".$resultado['turma']."\">[Editar projeto]</a>\n";
-}
 
-global $nivelProfessor;
-if(($resultado['emAndamento']==true) && ($user->getNivel($turma)>=$nivelProfessor)){
-	echo "								<a class=\"$CSSencerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
-}
-?>
-							</ul>
-						</div>
-<?php
+		$projeto->geraHTMLProjeto($user, $turma, $perm, $CSScor, $CSSencerrado);
 
-	$conexao->proximo();
+		$conexao->proximo();
 	}
 	echo "				</div>\n";
 }
