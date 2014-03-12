@@ -26,7 +26,14 @@ img{border:0;}
 a{color:#333333; cursor:pointer; border:none;}
 a:hover{text-decoration:none; color:#CC6600}
 
-p {padding:0; margin:0}
+p {padding:0; margin:0;
+	word-wrap: break-all;
+	word-break: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	-ms-hyphens: auto;
+	hyphens: auto;
+}
 pre {font-family: Trebuchet MS, Tahoma, Verdana;}
 
 ul { list-style:none; margin:0; padding:0;}
