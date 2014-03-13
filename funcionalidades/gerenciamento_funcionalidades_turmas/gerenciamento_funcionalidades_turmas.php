@@ -235,7 +235,10 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<td class="opcaoGerenciamento">Adicionar Links</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Adicionar Arquivos</td>
+						<td class="opcaoGerenciamento">Enviar Arquivos</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Excluir Arquivos</td>
 					</tr>
 					</table>
 				</div></div>

@@ -77,48 +77,61 @@
 	$estahHabilitado_player      = ($conteudoAssociativo['player']          ==='true'? 'h' : 'd');
 	$estahHabilitado_aulas       = ($conteudoAssociativo['aulas']           ==='true'? 'h' : 'd');
 
+///////////////////////////////////////////////////////////
+
 	$comunicador_terreno = getNivelCheckbox($conteudoAssociativo,'comunicador_Chat de Terreno');
 	$comunicador_turma   = getNivelCheckbox($conteudoAssociativo,'comunicador_Chat de Turma');
 	$comunicador_privado = getNivelCheckbox($conteudoAssociativo,'comunicador_Chat Privado');
 	$comunicador_amigo   = getNivelCheckbox($conteudoAssociativo,'comunicador_Chat Amigo');
+
 	$biblioteca_enviarMateriais = getNivelCheckbox($conteudoAssociativo,'biblioteca_Enviar Materiais');
 	$biblioteca_editarMateriais = getNivelCheckbox($conteudoAssociativo,'biblioteca_Editar Materiais');
 	$biblioteca_excluirArquivos = getNivelCheckbox($conteudoAssociativo,'biblioteca_Excluir Arquivos');
 	$biblioteca_aprovarMateriais= getNivelCheckbox($conteudoAssociativo,'biblioteca_Aprovar Arquivos');
+
 	$blog_inserirPost = getNivelCheckbox($conteudoAssociativo,'blog_Inserir Post');
 	$blog_editarPost = getNivelCheckbox($conteudoAssociativo,'blog_Editar Post');
 	$blog_inserirComentarios = getNivelCheckbox($conteudoAssociativo,'blog_Inserir Comentários');
 	$blog_excluirPost = getNivelCheckbox($conteudoAssociativo,'blog_Excluir Post');
 	$blog_adicionarLinks = getNivelCheckbox($conteudoAssociativo,'blog_Adicionar Links');
 	$blog_adicionarArquivos = getNivelCheckbox($conteudoAssociativo,'blog_Adicionar Arquivos');
+
 	$portfolio_visualizarPost = getNivelCheckbox($conteudoAssociativo,'portfolio_Visualizar Post');
 	$portfolio_inserirPost = getNivelCheckbox($conteudoAssociativo,'portfolio_Inserir Post');
 	$portfolio_editarPost = getNivelCheckbox($conteudoAssociativo,'portfolio_Editar Post');
 	$portfolio_inserirComentarios = getNivelCheckbox($conteudoAssociativo,'portfolio_Inserir Comentários');
 	$portfolio_excluirPost = getNivelCheckbox($conteudoAssociativo,'portfolio_Excluir Post');
 	$portfolio_adicionarLinks = getNivelCheckbox($conteudoAssociativo,'portfolio_Adicionar Links');
-	$portfolio_adicionarArquivos = getNivelCheckbox($conteudoAssociativo,'portfolio_Adicionar Arquivos');
+	$portfolio_enviarArquivos = getNivelCheckbox($conteudoAssociativo,'portfolio_Enviar Arquivos');
+	$portfolio_excluirArquivos = getNivelCheckbox($conteudoAssociativo,'portfolio_Excluir Arquivos');
+
 	$forum_criarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Criar Tópico');
 	$forum_editarTopico = getNivelCheckbox($conteudoAssociativo,'forum_Editar Tópico');
 	$forum_excluirTopico = getNivelCheckbox($conteudoAssociativo,'forum_Excluir Tópico');
 	$forum_responderTopico = getNivelCheckbox($conteudoAssociativo,'forum_Responder Tópico');
 	$forum_editarResposta = getNivelCheckbox($conteudoAssociativo,'forum_Editar Resposta');
 	$forum_excluirResposta = getNivelCheckbox($conteudoAssociativo,'forum_Excluir Resposta');
+
 	$arte_criarDesenho = getNivelCheckbox($conteudoAssociativo,'arte_Criar Desenho');
 	$arte_comentarDesenho = getNivelCheckbox($conteudoAssociativo,'arte_Comentar Desenho');
+
 	$pergunta_criarQuestionario = getNivelCheckbox($conteudoAssociativo,'pergunta_Criar Questionário');
 	$pergunta_criarPergunta = getNivelCheckbox($conteudoAssociativo,'pergunta_Criar Pergunta');
 	$pergunta_editarQuestionario = getNivelCheckbox($conteudoAssociativo,'pergunta_Editar Questionário');
 	$pergunta_editarPergunta = getNivelCheckbox($conteudoAssociativo,'pergunta_Editar Pergunta');
 	$pergunta_deletarQuestionario = getNivelCheckbox($conteudoAssociativo,'pergunta_Deletar Questionário');
 	$pergunta_deletarPergunta = getNivelCheckbox($conteudoAssociativo,'pergunta_Deletar Pergunta');
+
 	$player_inserirVideos = getNivelCheckbox($conteudoAssociativo,'player_Inserir Vídeos');
 	$player_inserirComentario = getNivelCheckbox($conteudoAssociativo,'player_Comentar Vídeos');
 	$player_deletarVideos = getNivelCheckbox($conteudoAssociativo,'player_Deletar Vídeos');
 	$player_deletarComentario = getNivelCheckBox($conteudoAssociativo,'player_Deletar Comentário');
+
 	$aulas_criarAulas = getNivelCheckbox($conteudoAssociativo,'aulas_Criar Aulas');
 	$aulas_editarAulas = getNivelCheckbox($conteudoAssociativo,'aulas_Editar Aulas');
 	$aulas_importarAulas = getNivelCheckbox($conteudoAssociativo,'aulas_Importar Aulas');
+
+///////////////////////////////////////////////////////////
 
 	$mensagemDeErro = 'Desculpe, houve um erro ao gravar os dados. O erro é:<br>';
 	$deuErro = false;
@@ -137,7 +150,7 @@
 			  comunicador_terreno, comunicador_turma, comunicador_privado, comunicador_amigo,
 			  biblioteca_enviarMateriais, biblioteca_editarMateriais, biblioteca_excluirArquivos, biblioteca_aprovarMateriais,
 			  blog_inserirPost, blog_editarPost, blog_inserirComentarios, blog_excluirPost, blog_adicionarLinks, blog_adicionarArquivos,
-			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_adicionarArquivos,
+			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_enviarArquivos, portfolio_excluirArquivos,
 			  forum_criarTopico, forum_editarTopico, forum_excluirTopico, forum_responderTopico, forum_editarResposta, forum_excluirResposta,
 			  arte_criarDesenho, arte_comentarDesenho,
 			  pergunta_criarQuestionario, pergunta_criarPergunta, pergunta_editarQuestionario, pergunta_editarPergunta, pergunta_deletarQuestionario, pergunta_deletarPergunta,
@@ -147,7 +160,7 @@
 			  $comunicador_terreno, $comunicador_turma, $comunicador_privado, $comunicador_amigo,
 			  $biblioteca_enviarMateriais, $biblioteca_editarMateriais, $biblioteca_excluirArquivos, $biblioteca_aprovarMateriais,
 			  $blog_inserirPost, $blog_editarPost, $blog_inserirComentarios, $blog_excluirPost, $blog_adicionarLinks, $blog_adicionarArquivos,
-			  $portfolio_visualizarPost, $portfolio_inserirPost, $portfolio_editarPost, $portfolio_inserirComentarios, $portfolio_excluirPost, $portfolio_adicionarLinks, $portfolio_adicionarArquivos,
+			  $portfolio_visualizarPost, $portfolio_inserirPost, $portfolio_editarPost, $portfolio_inserirComentarios, $portfolio_excluirPost, $portfolio_adicionarLinks, $portfolio_enviarArquivos, $portfolio_excluirArquivos,
 			  $forum_criarTopico, $forum_editarTopico, $forum_excluirTopico, $forum_responderTopico, $forum_editarResposta, $forum_excluirResposta,
 			  $arte_criarDesenho, $arte_comentarDesenho,
 			  $pergunta_criarQuestionario, $pergunta_criarPergunta, $pergunta_editarQuestionario, $pergunta_editarPergunta, $pergunta_deletarQuestionario, $pergunta_deletarPergunta,

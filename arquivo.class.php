@@ -6,8 +6,9 @@ class Arquivo {
 
 	// tabelas que referenciam arquivos e condicao de consulta
 	private static $referencias_bd = array(
-		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = "
-	,	"ForumMensagemAnexos" => "WHERE idArquivo = "
+		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = ",
+		"ForumMensagemAnexos" => "WHERE idArquivo = ",
+		"PortfolioArquivos"   => "WHERE IdArquivo = "
 	);
 
 	protected $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
