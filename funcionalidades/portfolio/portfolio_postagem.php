@@ -232,13 +232,13 @@ function Init() {
 }
 </script>
 </head>
-<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img(); Init(); /*fakeFile('botao_upload_frame', 'arquivo_frame', 'falso_frame'); fakeFile('botao_upload_frame_ins','arquivo_frame_ins', 'falso_frame_ins');*/">
+<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img(); Init();">
 	<div id="descricao"></div>
 	<div id="fundo_lbox"></div>
 	<div id="light_box" class="bloco">
 		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
 <?php
-if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
+if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
 {
 ?>
 		<div id="imagem_lbox">
@@ -305,11 +305,7 @@ if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 							<li id="procurar_arq">
 								Adicionar novo arquivo (tamanho máximo <?=$upload_max_filesize?>):
 								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
-									<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
-									<input type="hidden" name="gambiarra" value="3337333" />
-									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" style="" onchange="trocador('falso_frame', 'arquivo_frame')" />
-									<input name="falso" type="text" id="falso_frame" />
-									<img src="../../images/botoes/bt_procurar_arquivo.png" id="botao_upload_frame" />
+									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" />
 									<input type="submit" name="upload" value="upload!" />
 								</form>
 								<iframe id="alvoAJAX" name="alvoAJAX" src="" style="display: none;"></iframe>
@@ -318,13 +314,19 @@ if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
 						<ul id="cont_arq2">
 <?php
 							$consulta = new conexao();
-							$consulta->solicitar("SELECT nome,arquivo_id FROM $tabela_arquivos WHERE funcionalidade_tipo='$funcionalidade_tipo' AND funcionalidade_id='$funcionalidade_id'");
+							$userId = $user->getId();
+							$consulta->solicitar("SELECT IdArquivo 
+								FROM PortfolioArquivos as PA
+								INNER JOIN PortfolioPosts as PP ON PA.IdPost = PP.id
+								 WHERE PP.user_id = '$userId'");
 
 							while($consulta->resultado) {
-								$arquivo_id = $consulta->resultado['arquivo_id'];
-								$arquivo_nome = $consulta->resultado['nome'];
+								$idArquivo = $consulta->resultado['IdArquivo'];
+								$arquivo = new Arquivo($idArquivo);
+
+								$nomeArquivo = $arquivo->getNome();
 ?>
-								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$arquivo_id?>" name="arquivo" value="<?=$arquivo_id?>" /><span id="fileN<?=$arquivo_id?>"><?=$arquivo_nome?></span></li>
+								<li class="enviado<?=($i % 2) + 1?>"><input type="checkbox" id="file<?=$idArquivo?>" name="arquivo" value="<?=$idArquivo?>" /><span id="fileN<?=$idArquivo?>"><?=$nomeArquivo?></span></li>
 <?php
 								$consulta->proximo();
 							}
@@ -423,7 +425,7 @@ if($user->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 <?php
 }
 
-if($user->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
+if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
 {
 ?>
 							<div class="tool_bt" id="alt_arquivo"><img src="../../images/botoes/tool_arquivo.png" /></div>
