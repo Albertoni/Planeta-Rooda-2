@@ -59,154 +59,6 @@ if($perm == false){
 ?>
 
 <script type="text/javascript">
-var refreshImageList = (function() {
-	function getFileListHandler() {
-		var t, res, n, i, images_container, id, html = [];
-		if (this.readyState !== this.DONE) {
-			// requisição em andamento, nao fazer nada.
-			return;
-		}
-		if (this.status !== 200) {
-			return;
-		}
-		if(t = this.responseText) {
-			try {
-				res = JSON.parse(t);
-			}
-			catch (e) {
-				console.log("JSON: " + e.message + ":\n" + t); 
-				return;
-			}
-			if (!res.ok) {
-				if (res.errors) {
-					console.log(res.errors.join("\n"));
-				}
-				console.log("Couldn't refresh image list");
-				return;
-			} else {
-				// SUCCESS
-				n = res.files.length;
-				images_container = document.getElementById("cont_img3");
-				if (images_container) {
-					for (i=0;i<n;i+=1) {
-						id = res.files[i].file_id;
-						html.push('<div id="galeria'+id+'" class="img_enviadas"><img onclick="fromgallery('+id+')" src="../../image_output.php?file='+id+'" /></div>');
-					}
-					images_container.innerHTML = html.join("\n");
-				}
-			}
-		}
-	}
-	return getFileListFunction(getFileListHandler,<?=$funcionalidade_id?>,<?=$funcionalidade_tipo?>,"image/%");
-}());
-
-var uploadAttImage = (function () {
-	function handler() {
-		var loading, t, res, html;
-		
-		if (this.readyState !== this.DONE) {
-			// requisição em andamento, nao fazer nada.
-			return;
-		}
-		// Fim do request, remover tela de loading
-		if (loading = document.getElementById('loading')) {
-			loading.style.display = 'none';
-		}
-		if (this.status !== 200) {
-			if (this.status >= 500) {
-				ROODA.ui.alert("Problema no servidor");
-			} else {
-				ROODA.ui.alert("Não foi possivel contatar o servidor.<br>\nVerifique sua conexão com a internet.");
-			}
-			return;
-		}
-		if (t = this.responseText) {
-			try {
-				res = JSON.parse(t);
-			}
-			catch (e) {
-				console.log("JSON: "+e.message+":\n"+t);
-				ROODA.ui.alert ("Algo de errado aconteceu.");
-			}
-			if(res.errors) {
-				ROODA.ui.alert(res.errors.join("<br>\n"));
-			} else if (res.file_id && res.file_name) {
-				// SUCCESS
-				html = imageHTML(res.file_id);
-				objHolder.focus();
-				objContent.execCommand('inserthtml',false,html);
-				abreFechaLB();
-				document.getElementById('troca_img3').onclick();
-			} else {
-				ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-			}
-		}
-	}
-	
-	var upload = submitFormFunction(handler);
-	
-	return (function (oFormElement) {
-		var e = document.getElementById('loading');
-		if (e) {
-			e.style.display = 'block';
-		}
-		upload(oFormElement);
-	});
-}());
-
-var uploadAttFile = (function() {
-	function handler() {
-		var loading, t, res, html;
-		if (this.readyState !== this.DONE) {
-			// requisição em andamento, nao fazer nada.
-			return;
-		}
-		// Fim do request, remover tela de loading
-		loading = document.getElementById('loading');
-		if (loading) {
-			loading.style.display = 'none';
-		}
-		if (this.status !== 200) {
-			if (this.status >= 500) {
-				ROODA.ui.alert("Problema no servidor");
-			} else {
-				ROODA.ui.alert("Não foi possivel contatar o servidor.\nVerifique sua conexão com a internet.");
-			}
-			return;
-		}
-		t = this.responseText;
-		if (t) {
-			try {
-				res = JSON.parse(t);
-			}
-			catch (e) {
-				console.log("JSON: "+e.message+":\n"+t);
-				ROODA.ui.alert ("Algo de errado aconteceu.");
-			}
-			if(res.errors) {
-				ROODA.ui.alert(res.errors.join("\n"));
-			} else if (res.file_id && res.file_name) {
-				// SUCCESS
-				html = fileHTML(res.file_id,res.file_name);
-				objHolder.focus();
-				objContent.execCommand('inserthtml',false,html);
-				abreFechaLB();
-				document.getElementById('troca_img3').onclick();
-			} else {
-				ROODA.ui.alert("Não sabemos o que aconteceu, mas estamos trabalhando para descobrir");
-			}
-		}
-	}
-	var upload = submitFormFunction(handler);
-	return (function (f) {
-		var e = document.getElementById('loading');
-		if (e) {
-			e.style.display = 'block';
-		}
-		upload(f);
-	});
-}());
-
 function ajusta_img() {
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
 		$('#cont_img3').css('width','436px');
@@ -304,7 +156,8 @@ if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
 						<ul id="cont_arq1">
 							<li id="procurar_arq">
 								Adicionar novo arquivo (tamanho máximo <?=$upload_max_filesize?>):
-								<form method="post" enctype="multipart/form-data" action="../../uploadFile.php?funcionalidade_id=<?=$funcionalidade_id?>&amp;funcionalidade_tipo=<?=$funcionalidade_tipo?>" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
+								<form method="post" enctype="multipart/form-data" action="fileUpload.php" onsubmit="uploadAttFile(this);return false;" target="alvoAJAX">
+									<input type="hidden" name="turma" value="<?php echo $turma ?>">
 									<input name="userfile" type="file" id="arquivo_frame" class="upload_file" />
 									<input type="submit" name="upload" value="upload!" />
 								</form>
@@ -316,9 +169,12 @@ if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
 							$consulta = new conexao();
 							$userId = $user->getId();
 							$consulta->solicitar("SELECT IdArquivo 
+								FROM uploader_id = '$userId'");
+
+							/*"SELECT IdArquivo 
 								FROM PortfolioArquivos as PA
 								INNER JOIN PortfolioPosts as PP ON PA.IdPost = PP.id
-								 WHERE PP.user_id = '$userId'");
+								 WHERE PP.user_id = '$userId'"*/
 
 							while($consulta->resultado) {
 								$idArquivo = $consulta->resultado['IdArquivo'];

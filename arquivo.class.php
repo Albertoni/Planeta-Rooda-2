@@ -314,6 +314,11 @@ class Arquivo {
 	// metodo: abrirUsuario
 	// Abre consulta com todos os arquivos do usuario
 	// e carrega o primeiro arquivo encontrado
+
+	// A intenção é ser utilizada assim:
+	// while($arquivo->proximo()){
+	//     $arquivo->fazerCoisas();
+	// }
 	public function abrirUsuario($usuario) {
 		global $tabela_arquivos;
 		if (get_class($usuario) === "Usuario") {
@@ -356,7 +361,7 @@ class Arquivo {
 	}
 
 	// metodo: proximo
-	// pega proximo arquivo do usuario até retornar false
+	// pega proximo arquivo do usuario, quando acabou retorna false
 	// só pode ser usado depois de abrir um usuario com o 
 	// metodo abrirUsuario
 	public function proximo() {
