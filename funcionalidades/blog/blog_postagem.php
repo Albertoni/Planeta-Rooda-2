@@ -193,7 +193,7 @@ function Init() {
 	</div><!-- fim da geral -->
 	<!-- loading -->
 	<div id="loading" style="display:none;">
-		<div class="spacer_50"><!-- empty --> </div>
+		<div class="spacer_50"><!-- empty --></div>
 		<div class="loading_anim">
 			<h2>Processando</h2>
 		</div>

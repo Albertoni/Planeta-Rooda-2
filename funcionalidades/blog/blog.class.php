@@ -150,7 +150,7 @@ class Post { //estrutura para o item post do blog
 		$q = new conexao();
 		if($this->id == 0) {
 			$q->inserir($this->toDBArray(),$tabela_posts);
-			$this->id = $q->ultimo_id();
+			$this->id = (int) $q->ultimo_id();
 		} else {
 			$q->atualizar($this->id,$this->toDBArray(),$tabela_posts);
 		}
