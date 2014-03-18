@@ -8,7 +8,8 @@ class Arquivo {
 	private static $referencias_bd = array(
 		"BibliotecaMateriais" => "WHERE tipoMaterial LIKE 'a' AND refMaterial = ",
 		"ForumMensagemAnexos" => "WHERE idArquivo = ",
-		"PortfolioArquivos"   => "WHERE IdArquivo = "
+		"PortfolioArquivos"   => "WHERE IdArquivo = ",
+		"BlogArquivos"   => "WHERE IdArquivo = "
 	);
 
 	protected $id = false; // só mudar se o arquivo for carregado/salvado com sucesso.
@@ -415,6 +416,28 @@ class Arquivo {
 			}
 			return $qty;
 		}
+	}
+	// função que salva vários arquivos
+	static function bulkFiles($_files, $userId) {
+		$files = array();
+		foreach ($_files as $key => $values) {
+			$numValues = count($values);
+			for ($i = 0; $i < $numValues; $i++) {
+				if (!isset($files[$i])) {
+					$files[$i] = array();
+				}
+				$files[$i][$key] = $values[$i];
+			}
+		}
+		$arquivos = array();
+		foreach ($files as $f) {
+			$a = new Arquivo();
+			$a->setArquivo($f);
+			$a->setIdUsuario($userId);
+			$a->salvar();
+			$arquivos[] = $a;
+		}
+		return $arquivos;
 	}
 }
 
