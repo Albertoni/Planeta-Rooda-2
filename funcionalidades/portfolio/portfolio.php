@@ -142,12 +142,11 @@ if(sizeof($user->getTurmas()) > 1){
 		<div id="esq">
 			<div id="procurar_proj" class="bloco">
 				<h1>PROCURAR PROJETO</h1>
-					<form name="procurar_projetos" method="post" action="portfolio.php">
+					<form name="procurar_projetos" method="post" action="portfolio.php?turma=<?php echo $turma?>">
 						<ul class="sem_estilo">
 							<li><input type="text" name="projeto_procurado" /></li>
 							<li><input type="radio" name="p_proj" value="1" />Título</li>
-							<li><input type="radio" name="p_proj" value="2" />Conteúdos Abordados</li>
-							<li><input type="radio" name="p_proj" value="3" />Palavras do Projeto</li>
+							<li><input type="radio" name="p_proj" value="2" />Palavras do Projeto</li>
 							<li><div class="enviar" align="right"><input type="image" name="bt_procurar_projetos" src="../../images/botoes/bt_procurar.png" /></div>
 							</li>
 						</ul>
@@ -165,7 +164,7 @@ if(sizeof($user->getTurmas()) > 1){
 
 			$consulta = new conexao();
 			
-			$condicao = "owner_id = $id_usuario OR turma=$turma";
+			$condicao = "(owner_ids LIKE '%$id_usuario%') AND (turma='$turma')";
 			
 			if (isset($_POST['projeto_procurado'])){
 				$procurar = $consulta->sanitizaString($_POST['projeto_procurado']); // bom dia SQL injection primária
@@ -174,20 +173,14 @@ if(sizeof($user->getTurmas()) > 1){
 						$condicao .= " AND titulo LIKE '%$procurar%'";
 					break;
 					case "2":
-						$condicao .= " AND descricao LIKE '%$procurar%'";
-					break;
-					case "3":
 						$condicao .= " AND tags LIKE '%$procurar%'";
 					break;
 				}
 			}
 			
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE 
-				
-					owner_ids = $id_usuario 
-					OR owner_ids LIKE '%$id_usuario%'
-				
-				AND turma = $turma ORDER BY id DESC");
+					$condicao
+					ORDER BY id DESC");
 
 			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
