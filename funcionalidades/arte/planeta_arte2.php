@@ -9,7 +9,7 @@ require("../../reguaNavegacao.class.php");
 $user = usuario_sessao();
 
 if ($user === false){
-	echo "xora";
+	die("Voce precisa estar logado para acessar essa página.");
 }
 
 $post_id = 1; //TODO: DEBUG
@@ -36,7 +36,7 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
@@ -134,11 +134,13 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 				<div id="proj_andamento">
 <?php
 $ARTE->meusDesenhos();
+$numeroDesenhos = $ARTE->getContador();
+$arrayDesenhos = $ARTE->getDesenhos();
 
-for ($i = 0; $i < $ARTE->contador; $i++){
+for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
-	$id = $ARTE->desenhos[$i]->id;
-	$tid = $ARTE->desenhos[$i]->turma;
+	$id = $arrayDesenhos[$i]->getId();
+	$tid = $arrayDesenhos[$i]->getTurma();
 
 	$parametros = "desenho=".$id;
 	$parametros = $parametros."&amp;turma=".$tid;
@@ -172,15 +174,17 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 				<div id="proj_encerrados">
 <?php
 $ARTE->desenhosDosColegas();
+$numeroDesenhos = $ARTE->getContador();
+$arrayDesenhos = $ARTE->getDesenhos();
 
-for ($i = 0; $i < $ARTE->contador; $i++){
+for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
-	if (isset($ARTE->desenhos[$i]->id)){
-		$id = $ARTE->desenhos[$i]->id;
-		$tid = $ARTE->desenhos[$i]->turma;
-		$data = $ARTE->desenhos[$i]->data;
-		$autor = $ARTE->desenhos[$i]->criador->nome;
-		$titulo =  $ARTE->desenhos[$i]->titulo;
+	if (isset($arrayDesenhos[$i]->id)){ // TODO: DESCOBRIR PRA QUE ISSO SERVE
+		$id = $arrayDesenhos[$i]->id;
+		$tid = $arrayDesenhos[$i]->turma;
+		$data = $arrayDesenhos[$i]->data;
+		$autor = $arrayDesenhos[$i]->criador->nome;
+		$titulo =  $arrayDesenhos[$i]->titulo;
 		$parametros = "desenho=".$id;
 		$parametros = $parametros."&amp;turma=".$tid;
 		$parametros = $parametros."&amp;existente=1";
