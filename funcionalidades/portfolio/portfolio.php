@@ -129,9 +129,13 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 ***************************** -->
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
-			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" style="float:right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0"/>
-			</a>
+<?php
+	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+		echo "<a href=\"portfolio_novo_projeto.php?turma=$turma\" style=\"float:right\" >
+				<img src=\"../../images/botoes/bt_postagem.png\" border=\"0\"/>
+			</a>";
+	}
+?>
 		</div>&nbsp;<!--NÃO REMOVA ESSE NON-BREAKING SPACE-->
 <?php
 if(sizeof($user->getTurmas()) > 1){
@@ -191,9 +195,13 @@ if(sizeof($user->getTurmas()) > 1){
 			</div> <!-- fim da div de id="projetos" -->
 		</div>
 		<div class="bts_baixo">
-			<a href="portfolio_novo_projeto.php?turma=<?=$turma?>" style="float:right" >
-				<img src="../../images/botoes/bt_postagem.png" border="0"/>
-			</a>
+<?php
+	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+		echo "<a href=\"portfolio_novo_projeto.php?turma=$turma\" style=\"float:right\" >
+				<img src=\"../../images/botoes/bt_postagem.png\" border=\"0\"/>
+			</a>";
+	}
+?>
 		</div>
 		<div style="clear:both;"></div>
 	</div><!-- Fecha Div conteudo -->
