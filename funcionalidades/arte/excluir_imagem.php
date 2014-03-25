@@ -9,7 +9,7 @@
 	require("desenho.class.php");
 
 	$user_id = $_SESSION['SS_usuario_id'];
-	$id = isset($_POST['desenho'])?$_POST['desenho']:0;
+	$id = (int) (isset($_POST['desenho']) && is_numeric($_POST['desenho'])) ? $_POST['desenho'] : 0;
 
 	
 	if ($id != 0){

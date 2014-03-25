@@ -103,6 +103,8 @@ class Desenho {
 	public function getIdAutor(){return $this->criador;}
 	public function getTitulo(){return $this->titulo;}
 	public function getPalavras(){return $this->palavras;}
+	public function getData(){return $this->data;}
+	public function getValido(){return $this->valido;}
 
 //	para ignorar width ou height, basta colocar 0 no seu valor
 //	exemplo:
@@ -140,57 +142,36 @@ class Arte{
 	public function getDesenhos(){return $this->desenhos;}
 
 	public function meusDesenhos(){
-		global $tabela_ArteDesenhos;
-		unset($this->desenhos);
-
-		$user_id = $this->idUser;
-		$arte_id = $this->idTurma;
-
-		$dados = new conexao();
-		$dados->solicitar("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario = '$user_id' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
-
-		for ($i=0; $i<$dados->registros; $i++){
-			$id = $dados->resultado['CodDesenho'];
-			$this->desenhos[] = new Desenho($id);
-			$dados->proximo();
-		}
-
-		if ($dados->registros > 0){
-			$this->contador = count($this->desenhos);
-		}
+		$this->fetchDesenhos("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario = '$user_id' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
 	}
 
 	public function desenhosDosColegas(){
+		$this->fetchDesenhos("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario <> '$user_id' AND CodTurma = '$this->idTurma'" );
+	}
+
+	// Chame com meusDesenhos ou desenhosDosColegas
+	private function fetchDesenhos($query){
 		global $tabela_ArteDesenhos;
 		unset($this->desenhos);
 
-		$user_id = $this->idUser;
-		//$arte_id = $this->idTurma;
-
 		$dados = new conexao();
-		$dados->solicitar("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario <> '$user_id' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
+		$dados->solicitar($query);
 
 		for ($i=0; $i<$dados->registros; $i++){
 			$id = $dados->resultado['CodDesenho'];
 			$this->desenhos[] = new Desenho($id);
 			$dados->proximo();
 		}
-		//$this->desenhos = $dados->resultado;
+		
 		if ($dados->registros > 0){
 			$this->contador = count($this->desenhos);
 		}
-	}
-
-	public function fetchDesenhos($query){
-		;
 	}
 
 	function meuDesenho($id){
 		$desenho = new Desenho($id);
-		if ($desenho->valido){
+		if ($desenho->getValido()){
 			return ($desenho->criador->id == $this->idUser);
 		}
 	}
-
 }
-?>

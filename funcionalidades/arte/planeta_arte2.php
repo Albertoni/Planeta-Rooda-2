@@ -140,20 +140,17 @@ $arrayDesenhos = $ARTE->getDesenhos();
 for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
 	$id = $arrayDesenhos[$i]->getId();
-	$tid = $arrayDesenhos[$i]->getTurma();
 
-	$parametros = "desenho=".$id;
-	$parametros = $parametros."&amp;turma=".$tid;
-	$parametros = $parametros."&amp;existente=1";
+	$parametros = "desenho=$id&amp;turma=$turma&amp;existente=1";
 
-	$data = $ARTE->desenhos[$i]->data;
-	$titulo =  $ARTE->desenhos[$i]->titulo;
+	$data = $arrayDesenhos[$i]->getData();
+	$titulo =  $arrayDesenhos[$i]->getTitulo();
 ?>
 <div class="<?php echo $cor; ?>">
 	<ul class="sem_estilo">
 		<a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><div id="imagem" class="lista_imagem">
 		<?php
-			echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
+			echo $arrayDesenhos[$i]->visualizar(80,0,"border:0;");
 		?>
 		</div>
 		</a>
@@ -181,20 +178,16 @@ for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
 	if (isset($arrayDesenhos[$i]->id)){ // TODO: DESCOBRIR PRA QUE ISSO SERVE
 		$id = $arrayDesenhos[$i]->id;
-		$tid = $arrayDesenhos[$i]->turma;
 		$data = $arrayDesenhos[$i]->data;
 		$autor = $arrayDesenhos[$i]->criador->nome;
 		$titulo =  $arrayDesenhos[$i]->titulo;
-		$parametros = "desenho=".$id;
-		$parametros = $parametros."&amp;turma=".$tid;
-		$parametros = $parametros."&amp;existente=1";
+		$parametros = "desenho=$id&amp;turma=$turma&amp;existente=1";
 ?>
 	<div class="<?php echo $cor; ?>">
 		<ul class="sem_estilo">
 			<a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><div id="imagem" class="lista_imagem">
 			<?php
-			  //<div id="imagem" class="lista_imagem"></div>
-			  echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
+			  echo $arrayDesenhos[$i]->visualizar(80,0,"border:0;");
 			?>
 			</div>
 			</a>
