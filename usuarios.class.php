@@ -50,7 +50,7 @@ class Usuario { //estrutura para o item post do blog
 			}
 		}
 		if (is_numeric($param)) {
-			$id = (int) $param;
+			$id = $param;
 			$q->solicitar("SELECT *
 						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 						  WHERE usuario_id = '$id'");
