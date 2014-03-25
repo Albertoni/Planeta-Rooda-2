@@ -71,7 +71,13 @@ class Desenho {
 		$id = $this->id;
 		$dados = new conexao();
 		if ($this->id != 0){
-			$dados->solicitar("DELETE FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" );
+			$dados->solicitar("DELETE FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1");
+		}
+
+		if($dados->erro != ""){
+			return "Ocorreu um erro ao excluir o desenho.";
+		}else{
+			return "Desenho excluido com sucesso.";
 		}
 	}
 
@@ -90,6 +96,8 @@ class Desenho {
 	public function getPalavras(){return $this->palavras;}
 	public function getData(){return $this->data;}
 	public function getValido(){return $this->valido;}
+	public function getCriador(){return $this->criador;}
+	public function getDesenho(){return $this->desenho;}
 
 //	para ignorar width ou height, basta colocar 0 no seu valor
 //	exemplo:
@@ -109,6 +117,12 @@ class Desenho {
 		$html = "<img src='$src' $atributos />";
 		return $html;
 	}
+
+	function pertenceAoId($userId){
+		if ($this->getValido()){
+			return ($this->getCriador()->getId() === $userId);
+		}
+	}
 }
 
 /* Contem todas as artes de uma turma. */
@@ -127,17 +141,16 @@ class Arte{
 	public function getDesenhos(){return $this->desenhos;}
 
 	public function meusDesenhos(){
-		$this->fetchDesenhos("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario = '$user_id' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
+		$this->fetchDesenhos("SELECT CodDesenho FROM ArtesDesenhos WHERE CodUsuario = '$this->idUser' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
 	}
 
 	public function desenhosDosColegas(){
-		$this->fetchDesenhos("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario <> '$user_id' AND CodTurma = '$this->idTurma'" );
+		$this->fetchDesenhos("SELECT CodDesenho FROM ArtesDesenhos WHERE CodUsuario <> '$this->idUser' AND CodTurma = '$this->idTurma'" );
 	}
 
 	// Chame com meusDesenhos ou desenhosDosColegas
 	// Isso está dessa forma porque o vinadé não sabe o que boas práticas significam, pode ser melhor refatorado creio - João - 25/3/14
 	private function fetchDesenhos($query){
-		global $tabela_ArteDesenhos;
 		$this->desenhos = array();
 
 		$dados = new conexao();
@@ -151,13 +164,6 @@ class Arte{
 		
 		if ($dados->registros > 0){
 			$this->contador = count($this->desenhos);
-		}
-	}
-
-	function meuDesenho($id){
-		$desenho = new Desenho($id);
-		if ($desenho->getValido()){
-			return ($desenho->getCriador()->getId() == $this->idUser);
 		}
 	}
 }

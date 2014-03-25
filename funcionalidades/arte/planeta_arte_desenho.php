@@ -10,7 +10,7 @@ require("../../reguaNavegacao.class.php");
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
-$desenho		= isset($_GET['desenho'])?$_GET['desenho']:0;
+$desenho_id	= isset($_GET['desenho'])?$_GET['desenho']:0;
 $turma		= isset($_GET['turma'])?$_GET['turma']:0;
 $existente	= isset($_GET['existente'])?$_GET['existente']:0;
 $insta		= isset($_GET['queroSerHipster']);
@@ -23,13 +23,12 @@ $insta		= isset($_GET['queroSerHipster']);
 $titulo = "";
 $desenho_proprio = false;
 if ($existente != 0){
-//	acessa o planeta arte
-	$ARTE = new Arte($user_id, $turma);
+	$DES = new Desenho($desenho_id);
+	$titulo = $DES->getTitulo();
+
 //	verifica se o desenho pertence ao usuário
 //	é preciso saber se o desenho é do usuário, para habilitar ou não a edição do desenho
-	$desenho_proprio = $ARTE->meuDesenho($desenho);
-	$DES = new Desenho($desenho);
-	$titulo = $DES->titulo;
+	$desenho_proprio = $DES->pertenceAoId($user_id);
 }
 
 ?>
@@ -59,7 +58,7 @@ if ($existente != 0){
 <script>
 	turma = <?php echo $turma?>;
 	existente = <?php echo ($existente)?"1":"0"; ?>;
-	id_do_desenho = <?php echo $desenho?>;
+	id_do_desenho = <?php echo $desenho_id?>;
 </script>
 </head>
 
@@ -407,7 +406,7 @@ if ($existente != 0){
 <?php
 	$src = "";
 	if ($existente != 0){
-		$src = $DES->desenho;
+		$src = $DES->getDesenho();
 	}
 	echo "<img id='imagem_fonte' src='$src' style='visibility:hidden;'/>";
 ?>
