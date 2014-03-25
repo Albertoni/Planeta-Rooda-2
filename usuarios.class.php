@@ -34,8 +34,7 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	// Recebe como parametro um id (inteiro maior que 0)
-	// Segundo parametro não é usado, não removo por medo de quebrar algo.
-	public function openUsuario($param , $param2="") {
+	public function openUsuario($param) {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
 		if (is_string($param)) {
