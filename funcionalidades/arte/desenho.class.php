@@ -6,21 +6,6 @@ MAS TENHA EM MENTE QUE SE QUEBRAR O SISTEMA DE COMENTÁRIOS,
 TU QUE VAI TER QUE CONSERTAR!
 */
 
-class Aluno {
-	var $id = 0;
-	var $nome = 0;
-
-	function Aluno ($id){
-		global $tabela_usuarios;
-
-		$dados = new conexao();
-		$dados->solicitar("SELECT usuario_nome FROM $tabela_usuarios WHERE usuario_id = $id LIMIT 1" ); // Pega os dados do desenho
-
-		$this->id = $id;
-		$this->nome = $dados->resultado['usuario_nome'];
-	}
-}
-
 class Desenho {
 	private $id = 0;
 	private $desenho = "";
@@ -42,7 +27,7 @@ class Desenho {
 
 			if($dados->registros > 0){
 				$this->id = $id;
-				$this->criador = new Aluno($dados->resultado['CodUsuario']);
+				$this->criador = new Usuario($dados->resultado['CodUsuario']);
 				$this->desenho = $dados->resultado['Arquivo'];
 				$this->titulo = $dados->resultado['Titulo'];
 				$this->palavras = $dados->resultado['Palavras'];
@@ -129,7 +114,7 @@ class Desenho {
 /* Contem todas as artes de uma turma. */
 class Arte{
 	private $contador = 0; // é preenchido quando uma das funções de pegar desenhos ser chamada.
-	private $desenhos = array();
+	private $desenhos = 0;
 	private $idUser = 0;
 	private $idTurma = 0;
 
@@ -150,9 +135,10 @@ class Arte{
 	}
 
 	// Chame com meusDesenhos ou desenhosDosColegas
+	// Isso está dessa forma porque o vinadé não sabe o que boas práticas significam, pode ser melhor refatorado creio - João - 25/3/14
 	private function fetchDesenhos($query){
 		global $tabela_ArteDesenhos;
-		unset($this->desenhos);
+		$this->desenhos = array();
 
 		$dados = new conexao();
 		$dados->solicitar($query);
@@ -171,7 +157,7 @@ class Arte{
 	function meuDesenho($id){
 		$desenho = new Desenho($id);
 		if ($desenho->getValido()){
-			return ($desenho->criador->id == $this->idUser);
+			return ($desenho->getCriador()->getId() == $this->idUser);
 		}
 	}
 }

@@ -4,7 +4,6 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
-require_once("../../login.class.php");
 require_once("player_aux.php");
 
 $codTurma = (isset($_POST['codTurma']) and is_numeric($_POST['codTurma'])) ? $_POST['codTurma'] : die('A id da turma não foi passada por alguma razão. Favor voltar e tentar novamente');
