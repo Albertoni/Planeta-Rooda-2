@@ -144,39 +144,6 @@ if(navigator.appName == "Microsoft Internet Explorer") {
 *	-	imagem :	imagem em Base64
 *	-	existente :	se o desenho é novo então existente = false
 */
-/* NÃO É MAIS USADA. FOI SUBSTITUIDA POR SalvarEmPartes
-function salvar(){
-
-	if (document.getElementById('titulo').value == ''){ // o desenho precisa ter um título
-		alert('O desenho precisa ter um título.');
-		return 0;
-	}
-	titulo = encodeURIComponent(document.getElementById('titulo').value);
-
-	var imagem = canvas.toDataURL("image/png");		// pega os dados da imagem, para enviá-la ao servidor em base64
-	imagem = encodeURIComponent(imagem);
-
-	alert(imagem.length);
-
-	var url = "salva_imagem.php";
-	var params = "imagem="+imagem+"&turma="+turma+"&titulo="+titulo+"&existente="+existente+"&id="+id_do_desenho;
-	http_salvar.open("POST", url, true);
-
-	http_salvar.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http_salvar.setRequestHeader("Content-length", params.length);
-	http_salvar.setRequestHeader("Connection", "close");
-
-	http_salvar.onreadystatechange = function() {
-		if(http_salvar.readyState == 4 && http_salvar.status == 200) {
-			alert("Desenho salvo.");
-			existente = 1;
-			id_do_desenho = http_salvar.responseText;
-		}
-	}
-	http_salvar.send(params);
-
-}
-*/
 var ImagemEnviada = {
 	fatia : 10000,
 	progressBar : false,
@@ -196,7 +163,6 @@ function salvarEmPartes(){
 
 	var imagem = canvas.toDataURL("image/png");		// pega os dados da imagem, para enviá-la ao servidor em base64
 	ImagemEnviada.imagem = imagem;
-//	ImagemEnviada.imagem = "abcdefghijkluheuheuihaiuhifuha fhaeifneakjfnae kjnfaekjf hiuaefhn eakjfn kjeanf kjaehfiu afhn ajeknf kjaenf jknaefj kaehf uieahieufhiufeaiufa potato mnopqrstuv";
 	ImagemEnviada.progressBar = document.getElementById("progresso_envio_imagem");
 	ImagemEnviada.id = id_do_desenho;
 	ImagemEnviada.tamanho = ImagemEnviada.imagem.length;
@@ -205,18 +171,14 @@ function salvarEmPartes(){
 
 	ImagemEnviada.progressBar.style.width = "0px";
 	document.getElementById("progresso_envio_imagem_container").style.display = "inline";
-//	var params = "imagem="+imagem+"&turma="+turma+"&titulo="+titulo+"&existente="+existente+"&id="+id_do_desenho;
 	var params 	=		 "turma=" + turma;
 	params 		= params + "&titulo=" + ImagemEnviada.titulo;
 	params 		= params + "&existente=" + existente;
 	params 		= params + "&id=" + ImagemEnviada.id;
 	params 		= params + "&tamanho=" + ImagemEnviada.tamanho;
 
-//	http_salvar.abort();
 	http_salvar.open("POST", ImagemEnviada.url, true);
 	http_salvar.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//	http_salvar.setRequestHeader("Content-length", params.length);
-//	http_salvar.setRequestHeader("Connection", "close");
 	http_salvar.onreadystatechange = function() {
 		if(http_salvar.readyState == 4 && http_salvar.status == 200) {
 			id_do_desenho = http_salvar.responseText;
@@ -621,127 +583,10 @@ function textoCanvas(ctx){
 
 }
 
-/*
-Implementação incompleta do Copiar/Colar
-
-function areaSelecionada(ctx){
-	var cursor = {
-		x : mouse.posicao.x,
-		y : mouse.posicao.y,
-		inicial : {
-			x : mouse.posicao.inicial.x,
-			y : mouse.posicao.inicial.y
-		}
-	}
-
-	var height = cursor.y - cursor.inicial.y;
-	var width = cursor.x - cursor.inicial.x;
-
-	if (height > 0){
-		y = cursor.inicial.y;
-	}else{
-		y = cursor.inicial.y + height;
-		height = -height;
-	}
-	if (width > 0){
-		x = cursor.inicial.x;
-	}else{
-		x = cursor.inicial.x + width;
-		width = -width;
-	}
-
-	x = (x < 0)? 0: x;
-	y = (y < 0)? 0: y;
-
-	width = ((width+x) > telaWidth)? (telaWidth - x) : width;
-	height = ((height+y) > telaHeight)? (telaHeight - y) : height;
-
-	mouse.area.x = x;
-	mouse.area.y = y;
-	mouse.area.width = width;
-	mouse.area.height = height;
-//	var Pixels = ctx.getImageData(0,0,500,500);
-
-}
-
-function copiaImagem(){
-	areaTransferencia = contexto.getImageData(mouse.x,mouse.y,mouse.width,mouse.height);
-}
-
-
-
-
-function colaImagemNoCanvas(){
-	var x = image_preview.attr({attrName: "x"});
-	var y = image_preview.attr({attrName: "y"});
-	contexto.putImageData(areaTransferencia, x , y);
-}
-
-
-// Copia a imagem que está na variável areaTransferencia para um canvas auxiliar, para então gerar um src que possa ser utilizado pelo raphael
-// Isso tudo só para fazer o preview de onde a imagem será colada.
-
-function preview_colaImagem(){
-	var canvas = document.getElementById('canvas_auxiliar'); // verifica se o canvas auxiliar já existe
-
-	canvas.width = mouse.area.width;
-	canvas.height = mouse.area.height;
-
-	var contextoAT = canvas.getContext("2d");  // prepara o canvas para receber os dados da seleção feita anteriormente
-	contextoAT.putImageData(areaTransferencia, 0, 0);
-	var src = canvas.toDataURL("image/png");	// cria uma referência a esta imagem, para que possa ser utilizada com o Raphael
-
-	carimbo_preview.attr({"width" : -width});
-
-	imagem_preview.attr({src: src, x: 0, y:0});
-	imagem_preview.show();
-	imagem_preview.drag(cola_inicio,cola_move,cola_fim);
-}
-*/
-
 function downloadImagem(){
 	document.location.href = canvas.toDataURL("image/png");
 }
-/*
 
-function formaStringSVG(){
-	var tamanho = path.length;
-	var stringSVG = "";
-
-	for (j=0; j < tamanho; j++){
-		if ((path[j][0] == "M") || (path[j][0] == "L")){
-			stringSVG = stringSVG + " " + path[j][0] +" " + path[j][1] + " "+ path[j][2];
-
-		}else{
-			if (path[j][0] == "C"){
-				stringSVG = stringSVG + " C " + path[j][1] + " "+ path[j][2];
-				stringSVG = stringSVG + " " + path[j][3] + " "+ path[j][4];
-				stringSVG = stringSVG + " " + path[j][5] + " "+ path[j][6];
-			}
-		}
-	}
-	return stringSVG;
-}
-
-function renderizaSVGnoCanvas(){
-	var c = document.getElementById('tela_canvas');
-	var stringPath = '<svg><path d="';
-	stringPath = stringPath  + formaStringSVG() + '" stroke="' + linha.cor + '" stroke-width="' + linha.largura+'"';
-// Se fosse continuar a implementação para estilos de linhas
-//	stringPath = stringPath  + '" stroke-dasharray="''";
-	stringPath = stringPath  + ' fill="none" /></svg>';
-
-	c.width = '500';
-	c.height = '300';
-	if (contexto) c.getContext = contexto;
-	canvg(c, stringPath ,{ ignoreClear: true});
-	mao_livre_preview.remove();
-}
-
-
-
-
-*/
 /*
 *	Calcula o ponto médio entre dois pontos
 */
@@ -918,34 +763,6 @@ function controlaCarimbo(){
 	carimbo_preview.show();
 	guia.show();
 }
-
-/*
-function controlaSelecao(){
-	var cursor = {
-		x : mouse.posicao.x,
-		y : mouse.posicao.y,
-		inicial : {
-			x : mouse.posicao.inicial.x,
-			y : mouse.posicao.inicial.y
-		}
-	}
-	var height = cursor.y - cursor.inicial.y;
-	var width = cursor.x - cursor.inicial.x;
-
-	if (height > 0){
-		guia.attr({"y" : cursor.inicial.y, "height" : height});
-	}else{
-		guia.attr({"y" : cursor.inicial.y + height, "height" : -height});
-	}
-	if (width > 0){
-		guia.attr({"x" : cursor.inicial.x, "width" : width});
-	}else{
-		guia.attr({"x" : cursor.inicial.x + width, "width" : -width});
-	}
-
-	guia.show();
-}
-*/
 
 /*
 *	Controla o tamanho da elipse que será desenhada
@@ -1150,14 +967,11 @@ jQuery(document).ready(function(){
 					pathSVGparaCanvas(contexto);	// transforma o path (SVG) criado em um desenho no canvas
 					mouse.borracha = false;		// deseleciona a borracha
 					limpa_mao_livre();
-//					mao_livre_preview.hide();		// esconde o path que foi utilizado no preview
-//					mao_livre_preview.remove();	//
 					break;
 				case 3:						// RETÂNGULO VAZIO
 				case 10:						// RETÂNGULO CHEIO
 					retangulo_preview.hide();		// esconde o preview do retângulo
 					recSVGparaCanvas(contexto);	// desenha o SVG no canvas
-//					retangulo_preview.remove();	//
 					break;
 				case 4:						// ELIPSE VAZIA
 				case 11:						// ELIPSE CHEIA
@@ -1168,13 +982,11 @@ jQuery(document).ready(function(){
 				case 5:						// RETA
 					reta_preview.hide();			// esconde o preview da reta
 					lineSVGparaCanvas(contexto);	// desenha o SVG no canvas
-//					reta_preview.remove();
 					break;
 				case 6:						// CARIMBO
 					carimbo_preview.hide();		// esconde o preview do carimbo
 					guia.hide();				// esconde o guia do carimbo
 					imageSVGparaCanvas(contexto);	// desenha o carimbo no canvas
-//					carimbo_preview.remove();
 					break;
 			}
 			mouse.ativo = false;
@@ -1273,7 +1085,6 @@ jQuery(document).ready(function(){
 // Atualiza a posição guardada do mouse
 	$(document).mousemove(function(e){
 		posicaoXdaTela = (document.getElementById("tela_div").offsetLeft + document.getElementById("geral").offsetLeft);
-//		posicaoXdaTela = (document.getElementById("conteudo").offsetLeft + document.getElementById("tela_div").offsetLeft + document.getElementById("geral").offsetLeft);
 		posicaoYdaTela = (document.getElementById("tela_div").offsetTop + document.getElementById("geral").offsetTop + document.getElementById("conteudo_meio").offsetTop + document.getElementById("conteudo").offsetTop);
 		mouse.posicao.x = e.pageX - posicaoXdaTela;
 		mouse.posicao.y = e.pageY - posicaoYdaTela;
@@ -1469,40 +1280,40 @@ function recolhe(){
 */
 
 function ApplyLineBreaks(strTextAreaId) {
-    var oTextarea = document.getElementById(strTextAreaId);
-    if (oTextarea.wrap) {
-        oTextarea.setAttribute("wrap", "off");
-    }
-    else {
-        oTextarea.setAttribute("wrap", "off");
-        var newArea = oTextarea.cloneNode(true);
-        newArea.value = oTextarea.value;
-        oTextarea.parentNode.replaceChild(newArea, oTextarea);
-        oTextarea = newArea;
-    }
+	var oTextarea = document.getElementById(strTextAreaId);
+	if (oTextarea.wrap) {
+		oTextarea.setAttribute("wrap", "off");
+	}
+	else {
+		oTextarea.setAttribute("wrap", "off");
+		var newArea = oTextarea.cloneNode(true);
+		newArea.value = oTextarea.value;
+		oTextarea.parentNode.replaceChild(newArea, oTextarea);
+		oTextarea = newArea;
+	}
 
-    var strRawValue = oTextarea.value;
-    oTextarea.value = "";
-    var nEmptyWidth = oTextarea.scrollWidth;
-    var nLastWrappingIndex = -1;
-    for (var i = 0; i < strRawValue.length; i++) {
-        var curChar = strRawValue.charAt(i);
-        if (curChar == ' ' || curChar == '-' || curChar == '+')
-            nLastWrappingIndex = i;
-        oTextarea.value += curChar;
-        if (oTextarea.scrollWidth > nEmptyWidth) {
-            var buffer = "";
-            if (nLastWrappingIndex >= 0) {
-                for (var j = nLastWrappingIndex + 1; j < i; j++)
-                    buffer += strRawValue.charAt(j);
-                nLastWrappingIndex = -1;
-            }
-            buffer += curChar;
-            oTextarea.value = oTextarea.value.substr(0, oTextarea.value.length - buffer.length);
-            oTextarea.value += "\n" + buffer;
-        }
-    }
-    oTextarea.setAttribute("wrap", "");
+	var strRawValue = oTextarea.value;
+	oTextarea.value = "";
+	var nEmptyWidth = oTextarea.scrollWidth;
+	var nLastWrappingIndex = -1;
+	for (var i = 0; i < strRawValue.length; i++) {
+		var curChar = strRawValue.charAt(i);
+		if (curChar == ' ' || curChar == '-' || curChar == '+')
+			nLastWrappingIndex = i;
+		oTextarea.value += curChar;
+		if (oTextarea.scrollWidth > nEmptyWidth) {
+			var buffer = "";
+			if (nLastWrappingIndex >= 0) {
+				for (var j = nLastWrappingIndex + 1; j < i; j++)
+					buffer += strRawValue.charAt(j);
+				nLastWrappingIndex = -1;
+			}
+			buffer += curChar;
+			oTextarea.value = oTextarea.value.substr(0, oTextarea.value.length - buffer.length);
+			oTextarea.value += "\n" + buffer;
+		}
+	}
+	oTextarea.setAttribute("wrap", "");
 }
 
 
@@ -1539,7 +1350,6 @@ function captureKeys (evt) {
 		if (ctexto.clientHeight < ctexto.scrollHeight){
 			ctexto.style.height = (ctexto.offsetHeight + 30)+"px";
 		}
-//		ctexto.style.height = txt_h + "px";
 		ctexto.style.width = txt_w + "px";
 
 	}
