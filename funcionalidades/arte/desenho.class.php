@@ -23,7 +23,9 @@ class Desenho {
 
 		if ($id != 0){ // Se tem id, é pra abrir.
 			$dados = new conexao();
-			$dados->solicitar("SELECT * FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" );
+			$dados->solicitar("SELECT * FROM ArtesDesenhos WHERE CodDesenho = '$id'" );
+
+			//print_r($dados);
 
 			if($dados->registros > 0){
 				$this->id = $id;
@@ -37,7 +39,7 @@ class Desenho {
 				$this->valido = true;
 			}
 		}else{
-			$this->criador = new Aluno($user_id);
+			$this->criador = new Usuario($user_id);
 			$this->desenho = $desenho;
 			$this->titulo = $titulo;
 			$this->palavras = $tags;
@@ -61,7 +63,7 @@ class Desenho {
 		}else{ //se não tem id, salva num novo registro
 			$dados->solicitar("INSERT $tabela_ArteDesenhos (CodUsuario, CodTurma, Arquivo, Titulo, Palavras, Data) VALUES ($user_id, $turma, '$arquivo', '$titulo', '$tags', NOW())" ); // Cria novo desenho no banco de dados
 
-			$this->id = $dados->ultimo_id( $dados->socketMysqli);
+			$this->id = $dados->ultimo_id();
 		}
 		$this->valido = true;
 	}
@@ -90,14 +92,24 @@ class Desenho {
 		}
 	}
 
-	public function getId(){return $this->id;}
-	public function getIdAutor(){return $this->criador;}
-	public function getTitulo(){return $this->titulo;}
-	public function getPalavras(){return $this->palavras;}
-	public function getData(){return $this->data;}
-	public function getValido(){return $this->valido;}
-	public function getCriador(){return $this->criador;}
-	public function getDesenho(){return $this->desenho;}
+	public function getId()			{return $this->id;}
+	public function getIdAutor()	{return $this->criador;}
+	public function getTitulo()		{return $this->titulo;}
+	public function getPalavras()	{return $this->palavras;}
+	public function getData()		{return $this->data;}
+	public function getValido()		{return $this->valido;}
+	public function getCriador()	{return $this->criador;}
+	public function getDesenho()	{return $this->desenho;}
+
+
+	public function setId($dado)		{$this->id = $dado;}
+	public function setIdAutor($dado)	{$this->criador = $dado;}
+	public function setTitulo($dado)	{$this->titulo = $dado;}
+	public function setPalavras($dado)	{$this->palavras = $dado;}
+	public function setData($dado)		{$this->data = $dado;}
+	public function setValido($dado)	{$this->valido = $dado;}
+	public function setCriador($dado)	{$this->criador = $dado;}
+	public function setDesenho($dado)	{$this->desenho = $dado;}
 
 //	para ignorar width ou height, basta colocar 0 no seu valor
 //	exemplo:

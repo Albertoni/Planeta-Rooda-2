@@ -36,8 +36,6 @@ var mao_livre_preview = Array();
 var path = Array();				// path array de previews (SVGs) da mão livre/ pincel
 var lista_pontos = Array();		// lista de pontos utilizado para desenhar a mão livre no canvas
 
-var areaTransferencia;			// cópia da imagem, utilizada para o Copiar/Colar (não implentado completamente)
-
 //cursores e seus deslocamentos em X e Y
 var cursores = Array();
 cursores.push("");						//	0
@@ -194,9 +192,7 @@ function salvarEmPartes(){
 function salvaProximaParte() {
 
 	parte_da_imagem = ImagemEnviada.imagem.slice(0, ImagemEnviada.fatia);
-	//console.log("parte_da_imagem:"+ parte_da_imagem.length);
 	ImagemEnviada.imagem = ImagemEnviada.imagem.slice(ImagemEnviada.fatia);
-	//console.log("ImagemEnviada.imagem:"+ ImagemEnviada.imagem.length);
 
 	tamanhoRestante = ImagemEnviada.imagem.length;
 	percentual = Math.round( ( ( ImagemEnviada.tamanho - tamanhoRestante ) / ImagemEnviada.tamanho ) * 100 );
@@ -206,22 +202,15 @@ function salvaProximaParte() {
 	var params 	=		 "imagem=" + encodeURIComponent(parte_da_imagem);
 	params 		= params + "&id="+ImagemEnviada.id;
 
-//	console.log("enviando:"+parte_da_imagem);
-//	http_salvar.abort();
+
 	http_salvar.open("POST", ImagemEnviada.url, true);
 	http_salvar.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//	http_salvar.setRequestHeader("Content-length", params.length);
-//	http_salvar.setRequestHeader("Connection", "close");
 	http_salvar.onreadystatechange = function() {
 		if((http_salvar.readyState == 4) && (http_salvar.status == 200)) {
-//			console.log("servidor: "+http_salvar.responseText);
 			ImagemEnviada.progressBar.style.width = percentual + "%";
-//			console.log(ImagemEnviada.progressBar.style.width);
-//			console.log(percentual + "%");
-console.log(http_salvar.responseText);
+			console.log(http_salvar.responseText);
+
 			if ( ( http_salvar.responseText == "0" ) && ( !fim ) ){
-//			if ( !fim ){
-//				console.log("WOOOWWW!!");
 				salvaProximaParte();
 			}else{
 				existente = 1;
@@ -1321,8 +1310,13 @@ function ApplyLineBreaks(strTextAreaId) {
 function captureKeys (evt) {
 	var tamanho;
 	var ctexto = document.getElementById('texto_b');
-	var keyCode = evt.keyCode ? evt.keyCode :
-	evt.charCode ? evt.charCode : evt.which;
+
+	/* Pega o código da tecla pressionada.
+	 *
+	 * Detalhes técnicos: http://unixpapa.com/js/key.html
+	 *   http://stackoverflow.com/questions/4285627/javascript-keycode-vs-charcode-utter-confusion
+	 */
+	var keyCode = evt.keyCode ? evt.keyCode : evt.charCode ? evt.charCode : evt.which;
 
 	if (keyCode == 27){						// ESC: fecha o editor
 			some_editor();

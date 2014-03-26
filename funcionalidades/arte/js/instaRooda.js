@@ -27,7 +27,6 @@ function Pincel(){
 	this.intensidade = function(x,y){
 		var e = Math.E;
 		var m = camadas.length;
-//		window.document.write("e:"+Math.E+"<br />");
 		var resultado = 0;
 		for (var c = 0; c < m; c++){
 			var n = camadas[c].length;
@@ -40,17 +39,12 @@ function Pincel(){
 					var normal_y = Math.pow(e,-(influencia)*rigidezY);
 
 					resultado = resultado + normal_x*normal_y;
-	//			window.document.write("e^(-("+influencia+")*("+x+"- "+pontos[i].x+")^"+rigidez+")");
 
 			}
 			resultado = Math.min(resultado, 1);
 		}
-//		resultado = (x%10)/10;
-//		window.document.write("r:"+resultado+"<br />");
 		return resultado;
 	}
-
-	//this.adiciona_camada;
 }
 
 function contrasteTrans(contraste, Pixel, j){
@@ -93,7 +87,6 @@ ferramenta1.adiciona_ponto(telaWidth, telaHeight, 15, 1);
 ferramenta2 = new Pincel();
 ferramenta2.adiciona_camada();
 ferramenta2.adiciona_ponto( Math.floor(telaWidth / 2), Math.floor(telaHeight / 2), 15, 1 );
-console.log (Math.floor(telaWidth / 2) + " " + Math.floor(telaHeight / 2));
 
 
 function aplicaFiltro(ctx, cor){
