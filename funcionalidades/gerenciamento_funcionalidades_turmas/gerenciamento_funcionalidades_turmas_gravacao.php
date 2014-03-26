@@ -113,7 +113,10 @@
 	$forum_excluirResposta = getNivelCheckbox($conteudoAssociativo,'forum_Excluir Resposta');
 
 	$arte_criarDesenho = getNivelCheckbox($conteudoAssociativo,'arte_Criar Desenho');
-	$arte_comentarDesenho = getNivelCheckbox($conteudoAssociativo,'arte_Comentar Desenho');
+	$arte_excluirDesenho = getNivelCheckbox($conteudoAssociativo,'arte_Excluir Desenho');
+	$arte_verComentarios = getNivelCheckbox($conteudoAssociativo,'arte_Ver Comentários');
+	$arte_inserirComentarios = getNivelCheckbox($conteudoAssociativo,'arte_Inserir Comentários');
+	$arte_excluirComentarios = getNivelCheckbox($conteudoAssociativo,'arte_Excluir Comentários');
 
 	$pergunta_criarQuestionario = getNivelCheckbox($conteudoAssociativo,'pergunta_Criar Questionário');
 	$pergunta_criarPergunta = getNivelCheckbox($conteudoAssociativo,'pergunta_Criar Pergunta');
@@ -148,25 +151,41 @@
 	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO GerenciamentoTurma (codTurma, 
 																					  dadosGerenciamento,
 			  comunicador_terreno, comunicador_turma, comunicador_privado, comunicador_amigo,
+
 			  biblioteca_enviarMateriais, biblioteca_editarMateriais, biblioteca_excluirArquivos, biblioteca_aprovarMateriais,
+
 			  blog_inserirPost, blog_editarPost, blog_inserirComentarios, blog_excluirPost, blog_adicionarLinks, blog_adicionarArquivos,
+
 			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_enviarArquivos, portfolio_excluirArquivos,
+
 			  forum_criarTopico, forum_editarTopico, forum_excluirTopico, forum_responderTopico, forum_editarResposta, forum_excluirResposta,
-			  arte_criarDesenho, arte_comentarDesenho,
+
+			  arte_criarDesenho, arte_excluirDesenho, arte_inserirComentarios, arte_verComentarios, arte_excluirComentarios,
+
 			  pergunta_criarQuestionario, pergunta_criarPergunta, pergunta_editarQuestionario, pergunta_editarPergunta, pergunta_deletarQuestionario, pergunta_deletarPergunta,
+
 			  player_inserirVideos, player_deletarVideos, player_inserirComentario, player_deletarComentario,
+
 			  aulas_criarAulas, aulas_editarAulas, aulas_importarAulas)
 																			VALUES ($codTurma, '$conteudoCheckboxesGerenciamento',
 			  $comunicador_terreno, $comunicador_turma, $comunicador_privado, $comunicador_amigo,
+
 			  $biblioteca_enviarMateriais, $biblioteca_editarMateriais, $biblioteca_excluirArquivos, $biblioteca_aprovarMateriais,
+
 			  $blog_inserirPost, $blog_editarPost, $blog_inserirComentarios, $blog_excluirPost, $blog_adicionarLinks, $blog_adicionarArquivos,
+
 			  $portfolio_visualizarPost, $portfolio_inserirPost, $portfolio_editarPost, $portfolio_inserirComentarios, $portfolio_excluirPost, $portfolio_adicionarLinks, $portfolio_enviarArquivos, $portfolio_excluirArquivos,
+
 			  $forum_criarTopico, $forum_editarTopico, $forum_excluirTopico, $forum_responderTopico, $forum_editarResposta, $forum_excluirResposta,
-			  $arte_criarDesenho, $arte_comentarDesenho,
+
+			  $arte_criarDesenho, $arte_excluirDesenho, $arte_inserirComentarios, $arte_verComentarios, $arte_excluirComentarios,
+
 			  $pergunta_criarQuestionario, $pergunta_criarPergunta, $pergunta_editarQuestionario, $pergunta_editarPergunta, $pergunta_deletarQuestionario, $pergunta_deletarPergunta,
+
 			  $player_inserirVideos, $player_deletarVideos, $player_inserirComentario, $player_deletarComentario,
+
 			  $aulas_criarAulas, $aulas_editarAulas, $aulas_importarAulas)");
-			  
+			
 	if($conexaoSalvarDadosGerenciamentoTurma->erro != ''){
 		echo $mensagemDeErro.$conexaoSalvarDadosGerenciamentoTurma->erro;
 		$deuErro = true;
