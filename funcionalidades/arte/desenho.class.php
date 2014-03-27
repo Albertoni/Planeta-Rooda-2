@@ -16,7 +16,6 @@ class Desenho {
 	private $turma = 0;
 	private $status = 0;
 	private $valido = false;
-	private $comentarios = array();
 
 	public function __construct($id=0, $user_id="", $turma=0, $desenho="", $titulo="", $tags=""){ // construtor da classe
 		global $tabela_ArteDesenhos;

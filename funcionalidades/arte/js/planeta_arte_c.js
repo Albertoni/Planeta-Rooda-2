@@ -165,8 +165,7 @@ function salvarEmPartes(){
 	ImagemEnviada.id = id_do_desenho;
 	ImagemEnviada.tamanho = ImagemEnviada.imagem.length;
 	ImagemEnviada.titulo = encodeURIComponent(document.getElementById('titulo').value);
-	console.log(ImagemEnviada.tamanho);
-
+	
 	ImagemEnviada.progressBar.style.width = "0px";
 	document.getElementById("progresso_envio_imagem_container").style.display = "inline";
 	var params 	=		 "turma=" + turma;
@@ -181,7 +180,7 @@ function salvarEmPartes(){
 		if(http_salvar.readyState == 4 && http_salvar.status == 200) {
 			id_do_desenho = http_salvar.responseText;
 			ImagemEnviada.id = id_do_desenho;
-			console.log("id:"+id_do_desenho);
+
 			salvaProximaParte();
 		}
 	}
@@ -208,8 +207,7 @@ function salvaProximaParte() {
 	http_salvar.onreadystatechange = function() {
 		if((http_salvar.readyState == 4) && (http_salvar.status == 200)) {
 			ImagemEnviada.progressBar.style.width = percentual + "%";
-			console.log(http_salvar.responseText);
-
+			
 			if ( ( http_salvar.responseText == "0" ) && ( !fim ) ){
 				salvaProximaParte();
 			}else{
@@ -283,9 +281,6 @@ function selecionaCarimbo(){
 *
 */
 function limpa_mao_livre(){
-	console.log("limpa_mao_livre:");
-	console.log("\ttamanho do mao_livre_preview:"+mao_livre_preview.length);
-	console.log("\ttamanho do path:"+path.length);
 	while (mao_livre_preview.length > 0){
 		mlp = mao_livre_preview.pop();
 		mlp.hide();
@@ -455,17 +450,11 @@ function lineSVGparaCanvas(ctx){
 	}
 
 	path.push([["M",cursor.inicial.x,cursor.inicial.y],["L",cursor.x,cursor.y]]);
-	console.log("Tamanho do path: "+path.length);
-	console.log("M"+cursor.inicial.x+" "+cursor.inicial.y+" : L"+cursor.x+" "+cursor.y);
 	pathSVGparaCanvas(ctx);
 }
 
 //Desenha um path (SVG) qualquer no canvas
 function pathSVGparaCanvas(ctx){
-	console.log("pathSVGparaCanvas:");
-	console.log("\ttamanho do path:"+path.length);
-
-
 	if (mouse.borracha){
 		ctx.strokeStyle = borracha.cor;
 		ctx.lineWidth = borracha.largura;
@@ -910,7 +899,7 @@ jQuery(document).ready(function(){
 		guia = tela_svg.rect(0,0,0,0).attr({stroke: "#CCC", "stroke-width": 2, "stroke-dasharray": "."}).hide(); // cria o elemento SVG que servirá de guia do carimbo
 
 		imagem_inicial = document.getElementById('imagem_fonte');	// se o desenho já existir, ele é carregado de imagem_fonte (um elemento img do html)
-		imagem_inicial.onload = carregaImagemInicial;				//
+		imagem_inicial.onload = carregaImagemInicial;
 	}
 
 	atualiza('ajusta()');	// gambiarra do planeta, feita há muito tempo pelo Giovani
@@ -1025,16 +1014,11 @@ jQuery(document).ready(function(){
 				switch(mouse.ferramenta){
 					case 8:
 					case 1:
-	console.log("*MOUSEOUT*");
 						clearInterval(coleta_pontos);
 						coletaPontos();
 						pathSVGparaCanvas(contexto);
-//						mouse.borracha = false;		// deseleciona a borracha
-//						mao_livre_preview.hide();		// esconde o path que foi utilizado no preview
-//						mao_livre_preview.remove();
 						limpa_mao_livre();
 						mouse.ativo = false;
-	console.log("*FIM MOUSEOUT*");
 						break;
 				}
 			}

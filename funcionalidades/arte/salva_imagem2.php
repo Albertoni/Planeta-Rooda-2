@@ -7,7 +7,7 @@ require("desenho.class.php");
 
 $user = usuario_sessao();
 if($user === false){ die("Você não está logado.");}
-$user_id = $user->getId();
+$user_id = $_SESSION['SS_usuario_id'];
 
 header('Expires: 0');
 header('Pragma: no-cache');
@@ -26,7 +26,8 @@ if ( isset($_POST['imagem']) ){
 		$_SESSION['arte_img_'.$id] = $imagem;
 	}
 
-	if (strlen($_SESSION['arte_img_'.$id]) >= $_SESSION['arte_tamanho_'.$id]){
+	if( isset($_SESSION['arte_tamanho_'.$id]) &&
+		(strlen($_SESSION['arte_img_'.$id]) >= $_SESSION['arte_tamanho_'.$id])){
 		$DESENHO = new Desenho($id);
 		$DESENHO->setDesenho($_SESSION['arte_img_'.$id]);
 		$DESENHO->salvar();
