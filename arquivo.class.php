@@ -35,9 +35,10 @@ class Arquivo {
 		} else {
 			$this->abrir($id);
 		}
+		return;
 	}
 
-	private function abrir($id) {
+	protected function abrir($id) {
 		global $tabela_arquivos;
 		$id = (int) $id;
 		$bd = new conexao();
@@ -70,9 +71,10 @@ class Arquivo {
 			if ($bd->registros > 1)
 				$this->erros[] = "[arquivo] Vários arquivos encontrados";
 		}
+		return;
 	}
 
-	private function popular($resultadoBd) {
+	protected function popular($resultadoBd) {
 		$this->id        = (int) $resultadoBd['id'];
 		$this->conteudo  = $resultadoBd['conteudo']; // conteudo do arquivo
 		$this->md5       = $resultadoBd['md5']; // conteudo do arquivo
@@ -317,9 +319,12 @@ class Arquivo {
 	// e carrega o primeiro arquivo encontrado
 	public function abrirUsuario($usuario) {
 		global $tabela_arquivos;
-		if (get_class($usuario) === "Usuario") {
-			$usuario = $usuario->getId();
+		if (is_object($usuario)) {
+			if (get_class($usuario) === "Usuario") {
+				$usuario = $usuario->getId();
+			}
 		}
+		$usuario = (int) $usuario;
 		$this->consulta = new conexao();
 		$this->consulta->solicitar(
 			"SELECT
@@ -345,7 +350,7 @@ class Arquivo {
 
 	// metodo: limpar
 	// Limpa os dados do objeto
-	private function limpar() {
+	protected function limpar() {
 		$this->id = false;
 		$this->idUsuario = 0;
 		$this->titulo = '';
@@ -413,7 +418,7 @@ class Arquivo {
 		}
 	}
 	// função que salva vários arquivos
-	static function bulkFiles($_files, $userId) {
+	public static function bulkFiles($_files, $userId) {
 		$files = array();
 		foreach ($_files as $key => $values) {
 			$numValues = count($values);
@@ -438,8 +443,8 @@ class Arquivo {
 
 class Imagem extends Arquivo {
 	private static $supported_mime_types = array(
-		"image/jpeg"
-	,	"image/png"
+		"image/png"
+	,	"image/jpeg"	
 	,	"image/gif"
 	);
 	private $imagem;
@@ -449,8 +454,8 @@ class Imagem extends Arquivo {
 
 	function __construct($id = false) {
 		parent::__construct($id);
-		if (false === array_search($this->tipo, self::$supported_mime_types)) {
-			throw new Exception("Arquivo não é um tipo de imagem suportado. {$this->tipo}");
+		if (array_search($this->tipo, self::$supported_mime_types) === false) {
+			throw new Exception("Arquivo não é um tipo de imagem suportado. \"{$this->tipo}\"");
 		}
 		// carrega imagem
 		$this->imagem = imagecreatefromstring($this->conteudo);
