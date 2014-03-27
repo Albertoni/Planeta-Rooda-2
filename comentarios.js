@@ -73,7 +73,7 @@
 	,	listaComentarios : $('<ul>')
 	,	formulario : $('<form>')
 	,	inputMensagem : $('<input type="text">')
-	,	botaoFechar : $('<button type="button" class="bt_fechar">fechar</button>')
+	,	botaoFechar : $('<button type="button" class="bt_fecharComentarios">fechar</button>')
 	};
 	Comentarios.htmlDinamico.botaoFechar.on('click', function () {
 		Comentarios.fechar();

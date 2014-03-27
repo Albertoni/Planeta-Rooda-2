@@ -379,6 +379,20 @@ ul.listaFun li a {
 	vertical-align: middle;
 }
 
+.bt_fecharComentarios{
+	background: transparent url('images/botoes/bt_fechar.png') no-repeat bottom left;
+	border: 0 none;
+	display: inline-block;
+	float: right;
+	width: 24px;
+	height: 22px;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	text-indent: -999px;
+	vertical-align: middle;
+}
+
 .comentarios {
 	background: #A9E2E2;
 	border-radius: 7px;

@@ -157,7 +157,7 @@ for ($i = 0; $i < $numeroDesenhos; $i++){
 		</li>
 		<li class="texto_port"><a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><span class="dados"><?php echo $titulo; ?></span></a></li>
 		<li><span class="dados">Data:</span><span class="valor"><?php echo $data;?></span></li>
-		<a onmousedown="loadComentarios('light_box', 'comentarios.php', 'post_id=<?php echo $id ?>');abreFechaLB()" class="encerrar">[Ver comentários]</a>
+		<span class="encerrar"><input type="hidden" name="comentarios" value="<?=$id?>"></span>
 		<a class="excluir" href="#" data-id-desenho="<?php echo $id; ?>">[Excluir desenho]</a>
 	</ul>
 </div>
