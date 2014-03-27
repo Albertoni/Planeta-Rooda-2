@@ -10,7 +10,7 @@ require("../../reguaNavegacao.class.php");
 
 $post_id = 1; //TODO: DEBUG
 $user_id = $_SESSION['SS_usuario_id'];
-$desenho		= isset($_GET['desenho'])?$_GET['desenho']:0;
+$desenho_id	= isset($_GET['desenho'])?$_GET['desenho']:0;
 $turma		= isset($_GET['turma'])?$_GET['turma']:0;
 $existente	= isset($_GET['existente'])?$_GET['existente']:0;
 $insta		= isset($_GET['queroSerHipster']);
@@ -23,20 +23,21 @@ $insta		= isset($_GET['queroSerHipster']);
 $titulo = "";
 $desenho_proprio = false;
 if ($existente != 0){
-//	acessa o planeta arte
-	$ARTE = new Arte($user_id, $turma);
+	$DES = new Desenho($desenho_id);
+	$titulo = $DES->getTitulo();
+
 //	verifica se o desenho pertence ao usuário
 //	é preciso saber se o desenho é do usuário, para habilitar ou não a edição do desenho
-	$desenho_proprio = $ARTE->meuDesenho($desenho);
-	$DES = new Desenho($desenho);
-	$titulo = $DES->titulo;
+	$desenho_proprio = $DES->pertenceAoId($user_id);
 }
 
+//print_r($DES);
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
@@ -59,7 +60,7 @@ if ($existente != 0){
 <script>
 	turma = <?php echo $turma?>;
 	existente = <?php echo ($existente)?"1":"0"; ?>;
-	id_do_desenho = <?php echo $desenho?>;
+	id_do_desenho = <?php echo $desenho_id?>;
 </script>
 </head>
 
@@ -155,10 +156,8 @@ if ($existente != 0){
 
 			</div>
 
-<!--			<div id="botoes" style="width:80px; text-align:center; padding: 5px;"> -->
 			<div id="botoes" style="width:500px; padding: 5px;">
 				<img src="icones/novo.png" style="margin:1px;"  onclick="selecionaFerramenta(0);" width="35"/>
-<!--				<img src="icones/salvar.png" style="margin:1px;"  onclick="salvar();" width="35"/> -->
 				<img src="icones/salvar.png" style="margin:1px;"  onclick="salvarEmPartes();" width="35"/>
 				<img src="icones/lapis.png" style="margin:1px;"  onclick="selecionaFerramenta(1);" width="35"/>
 				<img src="icones/borracha.png" style="margin:1px" onclick="selecionaFerramenta(8);" width="35"/>
@@ -170,7 +169,6 @@ if ($existente != 0){
 				<img src="icones/elipsevazia.png" style="margin:1px" onclick="selecionaFerramenta(4);" width="35"/>
 				<img src="icones/texto.png" style="margin:1px" onclick="selecionaFerramenta(9);" width="35"/>
 				<img src="icones/carimbo.png" style="margin:1px" onclick="selecionaCarimbo();selecionaFerramenta(6);" width="35"/>
-<!--				<img src="icones/carimbo.png" style="margin:1px" onclick="limpaTela();" width="35"/> -->
 			</div>
 <div class="sem_estilo"></div>
 			<CENTER>
@@ -276,9 +274,7 @@ if ($existente != 0){
 
 
 <div id="float" style="position:absolute; z-index : 500;">
-<!--	<textarea id="texto_b" class="texto_b_classe" onkeypress="return captureKeys(event);" style=" background: none repeat scroll 0pt 0pt transparent;" ></textarea> -->
 	<textarea  id="texto_b" onkeypress="return captureKeys(event);" style="display:none; overflow-y:auto;"></textarea>
-<!--	<textarea id="texto" ></textarea> -->
 </div>
 
 <div id="editor_barra">
@@ -286,7 +282,6 @@ if ($existente != 0){
 	<img src="imagens/edbold.png" id="edbold" class="editor_btns" style="left:20px; z-index : 5;"/>
 	<img src="imagens/editalic.png" id="editalic" class="editor_btns" style="left:38px; z-index : 5;"/>
 	<img src="imagens/edcolor.png" id="edcolor" class="editor_btns" style="left:56px; z-index : 5;"/>
-	<!-- <img src="imagens/edcolor.png" id="edcolor" class="editor_btns" style="left:74px; z-index : 5;"/> -->
 	<img src="imagens/V.png" id="edconfirm" class="editor_btns" style="left:92px; z-index : 5;"/>
 	<img src="imagens/X.png" id="edcancel" class="editor_btns" style="left:110px; z-index : 5;"/>
 </div>
@@ -407,10 +402,12 @@ if ($existente != 0){
 <?php
 	$src = "";
 	if ($existente != 0){
-		$src = $DES->desenho;
+		$src = $DES->getDesenho();
 	}
+
 	echo "<img id='imagem_fonte' src='$src' style='visibility:hidden;'/>";
 ?>
+
 <!-- ********************
 	Fim do editor de texto
 ************************* -->

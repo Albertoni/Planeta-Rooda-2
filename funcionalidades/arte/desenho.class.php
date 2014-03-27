@@ -6,42 +6,29 @@ MAS TENHA EM MENTE QUE SE QUEBRAR O SISTEMA DE COMENTÁRIOS,
 TU QUE VAI TER QUE CONSERTAR!
 */
 
-class Aluno {
-	var $id = 0;
-	var $nome = 0;
-
-	function Aluno ($id){
-		global $tabela_usuarios;
-
-		$dados = new conexao();
-		$dados->solicitar("SELECT usuario_nome FROM $tabela_usuarios WHERE usuario_id = $id LIMIT 1" ); // Pega os dados do desenho
-
-		$this->id = $id;
-		$this->nome = $dados->resultado['usuario_nome'];
-	}
-}
-
 class Desenho {
-	var $id = 0;
-	var $desenho = "";
-	var $criador;
-	var $titulo = "";
-	var $palavras = "";
-	var $data = "";
-	var $turma = 0;
-	var $status = 0;
-	var $valido = false;
-	var $comentarios = array();
+	private $id = 0;
+	private $desenho = "";
+	private $criador;
+	private $titulo = "";
+	private $palavras = "";
+	private $data = "";
+	private $turma = 0;
+	private $status = 0;
+	private $valido = false;
 
-	function Desenho($id=0, $user_id="", $turma=0, $desenho="", $titulo="", $tags=""){ // construtor da classe
+	public function __construct($id=0, $user_id="", $turma=0, $desenho="", $titulo="", $tags=""){ // construtor da classe
 		global $tabela_ArteDesenhos;
 
 		if ($id != 0){ // Se tem id, é pra abrir.
 			$dados = new conexao();
-						$dados->solicitar("SELECT * FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" );
+			$dados->solicitar("SELECT * FROM ArtesDesenhos WHERE CodDesenho = '$id'" );
+
+			//print_r($dados);
+
 			if($dados->registros > 0){
 				$this->id = $id;
-				$this->criador = new Aluno($dados->resultado['CodUsuario']);
+				$this->criador = new Usuario($dados->resultado['CodUsuario']);
 				$this->desenho = $dados->resultado['Arquivo'];
 				$this->titulo = $dados->resultado['Titulo'];
 				$this->palavras = $dados->resultado['Palavras'];
@@ -51,7 +38,7 @@ class Desenho {
 				$this->valido = true;
 			}
 		}else{
-			$this->criador = new Aluno($user_id);
+			$this->criador = new Usuario($user_id);
 			$this->desenho = $desenho;
 			$this->titulo = $titulo;
 			$this->palavras = $tags;
@@ -59,7 +46,7 @@ class Desenho {
 		}
 	}
 
-	function salvar(){
+	public function salvar(){
 		global $tabela_ArteDesenhos;
 
 		$id = $this->id;
@@ -75,32 +62,27 @@ class Desenho {
 		}else{ //se não tem id, salva num novo registro
 			$dados->solicitar("INSERT $tabela_ArteDesenhos (CodUsuario, CodTurma, Arquivo, Titulo, Palavras, Data) VALUES ($user_id, $turma, '$arquivo', '$titulo', '$tags', NOW())" ); // Cria novo desenho no banco de dados
 
-			$this->id = mysqli_insert_id( $dados->socketMysqli);
+			$this->id = $dados->ultimo_id();
 		}
 		$this->valido = true;
 	}
 
-	function excluir(){
+	public function excluir(){
 		global $tabela_ArteDesenhos;
 		$id = $this->id;
 		$dados = new conexao();
 		if ($this->id != 0){
-			$dados->solicitar("DELETE FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1" );
+			$dados->solicitar("DELETE FROM $tabela_ArteDesenhos WHERE CodDesenho = $id LIMIT 1");
+		}
+
+		if($dados->erro != ""){
+			return "Ocorreu um erro ao excluir o desenho.";
+		}else{
+			return "Desenho excluido com sucesso.";
 		}
 	}
 
-	function getId(){ // pega o id do desenho
-		return $this->id;
-	}
-
-	function novoComentario(){ // recebe um novo comentário e já salva no banco de dados
-	}
-
-	function getComentarios(){ // pega array de comentarios
-		return $this->comentarios;
-	}
-
-	function getAutor(){ // pega o nome do autor
+	public function getAutor(){ // pega o nome do autor
 		$temp = new Usuario();
 		if ($temp->openUsuario($this->criador) === ""){ // falhou, bródis, se vira
 			return false;
@@ -109,17 +91,24 @@ class Desenho {
 		}
 	}
 
-	function getIdAutor(){ // pega o id do autor
-		return $this->criador;
-	}
+	public function getId()			{return $this->id;}
+	public function getIdAutor()	{return $this->criador;}
+	public function getTitulo()		{return $this->titulo;}
+	public function getPalavras()	{return $this->palavras;}
+	public function getData()		{return $this->data;}
+	public function getValido()		{return $this->valido;}
+	public function getCriador()	{return $this->criador;}
+	public function getDesenho()	{return $this->desenho;}
 
-	public function getTitulo(){
-		return $this->titulo;
-	}
 
-	public function getPalavras(){
-		return $this->palavras;
-	}
+	public function setId($dado)		{$this->id = $dado;}
+	public function setIdAutor($dado)	{$this->criador = $dado;}
+	public function setTitulo($dado)	{$this->titulo = $dado;}
+	public function setPalavras($dado)	{$this->palavras = $dado;}
+	public function setData($dado)		{$this->data = $dado;}
+	public function setValido($dado)	{$this->valido = $dado;}
+	public function setCriador($dado)	{$this->criador = $dado;}
+	public function setDesenho($dado)	{$this->desenho = $dado;}
 
 //	para ignorar width ou height, basta colocar 0 no seu valor
 //	exemplo:
@@ -139,65 +128,53 @@ class Desenho {
 		$html = "<img src='$src' $atributos />";
 		return $html;
 	}
+
+	function pertenceAoId($userId){
+		if ($this->getValido()){
+			return ($this->getCriador()->getId() === $userId);
+		}
+	}
 }
 
+/* Contem todas as artes de uma turma. */
 class Arte{
-	var $contador = 0;
-	var $desenhos = array();
-	var $idUser = 0;
-	var $idArte = 0;
+	private $contador = 0; // é preenchido quando uma das funções de pegar desenhos ser chamada.
+	private $desenhos = 0;
+	private $idUser = 0;
+	private $idTurma = 0;
 
-	function Arte($idUser, $idArte){
+	public function __construct($idUser, $idTurma){
 		$this->idUser = $idUser;
-		$this->idArte = $idArte;
+		$this->idTurma = $idTurma;
 	}
 
-	function meusDesenhos(){
-		global $tabela_ArteDesenhos;
-		unset($this->desenhos);
+	public function getContador(){return $this->contador;} // Retorna o numero de desenhos
+	public function getDesenhos(){return $this->desenhos;}
 
-		$user_id = $this->idUser;
-		$arte_id = $this->idArte;
+	public function meusDesenhos(){
+		$this->fetchDesenhos("SELECT CodDesenho FROM ArtesDesenhos WHERE CodUsuario = '$this->idUser' AND CodTurma = '$this->idTurma'" ); // Busca desenhos próprios
+	}
+
+	public function desenhosDosColegas(){
+		$this->fetchDesenhos("SELECT CodDesenho FROM ArtesDesenhos WHERE CodUsuario <> '$this->idUser' AND CodTurma = '$this->idTurma'" );
+	}
+
+	// Chame com meusDesenhos ou desenhosDosColegas
+	// Isso está dessa forma porque o vinadé não sabe o que boas práticas significam, pode ser melhor refatorado creio - João - 25/3/14
+	private function fetchDesenhos($query){
+		$this->desenhos = array();
 
 		$dados = new conexao();
-		$dados->solicitar("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario = '$user_id' AND CodTurma = '$arte_id'" ); // Busca desenhos próprios
+		$dados->solicitar($query);
 
-		for ($c=0; $c<$dados->registros; $c++){
+		for ($i=0; $i<$dados->registros; $i++){
 			$id = $dados->resultado['CodDesenho'];
 			$this->desenhos[] = new Desenho($id);
 			$dados->proximo();
 		}
-
-		if ($dados->registros > 0)
+		
+		if ($dados->registros > 0){
 			$this->contador = count($this->desenhos);
-	}
-
-	function desenhosDosColegas(){
-		global $tabela_ArteDesenhos;
-		unset($this->desenhos);
-
-		$user_id = $this->idUser;
-		$arte_id = $this->idArte;
-
-		$dados = new conexao();
-		$dados->solicitar("SELECT CodDesenho FROM $tabela_ArteDesenhos WHERE CodUsuario <> '$user_id' AND CodTurma = '$arte_id'" ); // Busca desenhos próprios
-
-		for ($c=0; $c<$dados->registros; $c++){
-			$id = $dados->resultado['CodDesenho'];
-			$this->desenhos[] = new Desenho($id);
-			$dados->proximo();
-		}
-		//$this->desenhos = $dados->resultado;
-		if ($dados->registros > 0)
-			$this->contador = count($this->desenhos);
-	}
-
-	function meuDesenho($id){
-		$desenho = new Desenho($id);
-		if ($desenho->valido){
-			return ($desenho->criador->id == $this->idUser);
 		}
 	}
-
 }
-?>

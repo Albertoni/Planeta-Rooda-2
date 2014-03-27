@@ -6,7 +6,6 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
-require_once("../../login.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 if(isset($_GET["codTurma"]) and is_numeric($_GET['codTurma']))
@@ -30,7 +29,7 @@ if (!$user->podeAcessar($permissoes['player_inserirVideos'], $codTurma)){
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="player.css" />

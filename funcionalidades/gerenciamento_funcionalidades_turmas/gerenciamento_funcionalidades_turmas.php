@@ -302,7 +302,16 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<td class="opcaoGerenciamento">Criar Desenho</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Comentar Desenho</td>
+						<td class="opcaoGerenciamento">Excluir Desenho</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Ver Comentários</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Inserir Comentários</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Excluir Comentário</td>
 					</tr>
 					</table>
 				</div></div>

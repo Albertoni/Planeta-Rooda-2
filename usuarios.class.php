@@ -34,8 +34,7 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	// Recebe como parametro um id (inteiro maior que 0)
-	// Segundo parametro não é usado, não removo por medo de quebrar algo.
-	public function openUsuario($param , $param2="") {
+	public function openUsuario($param) {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
 		if (is_string($param)) {
@@ -51,7 +50,7 @@ class Usuario { //estrutura para o item post do blog
 			}
 		}
 		if (is_numeric($param)) {
-			$id = (int) $param;
+			$id = $param;
 			$q->solicitar("SELECT *
 						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 						  WHERE usuario_id = '$id'");

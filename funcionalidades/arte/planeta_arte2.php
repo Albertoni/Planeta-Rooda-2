@@ -9,7 +9,7 @@ require("../../reguaNavegacao.class.php");
 $user = usuario_sessao();
 
 if ($user === false){
-	echo "xora";
+	die("Voce precisa estar logado para acessar essa página.");
 }
 
 $post_id = 1; //TODO: DEBUG
@@ -36,7 +36,7 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="portfolio.css" />
@@ -134,32 +134,31 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 				<div id="proj_andamento">
 <?php
 $ARTE->meusDesenhos();
+$numeroDesenhos = $ARTE->getContador();
+$arrayDesenhos = $ARTE->getDesenhos();
 
-for ($i = 0; $i < $ARTE->contador; $i++){
+for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
-	$id = $ARTE->desenhos[$i]->id;
-	$tid = $ARTE->desenhos[$i]->turma;
+	$id = $arrayDesenhos[$i]->getId();
 
-	$parametros = "desenho=".$id;
-	$parametros = $parametros."&amp;turma=".$tid;
-	$parametros = $parametros."&amp;existente=1";
+	$parametros = "desenho=$id&amp;turma=$turma&amp;existente=1";
 
-	$data = $ARTE->desenhos[$i]->data;
-	$titulo =  $ARTE->desenhos[$i]->titulo;
+	$data = $arrayDesenhos[$i]->getData();
+	$titulo =  $arrayDesenhos[$i]->getTitulo();
 ?>
 <div class="<?php echo $cor; ?>">
 	<ul class="sem_estilo">
 		<a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><div id="imagem" class="lista_imagem">
 		<?php
-			echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
+			echo $arrayDesenhos[$i]->visualizar(80,0,"border:0;");
 		?>
 		</div>
 		</a>
 		</li>
 		<li class="texto_port"><a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><span class="dados"><?php echo $titulo; ?></span></a></li>
 		<li><span class="dados">Data:</span><span class="valor"><?php echo $data;?></span></li>
-		<a onmousedown="loadComentarios('light_box', 'comentarios.php', 'post_id=<?php echo $id ?>');abreFechaLB()" class="encerrar">[Ver comentários]</a>
-		<a class="excluir" href="#<?php echo $id; ?>">[Excluir desenho]</a>
+		<span class="encerrar"><input type="hidden" name="comentarios" value="<?=$id?>"></span>
+		<a class="excluir" href="#" data-id-desenho="<?php echo $id; ?>">[Excluir desenho]</a>
 	</ul>
 </div>
 <?php
@@ -172,25 +171,23 @@ for ($i = 0; $i < $ARTE->contador; $i++){
 				<div id="proj_encerrados">
 <?php
 $ARTE->desenhosDosColegas();
+$numeroDesenhos = $ARTE->getContador();
+$arrayDesenhos = $ARTE->getDesenhos();
 
-for ($i = 0; $i < $ARTE->contador; $i++){
+for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
-	if (isset($ARTE->desenhos[$i]->id)){
-		$id = $ARTE->desenhos[$i]->id;
-		$tid = $ARTE->desenhos[$i]->turma;
-		$data = $ARTE->desenhos[$i]->data;
-		$autor = $ARTE->desenhos[$i]->criador->nome;
-		$titulo =  $ARTE->desenhos[$i]->titulo;
-		$parametros = "desenho=".$id;
-		$parametros = $parametros."&amp;turma=".$tid;
-		$parametros = $parametros."&amp;existente=1";
+	if (isset($arrayDesenhos[$i]->id)){ // TODO: DESCOBRIR PRA QUE ISSO SERVE
+		$id = $arrayDesenhos[$i]->id;
+		$data = $arrayDesenhos[$i]->data;
+		$autor = $arrayDesenhos[$i]->criador->nome;
+		$titulo =  $arrayDesenhos[$i]->titulo;
+		$parametros = "desenho=$id&amp;turma=$turma&amp;existente=1";
 ?>
 	<div class="<?php echo $cor; ?>">
 		<ul class="sem_estilo">
 			<a href="planeta_arte_desenho.php?<?php echo $parametros;?>"><div id="imagem" class="lista_imagem">
 			<?php
-			  //<div id="imagem" class="lista_imagem"></div>
-			  echo $ARTE->desenhos[$i]->visualizar(80,0,"border:0;");
+			  echo $arrayDesenhos[$i]->visualizar(80,0,"border:0;");
 			?>
 			</div>
 			</a>

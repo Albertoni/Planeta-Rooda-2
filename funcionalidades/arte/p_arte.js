@@ -177,7 +177,7 @@ $(document).ready(function(){
 	
 	$('.excluir').click(function(){
 		if(confirm('Você tem certeza que deseja excluir este desenho?')){
-			id = this.href.split("#")[1];
+			id = this.getAttribute('data-id-desenho');
 			excluirDesenho(id);
 		}
 	});
@@ -269,7 +269,7 @@ function excluirDesenho(id){
 
 		http_excluir.onreadystatechange = function() {
 			if(http_excluir.readyState == 4 && http_excluir.status == 200) {
-				alert("Desenho excluido."+http_excluir.responseText);
+				alert(http_excluir.responseText);
 				window.location.reload();
 			}
 		}

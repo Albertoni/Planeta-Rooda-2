@@ -3,7 +3,6 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
-require_once("../../login.class.php");
 require_once("blog.class.php");
 require_once("../../file.class.php");
 require_once("../../link.class.php");

@@ -6,7 +6,6 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
-require_once("../../login.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 require_once("player_aux.php"); // IMPORTANTE
