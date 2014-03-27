@@ -50,11 +50,7 @@ if ($perm === false) {
 // permissão concedids: joga o material no usuario.
 switch ($material->getTipo()) {
 	case MATERIAL_ARQUIVO:
-		$arquivo = $material->getArquivo();
-		header("Content-length: {$arquivo->getTamanho()}");
-		header("Content-type: {$arquivo->getTipo()}");
-		header("Content-Disposition: attachment; filename={$arquivo->getNome()}");
-		echo $arquivo->getConteudo();
+		$arquivo = $material->getArquivo()->baixar();
 		break;
 	case MATERIAL_LINK:
 		redireciona_externo($material->getConteudoMaterial());
