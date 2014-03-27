@@ -102,6 +102,11 @@ class Arquivo {
 		return $erros;
 	}
 
+	// função de valor semantico (arquivo existe no banco de dados se tiver id)
+	public function existe() {
+		return (bool) $this->id;
+	}
+
 	public function temErros(){
 		return (0 !== count($this->erros));
 	}
@@ -319,8 +324,9 @@ class Arquivo {
 	// e carrega o primeiro arquivo encontrado
 
 	// A intenção é ser utilizada assim:
-	// while($arquivo->proximo()){
+	// while($arquivo->existe()){
 	//     $arquivo->fazerCoisas();
+	//     $arquivo->proximo();
 	// }
 	public function abrirUsuario($usuario) {
 		global $tabela_arquivos;
