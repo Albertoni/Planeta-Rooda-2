@@ -39,6 +39,6 @@ $turma		=$_POST['turma'];
 $projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos, $turma);
 echo $projeto->salvar();
 
-magic_redirect("funcionalidades/portfolio/portfolio.php?turma=$turma");
+magic_redirect("portfolio.php?turma=$turma");
 
 ?>

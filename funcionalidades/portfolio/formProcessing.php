@@ -22,48 +22,6 @@ if($turma != $consulta->resultado['turma']){
 	die("A identifica&ccedil;&atilde;o de turma passada para essa pagina n&atilde;o corresponde com a identifica&ccedil;&atilde;o de turma que o projeto tem. Isso &eacute; um erro.");
 }
 
-/*function __construct($id, $dados = false){
-		if($dados !== false){
-			$this->id			= $dados['id'];
-			$this->projeto_id	= $dados['projeto_id'];
-			$this->user_id		= $dados['user_id'];
-			$this->titulo		= $dados['titulo'];
-			$this->texto		= $dados['texto'];
-			$this->tags			= $dados['tags'];
-			$this->dataCriacao	= $dados['dataCriacao'];
-			$this->dataUltMod	= $dados['dataUltMod'];
-		}else{
-			$this->carrega($id);
-		}
-	}
-
-Array
-(
-    [text] => 5hureingkjfdgfd
-    [x] => 129
-    [y] => 7
-    [titulo_post] => dasdasdasdas
-    [tags_post] => dsadas
-    [projeto_id] => 44
-    [post_id] => 0
-    [update] => 0
-    [turma] => 1081
-)
-
-
-
-Notice: Undefined index: dataCriacao in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 23
-
-Notice: Undefined index: dataUltMod in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 24
-
-Notice: Undefined property: post::$existe in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 67
-
-Notice: Undefined variable: tabela_portfolioPosts in /var/www/prjoao/funcionalidades/portfolio/portfolio.class.php on line 79
-Array ( [text] => dsadsadas [x] => 43 [y] => 29 [titulo] => dasdas [tags] => dasdas [projeto_id] => 44 [post_id] => 0 [update] => 0 [turma] => 1081 [dataAtual] => 1391545396 ) 
-
-
-	*/
-
 if ($_POST['update'] == 1){
 	$post = new post($_POST['post_id']);
 	
@@ -86,8 +44,6 @@ if ($_POST['update'] == 1){
 	echo $post->salvar();
 }
 
-print_r($post);
 
-
-//magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");
+magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");
 ?>

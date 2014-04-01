@@ -93,7 +93,14 @@ $user = usuario_sessao();
 			<div id="add_colegas" class="bloco">
 				<h1>ESCOLHER ALUNOS</h1>
 				<ul class="sem_estilo">
-					Pesquisa por nome: <input id="filtro" type="text" onkeyup="filtrar(this)">
+					Pesquisar por
+					<div style="float:right">
+						Nome: <input type="radio" name="tipoPesquisa" value="nome"><br>
+						Email: <input type="radio" name="tipoPesquisa" value="email"><br>
+						Login: <input type="radio" name="tipoPesquisa" value="login"><br>
+					</div>
+					
+					<input id="filtro" type="text" onkeyup="filtrar(this)">
 
 					<form name="fConteudo" id="postFormId" action="salvaTurma.php" onsubmit="return gravaConteudo()" method="post">
 						<input type="hidden" name="owner_ids" id="owner_ids" value="" />

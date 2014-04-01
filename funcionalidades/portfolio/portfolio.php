@@ -130,7 +130,7 @@ function imprimeListaProjetos($nomeDiv, $conexao, $mensagemSemProjetos){
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima">
 <?php
-	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+	if($user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
 		echo "<a href=\"portfolio_novo_projeto.php?turma=$turma\" style=\"float:right\" >
 				<img src=\"../../images/botoes/bt_postagem.png\" border=\"0\"/>
 			</a>";
@@ -196,7 +196,7 @@ if(sizeof($user->getTurmas()) > 1){
 		</div>
 		<div class="bts_baixo">
 <?php
-	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
+	if($user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
 		echo "<a href=\"portfolio_novo_projeto.php?turma=$turma\" style=\"float:right\" >
 				<img src=\"../../images/botoes/bt_postagem.png\" border=\"0\"/>
 			</a>";
