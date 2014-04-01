@@ -4,105 +4,6 @@
 *
 */
 
-if (class_exists('Comment') != true){
-class Comment { //estrutura para o item post do blog
-	var $id = 0;
-	var $postId = 0;
-	var $userId = 0;
-	var $text = 0;
-	var $date = '';
-	var $author = "?";
-	var $e = false;
-	
-	function register() {
-		// cria um registro vazio na tabela de posts
-		// atribui o id desse registro à propriedade post
-		$a = 1;
-	}
-	
-
-	function open($id_comment) {
-		global $tabela_comentarios;
-		$q = new conexao();
-		$q->solicitar("select * from $tabela_comentarios where Id = $id_comment");
-		if(isset($q->itens[0])) {
-			$a = $q->itens[0];
-			$this->id = $a['Id'];
-			$this->postId = $a['PostId'];
-			$this->userId = $a['UserId'];
-			$this->text = $a['Text'];
-			$this->date = $a['Date'];
-			$this->author = new Usuario();
-			$this->author->openUsuario($this->userId);
-		} else {
-			$this->e = "Id informado não existe na tabela de comentarios";
-		}
-	}
-
-	function save() {
-		global $tabela_comentarios;
-		$q = new conexao();
-		if($this->id == 0) {
-			$q->inserir($this->toDBArray(),$tabela_comentarios);
-			$this->id = $q->ultimo_id();
-		} else
-			$q->atualizar($this->id,$this->toDBArray(),$tabela_comentarios);
-	}
-
-	function toDBArray() {
-		unset($dados);
-		$dados['Id'] = $this->id;
-		$dados['PostId'] = $this->postId;
-		$dados['UserId'] = $this->userId;
-		$dados['Text'] = $this->text;
-		$dados['Date'] = $this->date;
-		return($dados);
-	}
-	
-	function Comment($id=0, $post_id="", $user_id="", $text="", $date=""){
-		if($text != ""){
-			$this->id = $id;
-			$this->postId = $post_id;
-			$this->userId = $user_id;
-			$this->text = $text;
-			$this->date = $date;
-			$this->author = new Usuario();
-			if($this->userId!=""){
-				$this->author->openUsuario($this->userId);
-			}
-		}
-	}
-
-	function getId() {
-		return $this->id;
-	}
-
-	function setId($id) {
-		$this->id = $id;
-	}
-
-	function getText() {
-		return $this->text;
-	}
-
-	function getDate($format="d/m/Y H:i:s") {
-		if($format=="")
-			$r = $this->date;
-		else
-			$r = date($format,strtotime($this->date));
-		return $r;
-	}
-
-	function getAuthor() {
-		return $this->author;
-	}
-	
-	function getUserId() { // Necessário pra deletar comments
-		return $this->userId;
-	}
-}
-}
-
 if (class_exists('Post') != true){ // conserta bugs raros mas incomodativos
 class Post { //estrutura para o item post do blog
 	var $id = 0;
@@ -112,7 +13,6 @@ class Post { //estrutura para o item post do blog
 	var $text = 0;
 	var $isPublic = false;
 	var $date = '';
-	var $comments = array();
 	var $author = "?";
 	var $e = "";
 	var $tags = array();
@@ -126,10 +26,11 @@ class Post { //estrutura para o item post do blog
 
 	function open($id_post) {
 		global $tabela_posts;
+		$id_post = (int) $id_post;
 		$q = new conexao();
 		$q->solicitar("select * from $tabela_posts where Id = $id_post");
-		if(isset($q->itens[0])) {
-			$a = $q->itens[0]; // PORQUE MEU DEUS
+		if($q->resultado) {
+			$a = $q->resultado; // PORQUE MEU DEUS
 			$this->id = $a['Id'];
 			$this->blogId = $a['BlogId'];
 			$this->userId = $a['UserId'];
@@ -139,7 +40,6 @@ class Post { //estrutura para o item post do blog
 			$this->date = $a['Date'];
 			$this->author = new Usuario();
 			$this->author->openUsuario($this->userId);
-			$this->setComments();
 		} else {
 			$this->e = "Id informado não existe na tabela de posts";
 		}
@@ -199,17 +99,6 @@ class Post { //estrutura para o item post do blog
 
 	function setId($id) {
 		$this->id = $id;
-	}
-
-	function setComments() {
-		global $tabela_comentarios;
-		$q = new conexao();
-		$q->solicitar("select * from $tabela_comentarios where PostId = ".$this->id." ORDER BY Date DESC");
-		if($q->registros > 0){
-			foreach($q->itens as $p){
-				$this->comments[] = new Comment($p['Id'], $p['PostId'], $p['UserId'], $p['Text'], $p['Date']);
-			}
-		}
 	}
 
 	function getText() {

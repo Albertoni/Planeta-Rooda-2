@@ -41,7 +41,7 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 	<link type="text/css" rel="stylesheet" href="blog.css" />
 </head>
 
-<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);inicia();coment();">
+<body onload="thumbnailImgsFromClass('tabela_blog',250,350,true);inicia();">
 <div id="descricao"></div>
 <div id="fundo_lbox"></div>
 <div id="light_box" class="bloco"></div>

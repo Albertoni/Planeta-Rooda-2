@@ -27,8 +27,10 @@
 		$post_id = isset($_POST['post_id']) ? (int)$_POST['post_id'] : 0;
 		$post = new Post($post_id,$blog->getId(),$usuario_id,str_replace("\n", " ", $_POST['title']),$consulta->sanitizaString($_POST['text']),$_POST['is_public'],date("Y-m-d H:i:s"));
 		$post->save();
+		// um ou mais arquivos
 		$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $usuario_id);
 		foreach ($arquivos as $a) {
+			// verificar se o arquivo foi salvo com sucesso
 			if ($a->getId()) {
 				$consulta->solicitar("INSERT INTO BlogArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
 			}
