@@ -6,6 +6,8 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("ArquivosPost.class.php");
+
 global $tabela_posts;
 global $tabela_blogs;
 
@@ -33,22 +35,11 @@ $consulta->solicitar("SELECT Title FROM $tabela_blogs WHERE Id = $blog_id");
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
 <link type="text/css" rel="stylesheet" href="blog.css" />
-<script type="text/javascript" src="jquery.js"></script>
-<script type="text/javascript" src="jquery-ui-1.8.1.custom.min.js"></script>
+<script src="../../jquery.js"></script>
 <script type="text/javascript" src="planeta.js"></script>
 <script type="text/javascript" src="blog.js"></script>
 <script type="text/javascript" src="blog_ajax.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
-
-<script language="javascript">
-
-function coment(){
-	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-		document.getElementById('ie_coments').style.width = 85 + '%';
-		$('.bloqueia ul').css('margin-right','17px');
-	}
-};
-</script>
 
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
@@ -56,7 +47,7 @@ function coment(){
 
 </head>
 
-<body onload="atualiza('ajusta()');Init();inicia();coment();">
+<body onload="atualiza('ajusta()');inicia();">
 
 	<div id="descricao"></div>
 
@@ -120,8 +111,25 @@ function coment(){
 							<?=$post->getText()?>
 					</li>
 					<li class="tabela_blog">
+						<?php
+						$arquivo = new ArquivosPost();
+						$arquivo->abrirPost($post->getId());
+						?>
+						<ul>
+							<?php
+							while ($arquivo->existe()) {
+								echo '<li><a href="abreArquivo.php?a='.$arquivo->getId().'&amp;p='.$post->getId().'">'.$arquivo->getNome().'</a></li>';
+								$arquivo->proximo();
+							}
+							?>
+						</ul>
+					</li>
+					<li class="tabela_blog">
 						Por <?=$post->getAuthor()->getName()?><br />
-						Tags: <?=$post->printPostTags($post->getPostTags($post->getId())) ?>
+						Tags: <?=$post->printPostTags(); ?>
+					</li>
+					<li class="tabela_blog">
+						<input type="hidden" name="comentarios" value="<?=$post->getId();?>">
 					</li>
 				</ul>
 				</div>
@@ -132,6 +140,8 @@ function coment(){
 	<div id="conteudo_base">
 	</div><!-- para a imagem de fundo da base -->
 </div><!-- fim da geral -->
-
+<script src="../../js/rooda.js"></script>
+<script src="../../js/ajax.js"></script>
+<script src="../../comentarios.js"></script>
 </body>
 </html>
