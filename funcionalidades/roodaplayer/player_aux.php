@@ -1,12 +1,6 @@
 <?php
 
 function paginacao($turma, $pagina){
-	
-	/*
-	<th align="right" class="bg1">Página Anterior</th>
-	<th class="bg1" align="center">Páginas: <?php paginacao($turma, $pagina); player_aux.php ?></th>
-	<th align="left" class="bg1">Página Seguinte</th>*/
-	
 	$q = new conexao(); global $tabela_playerVideos;
 	$q->solicitar("SELECT COUNT(*) FROM $tabela_playerVideos WHERE turma = $turma");
 	
@@ -87,14 +81,20 @@ class video{
 			}
 		}else{
 			if ($nome!="" and $this->validaLink($link)){
-				$replacear	= array("<",	"\\",	"'"); // Deve funcionar e prevenir injeção SQL e JS.
-				$com		= array("&gt;",	"\\\\",	"\'");
+				$q = new conexao();
 				// VideoId é setado na ValidaLink por ser mais fácil
-				$nome = str_replace($replacear, $com, $nome);
-				$link = str_replace($replacear, $com, $link);
-				$descricao = str_replace($replacear, $com, $descricao);
+
+				// SQL injection
+				$nome = $q->sanitizaString($nome);
+				$link = $q->sanitizaString($link);
+				$descricao = $q->sanitizaString($descricao);
+
+				// JavaScript injection
+				$nome = str_replace("<", "&gt;", $nome);
+				$link = str_replace("<", "&gt;", $link);
+				$descricao = str_replace("<", "&gt;", $descricao);
 				
-				$q = new conexao(); $user = $_SESSION['SS_usuario_id'];
+				$user = $_SESSION['SS_usuario_id'];
 				$q->solicitar("INSERT INTO $tabela_playerVideos (nome, videoId, descricao, usuario, turma) VALUES ('$nome', '".$this->videoId."', '$descricao', '$user', '$turma')");
 				if($q->erro){
 					$this->setErro($q->erro);
@@ -102,7 +102,6 @@ class video{
 					$this->setId($q->ultimo_id());
 					$this->setTitulo($nome);
 					$this->setDescricao($descricao);
-					//$this->setVideoId($link);
 					$this->setErro("");
 				}
 			}else{
