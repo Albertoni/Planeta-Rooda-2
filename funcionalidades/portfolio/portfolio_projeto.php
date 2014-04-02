@@ -255,16 +255,7 @@ $palavras = $projeto->getPalavrasString();
 				for ($i=0; $i < $numPosts; $i++){
 						echo $postsProjeto[$i]->geraHtmlPost();
 				}
-
-				/*
-					global $tabela_portfolioPosts;
-					$consulta = new conexao();
-					$consulta->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = $projeto_id ORDER BY dataCriacao DESC");
-					
-					//print_r($consulta);
-					
-					
-				*/?>
+?>
 			</div>
 		</div>
 		<div class="bts_baixo">
