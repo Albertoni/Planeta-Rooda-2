@@ -319,5 +319,3 @@ class comment { //estrutura para o item post do blog
 		return $this->userId;
 	}
 }
-
-?>
