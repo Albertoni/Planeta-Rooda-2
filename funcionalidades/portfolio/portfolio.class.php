@@ -35,16 +35,17 @@ class post{
 		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE id = $id");
 
 		if ($q->erro != ""){
-			$this->id			= $q->erro;
-			$this->projeto_id	= $q->erro;
-			$this->user_id		= $q->erro;
-			$this->titulo		= $q->erro;
-			$this->texto		= $q->erro;
-			$this->tags			= $q->erro;
-			$this->dataCriacao	= $q->erro;
-			$this->dataUltMod	= $q->erro;
+			$this->id			= false;
+			$this->projeto_id	= false;
+			$this->user_id		= false;
+			$this->titulo		= false;
+			$this->texto		= false;
+			$this->tags			= false;
+			$this->dataCriacao	= false;
+			$this->dataUltMod	= false;
+			$this->existe		= false;
 
-			$this->existe = false;
+			return false;
 		}else{
 			$dados = $q->resultado;
 			$this->id			= $dados['id'];

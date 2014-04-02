@@ -8,6 +8,7 @@ require_once ('portfolio.class.php');
 $user = usuario_sessao();
 
 $turma = is_numeric($_POST['turma']) ? $_POST['turma'] : die("Um identificador de turma inv&aacute;lido foi enviado para essa p&aacute;gina.");
+$idProjeto = is_numeric($_POST['projeto_id']) ? $_POST['projeto_id'] : die("Um identificador de projeto inv&aacute;lido foi enviado para essa p&aacute;gina.");
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);
 if($perm == false){
@@ -15,7 +16,6 @@ if($perm == false){
 }
 
 $consulta = new conexao();
-$projeto_id_sanitizado = $consulta->sanitizaString($_POST['projeto_id']);
 
 $consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id_sanitizado");
 if($turma != $consulta->resultado['turma']){
@@ -24,7 +24,12 @@ if($turma != $consulta->resultado['turma']){
 
 if ($_POST['update'] == 1){
 	$post = new post($_POST['post_id']);
+
+	if($post === false){ // post com aquele id não existe
+		die("Erro: Aparentemente voc&ecirc; tentou editar um post que n&atilde;o existe.");
+	}
 	
+	// Nao tem como (ou porque) trocar de id de projeto e turma aqui
 	$post->setTitulo($_POST['titulo']);
 	$post->setTexto($_POST['text']);
 	$post->setTags($_POST['tags']);
@@ -33,7 +38,7 @@ if ($_POST['update'] == 1){
 }else{
 	$dados = array(
 		'id' => $_POST['post_id'],
-		'projeto_id' => $_POST['projeto_id'],
+		'projeto_id' => $idProjeto,
 		'user_id' => $user->getId(),
 		'titulo' => $_POST['titulo'],
 		'texto' => $_POST['text'],
@@ -45,5 +50,4 @@ if ($_POST['update'] == 1){
 }
 
 
-magic_redirect("portfolio_projeto.php?projeto_id=$projeto_id&turma=$turma");
-?>
+magic_redirect("portfolio_projeto.php?projeto_id=".$idProjeto."&turma=".$turma);
