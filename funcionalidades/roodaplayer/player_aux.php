@@ -61,14 +61,6 @@ class video{
 	 *	@param turma: Id da turma na qual o video sera cadastrado
 	\*/
 	
-	// Isso aqui embaixo dá problemas com strict standards, e as versões antigas de PHP 
-	//  a ponto de não reconhecerem __construct como construtor não devem mais estar
-	//  sendo usadas por qualquer pessoa sã.
-	/*function video($abrir, $id, $nome="", $link="", $descricao="", $turma=0){
-		__construct($abrir, $id, $nome, $link, $descricao, $turma); // compatibilidade é tudo
-	}*/
-	
-	
 	function __construct($abrir, $id, $nome="", $link="", $descricao="", $turma=0){
 		global $tabela_playerVideos; global $tabela_usuarios;
 		if($abrir){
