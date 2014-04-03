@@ -76,7 +76,6 @@ class video{
 					
 					$q->solicitar("SELECT usuario_nome FROM $tabela_usuarios WHERE usuario_id = ".$this->getUsuario());
 					$this->setUsuarioNome($q->resultado['usuario_nome']);
-					$this->setComments();
 				}
 			}
 		}else{
@@ -94,14 +93,18 @@ class video{
 				$link = str_replace("<", "&gt;", $link);
 				$descricao = str_replace("<", "&gt;", $descricao);
 				
-				$user = $_SESSION['SS_usuario_id'];
-				$q->solicitar("INSERT INTO $tabela_playerVideos (nome, videoId, descricao, usuario, turma) VALUES ('$nome', '".$this->videoId."', '$descricao', '$user', '$turma')");
+				$user = usuario_sessao();
+				$idUser = $user->getId();
+				$nomeUsuario = $user->getName();
+
+				$q->solicitar("INSERT INTO $tabela_playerVideos (nome, videoId, descricao, usuario, turma) VALUES ('$nome', '".$this->videoId."', '$descricao', '$idUser', '$turma')");
 				if($q->erro){
 					$this->setErro($q->erro);
 				}else{
 					$this->setId($q->ultimo_id());
 					$this->setTitulo($nome);
 					$this->setDescricao($descricao);
+					$this->setUsuarioNome($nomeUsuario);
 					$this->setErro("");
 				}
 			}else{
@@ -180,7 +183,10 @@ class video{
 
 function imprimeVideos($turma, $pagina, $turma){
 	$q = new conexao(); global $tabela_playerVideos;
-	
+
+	// permissoes
+	$user = usuario_sessao(); global $permissoes;
+
 	$start = $pagina*10;
 	
 	$q->solicitar("SELECT id FROM $tabela_playerVideos WHERE turma = $turma LIMIT $start, 10");
@@ -193,7 +199,15 @@ function imprimeVideos($turma, $pagina, $turma){
 		$videoNome		= $vid->getTitulo();
 		$descricao		= $vid->getDescricao();
 		$nomeDono		= $vid->getUsuarioNome();
-		$numComentarios	= $vid->countComments();
+
+		if($user->podeAcessar($permissoes['player_deletarVideos'], $turma)){
+			$deletar = "<td class=\"bg1\">
+						<img src=\"delete.png\" alt=\"deletar\" onclick=\"deleteVideo($id, $turma);\" style=\"cursor:pointer\" />
+					</td>";
+		}else{
+			$deletar = "";
+		}
+		
 		
 		echo "				<tr id=\"linha$id\">
 					<td class=\"bg1 small\" width=\"140px\">
@@ -202,9 +216,7 @@ function imprimeVideos($turma, $pagina, $turma){
 					<td class=\"bg1 medium\" width=\"250px\" id=\"desc$id\">$descricao</td>
 					<td class=\"bg1 small\" width=\"140px\" id=\"nome$id\">$nomeDono</td>
 					<td style=\"display:none\" id=\"numcom$id\">$numComentarios</td>
-					<td class=\"bg1\">
-						<img src=\"delete.png\" alt=\"deletar\" onclick=\"deleteVideo($id, $turma);\" style=\"cursor:pointer\" />
-					</td>
+					$deletar
 				</tr>";
 		
 		$q->proximo();
