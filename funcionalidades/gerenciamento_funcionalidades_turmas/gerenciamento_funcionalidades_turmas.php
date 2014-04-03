@@ -369,10 +369,13 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<td class="opcaoGerenciamento">Inserir Vídeos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Comentar Vídeos</td>
+						<td class="opcaoGerenciamento">Deletar Vídeos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Deletar Vídeos</td>
+						<td class="opcaoGerenciamento">Ver Comentários</td>
+					</tr>
+					<tr>
+						<td class="opcaoGerenciamento">Comentar Vídeos</td>
 					</tr>
 					<tr>
 						<td class="opcaoGerenciamento">Deletar Comentário</td>

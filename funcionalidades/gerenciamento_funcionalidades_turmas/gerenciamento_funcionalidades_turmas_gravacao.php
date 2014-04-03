@@ -126,8 +126,9 @@
 	$pergunta_deletarPergunta = getNivelCheckbox($conteudoAssociativo,'pergunta_Deletar Pergunta');
 
 	$player_inserirVideos = getNivelCheckbox($conteudoAssociativo,'player_Inserir Vídeos');
-	$player_inserirComentario = getNivelCheckbox($conteudoAssociativo,'player_Comentar Vídeos');
 	$player_deletarVideos = getNivelCheckbox($conteudoAssociativo,'player_Deletar Vídeos');
+	$player_deletarComentario = getNivelCheckBox($conteudoAssociativo,'player_Ver Comentário');
+	$player_inserirComentario = getNivelCheckbox($conteudoAssociativo,'player_Comentar Vídeos');
 	$player_deletarComentario = getNivelCheckBox($conteudoAssociativo,'player_Deletar Comentário');
 
 	$aulas_criarAulas = getNivelCheckbox($conteudoAssociativo,'aulas_Criar Aulas');
@@ -164,7 +165,7 @@
 
 			  pergunta_criarQuestionario, pergunta_criarPergunta, pergunta_editarQuestionario, pergunta_editarPergunta, pergunta_deletarQuestionario, pergunta_deletarPergunta,
 
-			  player_inserirVideos, player_deletarVideos, player_inserirComentario, player_deletarComentario,
+			  player_inserirVideos, player_deletarVideos, player_inserirComentario, player_deletarComentario, player_verComentario,
 
 			  aulas_criarAulas, aulas_editarAulas, aulas_importarAulas)
 																			VALUES ($codTurma, '$conteudoCheckboxesGerenciamento',
@@ -182,7 +183,7 @@
 
 			  $pergunta_criarQuestionario, $pergunta_criarPergunta, $pergunta_editarQuestionario, $pergunta_editarPergunta, $pergunta_deletarQuestionario, $pergunta_deletarPergunta,
 
-			  $player_inserirVideos, $player_deletarVideos, $player_inserirComentario, $player_deletarComentario,
+			  $player_inserirVideos, $player_deletarVideos, $player_inserirComentario, $player_deletarComentario, $player_verComentario,
 
 			  $aulas_criarAulas, $aulas_editarAulas, $aulas_importarAulas)");
 			
