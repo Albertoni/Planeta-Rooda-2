@@ -118,7 +118,7 @@ $consulta->solicitar("SELECT Title FROM $tabela_blogs WHERE Id = $blog_id");
 						<ul>
 							<?php
 							while ($arquivo->existe()) {
-								echo '<li><a href="abreArquivo.php?a='.$arquivo->getId().'&amp;p='.$post->getId().'">'.$arquivo->getNome().'</a></li>';
+								echo '<li><a href="abreArquivo.php?a='.$arquivo->getId().'&amp;p='.$post->getId().'" target="_blank">'.$arquivo->getNome().'</a></li>';
 								$arquivo->proximo();
 							}
 							?>
