@@ -155,18 +155,6 @@ class video{
 		}
 	}
 	
-	function setComments() {
-		global $tabela_playerComentarios;
-		$q = new conexao();
-		$id = $this->getId();
-		
-		$q->solicitar("SELECT * FROM $tabela_playerComentarios WHERE id_video = $id ORDER BY data DESC");
-		if($q->registros > 0){
-			foreach($q->itens as $p){
-				$this->comments[] = new comment($p['id'], $p['id_video'], $p['userId'], $p['comentario'], $p['data']);
-			}
-		}
-	}
 	
 	function getId()		{return $this->id;}
 	function getTitulo()	{return $this->titulo;}
@@ -177,7 +165,6 @@ class video{
 	function getUsuario()	{return $this->usuario;}
 	function getUsuarioNome(){return $this->username;} // TODO: FAZER FUNCIONAR QUANDO DÃO UPLOAD NO VIDEO, SÓ FUNCIONA PRA QUANDO ABRE O USER NO MOMENTO
 	function getTurma()		{return $this->turma;}
-	function countComments(){return count($this->comments);}
 	
 	function setId($id)					{$this->id			= $id;}
 	function setTitulo($tit)			{$this->titulo		= $tit;}
