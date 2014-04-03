@@ -184,7 +184,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 					<th class="bg0">Enviado por</th>
 					<th class="bg0">Deletar</th>
 				</tr>
-<?php imprimeVideos($turma, $pagina, $turma); ?>
+<?php imprimeVideos($turma, $pagina); ?>
 			</table>
 			</div>
 		</div>

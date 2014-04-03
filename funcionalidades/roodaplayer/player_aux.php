@@ -181,7 +181,7 @@ class video{
 	function temErro()			{return $this->erro!="";}
 }
 
-function imprimeVideos($turma, $pagina, $turma){
+function imprimeVideos($turma, $pagina){
 	$q = new conexao(); global $tabela_playerVideos;
 
 	// permissoes
