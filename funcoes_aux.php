@@ -353,7 +353,6 @@ function cospeSelectDeTurmas($t=0){
 	$usuario->openUsuario($_SESSION['SS_usuario_id']);
 	$turmas = $usuario->getTurmas();
 
-	print_r($turmas);
 	foreach($turmas as $turma){
 		if ($turma['codTurma'] == $t){
 			echo "\n					<option selected value=\"".$turma['codTurma']."\">".$turma['nomeTurma']."</option>";
