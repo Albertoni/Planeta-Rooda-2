@@ -185,7 +185,7 @@ function imprimeVideos($turma, $pagina){
 	$q = new conexao(); global $tabela_playerVideos;
 
 	// permissoes
-	$user = usuario_sessao(); global $permissoes;
+	global $usuario; global $permissoes;
 
 	$start = $pagina*10;
 	
@@ -200,7 +200,7 @@ function imprimeVideos($turma, $pagina){
 		$descricao		= $vid->getDescricao();
 		$nomeDono		= $vid->getUsuarioNome();
 
-		if($user->podeAcessar($permissoes['player_deletarVideos'], $turma)){
+		if($usuario->podeAcessar($permissoes['player_deletarVideos'], $turma)){
 			$deletar = "<td class=\"bg1\">
 						<img src=\"delete.png\" alt=\"deletar\" onclick=\"deleteVideo($id, $turma);\" style=\"cursor:pointer\" />
 					</td>";
@@ -215,9 +215,9 @@ function imprimeVideos($turma, $pagina){
 					</td>
 					<td class=\"bg1 medium\" width=\"250px\" id=\"desc$id\">$descricao</td>
 					<td class=\"bg1 small\" width=\"140px\" id=\"nome$id\">$nomeDono</td>
-					<td style=\"display:none\" id=\"numcom$id\">$numComentarios</td>
+					<td style=\"display:none\" id=\"numcom$id\"><input type=\"hidden\" name=\"comentarios\" value=\"$id\"></td>
 					$deletar
-				</tr>";
+				</tr>\n";
 		
 		$q->proximo();
 	}

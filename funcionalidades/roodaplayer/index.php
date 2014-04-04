@@ -1,5 +1,4 @@
 <?php
-session_start();
 header('Content-type: text/html; charset=utf-8');
 
 require_once("../../cfg.php");
@@ -9,6 +8,8 @@ require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 require_once("player_aux.php"); // IMPORTANTE
+
+$usuario = usuario_sessao();
 
 if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
 	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
@@ -27,9 +28,6 @@ global $tabela_playerComentarios, $nivelAdmin;
 
 $user_id=$_SESSION['SS_usuario_id'];
 $pagina=isset($_GET['page'])?$_GET['page']:0;
-
-$usuario = new Usuario();
-$usuario->openUsuario($user_id);
 
 $permissoes = checa_permissoes(TIPOPLAYER, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
@@ -198,6 +196,8 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 
 
 </div><!-- fim da geral -->
-
+<script src="../../js/ajax.js"></script>
+<script src="../../js/rooda.js"></script>
+<script src="../../comentarios.js"></script>
 </body>
 </html>

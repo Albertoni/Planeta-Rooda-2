@@ -34,6 +34,9 @@ function formatFileInput(input) {
         input.style.position = "fixed";
         input.style.opacity = '0';
         label.appendChild(input);
+        input.form.addEventListener('reset', function (e) {
+            placeholder.innerHTML = "";
+        });
     }
 }
 Array.prototype.forEach.call(document.getElementsByTagName("input"), formatFileInput);

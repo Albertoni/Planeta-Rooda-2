@@ -395,10 +395,18 @@ class Arquivo {
 	}
 	
 	function baixar($download = true) {
+		try{
+			$teste = new Imagem($this->id);
+			$isImage = true;
+		}catch(Exception $e){
+			$isImage = false;
+		}
+
 		header("Content-length: {$this->getTamanho()}");
 		header("Content-type: {$this->getTipo()}");
-		if ($download)
+		if (!$isImage || !$download){
 			header("Content-Disposition: attachment; filename={$this->getNome()}");
+		}
 		print $this->getConteudo();
 		return;
 	}

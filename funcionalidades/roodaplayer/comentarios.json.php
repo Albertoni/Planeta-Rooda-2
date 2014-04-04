@@ -10,7 +10,7 @@ Comentario::$tabelaBD = "PlayerComentarios";
 define('FUNCIONALIDADE',      TIPOPLAYER);
 define('PERM_COMENT_VER',     'player_verComentario');
 define('PERM_COMENT_INSERIR', 'player_inserirComentario');
-define('PERM_COMENT_EXCLUIR', 'player_excluirComentario');
+define('PERM_COMENT_EXCLUIR', 'player_deletarComentario');
 // recebe o id do recurso que pode ter comentarios e retorna o id da turma que ele pertence
 
 require_once("player_aux.php");

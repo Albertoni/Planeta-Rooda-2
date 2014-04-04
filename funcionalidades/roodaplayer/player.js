@@ -215,18 +215,8 @@ document.onmouseup = getMouseXY;
 		
 		document.getElementById("nomeVideo").innerHTML = select.innerHTML;
 		document.getElementById("descricaoVideo").innerHTML = document.getElementById("desc"+id).innerHTML;
-		document.getElementById("donoVideo").innerHTML = document.getElementById("nome"+id).innerHTML;
-		document.getElementById("comentariosVideo").innerHTML = document.getElementById("numcom"+id).innerHTML + " comentários, clique para deixar o seu.";
-		document.getElementById("comentariosVideo").onclick = function(){
-			document.getElementById("embede").style.visibility="hidden";
-			carregaHTML('light_box','ver_comentarios','vid_id='+id+"&codTurma="+turma);
-			abreFechaLB();
-		}
-		/*alert(ROODAplayer.video);
-		if(ytplayer) {
-			ROODAplayer.video = arq;
-			ytplayer.cueVideoByUrl(arq);
-		}*/
+		document.getElementById("donoVideo").innerHTML = document.getElementById("nome"+id).document;
+		$(innerHTML.getElementById("comentariosVideo").innerHTML = document.getElementById("numcom"+id)).append((new Comentarios(id)).link);
 	}
 	
 	function addVideo(idUsu,idTur)
