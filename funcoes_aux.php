@@ -288,6 +288,9 @@ require_once("turma.class.php");
 			// ATENÇÃO
 			// Isso foi uma otimização prematura e fica aqui esperançosamente como ajuda a quem venha a modificar isso no futuro. Espero que vocês ainda respirem amônia.
 
+			// ATENÇÃO ATENÇÃO ATENÇÃO!!!
+			// Caso algum dia forem atualizar isso, ver o arquivo de gerenciamento de funcionalidades para atualizar os nomes das colunas, porque pqp, as mudanças vão longe
+
 			switch($funcionalidade){
 				case TIPOBLOG:
 					$o_que_precisa_ser_selecionado = "blog_inserirPost,blog_editarPost,blog_inserirComentarios,blog_excluirPost,blog_adicionarLinks,blog_adicionarArquivos";
