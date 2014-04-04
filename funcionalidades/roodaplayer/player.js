@@ -216,8 +216,14 @@ function getDuration() {
 		
 		document.getElementById("nomeVideo").innerHTML = select.innerHTML;
 		document.getElementById("descricaoVideo").innerHTML = document.getElementById("desc"+id).innerHTML;
-		document.getElementById("donoVideo").innerHTML = document.getElementById("nome"+id).document;
-		$(innerHTML.getElementById("comentariosVideo").innerHTML = document.getElementById("numcom"+id)).append((new Comentarios(id)).link);
+		document.getElementById("donoVideo").innerHTML = document.getElementById("nome"+id).innerHTML;
+
+		// Precisamos dos eventos copiados para que ao clicar no link os comentarios abram; portanto, clone do jQuery que pega TUDO MESMO, especialmente com 2 parametros true.
+		// http://api.jquery.com/clone/
+		var nodoComentarios = $("#numcom"+id).clone(true, true);
+		nodoComentarios.css("display", "block"); // ele estava invisivel, tornamos visivel.
+		nodoComentarios.appendTo($("#comentariosVideo"));
+		//document.getElementById("comentariosVideo").appendChild();
 	}
 	
 	function addVideo(idUsu,idTur)

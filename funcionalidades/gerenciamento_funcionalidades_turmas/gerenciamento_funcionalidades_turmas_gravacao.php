@@ -127,7 +127,7 @@
 
 	$player_inserirVideos = getNivelCheckbox($conteudoAssociativo,'player_Inserir Vídeos');
 	$player_deletarVideos = getNivelCheckbox($conteudoAssociativo,'player_Deletar Vídeos');
-	$player_deletarComentario = getNivelCheckBox($conteudoAssociativo,'player_Ver Comentário');
+	$player_verComentario = getNivelCheckBox($conteudoAssociativo,'player_Ver Comentários');
 	$player_inserirComentario = getNivelCheckbox($conteudoAssociativo,'player_Comentar Vídeos');
 	$player_deletarComentario = getNivelCheckBox($conteudoAssociativo,'player_Deletar Comentário');
 
