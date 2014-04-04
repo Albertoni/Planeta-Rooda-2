@@ -240,7 +240,6 @@ var BIBLIOTECA = (function () {
 			's' : searchTypes
 		};
 	}());
-	//console.log(typeof turma + turma);
 	function Material(obj) {
 		var i;
 		this.id = obj.id;
@@ -333,19 +332,14 @@ var BIBLIOTECA = (function () {
 		var elem = e.target;
 		switch (elem.name) {
 			case 'aprovar':
-				console.log('aprovar: ' + elem.value);
 				ROODA.ui.confirm("Tem certeza que deseja aprovar este material?", function () { ajax.aproveMaterial(elem.value); });
 				break;
 			case 'excluir':
-				console.log('excluir: ' + elem.value);
 				ROODA.ui.confirm("Tem certeza que deseja excluir este material?", function () { ajax.deleteMaterial(parseInt(elem.value, 10)); });
 				break;
 			case 'editar':
-				console.log('editar: ' + elem.value);
 				var material = materiais.filter(function (material) { return (parseInt(elem.value, 10) === material.id); })[0];
 				Array.prototype.forEach.call(formEdicaoMaterial.elements, function (elem) {
-					console.log(material);
-					console.log(elem.name);
 					switch (elem.name) {
 						case 'id':
 							elem.value = material.id.toString();
@@ -359,7 +353,6 @@ var BIBLIOTECA = (function () {
 						case 'tags':
 							elem.value = material.tags.join(',');
 					}
-					console.log(elem);
 				});
 				$(editorMaterial).fadeIn();
 				break;
@@ -372,13 +365,11 @@ var BIBLIOTECA = (function () {
 		// verifica se o material já está na lista
 		if (materiais.filter(function (material) { return (obj.id === material.id); }).length !== 0) {
 			// material ja foi adicionado
-			console.log(material);
 			return;
 		}
 		// verifica se o material herda de Material.prototype.
 		if (!Material.prototype.isPrototypeOf(obj)) {
 			obj = new Material(obj);
-			console.log(obj);
 		}
 		// adiciona material à lista
 		materiais.push(obj);
@@ -398,7 +389,7 @@ var BIBLIOTECA = (function () {
 	}
 	function removeMaterial(id) {
 		var material = getMaterial(id),
-		    idx = materiais.indexOf(material);
+			idx = materiais.indexOf(material);
 		// remove material
 		if (idx !== -1) {
 			busca.desindexar(material);
@@ -407,7 +398,7 @@ var BIBLIOTECA = (function () {
 	}
 	function aprovaMaterial(id) {
 		var tmp = materiais.filter(function (material) { return (material.id === id); });
-		console.log(tmp);
+		
 		if (tmp[0]) {
 			tmp[0].aprovado = true;
 			tmp[0].atualizarHTML();
@@ -417,11 +408,9 @@ var BIBLIOTECA = (function () {
 	function atualizaLista(lista) {
 		var i;
 		while (ulDinamica.firstElementChild) {
-			console.log('removendo');
 			ulDinamica.removeChild(ulDinamica.firstElementChild);
 		}
 		for (i in lista) {
-			console.log('add');
 			ulDinamica.appendChild(lista[i].HTMLElemento);
 		}
 	}
@@ -452,7 +441,7 @@ var BIBLIOTECA = (function () {
 				pode_aprovar = json.pode_aprovar ? true : false;
 				pode_editar  = json.pode_editar  ? true : false;
 				pode_excluir = json.pode_excluir ? true : false;
-				//console.log(json);
+				
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
 					//atualizaLista(materiais);
@@ -495,12 +484,7 @@ var BIBLIOTECA = (function () {
 					ROODA.ui.alert("Sua sessão expirou.");
 					return;
 				}
-				//console.log(json);
-				// if (json.todos) {
-				// 	// sinal indicando que todos os posts mais antigos já foram carregados.
-				// 	window.removeEventListener("scroll", scrollHandler);
-				// 	console.log("handler removido");
-				// }
+				
 				if (json.materiais.length > 0) {
 					json.materiais.forEach(addMaterial);
 					//atualizaLista(materiais);
@@ -521,7 +505,7 @@ var BIBLIOTECA = (function () {
 				}
 			};
 		}());
-		// submitNewMaterial(formulario) : faz request de submissão de material
+		// submitNewMaterial() : faz request de submissão de material
 		var submitNewMaterial = (function() {
 			function submit_success() {
 				var json;
@@ -534,7 +518,7 @@ var BIBLIOTECA = (function () {
 					console.log(this.responseText);
 					return;
 				}
-				//console.log(json);
+				
 				if (!json.session) {
 					ROODA.ui.alert("Você não está logado.")
 					return;
@@ -560,7 +544,7 @@ var BIBLIOTECA = (function () {
 					console.log(this.responseText);
 					return;
 				}
-				console.log(json);
+				
 				if (!json.session) {
 					return
 				}

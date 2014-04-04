@@ -147,7 +147,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 			var enviar_material  = document.getElementById("enviar_material");
 			var buscar_materiais = document.getElementById("buscar_materiais");
 		}());
-
+		var form_envio_m = document.getElementById("form_envio_material");
 		var label_radio_arquivo = document.getElementById("label_arquivo");
 		var radio_arquivo = label_radio_arquivo.control;
 		var label_radio_link = document.getElementById("label_link");
@@ -196,6 +196,7 @@ $assocUsuario = $usuario->getSimpleAssoc();
 					label_material_link.style.display = "none";
 					label_material_arquivo.control.value = "";
 					label_material_link.control.value = "";
+					form_envio_m.reset();
 				}
 			};
 		}());
