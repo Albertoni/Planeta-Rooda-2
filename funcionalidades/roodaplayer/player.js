@@ -222,8 +222,11 @@ function getDuration() {
 		// http://api.jquery.com/clone/
 		var nodoComentarios = $("#numcom"+id).clone(true, true);
 		nodoComentarios.css("display", "block"); // ele estava invisivel, tornamos visivel.
+
+		// Limpamos o interior, para tirar o link de comentarios anterior.
+		$("#comentariosVideo").html("");
+
 		nodoComentarios.appendTo($("#comentariosVideo"));
-		//document.getElementById("comentariosVideo").appendChild();
 	}
 	
 	function addVideo(idUsu,idTur)
