@@ -22,46 +22,46 @@ var ROODAplayer = {
 
 document.onmouseup = getMouseXY;
 
-		function getMouseXY(e){
-			if(IE){
-				mouseX = event.clientX + document.body.scrollLeft;
-				mouseY = event.clientY + document.body.scrollTop;
-			}else{
-				mouseX = e.pageX;
-				mouseY = e.pageY;
-			}
-			if(mouseX < 0){mouseX = 0;}
-			if(mouseY < 0){mouseY = 0;}
-			if(mouse_andamento_arrasto){arrastaVideo();}
-			mouse_andamento_arrasto = false;
-			mouse_volume_arrasto = false;
-		}
-
-	function seekTo(seconds) {
-		if (ytplayer) {
-			ytplayer.seekTo(seconds, true);
-		}
+function getMouseXY(e){
+	if(IE){
+		mouseX = event.clientX + document.body.scrollLeft;
+		mouseY = event.clientY + document.body.scrollTop;
+	}else{
+		mouseX = e.pageX;
+		mouseY = e.pageY;
 	}
+	if(mouseX < 0){mouseX = 0;}
+	if(mouseY < 0){mouseY = 0;}
+	if(mouse_andamento_arrasto){arrastaVideo();}
+	mouse_andamento_arrasto = false;
+	mouse_volume_arrasto = false;
+}
 
-	function getDuration() {
-		if (ytplayer) {
-			return ytplayer.getDuration();
-		}
+function seekTo(seconds) {
+	if (ytplayer) {
+		ytplayer.seekTo(seconds, true);
 	}
-		
+}
+
+function getDuration() {
+	if (ytplayer) {
+		return ytplayer.getDuration();
+	}
+}
+
 	function inicia_player(){
-			document.getElementById("barra").onmousedown = function(eve){mouse_andamento_arrasto = true;};
-			document.getElementById("barra").onmouseup = function(eve){
-				setTimeout("arrastaVideo()",50);
-			};
-			document.getElementById("barra_carrega").onmousedown = function(eve){mouse_andamento_arrasto = true;};
-			document.getElementById("barra_carrega").onmouseup = function(eve){
-				setTimeout("arrastaVideo()",50);
-			};
-			document.getElementById("barra_andamento").onmousedown = function(eve){mouse_andamento_arrasto = true;};
-			document.getElementById("barra_andamento").onmouseup = function(eve){
-				setTimeout("arrastaVideo()",50);
-			};
+		document.getElementById("barra").onmousedown = function(eve){mouse_andamento_arrasto = true;};
+		document.getElementById("barra").onmouseup = function(eve){
+			setTimeout("arrastaVideo()",50);
+		};
+		document.getElementById("barra_carrega").onmousedown = function(eve){mouse_andamento_arrasto = true;};
+		document.getElementById("barra_carrega").onmouseup = function(eve){
+			setTimeout("arrastaVideo()",50);
+		};
+		document.getElementById("barra_andamento").onmousedown = function(eve){mouse_andamento_arrasto = true;};
+		document.getElementById("barra_andamento").onmouseup = function(eve){
+			setTimeout("arrastaVideo()",50);
+		};
 	}
 
 	function arrastaVideo(){
@@ -73,17 +73,14 @@ document.onmouseup = getMouseXY;
 		if (mouseX > (barraX1 - 2)) andamento = 296;
 		
 		andamento = mouseX - barraX0;
-		//console.log("mouseX:"+mouseX +" barraX0:"+barraX0);
 		multiplicador = andamento/296;
 		
 		tempo = multiplicador*getDuration();
 		seekTo(tempo);
 		
 		ROODAplayer.percent_andamento = multiplicador;
-		document.getElementById("bolinha").style.width = 15 + "px";
+		document.getElementById("bolinha").style.width = "15px";
 	}
-
-	setInterval("atualizacoes()",100);
 
 	function updatePlayerInfo() {
 		if(ytplayer && ytplayer.getDuration) {
@@ -118,6 +115,10 @@ document.onmouseup = getMouseXY;
 		}
 	}
 	function atualizacoes(){
+		ROODAplayer.percent_carga = isNaN(ROODAplayer.percent_carga) ? 0 : ROODAplayer.percent_carga;
+		ROODAplayer.percent_andamento = isNaN(ROODAplayer.percent_andamento) ? 0 : ROODAplayer.percent_andamento;
+		ROODAplayer.percent_carga_inicial = isNaN(ROODAplayer.percent_carga_inicial) ? 0 : ROODAplayer.percent_carga_inicial;
+
 		document.getElementById("barra_carrega").style.width = (ROODAplayer.percent_carga * ROODAplayer.barra_total)+"px";
 		document.getElementById("barra_andamento").style.width = (ROODAplayer.percent_andamento * ROODAplayer.barra_total)+"px";
 		document.getElementById("barra_branco").style.width = (ROODAplayer.percent_carga_inicial * ROODAplayer.barra_total)+"px";
@@ -326,3 +327,8 @@ function carregaHTML(obj_id,script_url,pars) {
 		}
 	}
 }
+
+
+
+
+setInterval("atualizacoes()",100);
