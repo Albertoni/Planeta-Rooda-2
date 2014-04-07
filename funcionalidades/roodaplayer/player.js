@@ -218,15 +218,9 @@ function getDuration() {
 		document.getElementById("descricaoVideo").innerHTML = document.getElementById("desc"+id).innerHTML;
 		document.getElementById("donoVideo").innerHTML = document.getElementById("nome"+id).innerHTML;
 
-		// Precisamos dos eventos copiados para que ao clicar no link os comentarios abram; portanto, clone do jQuery que pega TUDO MESMO, especialmente com 2 parametros true.
-		// http://api.jquery.com/clone/
-		var nodoComentarios = $("#numcom"+id).clone(true, true);
-		nodoComentarios.css("display", "block"); // ele estava invisivel, tornamos visivel.
-
-		// Limpamos o interior, para tirar o link de comentarios anterior.
+		var comentarios = new ROODA.Comentarios(id);
 		$("#comentariosVideo").html("");
-
-		nodoComentarios.appendTo($("#comentariosVideo"));
+		$("#comentariosVideo").append(comentarios.link);
 	}
 	
 	function addVideo(idUsu,idTur)
