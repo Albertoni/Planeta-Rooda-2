@@ -44,7 +44,7 @@
 							that.html.remove();
 							return;
 						}
-						ROODA.ui.alert("Ops. a resposta do servidor não permite dizer se o comentário foi excluído ou não.");
+						ROODA.ui.alert("Ops. Aconteceu um errinho, não sei se o comentário foi excluído ou não.");
 					},
 					fail: function () {
 						that.html.slideDown();
