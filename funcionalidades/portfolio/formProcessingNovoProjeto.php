@@ -40,5 +40,3 @@ $projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos
 echo $projeto->salvar();
 
 magic_redirect("portfolio.php?turma=$turma");
-
-?>

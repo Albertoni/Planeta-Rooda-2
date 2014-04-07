@@ -15,10 +15,15 @@ if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
-$consulta = new conexao();
+$projeto = new projeto($projeto_id);
 
-$consulta->solicitar("SELECT turma FROM $tabela_portfolioProjetos WHERE id = $projeto_id_sanitizado");
-if($turma != $consulta->resultado['turma']){
+$donos = $projeto->getOwners();
+
+if(!in_array($user->getId(), $donos)){
+	die("Voc&ecirc; n&atilde;o est&aacute; nesse projeto e n&atilde;o pode postar nele.");
+}
+
+if($turma != $projeto->getTurma()){
 	die("A identifica&ccedil;&atilde;o de turma passada para essa pagina n&atilde;o corresponde com a identifica&ccedil;&atilde;o de turma que o projeto tem. Isso &eacute; um erro.");
 }
 

@@ -32,7 +32,8 @@ class post{
 	function carrega($id){
 		global $tabela_portfolioPosts;
 		$q = new conexao();
-		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE id = $id");
+		$id_sanitizado = $q->sanitizaString($id);
+		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE id = $id_sanitizado");
 
 		if ($q->erro != ""){
 			$this->id			= false;
@@ -193,6 +194,7 @@ class projeto{
 	function getPalavras(){return $this->palavras;}
 	function getPalavrasString(){return implode(', ', $this->palavras);}
 	function getPosts(){return $this->posts;}
+	function getOwners(){return $this->ownersIds;}
 
 	function carrega($idProjeto){
 		global $tabela_portfolioProjetos;

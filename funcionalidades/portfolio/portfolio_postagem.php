@@ -50,6 +50,12 @@ $update = isset($_GET['update']) ? "1" : "0";
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
 
+$projeto = new projeto($projeto_id);
+$donos = $projeto->getOwners();
+if(!in_array($user->getId(), $donos)){
+	die("Voc&ecirc; n&atilde;o est&aacute; nesse projeto e n&atilde;o pode postar nele.");
+}
+
 $turma = is_numeric($_GET['turma']) ? $_GET['turma'] : die("</head>\n<body>\n<h2><center>A id da turma precisa estar setada para acessar, por favor volte.\n</h2></center>\n</html>");
 
 $perm = checa_permissoes(TIPOPORTFOLIO, $turma);

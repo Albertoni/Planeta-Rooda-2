@@ -31,20 +31,9 @@ if($perm == false){
 
 $editar = isset($_GET['projeto_id']);
 
-if($editar){
-	$projeto_id = (int) $_GET['projeto_id'];
-
-	if(!$user->podeAcessar($perm['portfolio_editarPost'], $turma)){
-		die("Desculpe, voce nao pode inserir posts nessa turma.");
-	}
-
-	$projeto = new projeto($projeto_id);
-}else{
-	$projeto_id = "";
-
-	if(!$user->podeAcessar($perm['portfolio_inserirPost'], $turma)){
-		die("Desculpe, voce nao pode inserir posts nessa turma.");
-	}
+global $nivelProfessor;
+if($user->getNivel($turma) != $nivelProfessor){
+	die("Somente professores podem fazer isso, e voc&ecirc; não est&aacute; inserido como professor.");
 }
 
 
