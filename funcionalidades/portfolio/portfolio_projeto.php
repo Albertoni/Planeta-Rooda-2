@@ -32,6 +32,7 @@ if($perm === false){
 $projeto = new projeto($projeto_id);
 $titulo = $projeto->getTitulo();
 $palavras = $projeto->getPalavrasString();
+$donos = $projeto->getOwners();
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -86,9 +87,13 @@ $palavras = $projeto->getPalavrasString();
 			<a href="portfolio.php?turma=<?=$turma?>">
 				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
-				<img src="../../images/botoes/bt_criar_postagem.png" border="0"/>
-			</a>
+<?php
+if(($user->podeAcessar($perm['portfolio_inserirPost'], $turma)) && (in_array($user->getId(), $donos))){
+	echo "			<a href=\"portfolio_postagem.php?projeto_id=$projeto_id&amp;turma=$turma\" style=\"float:right\">
+				<img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\"/>
+			</a>";
+}
+?>
 		</div>
 		<div id="esq">
 			<div id="postagens" class="bloco">
@@ -262,9 +267,13 @@ $palavras = $projeto->getPalavrasString();
 			<a href="portfolio.php?turma=<?=$turma?>">
 				<img src="../../images/botoes/bt_voltar.png" border="0"/>
 			</a>
-			<a href="portfolio_postagem.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" style="float:right">
-				<img src="../../images/botoes/bt_criar_postagem.png" border="0"/>
-			</a>
+<?php
+if(($user->podeAcessar($perm['portfolio_inserirPost'], $turma)) && (in_array($user->getId(), $donos))){
+	echo "			<a href=\"portfolio_postagem.php?projeto_id=$projeto_id&amp;turma=$turma\" style=\"float:right\">
+				<img src=\"../../images/botoes/bt_criar_postagem.png\" border=\"0\"/>
+			</a>";
+}
+?>
 		</div>
 	</div><!-- Fecha Div conteudo -->
 	</div><!-- Fecha Div conteudo_meio -->

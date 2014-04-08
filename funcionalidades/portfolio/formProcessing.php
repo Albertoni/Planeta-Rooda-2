@@ -15,7 +15,7 @@ if($perm == false){
 	die("Desculpe, mas os Projetos est&atilde;o desabilitados para esta turma.");
 }
 
-$projeto = new projeto($projeto_id);
+$projeto = new projeto($idProjeto);
 
 $donos = $projeto->getOwners();
 

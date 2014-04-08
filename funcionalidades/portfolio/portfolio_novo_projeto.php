@@ -219,31 +219,6 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 						</ul>
 					</ul>
 				</div>
-
-
-
-							<li style="height:22px; margin-bottom:4px; margin-top:10px">
-								<div class="tool_bt" id="alt_negrito"><img src="../../images/botoes/tool_negrito.png" onClick="doBold()" /></div>
-								<div class="tool_bt" id="alt_italico"><img src="../../images/botoes/tool_italico.png" onClick="doItalic()" /></div>
-								<div class="tool_bt" id="alt_sublinhado"><img src="../../images/botoes/tool_sublinhado.png" onClick="doUnderline()" /></div>
-								<div class="tool_bt" id="alt_tamanho"><img src="../../images/botoes/tool_tamanho.png" onClick="doSize()" /></div>
-<?php
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
-{
-?>
-								<div class="tool_bt" id="alt_link"><img src="../../images/botoes/tool_link.png" /></div>
-<?php
-}
-
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
-{
-?>
-								<div class="tool_bt" id="alt_imagem"><img src="../../images/botoes/tool_imagem.png" /></div>
-<?php
-}
-?>
-							</li>
-						<li><iframe id="text_post" width="100%" ></iframe></li>
 					</ul>
 				</div>
 			<div class="bts_baixo">

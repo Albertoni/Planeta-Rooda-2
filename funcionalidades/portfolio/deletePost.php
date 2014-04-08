@@ -1,18 +1,24 @@
 <?php
 header("Content-Type: application/json");
-session_start();
 require_once('../../cfg.php');
 require_once('../../bd.php');
-$id_usuario = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
+require_once('../../funcoes_aux.php');
+
+$user = usuario_sessao();
+
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 $json = array('id' => $id, 'ok' => false);
-if ($id_usuario <= 0) {
+
+if ($user === false) { // Se não está logado
 	$json['errors'][] = 'Sua sessão expirou.';
 	$json['errors'][] = 'Volte para a tela de login.';
 } else {
-	if ($id <= 0) {
+
+	$id_usuario = $user ->getId();
+
+	if (!is_numeric($id)){ // se id não é um numero não numerico
 		$json['errors'][] = 'Parametros inválidos.';
-	} else {
+	}else{
 		$consulta = new conexao();
 		$consulta->solicitar(
 			"SELECT Posts.id as post, Projetos.id as projeto, Projetos.turma as turma
@@ -37,26 +43,36 @@ if ($id_usuario <= 0) {
 					$turma = $consulta->resultado['turma'];
 					$projeto = $consulta->resultado['projeto'];
 					$podeDeletar = false;
+
 					// Verificar se usuario realmente pode deletar o post.
-					$verifica = new conexao();
-					$verifica->solicitar("SELECT associacao as nivel FROM $tabela_turmasUsuario WHERE codTurma = '$turma' AND codUsuario = '$id_usuario'");
-					if ($verifica->erro) {
-						$json['errors'][] = $verifica->erro;
-					} else {
-						if ($verifica->registros === 1) {
-							if ($verifica->resultado['nivel'] & 4) {
-								$podeDeletar = true;
-							}
-						}
-					}
-					if (!$podeDeletar) {
-						$json['errors'][] = 'Você não tem permissão para baixar este arquivo.';
-					} else {
+					$nivelUsuario = $user->getNivel($turma);
+					global $nivelProfessor;
+					if($nivelUsuario != $nivelProfessor){
+						$json['errors'][] = 'Você não tem permissão para deletar este arquivo.';
+					}else{
+						// Assume-se pior caso
+						$deuErroAoApagarPosts = true;
+						$deuErroAoApagarComentarios = true;
+
 						$consulta = new conexao();
-						$consulta->solicitar("DELETE FROM $tabela_portfolioPosts WHERE id='$id'");
-						if ($consulta->erro) {
+
+						// Apagar os posts
+						$consulta->solicitar("DELETE FROM PortfolioPosts WHERE id='$id'");
+						if($consulta->erro){
 							$json['errors'][] = $consulta->erro;
-						} else {
+						}else{
+							$deuErroAoApagarPosts = false;
+						}
+
+						// Apagar os comentários pra não deixar lixo
+						$consulta->solicitar("DELETE FROM PortfolioPostComentarios WHERE idRef='$id'");
+						if($consulta->erro){
+							$json['errors'][] = $consulta->erro;
+						}else{
+							$deuErroAoApagarComentarios = false;
+						}
+
+						if((!$deuErroAoApagarPosts) && (!$deuErroAoApagarComentarios)){
 							$json['ok'] = true;
 						}
 					}

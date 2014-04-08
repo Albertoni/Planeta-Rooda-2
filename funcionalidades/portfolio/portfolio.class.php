@@ -23,6 +23,10 @@ class post{
 			$this->texto		= $dados['texto'];
 			$this->tags			= $dados['tags'];
 
+			// Estes podem não estar setados, então checamos
+			$this->dataCriacao	= (isset($dados['dataCriacao'])) ? $dados['dataCriacao'] : "ERRO CÓDIGO WhiteWolf";
+			$this->dataCriacao	= (isset($dados['dataUltMod'])) ? $dados['dataUltMod'] : "ERRO CÓDIGO BlackWolf";
+
 			$this->existe = false;
 		}else{
 			$this->carrega($id);
@@ -55,6 +59,8 @@ class post{
 			$this->titulo		= $dados['titulo'];
 			$this->texto		= $dados['texto'];
 			$this->tags			= $dados['tags'];
+			$this->dataCriacao	= $dados['dataCriacao'];
+			$this->dataUltMod	= $dados['dataUltMod'];
 			
 			$this->existe = true;
 		}
@@ -121,6 +127,7 @@ class post{
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
 	function geraHtmlPost(){
+		//print_r($this);
 		$html = "
 		<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">
 					<ul class=\"sem_estilo\">

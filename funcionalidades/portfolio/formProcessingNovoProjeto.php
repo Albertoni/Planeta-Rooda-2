@@ -30,13 +30,12 @@ if(!$user->podeAcessar($permissoes['portfolio_inserirPost'], $turma)){
 $usuario_id	=$user->getId();
 $titulo		=$_POST['titulo_projeto'];
 $tags		=$_POST['tags_projeto'];
-$text		=$_POST['text'];
 $dataInicio	=DateTime::createFromFormat('d/m/Y', $_POST['data_inicio_projeto'])->format('Y-m-d H:i:s');
 $dataEncerramento=DateTime::createFromFormat('d/m/Y', $_POST['data_encerramento_projeto'])->format('Y-m-d H:i:s');
 $donos		=explode(';', $_POST['owner_ids']);
 $turma		=$_POST['turma'];
 
 $projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos, $turma);
-echo $projeto->salvar();
+$projeto->salvar();
 
 magic_redirect("portfolio.php?turma=$turma");
