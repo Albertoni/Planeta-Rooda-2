@@ -200,27 +200,6 @@ require_once("turma.class.php");
 		return false; // sobreviveu
 	}
 
-	function nivel_existe($nivel){
-		global $nivelAdmin;
-		global $nivelCoordenador;
-		global $nivelAluno;
-		global $nivelProfessor;
-		global $nivelVisitante;
-		global $nivelMonitor;
-		switch($nivel){
-			case $nivelAdmin:
-			case $nivelCoordenador:
-			case $nivelAluno:
-			case $nivelProfessor:
-			case $nivelVisitante:
-			case $nivelMonitor:
-				return true;
-			default:
-				return false;
-		}
-		
-	}
-
 	function magic_redirect($extra){
 		// IMPORTANTE: .replace simula um redirect de navegador. window.location.href = x simula um clique. 
 		// Fazendo assim, se previne problemas com  o botão voltar.
