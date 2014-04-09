@@ -394,7 +394,7 @@ class Arquivo {
 		return false;
 	}
 	
-	function baixar($download = true) {
+	function baixar($forceDownload = false) {
 		try{
 			$teste = new Imagem($this->id);
 			$isImage = true;
@@ -404,7 +404,7 @@ class Arquivo {
 
 		header("Content-length: {$this->getTamanho()}");
 		header("Content-type: {$this->getTipo()}");
-		if (!$isImage || !$download){
+		if (!$isImage || $forceDownload){
 			header("Content-Disposition: attachment; filename={$this->getNome()}");
 		}
 		print $this->getConteudo();
