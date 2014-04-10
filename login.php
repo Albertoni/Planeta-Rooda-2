@@ -4,13 +4,9 @@
 	require_once("bd.php");
 	require_once("funcoes_aux.php");
 	require_once("usuarios.class.php");
-	
-	$pesquisa1 = new conexao();
-
-	$login1 = $pesquisa1->sanitizaString($_POST['login1']);
 
 	$objUsuario = new Usuario();
-	$objUsuario->openUsuario($login1);
+	$objUsuario->openUsuarioByName($_POST['login1']);
 	
 	if (!$objUsuario->getId()) {
 		$data = '{ "valor":"1", "texto":"Usuário não cadastrado"}';

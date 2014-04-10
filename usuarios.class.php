@@ -37,18 +37,6 @@ class Usuario { //estrutura para o item post do blog
 	public function openUsuario($param) {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
-		if (is_string($param)) {
-			$login = $q->sanitizaString($param);
-			$q->solicitar("SELECT *
-						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
-						  WHERE usuario_login = '$login'");
-			if ($q->registros > 0) {
-				$this->popular($q->resultado);
-				return;
-			}else{
-				return $q->erro;
-			}
-		}
 		if (is_numeric($param)) {
 			$id = $param;
 			$q->solicitar("SELECT *
@@ -62,6 +50,18 @@ class Usuario { //estrutura para o item post do blog
 				return;
 			}
 			return "Usuario inexistente ($param)" ;
+		}
+		if (is_string($param)) {
+			$login = $q->sanitizaString($param);
+			$q->solicitar("SELECT *
+						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
+						  WHERE usuario_login = '$login'");
+			if ($q->registros > 0) {
+				$this->popular($q->resultado);
+				return;
+			}else{
+				return $q->erro;
+			}
 		}
 	}
 
