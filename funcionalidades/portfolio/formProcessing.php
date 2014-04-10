@@ -23,6 +23,7 @@ if(!in_array($user->getId(), $donos)){
 	die("Voc&ecirc; n&atilde;o est&aacute; nesse projeto e n&atilde;o pode postar nele.");
 }
 
+// Isso parece uma checagem desnecessária, mas se não for por isso pode-se passar uma ID de turma na qual se tem permissões de postar, para postar em uma turma na qual você não tem permissões para postar.
 if($turma != $projeto->getTurma()){
 	die("A identifica&ccedil;&atilde;o de turma passada para essa pagina n&atilde;o corresponde com a identifica&ccedil;&atilde;o de turma que o projeto tem. Isso &eacute; um erro.");
 }
