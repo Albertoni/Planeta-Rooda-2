@@ -300,5 +300,4 @@ document.getElementById('postFormId').onsubmit = function(){
 	return true;
 };
 </script>
-
 </html>
