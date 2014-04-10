@@ -47,8 +47,7 @@
 		$_SESSION['SS_personagem_id'] = $personagem_id;
 		$_SESSION['SS_turmas'] = array();
 		
-		$_SESSION['user'] = new Usuario();
-		$_SESSION['user']->openUsuario($idusuario);
+		$_SESSION['user'] = $objUsuario;
 		
 		// Pega-se as turmas do vivente
 		global $tabela_turmasUsuario;
