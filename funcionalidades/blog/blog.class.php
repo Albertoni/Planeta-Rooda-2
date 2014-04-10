@@ -22,7 +22,7 @@ class Post { //estrutura para o item post do blog
 		$id_post = (int) $id_post;
 		$q = new conexao();
 		$q->solicitar("select * from $tabela_posts where Id = $id_post");
-		if($q->resultado) {
+		if($q->erro == "") {
 			$a = $q->resultado; // PORQUE MEU DEUS
 			$this->id = $a['Id'];
 			$this->blogId = $a['BlogId'];
@@ -31,8 +31,10 @@ class Post { //estrutura para o item post do blog
 			$this->text = $a['Text'];
 			$this->isPublic = $a['IsPublic'];
 			$this->date = $a['Date'];
-			$this->author = new Usuario();
-			$this->author->openUsuario($this->userId);
+
+			$tempUser = new Usuario();
+			$tempUser->openUsuario($a['UserId']);
+			$this->author = $tempUser;
 		} else {
 			$this->e = "Id informado não existe na tabela de posts";
 		}
@@ -155,8 +157,6 @@ class Post { //estrutura para o item post do blog
 	}
 
 	function imprimePost($cor, $usuario, $permissoes, $turma){
-	$arquivo = new ArquivosPost();
-	$arquivo->abrirPost($this->getId());
 
 	echo "				<div class=\"cor$cor\">
 				<ul class=\"sem_estilo\">
@@ -174,6 +174,19 @@ class Post { //estrutura para o item post do blog
 						</div>
 					</li>
 					<li class=\"tabela_blog\">
+						<ul>";
+
+	$arquivo = new ArquivosPost();
+	$arquivo->abrirPost($this->getId());
+
+	while ($arquivo->existe()) {
+								echo '								<li><a href="abreArquivo.php?a='.$arquivo->getId().'&amp;p='.$this->getId().'" target="_blank">'.$arquivo->getNome()."</a></li>\n";
+								$arquivo->proximo();
+							}
+
+	echo "							</ul>
+						</li>
+					<li class=\"tabela_blog\">
 						Por ".$this->getAuthor()->getName()."<br />";
 
 	if ($usuario->podeAcessar($permissoes["blog_editarPost"], $turma)){
@@ -182,7 +195,6 @@ class Post { //estrutura para o item post do blog
 	if ($usuario->podeAcessar($permissoes["blog_excluirPost"], $turma)){
 		echo"\n						<div style=\"float:right\"><a href=\"javascript:deletar_post(".$this->getBlogId().",".$this->getId().",".$turma.")\">Deletar</a></div><br />";
 	}
-	
 	
 	// placeholder para link dos comentários (vai ser substituido via javascript)
 	echo"\n						<input type=\"hidden\" name=\"comentarios\" value=\"".$this->getId()."\"><br />
@@ -292,9 +304,12 @@ class Blog {
 	function setPosts() {
 		global $tabela_posts;
 		$consulta = new conexao();
-		$consulta->solicitar("select * from $tabela_posts where BlogId = $this->id ORDER BY Id DESC"); // Ordenando por ID, pra ficar na ordem de criação.
-		for($i=0 ; $i<count($consulta->itens);$i++) { // Isso funciona pra 0 resultados. I hope.
-			$this->posts[] = new Post($consulta->resultado['Id'], $consulta->resultado['BlogId'], $consulta->resultado['UserId'], $consulta->resultado['Title'], $consulta->resultado['Text'], $consulta->resultado['IsPublic'], $consulta->resultado['Date']);
+		$consulta->solicitar("select Id from $tabela_posts where BlogId = $this->id ORDER BY Date DESC");
+
+		for($i=0 ; $i<count($consulta->itens);$i++){
+			$tempPost = new Post();
+			$tempPost->open($consulta->resultado['Id']);
+			$this->posts[] = $tempPost;
 			$consulta->proximo();
 		}
 	}
