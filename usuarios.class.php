@@ -33,36 +33,37 @@ class Usuario { //estrutura para o item post do blog
 		$this->nivel = $nivel;
 	}
 
+	public openUsuarioByName($param){
+		$login = $q->sanitizaString($param);
+		$q->solicitar("SELECT *
+					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
+					  WHERE usuario_login = '$login'");
+		if ($q->registros > 0) {
+			$this->popular($q->resultado);
+			return;
+		}else{
+			return $q->erro;
+		}
+	}
+
 	// Recebe como parametro um id (inteiro maior que 0)
 	public function openUsuario($param) {
 		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
-		if (is_numeric($param)) {
-			$id = $param;
-			$q->solicitar("SELECT *
-						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
-						  WHERE usuario_id = '$id'");
-			
-			if($q->registros == 0)
-				return "Usuario inexistente (Id=$id, erro= $q->erro )" ;
-			else {
-				$this->popular($q->resultado);
-				return;
-			}
-			return "Usuario inexistente ($param)" ;
+		
+		$id = $q->sanitizaString($param);
+		$q->solicitar("SELECT *
+					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
+					  WHERE usuario_id = '$id'");
+		
+		if($q->registros == 0)
+			return "Usuario inexistente (Id=$id, erro= $q->erro )" ;
+		else {
+			$this->popular($q->resultado);
+			return;
 		}
-		if (is_string($param)) {
-			$login = $q->sanitizaString($param);
-			$q->solicitar("SELECT *
-						  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
-						  WHERE usuario_login = '$login'");
-			if ($q->registros > 0) {
-				$this->popular($q->resultado);
-				return;
-			}else{
-				return $q->erro;
-			}
-		}
+		return "Usuario inexistente ($param)" ;
+	
 	}
 
 	/**
