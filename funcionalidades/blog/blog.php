@@ -7,10 +7,11 @@ require_once("blog.class.php");
 require_once("../../file.class.php");
 require_once("../../link.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("ArquivosPost.class.php");
 
 header('Content-type: text/html; charset=utf-8');
 $usuario = usuario_sessao();
-if (!$usuario) { die("voce nao esta logado"); }
+if (!$usuario) { die("Voc&ecirc; n&atilde;o esta logado."); }
 $usuario_id = $usuario->getId();
 
 $blog_id = isset($_GET['id']) ? $_GET['id'] : die("N&atilde;o foi fornecido id de Webf&oacute;lio.");
@@ -29,7 +30,7 @@ $ini = $ini > $blog->getSize() ? floor($blog->getSize()/$blog->getPaginacao())*$
 $permissoes = checa_permissoes(TIPOBLOG, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
-// "blog_inserirPost,blog_editarPost,blog_inserirComentarios,blog_excluirPost,blog_adicionarLinks,blog_adicionarArquivos";
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -105,7 +106,7 @@ if ($usuario->podeAcessar($permissoes["blog_inserirPost"], $turma)){
 // script para a exibição dos posts
 	$id_estilo = 1;
 	for($i=$ini;($i<$ini+$blog->getPaginacao()) && ($i<$blog->getSize());$i++) {
-		imprimePost($blog->posts[$i], $blog->getId(), $id_estilo, $blog->owners, $usuario_id, $usuario, $permissoes, $turma);
+		$blog->posts[$i]->imprimePost($id_estilo, $usuario, $permissoes, $turma);
 		$id_estilo = 3 - $id_estilo; // alterna o estilo da div entre 2 e 1
 	}
 ?>

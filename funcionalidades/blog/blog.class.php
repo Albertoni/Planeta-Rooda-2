@@ -153,6 +153,44 @@ class Post { //estrutura para o item post do blog
 		}
 		return $tags;
 	}
+
+	function imprimePost($cor, $usuario, $permissoes, $turma){
+	$arquivo = new ArquivosPost();
+	$arquivo->abrirPost($this->getId());
+
+	echo "				<div class=\"cor$cor\">
+				<ul class=\"sem_estilo\">
+					<li class=\"tabela_blog\">
+						<span class=\"titulo\">
+							<a href=\"blog_singlepost.php?post_id=".$this->getId()."&amp;blog_id=".$this->getBlogId()."&amp;turma=$turma\">".$this->getTitle()."</a>
+						</span>
+						<span class=\"data\">
+							".$this->getDate()."
+						</span>
+					</li>
+					<li class=\"tabela_blog\">
+						<div style=\"overflow-x:auto; width:384px\">
+							".$this->getText()."
+						</div>
+					</li>
+					<li class=\"tabela_blog\">
+						Por ".$this->getAuthor()->getName()."<br />";
+
+	if ($usuario->podeAcessar($permissoes["blog_editarPost"], $turma)){
+		echo"\n						<a href=\"blog_postagem.php?blog_id=".$this->getBlogId()."&post_id=".$this->getId()."&turma=".$turma."\">Editar</a>";
+	}
+	if ($usuario->podeAcessar($permissoes["blog_excluirPost"], $turma)){
+		echo"\n						<div style=\"float:right\"><a href=\"javascript:deletar_post(".$this->getBlogId().",".$this->getId().",".$turma.")\">Deletar</a></div><br />";
+	}
+	
+	
+	// placeholder para link dos comentários (vai ser substituido via javascript)
+	echo"\n						<input type=\"hidden\" name=\"comentarios\" value=\"".$this->getId()."\"><br />
+						Tags: ".$this->printPostTags()."
+					</li>
+				</ul>
+				</div>";
+}
 }
 }
 
@@ -535,43 +573,6 @@ echo "						<li class=\"tabela_blog\">
 							<a href=\"$link\" target=\"_blank\">$link</a>
 							<div class=\"bts_caixa\"><img class=\"apagar\" src=\"../../images/botoes/bt_x.png\" /></div>
 						</li>";
-}
-
-function imprimePost($post, $blog_id, $cor, $donos, $usuario_id, $usuario, $permissoes, $turma){
-	echo "				<div class=\"cor$cor\">
-				<ul class=\"sem_estilo\">
-					<li class=\"tabela_blog\">
-						<span class=\"titulo\">
-							<a href=\"blog_singlepost.php?post_id=".$post->getId()."&amp;blog_id=".$post->getBlogId()."&amp;turma=$turma\">".$post->getTitle()."</a>
-						</span>
-						<span class=\"data\">
-							".$post->getDate()."
-						</span>
-					</li>
-					<li class=\"tabela_blog\">
-						<div style=\"overflow-x:auto; width:384px\">
-							".$post->getText()."
-						</div>
-					</li>
-					<li class=\"tabela_blog\">
-						Por ".$post->getAuthor()->getName()."<br />";
-
-	foreach($donos as $owner){
-		if ($owner->podeAcessar($permissoes["blog_editarPost"], $turma)){
-			echo"\n						<a href=\"blog_postagem.php?blog_id=".$blog_id."&post_id=".$post->getId()."&turma=".$turma."\">Editar</a>";
-		}
-		if ($owner->podeAcessar($permissoes["blog_excluirPost"], $turma)){
-			echo"\n						<div style=\"float:right\"><a href=\"javascript:deletar_post(".$blog_id.",".$post->getId().",".$turma.")\">Deletar</a></div><br />";
-		}
-	}
-	
-	
-	// placeholder para link dos comentários (vai ser substituido via javascript)
-	echo"\n						<input type=\"hidden\" name=\"comentarios\" value=\"".$post->getId()."\"><br />
-						Tags: ".$post->printPostTags($post->getPostTags($post->getId()))."
-					</li>
-				</ul>
-				</div>";
 }
 
 function imprimeListaPosts($blog_id, $turma){
