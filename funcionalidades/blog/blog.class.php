@@ -16,13 +16,6 @@ class Post { //estrutura para o item post do blog
 	var $author = "?";
 	var $e = "";
 	var $tags = array();
-	
-	function register() {
-		// cria um registro vazio na tabela de posts
-		// atribui o id desse registro à propriedade post
-		$a = 1;
-	}
-	
 
 	function open($id_post) {
 		global $tabela_posts;
