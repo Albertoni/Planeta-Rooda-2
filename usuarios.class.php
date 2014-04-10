@@ -33,6 +33,7 @@ class Usuario { //estrutura para o item post do blog
 		$this->nivel = $nivel;
 	}
 
+	// NÃO JUNTE AS DUAS FUNÇÕES EM UMA, A NÃO SER QUE VOCÊ CONSIGA LIDAR COM CASOS COMO USUÁRIO DE LOGIN '1234' FAZENDO LOGIN. POR SER NUMERICO, ISSO DARIA PROBLEMA E NÃO É TRIVIAL DE CONSERTAR SEM REFAZER TODO O CÓDIGO DO PLANETA
 	public openUsuarioByName($param){
 		$login = $q->sanitizaString($param);
 		$q->solicitar("SELECT *
