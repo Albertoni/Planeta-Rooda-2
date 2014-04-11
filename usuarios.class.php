@@ -34,7 +34,7 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	// NÃO JUNTE AS DUAS FUNÇÕES EM UMA, A NÃO SER QUE VOCÊ CONSIGA LIDAR COM CASOS COMO USUÁRIO DE LOGIN '1234' FAZENDO LOGIN. POR SER NUMERICO, ISSO DARIA PROBLEMA E NÃO É TRIVIAL DE CONSERTAR SEM REFAZER TODO O CÓDIGO DO PLANETA - João Albertoni - 10/04/14
-	public openUsuarioByName($param){
+	public function openUsuarioByName($param){
 		$login = $q->sanitizaString($param);
 		$q->solicitar("SELECT *
 					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
