@@ -54,8 +54,8 @@ if($user->getNivel($turma) != $nivelProfessor){
 	<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 	<script type="text/javascript" src="../lightbox.js"></script>
 
-	<link type="text/css" rel="stylesheet" href="ui-lightness/jquery-ui-1.10.4.custom.min.css" />
-	<script type="text/javascript" src="jquery-ui-1.10.4.custom.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="../../calendario/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
+	<script type="text/javascript" src="../../calendario/jquery-ui-1.10.4.custom.min.js"></script>
 
 	<!--[if IE 6]>
 	<script type="text/javascript" src="planeta_ie6.js"></script>

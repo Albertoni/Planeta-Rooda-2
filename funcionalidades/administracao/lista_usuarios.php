@@ -74,7 +74,7 @@ $user = usuario_sessao();
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">Para inserir uma nova turma, basta inserir o nome da turma, e selecionar os participantes.</p></div>
+					<div id="rel"><p id="balao">Clique em um usuario para edita-lo.</p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
@@ -107,7 +107,7 @@ $consulta->solicitar("SELECT * FROM $tabela_usuarios"); // Pega a lista de usuar
 	{
 		$id = $consulta->resultado['usuario_id'];
 	?>
-								<li class="cor<?=alterna()?>"><a href="edita_usuario.php?id=<?=$consulta->resultado['usuario_id']?>"><?=$consulta->resultado['usuario_nome']?></a></li>
+								<li class="cor<?=alterna()?>"><a href="edita_usuario-Novo.php?id=<?=$consulta->resultado['usuario_id']?>"><?=$consulta->resultado['usuario_nome']?></a></li>
 	<?php
 		$consulta->proximo();
 	}

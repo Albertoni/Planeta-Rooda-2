@@ -35,9 +35,11 @@ class Usuario { //estrutura para o item post do blog
 
 	// NÃO JUNTE AS DUAS FUNÇÕES EM UMA, A NÃO SER QUE VOCÊ CONSIGA LIDAR COM CASOS COMO USUÁRIO DE LOGIN '1234' FAZENDO LOGIN. POR SER NUMERICO, ISSO DARIA PROBLEMA E NÃO É TRIVIAL DE CONSERTAR SEM REFAZER TODO O CÓDIGO DO PLANETA - João Albertoni - 10/04/14
 	public function openUsuarioByName($param){
+		$q = new conexao();
+
 		$login = $q->sanitizaString($param);
 		$q->solicitar("SELECT *
-					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
+					  FROM usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 					  WHERE usuario_login = '$login'");
 		if ($q->registros > 0) {
 			$this->popular($q->resultado);
@@ -49,12 +51,11 @@ class Usuario { //estrutura para o item post do blog
 
 	// Recebe como parametro um id (inteiro maior que 0)
 	public function openUsuario($param) {
-		global $tabela_usuarios; global $tabela_turmasUsuario;
 		$q = new conexao();
 		
 		$id = $q->sanitizaString($param);
 		$q->solicitar("SELECT *
-					  FROM $tabela_usuarios JOIN personagens ON usuario_personagem_id = personagem_id
+					  FROM usuarios JOIN personagens ON usuario_personagem_id = personagem_id
 					  WHERE usuario_id = '$id'");
 		
 		if($q->registros == 0)
