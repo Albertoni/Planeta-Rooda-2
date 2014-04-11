@@ -11,7 +11,7 @@ $nome_usuario = isset($_SESSION['SS_usuario_nome']) ? $_SESSION['SS_usuario_nome
 
 $user = usuario_sessao();
 if($user === false){
-	die("Voce precisa estar logado para criar um projeto.");
+	die("Voce precisa estar logado para acessar os projetos.");
 }
 
 $id_usuario = $user->getId();

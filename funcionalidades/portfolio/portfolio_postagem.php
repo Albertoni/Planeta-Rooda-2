@@ -260,7 +260,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 				conteudo
 	***************************** -->
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
-		<form name="fConteudo" id="postFormId" action="formProcessing.php" onsubmit="return gravaConteudo()" method="post">
+		<form name="fConteudo" id="postFormId" action="formProcessing.php" onsubmit="return gravaConteudo()" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="text" value="" />
 			<div class="bts_cima">
 				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
@@ -281,23 +281,17 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 							<div class="tool_bt" id="alt_sublinhado"><img src="../../images/botoes/tool_sublinhado.png" onClick="doUnderline()" /></div>
 							<div class="tool_bt" id="alt_tamanho"><img src="../../images/botoes/tool_tamanho.png" onClick="doSize()" /></div>
 <?php
-if($user->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
-{
-?>
-							<div class="tool_bt" id="alt_link"><img src="../../images/botoes/tool_link.png" /></div>
-<?php
-}
-
-if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
-{
-?>
-							<div class="tool_bt" id="alt_arquivo"><img src="../../images/botoes/tool_arquivo.png" /></div>
-							<div class="tool_bt" id="alt_imagem"><img src="../../images/botoes/tool_imagem.png" /></div>
-<?php
+if($user->podeAcessar($perm['portfolio_adicionarLinks'], $turma)){
+echo "							<div class=\"tool_bt\" id=\"alt_link\"><img src=\"../../images/botoes/tool_link.png\" /></div>";
 }
 ?>
 						</li>
 					<li><iframe id="text_post" width="100%"></iframe></li>
+<?php
+if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma)){
+	echo "					<li>Anexos: <br><input type=\"hidden\" name=\"addAttachments\"></li>";
+}
+?>
 					<input type="hidden" name="projeto_id" value="<?=$projeto_id?>"> <!--Para posterior edição-->
 					<input type="hidden" name="post_id" value="<?=$post_id?>">
 					<input type="hidden" name="update" value="<?=$update?>">
@@ -325,5 +319,16 @@ if($user->podeAcessar($perm['portfolio_enviarArquivos'], $turma))
 			<h2>Processando</h2>
 		</div>
 	</div>
+	<script type="text/javascript">
+(function () {
+	var placeholder = $('input[name=addAttachments]');
+	var button = $('<button type="button">');
+	button.html('adicionar anexo');
+	button.click(function () {
+		$(this).before($('<input type="file" name="file[]"><br>'));
+	});
+	placeholder.replaceWith(button);
+}());
+	</script>
 </body>
 </html>

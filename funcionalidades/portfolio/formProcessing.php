@@ -4,6 +4,7 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once ('portfolio.class.php');
+require_once("../../arquivo.class.php");
 
 $user = usuario_sessao();
 
@@ -53,6 +54,14 @@ if ($_POST['update'] == 1){
 
 	$post = new post(0, $dados);
 	echo $post->salvar();
+
+	$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $usuario_id);
+		foreach ($arquivos as $a) {
+			// verificar se o arquivo foi salvo com sucesso
+			if ($a->getId()) {
+				$consulta->solicitar("INSERT INTO BlogArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
+			}
+		}
 }
 
 
