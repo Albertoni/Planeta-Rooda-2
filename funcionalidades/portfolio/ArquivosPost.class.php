@@ -44,6 +44,7 @@ class ArquivosPost extends Arquivo {
 				$idPost = $idPost->getId();
 			}else{
 				throw new Exception('Foi passado um objeto sem getId() para a abrir da ArquivosPost. Inteiro ou objeto com getId() definida esperado', 1);
+				return false;
 			}
 		}
 		$idPost = (int) $idPost;
