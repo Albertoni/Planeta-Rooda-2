@@ -40,8 +40,11 @@ class ArquivosPost extends Arquivo {
 	public function abrirPost($idPost) {
 		global $tabela_arquivos;
 		if (is_object($idPost)) {
-			if (get_class($idPost) === "Post") {
+			if (method_exists($idPost, 'getId')) {
 				$idPost = $idPost->getId();
+			}else{
+				throw new Exception('Foi passado um objeto sem getId() para a abrirPost da ArquivosPost. Inteiro ou objeto com getId() definida esperado', 1);
+				return false;
 			}
 		}
 		$idPost = (int) $idPost;
