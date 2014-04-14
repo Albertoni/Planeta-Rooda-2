@@ -53,15 +53,17 @@ if ($_POST['update'] == 1){
 		);
 
 	$post = new post(0, $dados);
-	echo $post->salvar();
+	print_r($post->salvar());
 
-	$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $usuario_id);
-		foreach ($arquivos as $a) {
-			// verificar se o arquivo foi salvo com sucesso
-			if ($a->getId()) {
-				$consulta->solicitar("INSERT INTO BlogArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
-			}
+	print_r($post);
+
+	$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $user->getId());
+	$consulta = new conexao();
+	foreach ($arquivos as $a) {
+		if ($a->getId()) { // Se retornar id, foi inserido com sucesso
+			$consulta->solicitar("INSERT INTO PortfolioArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
 		}
+	}
 }
 
 

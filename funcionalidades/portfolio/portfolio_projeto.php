@@ -7,6 +7,7 @@ require_once("lista_posts.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("portfolio.class.php");
+require_once("ArquivosPost.class.php");
 
 $user = usuario_sessao();
 

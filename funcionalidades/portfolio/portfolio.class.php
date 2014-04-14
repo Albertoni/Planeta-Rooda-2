@@ -24,8 +24,8 @@ class post{
 			$this->tags			= $dados['tags'];
 
 			// Estes podem não estar setados, então checamos
-			$this->dataCriacao	= (isset($dados['dataCriacao'])) ? $dados['dataCriacao'] : "ERRO CÓDIGO WhiteWolf";
-			$this->dataCriacao	= (isset($dados['dataUltMod'])) ? $dados['dataUltMod'] : "ERRO CÓDIGO BlackWolf";
+			$this->dataCriacao	= (isset($dados['dataCriacao'])) ? $dados['dataCriacao'] : "";
+			$this->dataCriacao	= (isset($dados['dataUltMod'])) ? $dados['dataUltMod'] : "";
 
 			$this->existe = false;
 		}else{
@@ -100,11 +100,14 @@ class post{
 		}
 		
 		$q->solicitar($query);
-		if($q->erro == ""){
+
+		$this->id = $q->ultimoId(); // Necessário para salvar arquivos junto com um post novo.
+
+		if($q->erro != ""){
 			return $q->erro;
 		}else{
 			$this->existe = true;
-			return $query;
+			return "ok";
 		}
 	}
 	function getId(){return $this->id;}
@@ -127,9 +130,14 @@ class post{
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
 	function geraHtmlPost(){
-		//print_r($this);
+		
+		$arquivo = new ArquivosPost();
+		$arquivo->abrirPost($this->getId());
+		
+		
+		
 		$html = "
-		<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">
+				<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">
 					<ul class=\"sem_estilo\">
 						<li class=\"tabela_port\">
 							<span class=\"titulo\">
@@ -148,9 +156,21 @@ class post{
 						<li class=\"tabela_port\">
 							<input type=\"hidden\" name=\"comentarios\" value=\"{$this->id}\" />
 						</li>
-					</ul>
-				</div>
+						<li>
 		";
+
+		if ($arquivo->existe()) {
+			$html .= "					<ul class=\"sem_estilo\">\n";
+
+			do{
+				$html .= '						<li><a href="abreArquivo.php?a='.$arquivo->getId().'&amp;p='.$this->getId().'" target="_blank">'.$arquivo->getNome()."</a></li>\n";
+			$arquivo->proximo();
+			}while($arquivo->existe());
+
+			$html .="					</ul></li>\n";
+		}
+
+		$html .= "				</ul></div>\n";
 
 		return $html;
 	}
@@ -238,7 +258,7 @@ class projeto{
 	function carregaPosts(){
 		global $tabela_portfolioPosts;
 		$q = new conexao();
-		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = ".$this->id);
+		$q->solicitar("SELECT * FROM $tabela_portfolioPosts WHERE projeto_id = '$this->id' ORDER BY dataCriacao DESC");
 
 		for($i=0; $i < $q->registros; $i++){
 			$newPost = new post(0, $q->resultado);
@@ -286,7 +306,6 @@ class projeto{
 
 		$q->solicitar($query);
 		if($q->erro == ""){
-			print_r($this);
 
 			$numeroPosts = count($this->posts);
 
