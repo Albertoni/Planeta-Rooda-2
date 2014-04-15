@@ -221,7 +221,7 @@ class Blog {
 	var $tags = array();
 	var $turma = 0;
 	
-	function Blog($id, $turma){
+	function Blog($id, $turma = 0){
 		global $tabela_blogs;
 		$userId = $_SESSION['SS_usuario_id'];
 		$q = new conexao();
@@ -229,7 +229,7 @@ class Blog {
 		if($id === "meu_blog"){
 			$q->solicitar("SELECT * FROM $tabela_blogs WHERE OwnersIds = '$userId' AND Turma = '$turma'");
 		}else{
-			$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id' AND Turma = '$turma'");
+			$q->solicitar("SELECT * FROM $tabela_blogs WHERE Id = '$id'");
 		}
 
 		if(!$q->itens){// Não tem blog, precisa criar
@@ -256,6 +256,7 @@ class Blog {
 			$this->setPaginacao(6);
 			$this->setNumPaginas();
 			$this->setBlogTags($q->resultado['Id']);
+			$this->turma = $q->resultado['Turma'];
 		}
 	}
 
