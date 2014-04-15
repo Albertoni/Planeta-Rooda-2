@@ -11,14 +11,12 @@ if (!$usuario) {
 	exit;
 }
 
-$bd = new conexao();
-$bd->solicitar(
-	"SELECT bb.Turma as turma FROM blogposts as bp 
-		INNER JOIN blogblogs as bb
-		ON bb.id = bp.BlogId
-	WHERE bp.id = $idPost"
-);
-$idTurma = (int) $bd->resultado['turma'];
+$post = new Post();
+$post->open($idPost);
+$idBlog = $post->getBlogId();
+
+$blog = new Blog($idBlog);
+$idTurma = $blog->getTurma();
 
 if (!$usuario->pertenceTurma($idTurma)) {
 	echo "Voc&ecirc; n&atilde.o tem permiss&atilde;o para acessar este recurso.";
