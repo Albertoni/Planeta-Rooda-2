@@ -175,7 +175,12 @@ function Init() {
 								<div class="tool_bt" id="alt_link"><img src="../../images/botoes/tool_link.png" /></div>
 							</li>
 						<li><iframe class="blog_info" id="iView" style="border:solid 1px #74d3ed; background-color:#fff; height:400px"></iframe></li>
-						<li>Anexos: <br><input type="hidden" name="addAttachments"></li>
+<?php
+if($usuario->podeAcessar($permissoes['blog_adicionarArquivos'], $turma)){
+	global $upload_max_filesize; // vem do cfg.php
+	echo "						<li>Anexos (Tamanho máximo $upload_max_filesize): <br><input type=\"hidden\" name=\"addAttachments\"></li>";
+}
+?>
 					</ul>
 				</div>
 			<div style="clear:both"><!-- um terrivel hack porque a margem do de baixo não funciona logo apos um elemento em float --></div>
