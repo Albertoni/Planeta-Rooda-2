@@ -44,7 +44,6 @@ $user = usuario_sessao();
 			<?php 
 				$regua = new reguaNavegacao();
 				$regua->adicionarNivel("Criar turma", "portfolio_inicio.php", false);
-				$regua->adicionarNivel("Novo Projeto");
 				$regua->imprimir();
 			?>
 			<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
@@ -95,7 +94,7 @@ $user = usuario_sessao();
 				<ul class="sem_estilo">
 					Pesquisar por
 					<div style="float:right">
-						Nome: <input type="radio" name="tipoPesquisa" value="nome"><br>
+						Nome: <input type="radio" name="tipoPesquisa" value="nome" checked><br>
 						Email: <input type="radio" name="tipoPesquisa" value="email"><br>
 						Login: <input type="radio" name="tipoPesquisa" value="login"><br>
 					</div>
@@ -163,21 +162,38 @@ echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta-
 ];
 
 function filtrar(input){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
-	console.log(input.value);
+	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked').value;
+	if (modoFiltragem == null){modoFiltragem = 'nome';};
+
+	var listaFiltrada = listaUsuarios.filter(function(usuario){
+		// Boa pergunta agora
+	})
 }
 
 function setaListaDeUsuarios(lista){
 	var tamanhoLista = lista.length;
 	var elementoLista = document.getElementById('lista_usuarios');
 
-	function imprime(){
-		// TODO: criar elemento e setar os valores
+	elementoLista.innerHTML = ""; // Precisa limpar ela pra inserir os dados atualizados
+
+	function imprime(estruturaDados){
+		var li = document.createElement('li');
+		li.className = 'cor'+((i%2)+1);
+
+		var link = document.createElement('a');
+		link.href = "edita_usuario-Novo.php?id="+estruturaDados['idUsuario'];
+		link.innerHTML = estruturaDados['nome'];
+		
+		li.appendChild(link);
+		elementoLista.appendChild(li);
 	}
 
 	for(var i=0; i < tamanhoLista; i++){
-		imprime
+		imprime(lista[i]);
 	};
 }
+
+setaListaDeUsuarios(listaUsuarios);
 </script>
 
 </html>
