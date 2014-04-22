@@ -35,6 +35,14 @@ $user = usuario_sessao();
 	<!--[if IE 6]>
 	<script type="text/javascript" src="planeta_ie6.js"></script>
 	<![endif]-->
+	<style type="text/css">
+	tr{
+		background-color: #EEF5F5;
+	}
+	tr:nth-child(odd){
+		background-color: #CCECF4;
+	}
+	</style>
 </head>
 
 <body onload="atualiza('ajusta()');inicia();ajusta_img();">
@@ -92,21 +100,30 @@ $user = usuario_sessao();
 			<div id="add_colegas" class="bloco">
 				<h1>ESCOLHER ALUNOS</h1>
 				<ul class="sem_estilo">
-					Pesquisar por
-					<div style="float:right">
-						Nome: <input type="radio" name="tipoPesquisa" value="nome" checked><br>
-						Email: <input type="radio" name="tipoPesquisa" value="email"><br>
-						Login: <input type="radio" name="tipoPesquisa" value="login"><br>
+					<div style="margin-bottom:20px">
+						Pesquisar por
+						<input type="radio" name="tipoPesquisa" value="nome" checked><span style="margin-right:2em;">Nome</span>
+						<input type="radio" name="tipoPesquisa" value="email"><span style="margin-right:2em;">Email</span>
+						<input type="radio" name="tipoPesquisa" value="login">Login
+						<br><br>
+						<input id="filtro" type="text" onkeyup="filtrar(this)">
 					</div>
-					
-					<input id="filtro" type="text" onkeyup="filtrar(this)">
 
 					<form name="fConteudo" id="postFormId" action="salvaTurma.php" onsubmit="return gravaConteudo()" method="post">
 						<input type="hidden" name="owner_ids" id="owner_ids" value="" />
-						<ul id="lista_usuarios">
-							<li class="cor1">Só um instante, carregando os usuários...</li>
-
-						</ul>
+						<table>
+							<colgroup span="3"></colgroup>
+							<thead>
+								<tr>
+									<th>Nome</th>
+									<th>Email</th>
+									<th>Login</th>
+								</tr>
+							</thead>
+							<tbody id="lista_usuarios">
+								<tr class="cor1"><td>Só um instante, carregando os usuários...</td></tr>
+							</tbody>
+						</table>
 					</form>
 					<div class="bts_baixo">
 						<a href="portfolio.php?turma=<?=$turma?>" align="left" >
@@ -163,11 +180,14 @@ echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta-
 
 function filtrar(input){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
 	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked').value;
+	// Caso não tenha nenhum marcado, a linha acima pode retornar null. Não remova a checagem sem remover a linha acima.
 	if (modoFiltragem == null){modoFiltragem = 'nome';};
 
 	var listaFiltrada = listaUsuarios.filter(function(usuario){
-		// Boa pergunta agora
+		return ((usuario[modoFiltragem].toLowerCase().indexOf(input.value.toLowerCase())) != -1);
 	})
+
+	setaListaDeUsuarios(listaFiltrada);
 }
 
 function setaListaDeUsuarios(lista){
@@ -177,16 +197,30 @@ function setaListaDeUsuarios(lista){
 	elementoLista.innerHTML = ""; // Precisa limpar ela pra inserir os dados atualizados
 
 	function imprime(estruturaDados){
-		var li = document.createElement('li');
-		li.className = 'cor'+((i%2)+1);
+		function geraTd(textoLink, id){
+			var link = document.createElement('a');
+			link.href = "edita_usuario-Novo.php?id="+id;
+			link.innerHTML = textoLink;
 
-		var link = document.createElement('a');
-		link.href = "edita_usuario-Novo.php?id="+estruturaDados['idUsuario'];
-		link.innerHTML = estruturaDados['nome'];
+			var td = document.createElement('td');
+			td.appendChild(link);
+
+			return td;
+		};
+		var tr = document.createElement('tr');
+		tr.className = 'trTabelaAlunos';
+
+
+		var tdNome = geraTd(estruturaDados['nome'], estruturaDados['idUsuario']);
+		var tdEmail = geraTd(estruturaDados['email'], estruturaDados['idUsuario']);
+		var tdLogin = geraTd(estruturaDados['login'], estruturaDados['idUsuario']);
 		
-		li.appendChild(link);
-		elementoLista.appendChild(li);
-	}
+		
+		tr.appendChild(tdNome);
+		tr.appendChild(tdEmail);
+		tr.appendChild(tdLogin);
+		elementoLista.appendChild(tr);
+	};
 
 	for(var i=0; i < tamanhoLista; i++){
 		imprime(lista[i]);

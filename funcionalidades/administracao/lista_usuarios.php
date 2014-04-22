@@ -48,8 +48,6 @@ $user = usuario_sessao();
 	<div id="fundo_lbox"></div>
 	<div id="light_box" class="bloco">
 		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
-
-
 	</div>
 	
 	<div id="topo">
@@ -64,8 +62,7 @@ $user = usuario_sessao();
 		</div>
 	</div> 
 	
-	<div id="geral">
-	
+	<div id="geral">	
 	<!-- **************************
 				cabecalho
 	***************************** -->
@@ -74,7 +71,7 @@ $user = usuario_sessao();
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">Clique em um usuario para edita-lo.</p></div>
+					<div id="rel"><p id="balao">Clique em um usuário para editá-lo.</p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
@@ -94,15 +91,12 @@ $user = usuario_sessao();
 				<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 					<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 				</a>
-				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<!-- <input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/> -->
 			</div>
-				
+<ul class="sem_estilo">			
 <?php
-
 $consulta = new conexao();
 $consulta->solicitar("SELECT * FROM $tabela_usuarios"); // Pega a lista de usuarios
-
-
 	for($i=0; $i<$consulta->registros; $i++)
 	{
 		$id = $consulta->resultado['usuario_id'];
@@ -111,18 +105,13 @@ $consulta->solicitar("SELECT * FROM $tabela_usuarios"); // Pega a lista de usuar
 	<?php
 		$consulta->proximo();
 	}
-
-
 ?>
-						</ul>
-					</ul>
-				</div>
-				</div>
+</ul>
 			<div class="bts_baixo">
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
-			<input type="image" src="../../images/botoes/bt_confirm.png" align="right"/>
+			<!-- <input type="image" src="../../images/botoes/bt_confirm.png" align="right"/> -->
 			</div>
 		</form>
 		<div style="clear:both;"></div>
