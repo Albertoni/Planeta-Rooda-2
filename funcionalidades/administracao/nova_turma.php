@@ -42,6 +42,15 @@ $user = usuario_sessao();
 	tr:nth-child(odd){
 		background-color: #CCECF4;
 	}
+	table{
+		width: 100%;
+	}
+
+	#containerPesquisa{
+		margin-bottom: 20px;
+		border: 1px solid gray;
+		padding:3px;
+	}
 	</style>
 </head>
 
@@ -100,21 +109,22 @@ $user = usuario_sessao();
 			<div id="add_colegas" class="bloco">
 				<h1>ESCOLHER ALUNOS</h1>
 				<ul class="sem_estilo">
-					<div style="margin-bottom:20px">
+					<div id="containerPesquisa">
 						Pesquisar por
-						<input type="radio" name="tipoPesquisa" value="nome" checked><span style="margin-right:2em;">Nome</span>
-						<input type="radio" name="tipoPesquisa" value="email"><span style="margin-right:2em;">Email</span>
-						<input type="radio" name="tipoPesquisa" value="login">Login
+						<input type="radio" name="tipoPesquisa" onclick="filtrar()" value="nome" checked><span style="margin-right:2em;">Nome</span>
+						<input type="radio" name="tipoPesquisa" onclick="filtrar()" value="email"><span style="margin-right:2em;">Email</span>
+						<input type="radio" name="tipoPesquisa" onclick="filtrar()" value="login">Login
 						<br><br>
-						<input id="filtro" type="text" onkeyup="filtrar(this)">
+						<input id="filtro" type="text" onkeyup="filtrar()">
 					</div>
 
 					<form name="fConteudo" id="postFormId" action="salvaTurma.php" onsubmit="return gravaConteudo()" method="post">
 						<input type="hidden" name="owner_ids" id="owner_ids" value="" />
 						<table>
-							<colgroup span="3"></colgroup>
+							<colgroup span="4"></colgroup>
 							<thead>
 								<tr>
+									<th></th>
 									<th>Nome</th>
 									<th>Email</th>
 									<th>Login</th>
@@ -178,10 +188,12 @@ echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta-
 ?>
 ];
 
-function filtrar(input){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
-	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked').value;
-	// Caso não tenha nenhum marcado, a linha acima pode retornar null. Não remova a checagem sem remover a linha acima.
-	if (modoFiltragem == null){modoFiltragem = 'nome';};
+function filtrar(){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
+	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked');
+	modoFiltragem = (modoFiltragem == null) ? "nome" : modoFiltragem.value;
+	// Caso não tenha nenhum marcado retorna null e a linha acima conserta.
+
+	var input = document.getElementById("filtro");
 
 	var listaFiltrada = listaUsuarios.filter(function(usuario){
 		return ((usuario[modoFiltragem].toLowerCase().indexOf(input.value.toLowerCase())) != -1);
@@ -210,12 +222,18 @@ function setaListaDeUsuarios(lista){
 		var tr = document.createElement('tr');
 		tr.className = 'trTabelaAlunos';
 
+		var tdCheckbox = document.createElement('td');
+			var checkbox = document.createElement('input');
+				checkbox.type = "checkbox";
+				checkbox.value = estruturaDados['idUsuario'];
+			tdCheckbox.appendChild(checkbox);
 
 		var tdNome = geraTd(estruturaDados['nome'], estruturaDados['idUsuario']);
 		var tdEmail = geraTd(estruturaDados['email'], estruturaDados['idUsuario']);
 		var tdLogin = geraTd(estruturaDados['login'], estruturaDados['idUsuario']);
 		
 		
+		tr.appendChild(tdCheckbox);
 		tr.appendChild(tdNome);
 		tr.appendChild(tdEmail);
 		tr.appendChild(tdLogin);
