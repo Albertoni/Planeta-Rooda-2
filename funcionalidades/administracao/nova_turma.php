@@ -1,4 +1,4 @@
-<?php
+php
 
 /*\
  *
@@ -97,14 +97,14 @@ $user = usuario_sessao();
 				<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 					<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 				</a>
-				<input type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
+				<input form="postFormId" type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>
 			</div>
 				<h1>NOVA TURMA</h1>
 				<ul class="sem_estilo">
 					<li>Turma <span class="exemplo">(Obrigatório)</span></li>
-					<li><input name="turma" type="text"></li>
+					<li><input form="postFormId" name="turma" type="text"></li>
 					<li>Descrição <span class="exemplo">(Obrigatório)</span></li>
-					<li><input name="descricao" type="text"></li>
+					<li><input form="postFormId" name="descricao" type="text"></li>
 				</ul>
 			<div id="add_colegas" class="bloco">
 				<h1>ESCOLHER ALUNOS</h1>
@@ -117,9 +117,11 @@ $user = usuario_sessao();
 						<br><br>
 						<input id="filtro" type="text" onkeyup="filtrar()">
 					</div>
+					<button onclick="teste()">teste</button>
 
-					<form name="fConteudo" id="postFormId" action="salvaTurma.php" onsubmit="return gravaConteudo()" method="post">
-						<input type="hidden" name="owner_ids" id="owner_ids" value="" />
+					<form name="fConteudo" id="postFormId" action="salvaTurma.php" method="post">
+						<input type="hidden" name="ids_alunos" id="ids_alunos" value="" />
+						<input type="hidden" name="idProfResponsavel" value="<?= $user->getId(); ?>" />
 						<table>
 							<colgroup span="4"></colgroup>
 							<thead>
@@ -139,7 +141,7 @@ $user = usuario_sessao();
 						<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 							<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 						</a>
-						<input type="image" src="../../images/botoes/bt_confirm.png" align="right"/>
+						<input form="postFormId" type="image" src="../../images/botoes/bt_confirm.png" align="right"/>
 					</div>
 				</ul>
 			</div>
@@ -162,13 +164,14 @@ function ajusta_img() {
 
 // setando o formulário
 document.getElementById('postFormId').onsubmit = function(){
-	var selected = new Array();
-	$('#lista_usuarios input:checked').each(function(){
-		selected.push($(this).attr('name'));
-	});
-	document.getElementById('owner_ids').value = selected.join(';');
-
-	gravaConteudo();
+	var selected = [];
+	for (var i = 0; i < listaUsuariosSelecionados.length; i++) {
+		if(listaUsuariosSelecionados[i] == true){
+			selected.push(i); // o indice é o id
+		};
+	};
+	
+	document.getElementById('ids_alunos').value = selected.join(';');
 
 	return true;
 };
@@ -177,7 +180,7 @@ var listaUsuarios = [
 <?php
 
 $consulta = new conexao();
-$consulta->solicitar("SELECT * FROM $tabela_usuarios"); // Pega a lista de pessoas da turma
+$consulta->solicitar("SELECT * FROM $tabela_usuarios");
 
 
 for($i=0; $i < ($consulta->registros - 1); $i++){ // for precisa do -1 porque o ultimo não pode ter virgula
@@ -187,6 +190,7 @@ for($i=0; $i < ($consulta->registros - 1); $i++){ // for precisa do -1 porque o 
 echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", email:\"".$consulta->resultado['usuario_email']."\", login:\"".$consulta->resultado['usuario_login']."\"}\n";
 ?>
 ];
+var listaUsuariosSelecionados = [];
 
 function filtrar(){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
 	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked');
@@ -196,8 +200,20 @@ function filtrar(){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
 	var input = document.getElementById("filtro");
 
 	var listaFiltrada = listaUsuarios.filter(function(usuario){
+		/*
+			Vamos por partes:
+			Primeiro, a função filter loopa por todos os elementos, chamando essa função anonima que declarei agora uma vez sobre cada elemento do array. Se e somente se retornar true, o elemento vai pro array filtrado.
+
+			usuario[modoFiltragem] quer dizer acessar a propriedade do objeto usuario contida em modoFiltragem.
+			Exemplo:modoFiltragem = "nome";
+					usuario[modoFiltragem] == usuario["nome"] == usuario.nome;
+
+			Passa-se tudo para minúscula para facilitar a vida do usuário.
+
+			E por fim, um indexOf para ver se a string sendo buscada é contida na propriedade.
+		*/
 		return ((usuario[modoFiltragem].toLowerCase().indexOf(input.value.toLowerCase())) != -1);
-	})
+	});
 
 	setaListaDeUsuarios(listaFiltrada);
 }
@@ -226,6 +242,12 @@ function setaListaDeUsuarios(lista){
 			var checkbox = document.createElement('input');
 				checkbox.type = "checkbox";
 				checkbox.value = estruturaDados['idUsuario'];
+				checkbox.addEventListener("click", function(){
+					listaUsuariosSelecionados[this.value] = this.checked;
+				}, false);
+				checkbox.checked = (((listaUsuariosSelecionados[estruturaDados['idUsuario']] == false) ||
+									((listaUsuariosSelecionados[estruturaDados['idUsuario']] == undefined))) // undefined para caso nunca tenha sido clicado
+				 					? false : true);
 			tdCheckbox.appendChild(checkbox);
 
 		var tdNome = geraTd(estruturaDados['nome'], estruturaDados['idUsuario']);

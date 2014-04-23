@@ -3,23 +3,16 @@ require('../../cfg.php');
 require('../../bd.php');
 
 
-
-print_r($_POST);
-
 $q = new conexao();
 
 $nomeTurma = $q->sanitizaString($_POST['turma']);
 $descricao = $q->sanitizaString($_POST['descricao']);
 
-
-$q->solicitar("INSERT INTO Turmas (nomeTurma, profResponsavel, descricao, serie, Escola, chat_id)
-				VALUES('$nomeTurma', '$idProfResponsavel','$descricao','0','0','0' )");
+$q->solicitar("INSERT INTO Turmas (nomeTurma, profResponsavel, descricao, serie, Escola, chat_id)				VALUES('$nomeTurma', '$idProfResponsavel','$descricao','0','0','0' )");
 
 $codTurma = $q->ultimoId();
 
-$alunos = explode(';', $_POST['owner_ids']);
-
-print_r($alunos);
+$alunos = explode(';', $_POST['ids_alunos']);
 
 $numeroAlunos = sizeof($alunos);
 
