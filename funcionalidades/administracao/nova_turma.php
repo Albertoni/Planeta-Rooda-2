@@ -1,16 +1,8 @@
-php
-
-/*\
- *
- * nova_turma.php
- *
-\*/
-
+<?php
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
-require_once("../../reguaNavegacao.class.php");
 
 $user = usuario_sessao();
 
@@ -58,11 +50,6 @@ $user = usuario_sessao();
 	<div id="descricao"></div>
 	<div id="topo">
 		<div id="centraliza_topo">
-			<?php 
-				$regua = new reguaNavegacao();
-				$regua->adicionarNivel("Criar turma", "portfolio_inicio.php", false);
-				$regua->imprimir();
-			?>
 			<p id="bt_ajuda"><span class="troca">OCULTAR AJUDANTE</span><span style="display:none" class="troca">CHAMAR AJUDANTE</span></p>
 		</div>
 	</div> 
@@ -77,7 +64,7 @@ $user = usuario_sessao();
 			<div id="ajuda_meio">
 				<div id="ajudante">
 					<div id="personagem"><img src="../../images/desenhos/ajudante.png" height=145 align="left" alt="Ajudante" /></div>
-					<div id="rel"><p id="balao">Para inserir uma nova turma, basta inserir o nome da turma, e selecionar os participantes.</p></div>
+					<div id="rel"><p id="balao">Para criar uma nova turma, basta escrever o nome da turma, dar uma descrição a ela e selecionar os participantes.</p></div>
 				</div>
 			</div>
 			<div id="ajuda_base"></div>
@@ -117,7 +104,6 @@ $user = usuario_sessao();
 						<br><br>
 						<input id="filtro" type="text" onkeyup="filtrar()">
 					</div>
-					<button onclick="teste()">teste</button>
 
 					<form name="fConteudo" id="postFormId" action="salvaTurma.php" method="post">
 						<input type="hidden" name="ids_alunos" id="ids_alunos" value="" />
@@ -192,7 +178,7 @@ echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta-
 ];
 var listaUsuariosSelecionados = [];
 
-function filtrar(){ // TODO: FILTRAR POR NOME DE USUARIO, LOGIN E EMAIL
+function filtrar(){
 	var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked');
 	modoFiltragem = (modoFiltragem == null) ? "nome" : modoFiltragem.value;
 	// Caso não tenha nenhum marcado retorna null e a linha acima conserta.
@@ -246,7 +232,7 @@ function setaListaDeUsuarios(lista){
 					listaUsuariosSelecionados[this.value] = this.checked;
 				}, false);
 				checkbox.checked = (((listaUsuariosSelecionados[estruturaDados['idUsuario']] == false) ||
-									((listaUsuariosSelecionados[estruturaDados['idUsuario']] == undefined))) // undefined para caso nunca tenha sido clicado
+									((listaUsuariosSelecionados[estruturaDados['idUsuario']] == undefined))) // undefined para caso nunca tenha sido clicado, e não, undefined não é igual a false
 				 					? false : true);
 			tdCheckbox.appendChild(checkbox);
 
