@@ -26,12 +26,10 @@ $user = usuario_sessao();
 	<title>Planeta ROODA 2.0</title>
 
 	<link type="text/css" rel="stylesheet" href="../../planeta.css" />
-	<link type="text/css" rel="stylesheet" href="portfolio.css" />
 
 	<script type="text/javascript" src="../../js/compatibility.js"></script>
 	<script type="text/javascript" src="../../jquery.js"></script>
 	<script type="text/javascript" src="../../planeta.js"></script>
-	<script type="text/javascript" src="portfolio.js"></script>
 	<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 	<script type="text/javascript" src="../lightbox.js"></script>
 
