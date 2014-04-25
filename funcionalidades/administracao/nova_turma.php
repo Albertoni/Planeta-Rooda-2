@@ -43,6 +43,10 @@ $user = usuario_sessao();
 		border: 1px solid gray;
 		padding:3px;
 	}
+
+	#seletorPlaneta{
+
+	}
 	</style>
 </head>
 
@@ -93,6 +97,20 @@ $user = usuario_sessao();
 					<li>Descrição <span class="exemplo">(Obrigatório)</span></li>
 					<li><input form="postFormId" name="descricao" type="text"></li>
 				</ul>
+
+				<div class="bloco">
+					<h1>Aparencia do Planeta</h1>
+					<ul id="seletorPlaneta" class="sem_estilo">
+						<li>
+							<input form="postFormId" name="tipoTerreno" type="radio" value="1"><img src="../../images/tela_inicial/planetagrama.png">
+							<input form="postFormId" name="tipoTerreno" type="radio" value="2" style="margin-left:150px;"><img src="../../images/tela_inicial/planetagelo.png">
+						</li>
+						<li>
+							<input form="postFormId" name="tipoTerreno" type="radio" value="3"><img src="../../images/tela_inicial/planetalava.png">
+							<input form="postFormId" name="tipoTerreno" type="radio" value="4" style="margin-left:150px"><img src="../../images/tela_inicial/planetaurbano.png">
+						</li>
+					</ul>
+				</div>
 			<div id="add_colegas" class="bloco">
 				<h1>ESCOLHER ALUNOS</h1>
 				<ul class="sem_estilo">
