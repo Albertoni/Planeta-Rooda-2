@@ -5,6 +5,7 @@ class Terreno{
 	private $tipo;
 	private $idChat;
 	private $ehPatio;
+	private $salvo;
 
 	function __construct(	$nome = "",
 							$tipo = 0,
@@ -15,6 +16,7 @@ class Terreno{
 		$this->tipo		= $tipo;
 		$this->idChat	= $idChat;
 		$this->ehPatio	= $ehPatio;
+		$this->salvo	= false;
 	}
 
 	function getId()	{return $this->id;}
@@ -36,10 +38,52 @@ class Terreno{
 				$q->resultado['idChat'],
 				$q->resultado['patio'],
 				);
+			$this->id = $q->resultado['id'];
+			$this->salvo = true;
+		}else{
+			$this->__construct("Terreno inexistente");
 		}
 	}
 
 	function salvar(){
+		$q = new conexao();
+		if($this->salvo === false){
+			$q->solicitar("
+				INSERT INTO terrenos 
+					(nome, tipo, idChat, patio) 
+				VALUES(
+					'$this->nome',
+					'$this->tipo',
+					'$this->idChat',
+					'$this->ehPatio')");
+
+			if($q->erro == ""){
+				$this->id = $q->ultimoId();
+				$this->salvo = true;
+			}
+		}else{
+			$query = ("
+				UPDATE terrenos SET 
+					nome   = '$this->nome',
+					tipo   = '$this->tipo',
+					idChat = '$this->idChat',
+					patio  = '$this->ehPatio'
+				WHERE id = '$this->id'");
+		}
+	}
+
+	function toJson($sendHeaders = false){
+		if($sendHeaders){
+			header("Content-Type: application/json");
+		}
 		
+		$json = [];
+		$json['id']     = $this->id;
+		$json['nome']   = $this->nome;
+		$json['tipo']   = $this->tipo;
+		$json['idChat'] = $this->idChat;
+		$json['patio']  = $this->ehPatio;
+
+		return json_encode($json);
 	}
 }
