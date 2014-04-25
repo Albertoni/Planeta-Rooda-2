@@ -48,14 +48,19 @@ class Terreno{
 	function salvar(){
 		$q = new conexao();
 		if($this->salvo === false){
+			$nomeSanitizado = $q->sanitizaString($this->nome)
+			$tipoSanitizado = (int) $this->tipo;
+			$chatSanitizado = (int) $this->idChat;
+			$patioSanitizado = ($this->ehPatio ? 1 : 0);
+
 			$q->solicitar("
 				INSERT INTO terrenos 
 					(nome, tipo, idChat, patio) 
 				VALUES(
-					'$this->nome',
-					'$this->tipo',
-					'$this->idChat',
-					'$this->ehPatio')");
+					'$nomeSanitizado',
+					'$tipoSanitizado',
+					'$chatSanitizado',
+					'$patioSanitizado')");
 
 			if($q->erro == ""){
 				$this->id = $q->ultimoId();
