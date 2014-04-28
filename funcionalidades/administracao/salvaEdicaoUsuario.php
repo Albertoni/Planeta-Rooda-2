@@ -29,3 +29,5 @@ if($_POST['usuario_senha']!=''){
 	$q->solicitar(" UPDATE usuarios SET usuario_senha='$usuarioSenha' 
 				 WHERE usuario_id='$id' ");
 	};
+
+// function __construct($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){

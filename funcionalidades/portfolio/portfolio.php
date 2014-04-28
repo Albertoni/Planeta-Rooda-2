@@ -7,17 +7,14 @@ require_once("../../reguaNavegacao.class.php");
 require_once("portfolio.class.php");
 
 global $tabela_portfolioProjetos;
-$nome_usuario = isset($_SESSION['SS_usuario_nome']) ? $_SESSION['SS_usuario_nome'] : "";
 
 $user = usuario_sessao();
 if($user === false){
-	die("Voce precisa estar logado para acessar os projetos.");
+	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
 }
 
+$nome_usuario = $user->getName();
 $id_usuario = $user->getId();
-
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
-	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
 
 if (isset($_GET['turma']) and $_GET['turma'] != ""){
 	$turma = $_GET['turma'];

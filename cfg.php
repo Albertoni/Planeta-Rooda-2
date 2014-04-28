@@ -7,7 +7,6 @@ mb_internal_encoding('UTF-8');
 	================================================
 					$_SESSION['SS_usuario_id']
 					$_SESSION['SS_usuario_nome']
-					$_SESSION['SS_usuario_nivel_sistema']
 					$_SESSION['SS_usuario_login']
 					$_SESSION['SS_usuario_email']
 					$_SESSION['SS_personagem_id']
