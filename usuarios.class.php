@@ -17,7 +17,6 @@ class Usuario { //estrutura para o item post do blog
 	var $name = "";
 	var $email = "";
 	var $personagemId = 0;
-	var $nivel = 0;
 	var $turmas = array();
 	var $nivelAbsoluto = 0;
 	private $dataUltimoLogin;
@@ -30,7 +29,6 @@ class Usuario { //estrutura para o item post do blog
 		$this->name = $name;
 		$this->email = $email;
 		$this->personagemId = $personagem_id;
-		$this->nivel = $nivel;
 	}
 
 	// NÃO JUNTE AS DUAS FUNÇÕES EM UMA, A NÃO SER QUE VOCÊ CONSIGA LIDAR COM CASOS COMO USUÁRIO DE LOGIN '1234' FAZENDO LOGIN. POR SER NUMERICO, ISSO DARIA PROBLEMA E NÃO É TRIVIAL DE CONSERTAR SEM REFAZER TODO O CÓDIGO DO PLANETA - João Albertoni - 10/04/14
@@ -79,7 +77,6 @@ class Usuario { //estrutura para o item post do blog
 	private function setNomeMae($nomeMae)			{$this->nomeMae = $nomeMae;}
 	private function setEmail($email)				{$this->email = $email;}
 	private function setPersonagemId($personagemId)	{$this->personagemId = $personagemId;}
-	private function setNivelAbsoluto($nivel)		{$this->nivelAbsoluto = $nivel;}
 	private function setNivel($turma, $valor)		{$this->nivel[$turma] = $valor;}
 	private function setGosto($gosto){$this->gosto = $gosto;}
 	private function setNaoGosto($desgosto){$this->naoGosto = $desgosto;}
@@ -92,7 +89,6 @@ class Usuario { //estrutura para o item post do blog
 	public function getEmail()		{return $this->email;}
 	public function getPersonagemId(){return $this->personagemId;}
 	public function getNivel($turma){return isset($this->nivel[$turma]) ? $this->nivel[$turma] : 0;} // $turma é o id da turma no banco de dados
-	public function getNivelAbsoluto(){return $this->nivelAbsoluto;}
 	public function getDataUltimoLogin(){return $this->dataUltimoLogin;}
 	public function getGosto(){return $this->gosto;}
 	public function getNaoGosto(){return $this->naoGosto;}
@@ -320,16 +316,11 @@ class Usuario { //estrutura para o item post do blog
 	}
 
 	public function podeAcessar($cutoff, $turma){ // cutoff = ponto de corte, o bitmap de niveis que podem acessar
-		/*if ($this->isAdmin()){
-			return true; // ISSO NÃO DEVE NUNCA MAIS SER USADO
-		}*/
-		
 		$niveisTurma = $this->getNivel($turma);
 		$cutoff = (int) $cutoff;
 
 		return $niveisTurma & $cutoff;
 	}
-	public function isAdmin(){return $this->getNivelAbsoluto() & 1;}
 
 	/*
 	* @return cor da luva do personagem, para a carteira dele

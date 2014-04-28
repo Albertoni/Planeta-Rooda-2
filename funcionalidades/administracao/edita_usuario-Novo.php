@@ -117,7 +117,7 @@ $usuarioDataAniversario = $data->format('d/m/Y');
 				</ul>
 			</form>
 			<div class="bts_baixo">
-				<a href="lista_usuarios.php?"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
+				<a href="lista_usuarios.php"><img src="../../images/botoes/bt_voltar.png" align="left"/></a>
 			</div>
 			</div>
 			

@@ -16,7 +16,6 @@
 	}
 	else {
 		$idusuario = $objUsuario->getId();
-		$codeusuario = $objUsuario->getNivelAbsoluto();
 		$usuario = $objUsuario->getName();
 		$login = $objUsuario->getUser();
 		$email = $objUsuario->getEmail();
@@ -41,7 +40,6 @@
 		//inicia variaveis de sessao
 		$_SESSION['SS_usuario_id'] = $idusuario;
 		$_SESSION['SS_usuario_nome'] = $usuario;
-		$_SESSION['SS_usuario_nivel_sistema'] = $codeusuario;
 		$_SESSION['SS_usuario_login'] = $login;
 		$_SESSION['SS_usuario_email'] = $email;
 		$_SESSION['SS_personagem_id'] = $personagem_id;
