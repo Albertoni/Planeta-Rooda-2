@@ -1,11 +1,14 @@
 <?php
-session_start();
 require_once("blog.class.php");
 require_once("../../usuarios.class.php");
 require_once("../../funcoes_aux.php");
 require_once("../../cfg.php");
 require_once("../../bd.php");
+
+$user = usuario_sessao();
 $usuario_id = $_SESSION['SS_usuario_id'];
+
+
 global $tabela_posts;
 global $tabela_blogs;
 global $tabela_imagem_blog;

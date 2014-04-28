@@ -6,7 +6,7 @@ require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 $user = usuario_sessao();
-$userId = $_SESSION['SS_usuario_id'];
+$userId = $user->getId();
 $turma = (int) (isset($_GET['turma']) ? $_GET['turma'] : 0);
 
 $permissoes = checa_permissoes(TIPOFORUM, $turma);
@@ -14,7 +14,6 @@ $permissoes = checa_permissoes(TIPOFORUM, $turma);
 ?><!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta charset="utf-8" />
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="planeta.css" />
@@ -103,7 +102,7 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 		$membros = explode(";",$membrosBlog->resultado['OwnersIds']);
 		$titulo = $membrosBlog->resultado['Title'];
 		
-		if (!in_array($_SESSION['SS_usuario_id'], $membros) and !(checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelAdmin) === 1)){
+		if (!in_array($_SESSION['SS_usuario_id'], $membros)){ // TODO: PRECISA CONFERIR SE É PROFESSOR TAMBÉM
 			echo "<p align=\"justify\"><b>Você não tem permissão pra executar essa ação.</b></p>";
 		}else{
 			$consulta->solicitar("SELECT usuario_nome, codUsuario FROM $tabela_usuarios INNER JOIN $tabela_turmasUsuario ON codUsuario = usuario_id WHERE codTurma = $turma");
