@@ -391,6 +391,20 @@ class Blog {
 
 		// echo "DEBUG".$q->erro;
 	}
+
+	public function deletar(){
+		$q = new conexao();
+		$id = $this->id;
+		$q->solicitar("DELETE FROM blogTags WHERE BlogId = $id");
+		$q->solicitar("DELETE FROM blogimagens WHERE id = $id");
+		$q->solicitar("DELETE FROM BlogArquivos WHERE exists(
+						SELECT 1 FROM blogposts
+						WHERE blogposts.Id = BlogArquivos.idPost
+							AND blogposts.BlogId = $id
+						)");
+		$q->solicitar("DELETE FROM blogposts WHERE BlogId = $id");
+		$q->solicitar("DELETE FROM blogblogs WHERE Id = $id");
+	}
 }
 }
 
