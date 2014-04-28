@@ -15,4 +15,4 @@ $idBlog = isset($_GET['id']) ? ((int) $_GET['id']) : die("Favor acessar essa pá
 
 
 $b = new Blog($_GET['id']);
-$b->deletar();
+$b->deletar($user);
