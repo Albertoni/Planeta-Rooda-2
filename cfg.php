@@ -128,6 +128,9 @@ $nivelAluno			= 16; // b10000
 $aluno				= "aluno";
 $nivelVisitante		= 256; // b100000000
 $visitante			= "visitante";
+define("NIVELADMIN", 1);
+define("NIVELPROFESSOR", 4);
+define("NIVELALUNO", 16);
 
 //Sistemas Básicos
 $sistAdmin 		= "Planeta Rooda";
