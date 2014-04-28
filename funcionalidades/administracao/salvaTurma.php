@@ -1,6 +1,7 @@
 <?php 
 require('../../cfg.php');
 require('../../bd.php');
+require('../../terreno.class.php');
 
 
 $q = new conexao();
@@ -25,3 +26,5 @@ for($i=0; $i<$numeroAlunos; $i++){
 
 $q->solicitar("INSERT INTO TurmasUsuario(codTurma, codUsuario, associacao)
 				VALUES".implode(',', $parteDinamica));
+
+//$terrenoPrincipal = new Terreno("Terreno da turma $nomeTurma", );

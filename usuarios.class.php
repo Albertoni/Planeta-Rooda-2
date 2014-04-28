@@ -76,6 +76,7 @@ class Usuario { //estrutura para o item post do blog
 	private function setPass($pass)					{$this->pass = $pass;}
 	private function setBirthday($birthday)			{$this->birthday = $birthday;}
 	private function setName($name)					{$this->name = $name;}
+	private function setNomeMae($nomeMae)			{$this->nomeMae = $nomeMae;}
 	private function setEmail($email)				{$this->email = $email;}
 	private function setPersonagemId($personagemId)	{$this->personagemId = $personagemId;}
 	private function setNivelAbsoluto($nivel)		{$this->nivelAbsoluto = $nivel;}
@@ -102,6 +103,7 @@ class Usuario { //estrutura para o item post do blog
 		$assoc['nome'] = $this->name;
 		return $assoc;
 	}
+	public function getNomeMae(){return $this->nomeMae;}
 
 	// novo metodo de encripção de senha
 	// não está sendo usado ainda, ativar futuramente.
@@ -157,6 +159,7 @@ class Usuario { //estrutura para o item post do blog
 		$this->setPass($resultadoBD['usuario_senha']);
 		$this->setBirthday($resultadoBD['usuario_data_aniversario']);
 		$this->setName($resultadoBD['usuario_nome']);
+		$this->setNomeMae($resultadoBD['usuario_nome_mae']);
 		$this->setEmail($resultadoBD['usuario_email']);
 		$this->setPersonagemId($resultadoBD['usuario_personagem_id']);
 		$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
