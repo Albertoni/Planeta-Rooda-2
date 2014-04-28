@@ -22,7 +22,7 @@ class Usuario { //estrutura para o item post do blog
 	var $nivelAbsoluto = 0;
 	private $dataUltimoLogin;
 
-	function Usuario($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){
+	function __construct($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){
 		$this->id = (int) $id;
 		$this->user = $user;
 		$this->pass = $pass;
