@@ -15,9 +15,9 @@ $projeto_id = isset($_GET['projeto_id']) ? (int) $_GET['projeto_id'] : 0;
 $funcionalidade_tipo = TIPOPORTFOLIO;
 $funcionalidade_id = $projeto_id;
 
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
+if ($user === false){
 	die("Voce precisa estar logado para acessar essa p&aacute;gina. <a href=\"../../\">Favor voltar.</a>");
-
+}
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 	$turma = $_GET['turma'];
 }else{
