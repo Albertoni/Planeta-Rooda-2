@@ -11,17 +11,14 @@ require_once("player_aux.php"); // IMPORTANTE
 
 $usuario = usuario_sessao();
 
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
+if ($usuario === false){
 	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
-
-if (sizeof($_SESSION['SS_turmas']) > 1){ // Pertence a mais de uma turma, então se valida os valores se o cara trocar de turma
-	$mais_de_uma_turma = true;
-}else{
-	$mais_de_uma_turma = false;
 }
 
+$mais_de_uma_turma = (sizeof($_SESSION['SS_turmas']) > 1) ? true : false;
+
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
-	$turma = $_GET['turma'];
+	$turma = (int) $_GET['turma'];
 }
 
 global $tabela_playerComentarios, $nivelAdmin;
