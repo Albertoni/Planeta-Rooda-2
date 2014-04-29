@@ -140,9 +140,10 @@ $user = usuario_sessao();
 		<div style="clear:both;"></div>
 		</div><!-- Fecha Div conteudo -->
 		</div><!-- Fecha Div conteudo_meio -->
-		<div id="conteudo_base">
-		</div><!-- para a imagem de fundo da base -->
 	</div><!-- fim da geral -->
+	<div id="conteudo_base">
+	</div><!-- para a imagem de fundo da base -->
+</div>
 </body>
 
 <script type="text/javascript">

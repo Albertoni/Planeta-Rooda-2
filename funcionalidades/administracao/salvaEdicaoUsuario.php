@@ -3,13 +3,9 @@ require('../../cfg.php');
 require('../../bd.php');
 require('../../funcoes_aux.php');
 
-
-
-print_r($_POST);
-
 $q = new conexao();
 
-$id = $q->sanitizaString($_GET['id']);
+$id = $q->sanitizaString($_POST['usuario_id']);
 
 $nomeUsuario = $q->sanitizaString($_POST['usuario_nome']);
 $usuarioLogin = $q->sanitizaString($_POST['usuario_login']);
@@ -22,12 +18,19 @@ $q->solicitar(" UPDATE usuarios SET usuario_nome='$nomeUsuario' , usuario_login=
 				usuario_data_aniversario='$usuarioDataAniversario', usuario_nome_mae='$usuarioNomeMae',
 				usuario_email='$usuarioEmail' WHERE usuario_id='$id' ");
 
-echo $q->erro;
+if($q->erro != ""){
+	echo "Aconteceu algum erro ao salvar os dados do aluno: ".$q->erro;
+}
 
 if($_POST['usuario_senha']!=''){
 	$usuarioSenha = crypt($_POST['usuario_senha'], "$2y$07$".gen_salt(22));
-	$q->solicitar(" UPDATE usuarios SET usuario_senha='$usuarioSenha' 
-				 WHERE usuario_id='$id' ");
-	};
+	$q->solicitar("UPDATE usuarios SET usuario_senha='$usuarioSenha' 
+				 WHERE usuario_id='$id'");
+};
 
-// function __construct($id=0, $user="", $pass="", $birthday="", $name="", $email="", $personagem_id=0, $nivel=-1){
+if($q->erro != ""){
+	echo "Aconteceu algum erro ao salvar a senha nova do aluno: ".$q->erro;
+}else{
+	echo "<script>alert('Salvo com sucesso, clique para voltar.');</script>";
+	magic_redirect("lista_usuarios.php");
+}

@@ -158,7 +158,7 @@ class Usuario { //estrutura para o item post do blog
 		$this->setNomeMae($resultadoBD['usuario_nome_mae']);
 		$this->setEmail($resultadoBD['usuario_email']);
 		$this->setPersonagemId($resultadoBD['usuario_personagem_id']);
-		$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
+		//$this->setNivelAbsoluto($resultadoBD['usuario_nivel']);
 		//$this->dataUltimoLogin = $resultadoBD['personagem_ultimo_acesso'];
 		
 		

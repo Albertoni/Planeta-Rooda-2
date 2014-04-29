@@ -12,9 +12,9 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-$user = usuario_sessao();
+$usuarioAtual = usuario_sessao();
 
-/*if($user === false){
+/*if($usuarioAtual === false){
 	die("Voce nao esta logado em sua conta. Por favor volte e logue.");
 }*/
 
@@ -101,6 +101,7 @@ $usuarioDataAniversario = $data->format('d/m/Y');
 			<div id="info_post" class="bloco">
 			<h1>EDITAR USUÁRIO</h1>
 			<form action="salvaEdicaoUsuario.php" method="post">
+				<input type="hidden" name="usuario_id" value="<?=$user->getId()?>">
 				<ul class="sem_estilo">
 					<li>Nome</li> <li><input required name="usuario_nome" type="text" value="<?=$user->getName()?>"/></li>
 					<li>Login</li> <li><input required name="usuario_login" type="text" value="<?=$user->getUser()?>"/></li>
