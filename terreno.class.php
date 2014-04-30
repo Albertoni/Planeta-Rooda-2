@@ -36,7 +36,7 @@ class Terreno{
 				$q->resultado['nome'],
 				$q->resultado['tipo'],
 				$q->resultado['idChat'],
-				$q->resultado['patio'],
+				$q->resultado['patio']
 				);
 			$this->id = $q->resultado['id'];
 			$this->salvo = true;
@@ -48,14 +48,14 @@ class Terreno{
 	function salvar(){
 		$q = new conexao();
 		if($this->salvo === false){
-			$nomeSanitizado = $q->sanitizaString($this->nome)
+			$nomeSanitizado = $q->sanitizaString($this->nome);
 			$tipoSanitizado = (int) $this->tipo;
 			$chatSanitizado = (int) $this->idChat;
 			$patioSanitizado = ($this->ehPatio ? 1 : 0);
 
 			$q->solicitar("
 				INSERT INTO terrenos 
-					(nome, tipo, idChat, patio) 
+					(nome, tipo, idChat, patio);
 				VALUES(
 					'$nomeSanitizado',
 					'$tipoSanitizado',
@@ -69,10 +69,10 @@ class Terreno{
 		}else{
 			$query = ("
 				UPDATE terrenos SET 
-					nome   = '$this->nome',
-					tipo   = '$this->tipo',
-					idChat = '$this->idChat',
-					patio  = '$this->ehPatio'
+					nome   = '$this->nomeSanitizado',
+					tipo   = '$this->tipoSanitizado',
+					idChat = '$this->chatSanitizado',
+					patio  = '$this->patioSanitizado'
 				WHERE id = '$this->id'");
 		}
 	}
