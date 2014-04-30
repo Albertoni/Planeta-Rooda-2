@@ -1,151 +1,160 @@
 <?php
-
-require_once("funcoes_aux.php");
-require_once("cfg.php");
-require_once("bd.php");
-
-
-class turma{
-//dados
-	
-	/*
-	* Funcionalidades
-	*/
-	const BIBLIOTECA='1';
-	const BLOG='2';
-	const FORUM='3';
-	const ARTE='4';
-	const PERGUNTA='5';
-	const PORTFOLIO='6';
-	const PLAYER='7';
-	const AULAS='8';
-	
-	/*
-	* Dados da turma no bd.
-	*/
-	private $id = 0;
-	private $nome;
-	private $idProfessorResponsavel;
+require_once("terreno.class.php");
+require_once("Planeta-Guilherme.class.php");
+class Turma_Tentativa_Guilherme
+{
+	//Atributos da classe Turma.
+	private $codTurma;
+	private $nomeTurma;
+	private $profResponsavel;
 	private $descricao;
+	private $serie;
+	private $escola;
+	private $chatId;
+	private $NivelDePermissao = array(); //Array associativo, indexado pelo ID_USUARIO, contendo os nÃ­veis de permissÃ£o (associacao) - obtidos da tabela Turmas Usuario.
+	private $idPlaneta;
+	private $salvo;
 	
-	/*
-	* Arrays de membros da turma
-	*/
-	private $professores;
-	private $monitores;
-	private $alunos;
-	
-	
-//métodos
-	/***/
-	function turma($id = 0){
-		if($id != 0){
-			$this->openTurma($id);
-		}
+	public function __construct($novoNomeTurma = "",
+								$novoProfResponsavel = 0,
+								$novaDescricao = "", 
+								$novaSerie = 0, 
+								$novaEscola = 0, 
+								$novaChatId = 0,
+								$novoPlaneta = 0,
+								$novoSalvo = false
+								)
+	{
+		$this->nomeTurma = $novoNomeTurma;
+		$this->profResponsavel = $novoProfResponsavel;
+		$this->descricao = $novaDescricao;
+		$this->serie = $novaSerie;
+		$this->escola = $novaEscola;
+		$this->chatId = $novaChatId;
+	    $this->idPlaneta = $novoIdPlaneta;
+		$this->salvo = $novoSalvo;
+		//array de NivelDePermissao serÃ¡ inicializado ao se abrir uma turma.
 	}
 	
-	public function getId(){ return $this->id; }
-	public function getNome(){ return $this->nome; }
-	public function getProfessores(){return $this->professores;}
-	public function getMonitores(){return $this->monitores;}
-	public function getAlunos(){return $this->alunos;}
-	public function getIdProfessorResponsavel(){return $this->idProfessorResponsavel;}
-	public function getDescricao(){return $this->descricao;}
+	public function getCodTurma(){	return $this->codTurma;}
 	
-	private function setId		($id)	{ $this->id = (int) $id; }
-	private function setNome		($nome)	{ $this->nome = $nome; }
-	private function setDescricao	($desc)	{ $this->descricao = $desc; }
-	private function setIdProfessorResponsavel($idProfessorResponsavel){ $this->idProfessorResponsavel = $idProfessorResponsavel; }
+	public function getNomeTurma(){	return $this->nomeTurma;}
 	
-	/*
-	* @return int Total de alunos nesta turma.
-	*/
-	public function getNumeroAlunos(){
-		global $nivelAluno;
-		
-		$conexao = new conexao();
-		$conexao->solicitar("SELECT COUNT(*) AS total_alunos
-							FROM TurmasUsuario
-							WHERE associacao = '$nivelAluno'
-								AND codTurma = '".$this->id."'");
-		
-		return $conexao->resultado['total_alunos'];
-	}
+	public function getProfResponsavel(){	return $this->ProfResponsavel;}
 	
-	/*
-	* Carrega os integrantes da turma e divide eles de acordo com a posição deles na turma
-	* 
-	* @return bool Falha ou sucesso no SQL
-	*/
-	public function carregaMembros(){
+	public function getDescricao(){	return $this->descricao;}
+	
+	public function getSerie(){	return $this->serie;}
+	
+	public function getEscola(){	return $this->escola;}
+	
+	public function getChatId(){	return $this->chatID;}
+	
+	function abrir($codTurma){
 		$q = new conexao();
-		$q->solicitar("SELECT * 
-						FROM TurmasUsuario
-						WHERE codTurma=".$this->getId());
-		
-		if($q->erro != ""){
-			return false;
-		}else{
-			global $nivelProfessor; global $nivelMonitor; global $nivelAluno;
+		$codTurmaSanitizado = $q->sanitizaString($codTurma);
+
+		$q->solicitar("SELECT * FROM Turmas WHERE codTurma = '$codTurma'");
+
+		if($q->registros > 0){
+			$this->__construct( // melhor que copicolar cÃ³digo?
+				$q->resultado['nomeTurma'],
+				$q->resultado['profResponsavel'],
+				$q->resultado['descricao'],
+				$q->resultado['serie'],
+				$q->resultado['Escola'],
+				$q->resultado['chat_id'],
+				$q->resultado['idPlaneta']
+				);
+			$this->codTurma = $q->resultado['codTurma'];
+			$this->salvo = true;
 			
-			$this->professores = array();
-			$this->monitores = array();
-			$this->alunos = array();
-			
-			for($i=0; $i<$q->registros; $i++){
-				$tempUser = new Usuario();
-				$tempUser->openUsuario($q->resultado['codUsuario']);
-				
-				switch($q->resultado['associacao']){
-					case $nivelProfessor:
-						$this->professores[] = $tempUser;
-						break;
-					case $nivelManitor:
-						$this->monitores[] = $tempUser;
-						break;
-					case $nivelAluno:
-						$this->alunos[] = $tempUser;
-						break;
-				}
+			//Carrega no array NivelDePermissao, indexado pelo codUsuario, o nivel de associacao.
+			$q->solicitar("SELECT * FROM TurmasUsuario WHERE codTurma = '$codTurma'");
+			for($i=0; $i < $q->registros; $i++)
+			{
+				$this->NivelDePermissao[$q->resultado['codUsuario']] = $q->resultado['associacao'];
 				$q->proximo();
 			}
 			
-			return true;
+		}else{
+			$this->__construct("Terreno inexistente");
 		}
+	}
+
+	function salvar(){
+		$q = new conexao();
+		
+		if($this->salvo === false){
+			$nomeTurmaSanitizado = $q->sanitizaString($this->nomeTurma);
+			$profResponsavelSanitizado = (int) $this->profResponsavel;
+			$descricaoSanitizada = $q->sanitizaString($this->descricao);
+			$serieSanitizada = (int) $this->serie;
+			$escolaSanitizada = (int) $this->escola;
+			$chatIdSanitizado = (int) $this->chatId;
+			$idPlanetaSanitizado = (int) $this->idPlaneta;
+
+			$q->solicitar("
+				INSERT INTO Turmas 
+					(nomeTurma, profResponsavel, descricao, serie, Escola, chat_id, idPlaneta) 
+				VALUES(
+					'$nomeTurmaSanitizado',
+					'$profResponsavelSanitizado',
+					'$descricaoSanitizada',
+					'$serieSanitizada'),
+					'$chatIdSanitizado',
+					'$idPlanetaSanitizado'");
+
+			if($q->erro == ""){
+				$this->codTurma = $q->ultimoId();
+				$this->salvo = true;
+			}
+		}else{
+			$query = ("
+				UPDATE Turmas SET 
+					nomeTurma   = '$this->nomeTurmaSanitizado',
+					profResponsavel   = '$this->profResponsavelSanitizado',
+					descricao = '$this->descricaoSanitizada',
+					serie  = '$this->serieSanitizada',
+					Escola = '$this->escolaSanitizada',
+					chat_id = '$this->chatIdSanitizado',
+					idPlaneta = '$this->idPlanetaSanitizado'
+				WHERE codTurma = '$this->codTurma'");
+		}
+	}
+
+	function toJson($sendHeaders = false){
+		if($sendHeaders){
+			header("Content-Type: application/json");
+		}
+		
+		$json = [];
+		$json['idTurma']     = $this->codTurma;
+		$json['nomeTurma']   = $this->nomeTurma;
+		$json['profResponsavel']   = $this->profResponsavel;
+		$json['descricao'] = $this->descricao;
+		$json['serie']  = $this->serie;
+		$json['escola']  = $this->Escola;
+		$json['idChat']  = $this->chatId;
+		$json['idPlaneta']  = $this->idPlaneta;
+
+		return json_encode($json);
 	}
 	
 	/*
-	* Preenche dados da turma com o que encontrar no banco de dados.
-	* @param id_param A id que será procurar no bd.
-	*/
-	public function openTurma($id_param){
-		$id_param = (int) $id_param;
-		$conexao = new conexao();
-		$conexao->solicitar(
-			"SELECT *
-			 FROM Turmas
-			 WHERE codTurma=$id_param"
-		);
-		if ($conexao->resultado) {
-			$this->setId((int) $id_param);
-			$this->setNome($conexao->resultado['nomeTurma']);
-			$this->setIdProfessorResponsavel($conexao->resultado['profResponsavel']);
-			$this->setDescricao($conexao->resultado['descricao']);
-		}
-	}
+		TODO:
 	
-	/*
-	* Determina se houve alterações na funcionalidade desta turma.
+	* Determina se houve alteraÃ§Ãµes na funcionalidade desta turma.
 	* @param funcionalidade_param Funcionalidade a ser verificada.
-	* @param data_param Data à partir da qual uma alteração deve ter acontecido para ser retornada.
-	* @return Número de alterações que ocorreram na dada funcionalidade desta turma desde a data passada.
+	* @param data_param Data Ã  partir da qual uma alteraÃ§Ã£o deve ter acontecido para ser retornada.
+	* @return NÃºmero de alteraÃ§Ãµes que ocorreram na dada funcionalidade desta turma desde a data passada.
 	*/
 	public function getNumeroAlteracoes($funcionalidade_param, $data_param){
 		$alteracoes = 0;
 		$sql = '';
 		
 		// DEBUG REMOVER ISSO ASSIM QUE O TEMPO DE ULTIMO LOGIN FOR IMPLEMENTADO
-		$data_param = strtotime("-5 years"); //código de teste para mostrar para as gurias na reunião...
+		$data_param = strtotime("-5 years"); //cÃ³digo de teste para mostrar para as gurias na reuniÃ£o...
 		$data_param = date("Y-m-d H:i:s", $data_param);
 		
 		switch($funcionalidade_param){
@@ -230,4 +239,3 @@ class turma{
 		return $alteracoes;
 	}
 }
-
