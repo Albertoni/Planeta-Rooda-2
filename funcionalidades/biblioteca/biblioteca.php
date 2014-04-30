@@ -4,12 +4,11 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
-//require_once("material.class.new.php");
+
 $usuario = usuario_sessao();
 $turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 if (!$usuario) { die("voce nao esta logado"); }
 if (!$usuario->pertenceTurma($turma)) { die("voce nao esta nessa turma"); }
-$assocUsuario = $usuario->getSimpleAssoc();
 ?>
 <!DOCTYPE html>
 <html>
@@ -33,9 +32,6 @@ $assocUsuario = $usuario->getSimpleAssoc();
 		</div>
 		<div id="geral">
 
-			<noscript>
-				<p>O seu javascript está desabilitado, esta pagina depende de javascript para funcionar corretamente.</p>
-			</noscript>
 			<!-- **************************
 						cabecalho
 			***************************** -->
@@ -112,6 +108,9 @@ $assocUsuario = $usuario->getSimpleAssoc();
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
+							<noscript>
+								<p>O seu javascript está desabilitado, esta pagina depende de javascript para funcionar corretamente.</p>
+							</noscript>
 							<li>carregando materiais...</li>
 						</ul>
 					</div>
