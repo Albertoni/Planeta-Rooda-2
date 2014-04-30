@@ -393,7 +393,7 @@ class Blog {
 	}
 
 	public function deletar($objetoUsuario){
-		if ( ( $this->isOwner($objetoUsuario->getId())) || ($objetoUsuario->getNivel($turma) == NIVELPROFESSOR)){
+		if ( ($this->isOwner($objetoUsuario->getId())) || ($objetoUsuario->getNivel($turma) == NIVELPROFESSOR) ){
 			$q = new conexao();
 			$id = $this->id;
 			$q->solicitar("DELETE FROM blogTags WHERE BlogId = $id");
