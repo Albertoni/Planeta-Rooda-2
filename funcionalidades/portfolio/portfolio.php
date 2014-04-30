@@ -181,7 +181,7 @@ if(sizeof($user->getTurmas()) > 1){
 			
 			$consulta->solicitar("SELECT * FROM $tabela_portfolioProjetos WHERE 
 					$condicao
-					ORDER BY id DESC");
+					ORDER BY emAndamento DESC, id DESC");
 
 			imprimeListaProjetos("proj_andamento", $consulta, "Você ainda não tem nenhum projeto.");
 
