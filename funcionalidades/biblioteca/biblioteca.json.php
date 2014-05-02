@@ -192,28 +192,42 @@ function editar() {
 	$idUsuario = $usuario->getId();
 	$idTurma = $material->getIdTurma();
 	$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+	
+	
 	if ($perm === false) {
 		$json['errors'][] = "Biblioteca desabilitada para esta turma.";
 		return;
 	}
-	if ($idUsuario !== $material->getUsuario()->getId() && !$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
-		$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
+
+	//Comparar se usuario_nivel == 16,
+	//	se for, não permite edição;
+	//	senão, permite.
+	$nivelUsuario = $usuario->getNivel($idTurma);
+	
+	if($nivelUsuario == NIVELALUNO){
+		$json['errors'][] = 'Você não tem permissão para editar materiais.';
 		return;
 	}
-	if ($titulo !== '')
-		$material->setTitulo($titulo);
-	if ($autor !== '')
-		$material->setAutor($autor);
-	if ($tags !== '')
-		$material->setTags($tags);
-	$material->salvar();
-	if ($material->temErros()) {
-		if (!isset($json['errors'])) $json['errors'] = array();
-		$json['errors'] = array_merge($json['errors'], $material->getErros());
-		$json['material'] = $material->getAssoc();
-	} else {
-		$json['material'] = $material->getAssoc();
-	}
+	else{
+			if ($idUsuario !== $material->getUsuario()->getId() && !$usuario->podeAcessar($perm['biblioteca_editarMateriais'],$idTurma)) {
+				$json['errors'][] = 'Você não tem permissão para editar materiais nesta biblioteca.';
+				return;
+			}
+			if ($titulo !== '')
+				$material->setTitulo($titulo);
+			if ($autor !== '')
+				$material->setAutor($autor);
+			if ($tags !== '')
+				$material->setTags($tags);
+				$material->salvar();
+			if ($material->temErros()) {
+				if (!isset($json['errors'])) $json['errors'] = array();
+					$json['errors'] = array_merge($json['errors'], $material->getErros());
+					$json['material'] = $material->getAssoc();
+			} else {
+				$json['material'] = $material->getAssoc();
+			}
+		}
 }
 /* ------------------ */
 function excluir() {
