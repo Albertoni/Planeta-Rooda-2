@@ -25,7 +25,8 @@ function listar() {
 	global $usuario;
 	global $_GET;
 	$idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
-	$turma = new turma($idTurma);
+	$turma = new turma();
+	$turma->openTurma($idTurma);
 	$idUsuario = $usuario->getId();
 	if ($turma->getId() !== $idTurma) {
 		$json['errors'][] = "Turma não definida";
@@ -59,7 +60,7 @@ function listar() {
 	if($usuario->podeAcessar($perm['biblioteca_excluirArquivos'], $idTurma)) {
 		$json['pode_excluir'] = true;
 	}
-	if($usuario->podeAcessar($perm['biblioteca_editarMateriais'], $idTurma)) {
+	if($usuario->getNivel($idTurma) != NIVELALUNO) { // Alunos não podem editar: Vide ata de 2 Abril
 		$json['pode_editar'] = true;
 	}
 	$json['materiais'] = array();

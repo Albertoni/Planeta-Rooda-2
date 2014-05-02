@@ -312,7 +312,7 @@ var BIBLIOTECA = (function () {
 		if (pode_aprovar && !this.aprovado) {
 			this.HTMLElemento.appendChild(this.HTMLBotaoAprovar);
 		}
-		if (pode_editar || this.usuario.id ===  sessao.id) {
+		if (pode_editar) {
 			this.HTMLElemento.appendChild(this.HTMLBotaoEditar);
 		}
 		if (pode_excluir || this.usuario.id ===  sessao.id) {
@@ -683,9 +683,12 @@ var BIBLIOTECA = (function () {
 			setTimeout(function () { ajax.submitNewMaterial(formEnvioMaterial); }, 5);
 			return false;
 		};
-		form_edicao_material.onsubmit = function() {
-			setTimeout(function () { ajax.submitEditMaterial(formEdicaoMaterial); }, 5);
-			return false;
+
+		if(formEdicaoMaterial){
+			formEdicaoMaterial.onsubmit = function() {
+				setTimeout(function () { ajax.submitEditMaterial(formEdicaoMaterial); }, 5);
+				return false;
+			}
 		}
 		ajax.init();
 	}

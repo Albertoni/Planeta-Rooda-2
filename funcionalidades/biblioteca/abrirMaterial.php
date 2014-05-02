@@ -28,7 +28,8 @@ if ($material->temErros()) {
 }
 // abre turma do material
 $idTurma = $material->getIdTurma();
-$turma = new turma($idTurma);
+$turma = new turma();
+$turma->openTurma($idTurma);
 if ($turma->getId() !== $idTurma) {
 	// turma nao existe.
 	echo "erro: material pertence a turma inexistente.";

@@ -14,6 +14,12 @@ if (!$usuario->pertenceTurma($idTurma)) { die("voce nao esta nessa turma"); }
 
 $turma = new Turma();
 $turma->openTurma($idTurma);
+
+$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
+if ($perm === false) {
+	echo "erro: a biblioteca foi desabilitada para esta turma.";
+	exit;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -93,22 +99,30 @@ $turma->openTurma($idTurma);
 						</div>
 					</div>
 					<div class="bloco" id="editar_material" style="display: none;">
-						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" name="fechar">fechar</button></h1>
+<?php
+echo "string".$usuario->getNivel($idTurma);
+if($usuario->getNivel($idTurma) != NIVELALUNO){
+
+echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=\"fechar\">fechar</button></h1>
 						<div>
-						<form id="form_edicao_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=editar">
-							<input type="hidden" name="id" value="0" />
+						<form id=\"form_edicao_material\" method=\"post\" enctype=\"multipart/form-data\" action=\"biblioteca.json.php?turma=$idTurma&amp;acao=editar\">
+							<input type=\"hidden\" name=\"id\" value=\"0\" />
 							<label>Título:<br>
-								<input type="text" name="titulo" required />
+								<input type=\"text\" name=\"titulo\" required />
 							</label><br>
 							<label>Autor:<br>
-								<input type="text" name="autor" />
+								<input type=\"text\" name=\"autor\" />
 							</label><br>
 							<label>Palavras do Material:<br>
-								<input type="text" name="tags" />
+								<input type=\"text\" name=\"tags\" />
 							</label><br>
-							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
+							<button id=\"bota_enviar_material\" type=\"submit\" class=\"submit\">Enviar</button>
 						</form>
-						</div>
+						</div>";
+
+}
+
+?>
 					</div>
 					<div class="bloco" id="materiais_enviados">
 						<h1>MATERIAIS ENVIADOS</h1>
