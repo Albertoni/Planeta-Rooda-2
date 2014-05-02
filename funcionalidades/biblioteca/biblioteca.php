@@ -100,9 +100,8 @@ if ($perm === false) {
 					</div>
 					<div class="bloco" id="editar_material" style="display: none;">
 <?php
-echo "string".$usuario->getNivel($idTurma);
-if($usuario->getNivel($idTurma) != NIVELALUNO){
 
+if($usuario->getNivel($idTurma) != NIVELALUNO){
 echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=\"fechar\">fechar</button></h1>
 						<div>
 						<form id=\"form_edicao_material\" method=\"post\" enctype=\"multipart/form-data\" action=\"biblioteca.json.php?turma=$idTurma&amp;acao=editar\">
