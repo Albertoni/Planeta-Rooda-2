@@ -4,11 +4,16 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("../../turma.class.php");
 
 $usuario = usuario_sessao();
-$turma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+$idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
+
 if (!$usuario) { die("voce nao esta logado"); }
-if (!$usuario->pertenceTurma($turma)) { die("voce nao esta nessa turma"); }
+if (!$usuario->pertenceTurma($idTurma)) { die("voce nao esta nessa turma"); }
+
+$turma = new Turma();
+$turma->openTurma($idTurma);
 ?>
 <!DOCTYPE html>
 <html>
@@ -53,14 +58,14 @@ if (!$usuario->pertenceTurma($turma)) { die("voce nao esta nessa turma"); }
 			<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 				<div id="conteudo">
 					<div class="bloco" id="materiais">
-						<h1>NOME DA TURMA</h1>
+						<h1><?=$turma->getNome()?></h1>
 						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
 						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
 						<div>
-						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=enviar">
+						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
 							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
 							<br>
@@ -90,7 +95,7 @@ if (!$usuario->pertenceTurma($turma)) { die("voce nao esta nessa turma"); }
 					<div class="bloco" id="editar_material" style="display: none;">
 						<h1>EDITAR MATERIAL<button type="button" class="bt_fechar" name="fechar">fechar</button></h1>
 						<div>
-						<form id="form_edicao_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$turma?>&amp;acao=editar">
+						<form id="form_edicao_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=editar">
 							<input type="hidden" name="id" value="0" />
 							<label>Título:<br>
 								<input type="text" name="titulo" required />
