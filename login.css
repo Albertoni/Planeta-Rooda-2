@@ -65,3 +65,12 @@ background-image:url(images/botoes/alerta_cadastro.png); cursor:pointer}
 #alerta:hover { background-image:url(images/botoes/alerta_cadastro2.png)}
 
 #txt_alerta { padding-left:20px; padding-right:20px; font-size:15px}
+
+
+.campo_texto:invalid {
+background-color: #ffdddd;
+}
+
+.campo_texto:valid {
+background-color: #ddffdd;
+}

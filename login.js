@@ -281,20 +281,20 @@ var titulo_sen = 'NOVA SENHA';
 
 var c_cadastro = '<ul>\
 			<li> <label for="nome_completo">NOME COMPLETO</label> </li>\
-			<li> <input id="nome_completo" name="nome_completo" type="text" class="campo_texto" /> </li>\
+			<li> <input id="nome_completo" name="nome_completo" type="text" class="campo_texto" required /> </li>\
 			<li> <label for="criar_apelido"><p style="width:48%; float:left">APELIDO</p></label>\
 			<label for="sexo"><p style="width:48%; float:right">SEXO</p></label></li>\
-			<li> <input id="criar_apelido" name="criar_apelido" type="text" class="campo_texto" style="width:48%; float:left" />\
+			<li> <input id="criar_apelido" name="criar_apelido" type="text" class="campo_texto" style="width:48%; float:left" required/>\
 			<select id="sexo" name="sexo" class="campo_texto" style="width:48%; float:right">\
 			<option value="1">Feminino</option>\
 			<option value="2">Masculino</option>\
 			</select></li>\
 			<li> <label for="criar_senha">SENHA</label> </li>\
-			<li> <input id="criar_senha" name="criar_senha" type="password" class="campo_texto" /> </li>\
+			<li> <input id="criar_senha" name="criar_senha" type="password" class="campo_texto" required/> </li>\
 			<li> <label for="confirmar_senha">CONFIRMAR SENHA</label> </li>\
-			<li> <input id="confirmar_senha" name="confirmar_senha" type="password" class="campo_texto" /> </li>\
+			<li> <input id="confirmar_senha" name="confirmar_senha" type="password" class="campo_texto" required/> </li>\
 			<li> <label for="email">E-MAIL</label> </li>\
-			<li> <input id="email" name="email" type="text" class="campo_texto" /> </li>\
+			<li> <input id="email" name="email" type="email" class="campo_texto" required/> </li>\
 			<li> <label for="nivel">NÍVEL</label> </li>\
 			<li><select class="campo_texto" id="nivel" name="nivel">\
 				'+niveis+'\
