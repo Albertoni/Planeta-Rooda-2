@@ -1,4 +1,4 @@
-.<?php
+<?php
 require_once("cfg.php");
 require_once("bd.php");
 require_once("funcoes_aux.php");
