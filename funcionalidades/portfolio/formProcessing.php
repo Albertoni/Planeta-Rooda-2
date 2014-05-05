@@ -41,7 +41,6 @@ if ($_POST['update'] == 1){
 	$post->setTexto($_POST['text']);
 	$post->setTags($_POST['tags']);
 
-	echo $post->salvar();
 }else{
 	$dados = array(
 		'id' => $_POST['post_id'],
@@ -53,15 +52,14 @@ if ($_POST['update'] == 1){
 		);
 
 	$post = new post(0, $dados);
-	print_r($post->salvar());
-
-	print_r($post);
-
-	$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $user->getId());
-	$consulta = new conexao();
-	foreach ($arquivos as $a) {
-		if ($a->getId()) { // Se retornar id, foi inserido com sucesso
-			$consulta->solicitar("INSERT INTO PortfolioArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
+	
+	if (isset($_FILES['file'])) {
+		$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $user->getId());
+		$consulta = new conexao();
+		foreach ($arquivos as $a) {
+			if ($a->getId()) { // Se retornar id, foi inserido com sucesso
+				$consulta->solicitar("INSERT INTO PortfolioArquivos (idArquivo, idPost) VALUES ({$a->getId()}, {$post->getId()})");
+			}
 		}
 	}
 }

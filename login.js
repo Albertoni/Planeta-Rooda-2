@@ -254,7 +254,6 @@ function login(){
 	http_login.open("POST", "login.php", true);
 	http_login.onreadystatechange=function() {
 		if ((http_login.readyState == 4)&& (http_login.status == 200 )) {
-			//alert(http_login.responseText);
 			try{
 				dados = eval('(' + http_login.responseText + ')');
 				if (dados.login.valor == '1'){
@@ -262,11 +261,10 @@ function login(){
 					alerta(dados.login.texto);
 				}else{
 					document.location = dados.login.texto;
-					//window.open(dados.login.texto, "", "fullscreen");
 				}
 			}
 			catch(erro){
-				console.log(erro.message); // Foda-se que isso pode dar merda no firefox, só cai aqui se deu merda de qualquer jeito.
+				console.log(erro.message);
 			}
 		}
 	}
