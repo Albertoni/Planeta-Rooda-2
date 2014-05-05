@@ -1,6 +1,8 @@
 body {background-image:url(images/fundos/fundo.png); background-repeat:repeat-x; 
 background-color:#AACCCA; margin:0 0 0 0; height:100%; font-family: "Trebuchet MS", Tahoma, Verdana, Sans; 
-font-size:13px; color:#333333;}
+font-size:13px; color:#333333;
+text-transform: uppercase;
+}
 
 html {margin:0; height:100%}
 
@@ -366,14 +368,27 @@ ul.listaFun li a {
 	margin: 5px 5px;
 }
 .comentario button[name=excluir],
-.bt_fechar,
-.bt_excluir {
+.bt_fechar {
 	background: transparent url('images/botoes/bt_x.png') no-repeat bottom left;
 	border: 0 none;
 	display: inline-block;
 	float: right;
 	width: 10px;
 	height: 10px;
+	margin: 2px 0 2px 5px;
+	padding: 0;
+	overflow: hidden;
+	text-indent: -999px;
+	vertical-align: middle;
+}
+
+.bt_excluir {
+	background: transparent url('images/botoes/bt_excluirpeq.png') no-repeat bottom left;
+	border: 0 none;
+	display: inline-block;
+	float: right;
+	width: 36px;
+	height: 34px;
 	margin: 2px 0 2px 5px;
 	padding: 0;
 	overflow: hidden;
