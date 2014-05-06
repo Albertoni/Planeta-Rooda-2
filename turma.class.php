@@ -75,7 +75,7 @@ class Turma{
 				$q->proximo();
 			}
 		}else{
-			$this->__construct("Terreno inexistente");
+			$this->__construct("Turma inexistente");
 		}
 		
 		

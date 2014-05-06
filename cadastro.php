@@ -67,8 +67,6 @@ if (!nivel_existe($nivel)){
 }
 // END Validação Nivel
 
-
-
 //Primeiro grava o usuário na tabela personagens, definindo o id que será utilizado na tabela de usuários para referenciar o personagem / avatar. - Guto - 10.05.10 -- João - 09.04.14
 if($erro != 1){
 	$registrar->solicitar("INSERT INTO $tabela_personagens (personagem_nome, personagem_avatar_1, chat_id)
