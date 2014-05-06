@@ -24,12 +24,6 @@ function checar(){
 	}
 }
 
-function gravaConteudo() {
-	document.fConteudo.text.value=objContent.body.innerHTML;
-	return true;
-}
-
-
 function doBold() {
 	objContent.execCommand('bold', false, null);
 }
@@ -518,6 +512,20 @@ $(document).ready(function(){
 	function() {
 		$('#liAdicionarArquivo').css('display','none');
 		$('#divLinkAdicionarArquivo').html('adicionar');
+	});
+
+	// VALIDAÇÃO
+	$('form').submit(function(ev) {
+		ev.preventDefault()
+		if (objContent.body.innerHTML == "<br>"){
+			if (confirm("Você não escreveu nenhuma mensagem, tem certeza que quer postar isso sem texto?")) {
+				document.fConteudo.text.value=objContent.body.innerHTML;
+				document.fConteudo.submit();
+			};
+		}else{
+			document.fConteudo.text.value=objContent.body.innerHTML;
+			document.fConteudo.submit();
+		};
 	});
 });
 

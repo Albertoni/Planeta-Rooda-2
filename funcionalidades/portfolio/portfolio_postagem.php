@@ -153,7 +153,7 @@ if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
 				conteudo
 	***************************** -->
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
-		<form name="fConteudo" id="postFormId" action="formProcessing.php" onsubmit="return gravaConteudo()" method="post" enctype="multipart/form-data">
+		<form name="fConteudo" id="postFormId" action="formProcessing.php" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="text" value="" />
 			<div class="bts_cima">
 				<a href="portfolio_projeto.php?projeto_id=<?=$projeto_id?>&amp;turma=<?=$turma?>" align="left" >
