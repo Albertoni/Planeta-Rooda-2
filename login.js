@@ -207,6 +207,7 @@ function validar_cadastro(nomeA,loginA,emailA,passwordA,passwordB) {
 
 	var Caracteres_Email = /^[\w-]+(\.[\w-]+)*@(([A-Za-z\d][A-Za-z\d-]{0,61}[A-Za-z\d]\.)+[A-Za-z]{2,6}|\[\d{1,3}(\.\d{1,3}){3}\])$/;
 	var Caracteres_Login = /^[A-Za-z\d-_]{0,65}$/;
+	//var Caracteres_Nome = ^[A-Z][a-z]*(\s[A-Z][a-z]*){0,65}$/;//Um nome deve iniciar por letra maiuscula, ser composto por caracteres de a-z, e possuir sobrenomes compostos da mesma maneira.
 
 	errors='';
 
@@ -239,6 +240,11 @@ function validar_cadastro(nomeA,loginA,emailA,passwordA,passwordB) {
 	} else if (nomeA == "") {
 		errors='Nome inválido.';
 	}
+	/*
+	else if (!Caracteres_Nome.test(nomeA)){
+		errors='Nome inválido.';
+	}
+	*/
 	
 	alerta_volta = 1;
 	
