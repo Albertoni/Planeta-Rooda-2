@@ -239,7 +239,7 @@ if(($user->podeAcessar($perm['portfolio_inserirPost'], $turma)) && (in_array($us
 										 $titulo = $consulta->resultado['titulo'];
 									 }
 ?>
-								 <li class="tabela_port" id=liLink<?=$linkId?>>
+								 <li class="tabela_port" id="liLink<?=$linkId?>">
 							 <a href="<?=$endereco?>" target="_blank" align="left" ><?=$titulo?></a>
 							 <button type="button" class="bt_excluir" onclick="ROODA.ui.confirm('Tem certeza que deseja apagar este link?',function(){deleteLink(<?=$linkId?>);});" align="right"></button>
 						 </li>
