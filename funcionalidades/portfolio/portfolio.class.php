@@ -129,12 +129,12 @@ class post{
 	function setDataCriacao($arg){$this->dataCriacao = $arg;}
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
-	function geraHtmlPost(){
+	function geraHtmlPost($user, $permissoes{
 		
 		$arquivo = new ArquivosPost();
 		$arquivo->abrirPost($this->getId());
 		
-		
+		$podeExcluir = ($user->podeAcessar($permissoes['portfolio_excluirPost'])) ? "<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>" : "";
 		
 		$html = "
 				<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">
@@ -145,7 +145,7 @@ class post{
 							</span>
 							<span class=\"data\">
 								".$this->getDataCriacaoFormatada()."
-								<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>
+								".$podeExcluir."
 							</span>
 						</li>
 						<li class=\"tabela_port postagem\">
