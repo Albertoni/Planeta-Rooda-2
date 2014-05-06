@@ -129,7 +129,7 @@ class post{
 	function setDataCriacao($arg){$this->dataCriacao = $arg;}
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
-	function geraHtmlPost($user, $permissoes{
+	function geraHtmlPost($user, $permissoes){
 		
 		$arquivo = new ArquivosPost();
 		$arquivo->abrirPost($this->getId());
