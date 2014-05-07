@@ -65,6 +65,7 @@ class ArquivosPost extends Arquivo {
 			ON TA.arquivo_id = TPA.idArquivo
 			WHERE TPA.idPost = $idPost"
 		);
+		
 		if ($this->consulta->erro !== '') {
 			throw new Exception('BD: ' . $this->consulta->erro, 1);
 			return false;

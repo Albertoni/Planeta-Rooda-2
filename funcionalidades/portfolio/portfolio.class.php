@@ -130,7 +130,6 @@ class post{
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
 	function geraHtmlPost($user, $permissoes, $turma){
-		
 		$arquivo = new ArquivosPost();
 		$arquivo->abrirPost($this->getId());
 		
@@ -159,7 +158,7 @@ class post{
 						<li>
 		";
 
-		if ($arquivo->existe()) {
+		if($arquivo->existe()){
 			$html .= "					<ul class=\"sem_estilo\">\n";
 
 			do{
