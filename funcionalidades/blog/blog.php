@@ -133,17 +133,17 @@ imprimeListaPosts($blog->getId(), $turma);
 					</ul>
 				</div>
 			</div>
-			<div class="bloco" id="arquivos">
-				<?php 
+			<!--div class="bloco" id="arquivos">
+				<?php
 				$consulta = new conexao();
 				$consulta->solicitar("SELECT Tipo FROM $tabela_blogs WHERE Id = $blog_id");
 				$tipoBlog = $consulta->resultado['Tipo'];
 				$funcionalidade_id = $blog->getId();
-				$funcionalidade_tipo = $tipoBlog;
+				$funcionalidade_tipo = $tipoBlog;/*
 				?>
 				
 				<h1><a class="toggle" id="toggle_arq">▼</a> ARQUIVOS </h1>
-				<!-- <div class="add" id="divLinkAdicionarArquivo">adicionar</div> -->
+				<!- - <div class="add" id="divLinkAdicionarArquivo">adicionar</div> - ->
 				<div class="add" onclick="botaoAdicionar('addFileDiv')">adicionar</div>
 				<div class="bloqueia">
 					<ul class="sem_estilo" id="caixa_arq">
@@ -198,7 +198,7 @@ imprimeListaPosts($blog->getId(), $turma);
 								</li>
 <?php
 								$consulta->proximo();
-							}
+							}*/
 ?>
 					</ul>
 				</div>
@@ -237,7 +237,7 @@ imprimeListaPosts($blog->getId(), $turma);
 ?>
 					</ul>
 				</div>
-			</div>
+			</div-->
 			<div class="bloco" id="tag">
 				<h1><a class="toggle" id="toggle_tag">▼</a> TAGS</h1>
 				<div class="bloqueia">
