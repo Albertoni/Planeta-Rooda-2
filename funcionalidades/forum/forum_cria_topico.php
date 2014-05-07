@@ -36,10 +36,11 @@
 					WHERE ForumTopico.idTopico = $idTopico
 					ORDER BY idMensagem ASC LIMIT 1");
 
-				if ((int) $q->resultado['idTurma'] === (int) $idTurma)
-				$texto = str_replace("<br>", "\n", $q->resultado['texto']);
-				$titulo = $q->resultado['titulo'];
-				$idMensagem = $q->resultado['idMensagem'];
+				if ((int) $q->resultado['idTurma'] === (int) $turma){
+					$texto = str_replace("<br>", "\n", $q->resultado['texto']);
+					$titulo = $q->resultado['titulo'];
+					$idMensagem = $q->resultado['idMensagem'];
+				}
 			}else{
 				die("Voce nao tem permissao para editar topicos.");
 			}
