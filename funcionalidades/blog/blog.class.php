@@ -331,8 +331,8 @@ class Blog {
 
 	function mostraPaginacao($post_ini) {
 		if($post_ini>0) {
-			echo "<a href=\"blog.php?blog_id=$this->id&ini=0\"><< Primeira</a>";
-			echo "<a href=\"blog.php?blog_id=$this->id&ini=". ($post_ini-$this->getPaginacao()) ."\">< Anterior</a>";
+			echo "<a href=\"blog.php?id=$this->id&amp;ini=0&amp;turma=$this->turma\"><< Primeira</a>";
+			echo "<a href=\"blog.php?id=$this->id&amp;ini=". ($post_ini-$this->getPaginacao()) ."&amp;turma=$this->turma\">< Anterior</a>";
 		} else {
 			echo "<span><< Primeira</span>";
 			echo "<span>< Anterior</span>";
@@ -342,13 +342,13 @@ class Blog {
 			if($post_ini==($i-1)*$this->getPaginacao()) {
 				echo "<span class=\"numero_atual\">$i</span>";
 			} else {
-				echo "<a href=\"blog.php?blog_id=$this->id&ini=".($i-1)*$this->getPaginacao()."\" class=\"numero\">$i</a>";
+				echo "<a href=\"blog.php?id=$this->id&amp;ini=".($i-1)*$this->getPaginacao()."&amp;turma=$this->turma\" class=\"numero\">$i</a>";
 			}
 		}
 		
 		if($post_ini<($this->getNumPaginas()-1)*$this->getPaginacao()) {
-			echo "<a href=\"blog.php?blog_id=$this->id&ini=" .($post_ini+$this->getPaginacao()) . "\">Pr&oacute;xima ></a>";
-			echo "<a href=\"blog.php?blog_id=$this->id&ini=".($this->getNumPaginas()-1)*$this->getPaginacao()."\">&Uacute;ltima >></a>";
+			echo "<a href=\"blog.php?id=$this->id&amp;ini=" .($post_ini+$this->getPaginacao()) . "&amp;turma=$this->turma\">Pr&oacute;xima ></a>";
+			echo "<a href=\"blog.php?id=$this->id&amp;ini=".($this->getNumPaginas()-1)*$this->getPaginacao()."&amp;turma=$this->turma\">&Uacute;ltima >></a>";
 		} else {
 			echo "<span>Pr&oacute;xima ></span>";
 			echo "<span>&Uacute;ltima >></span>";
