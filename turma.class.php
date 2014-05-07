@@ -11,6 +11,7 @@ class Turma{
 	private $idChat;
 	private $idPlaneta;
 	private $NivelPermissao = array(); //Array que conterá o nível de permissao dos usuarios de uma turma, indexado por CodUsuario.
+	private $salvo;
 	
 	const BLOG = 1;
 	const PORTFOLIO = 2;
@@ -46,6 +47,7 @@ class Turma{
 		$this->escola = $novaEscola;
 		$this->idChat = (int) $novoIdChat;
 		$this->idPlaneta = (int) $novoIdPlaneta;
+		$this->salvo = false;
 		//O array nivel de permissao sera inicializado ao abrir uma turma.
 	}
 	

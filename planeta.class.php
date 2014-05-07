@@ -6,6 +6,7 @@ class Planeta{
 	private $ehVisitante;
 	private $idTerrenoPrincipal;
 	private $idTerrenoPatio;
+	private $salvo
 
 	function __construct(	$novoNome = "",
 							$novaAparencia = 0,
@@ -18,6 +19,7 @@ class Planeta{
 		$this->ehVisitante	= $novoEhVisitante;
 		$this->idTerrenoPrincipal	= $novoIdTerrenoPrincipal;
 		$this->idTerrenoPatio	= $novoIdTerrenoPatio;
+		$this->salvo = false;
 	}
 
 	function getId()	{return $this->id;}
