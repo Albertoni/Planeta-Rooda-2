@@ -145,6 +145,9 @@ class Post { //estrutura para o item post do blog
 	}
 	
 	function printPostTags() {
+		if (empty($this->tags)) {
+			$this->getPostTags();
+		}
 		$tags = "";
 		for ($i=0,$size=count($this->tags); $i<$size; $i++){
 			if (isset($this->tags[$i+1])) { // Se não for o ultimo...
