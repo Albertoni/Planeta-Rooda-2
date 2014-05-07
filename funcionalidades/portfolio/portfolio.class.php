@@ -129,12 +129,12 @@ class post{
 	function setDataCriacao($arg){$this->dataCriacao = $arg;}
 	function setDataUltMod($arg){$this->dataUltMod = $arg;}
 
-	function geraHtmlPost($user, $permissoes){
+	function geraHtmlPost($user, $permissoes, $turma){
 		
 		$arquivo = new ArquivosPost();
 		$arquivo->abrirPost($this->getId());
 		
-		$podeExcluir = ($user->podeAcessar($permissoes['portfolio_excluirPost'])) ? "<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>" : "";
+		$podeExcluir = ($user->podeAcessar($permissoes['portfolio_excluirPost'], $turma)) ? "<button type=\"button\" class=\"bt_excluir\" onclick=\"ROODA.ui.confirm('Tem certeza que deseja apagar este post?',function () { deletePost(".$this->id."); });\">Excluir</button>" : "";
 		
 		$html = "
 				<div class=\"cor".alterna()."\" id=\"postDiv".$this->id."\">

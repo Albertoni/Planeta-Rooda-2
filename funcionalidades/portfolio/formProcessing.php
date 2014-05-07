@@ -40,6 +40,7 @@ if ($_POST['update'] == 1){
 	$post->setTitulo($_POST['titulo']);
 	$post->setTexto($_POST['text']);
 	$post->setTags($_POST['tags']);
+	$post->salvar();
 
 }else{
 	$dados = array(
@@ -52,6 +53,7 @@ if ($_POST['update'] == 1){
 		);
 
 	$post = new post(0, $dados);
+	$post->salvar();
 	
 	if (isset($_FILES['file'])) {
 		$arquivos = Arquivo::bulkFiles($_FILES['file'], (int) $user->getId());

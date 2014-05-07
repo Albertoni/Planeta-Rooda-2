@@ -259,7 +259,7 @@ if(($user->podeAcessar($perm['portfolio_inserirPost'], $turma)) && (in_array($us
 				$numPosts = count($postsProjeto);
 				
 				for ($i=0; $i < $numPosts; $i++){
-						echo $postsProjeto[$i]->geraHtmlPost($user, $perm);
+						echo $postsProjeto[$i]->geraHtmlPost($user, $perm, $turma);
 				}
 ?>
 			</div>
