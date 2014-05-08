@@ -1,4 +1,5 @@
 <?php
+if (class_exists('Planeta') != true){ // conserta bugs raros mas incomodativos
 class Planeta{
 	private $id;
 	private $aparencia;
@@ -102,7 +103,7 @@ class Planeta{
 			header("Content-Type: application/json");
 		}
 		
-		$json = [];
+		$json = array();
 		$json['id']     = $this->id;
 		$json['aparencia']   = $this->aparencia;
 		$json['ehVisitante'] = $this->ehVisitante;
@@ -111,4 +112,5 @@ class Planeta{
 
 		return json_encode($json);
 	}
+}
 }

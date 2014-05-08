@@ -1,9 +1,9 @@
 <?php
-	require_once("planeta.class.php");
 	require_once("cfg.php");
 	require_once("bd.php");
 	require_once("funcoes_aux.php");
-	require_once("reguaNavegacao.class.php");
+	
+	require_once("planeta.class.php");
 	require_once("usuarios.class.php");
 	require_once("turma.class.php");
 	require_once("AlteracoesTurmasUsuario.php");
@@ -73,7 +73,6 @@
 					$planetasQuePodeAcessar = $usuario->getPlanetasQuePodeAcessar();
 
 					foreach($planetasQuePodeAcessar as $planeta){
-						//print_r($planeta);
 						$idPlaneta = $planeta->__get("idTerrenoPrincipal");
 						$turmaPlaneta = $planeta->__get("idTurma");
 						$nomePlaneta = $planeta->__get("nome");

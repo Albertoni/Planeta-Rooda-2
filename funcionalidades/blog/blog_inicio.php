@@ -1,8 +1,8 @@
 <?php 
 require_once("../../cfg.php");
 require_once("../../bd.php");
-require_once("../../reguaNavegacao.class.php");
 require_once("../../funcoes_aux.php");
+require_once("../../reguaNavegacao.class.php");
 
 $usuario = usuario_sessao();
 if (!$usuario) { die("voce nao esta logado"); }
