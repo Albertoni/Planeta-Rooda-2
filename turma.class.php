@@ -130,7 +130,7 @@ class Turma{
 			header("Content-Type: application/json");
 		}
 		
-		$json = [];
+		$json = Array();
 		$json['id']     = $this->id;
 		$json['nomeTurma']   = $this->nomeTurma;
 		$json['profResponsavel']   = $this->profResponsavel;

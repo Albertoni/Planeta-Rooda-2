@@ -74,7 +74,7 @@ class Terreno{
 			header("Content-Type: application/json");
 		}
 		
-		$json = [];
+		$json = Array();
 		$json['id']     = $this->id;
 		$json['tipo']   = $this->tipo;
 		$json['idChat'] = $this->idChat;

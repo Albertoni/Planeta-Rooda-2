@@ -84,7 +84,7 @@ class Planeta{
 			header("Content-Type: application/json");
 		}
 		
-		$json = [];
+		$json = Array();
 		$json['id']     = $this->id;
 		$json['aparencia']   = $this->aparencia;
 		$json['ehVisitante'] = $this->ehVisitante;
