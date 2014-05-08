@@ -121,8 +121,11 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_comunicador){echo 'style="display:none"';}?> id="habilitarFuncionalidade_comunicador">
 					<table border="0" width="100%" cellpadding="0px" cellspacing="0">
 						<th></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+	<!-- Versão anterior a 08/05/2014
 						<th class="monitor">Habilitado para Monitores</td>
-						<th class="aluno">Habilitado para Alunos</td>
+						<th class="aluno">Habilitado para Alunos</td> -->
 					<tr>
 						<td class="opcaoGerenciamento">Chat de Terreno</td>
 					</tr>
@@ -148,10 +151,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_biblioteca){echo 'style="display:none"';}?> id="habilitarFuncionalidade_biblioteca">
 					<table border="0">
 						<th></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!-- Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->
 					<tr>
 						<td class="opcaoGerenciamento">Enviar Materiais</td>
 					</tr>
@@ -177,10 +184,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_blog){echo 'style="display:none"';}?> id="habilitarFuncionalidade_blog">
 					<table border="0">
 						<th><b></b></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->
 					<tr>
 						<td class="opcaoGerenciamento">Inserir Post</td>
 					</tr>
@@ -212,10 +223,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_portfolio){echo 'style="display:none"';}?> id="habilitarFuncionalidade_portfolio">
 					<table border="0">
 						<th><b></b></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->					
 					<tr>
 						<td class="opcaoGerenciamento">Visualizar Post</td>
 					</tr>
@@ -253,10 +268,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_forum){echo 'style="display:none"';}?> id="habilitarFuncionalidade_forum">
 					<table border="0">
 						<th><b></b></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014					
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->
 					<tr>
 						<td class="opcaoGerenciamento">Criar Tópico</td>
 					</tr>
@@ -294,10 +313,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_arte){echo 'style="display:none"';}?> id="habilitarFuncionalidade_arte">
 					<table border="0">
 						<td><b></b></td>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--						
 						<th class="professor">Habilitado para Professores</td>
 						<th class="monitor">Habilitado para Monitores</td>
 						<th class="aluno">Habilitado para Alunos</td>
 						<th class="todos">Habilitado para Todos</td>
+-->						
 					<tr>
 						<td class="opcaoGerenciamento">Criar Desenho</td>
 					</tr>
@@ -326,10 +349,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_pergunta){echo 'style="display:none"';}?> id="habilitarFuncionalidade_pergunta">
 					<table border="0">
 						<th></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->						
 					<tr>
 						<td class="opcaoGerenciamento">Criar Questionário</td>
 					</tr>
@@ -361,10 +388,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_player){echo 'style="display:none"';}?> id="habilitarFuncionalidade_player">
 					<table border="0">
 						<th></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014						
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->						
 					<tr>
 						<td class="opcaoGerenciamento">Inserir Vídeos</td>
 					</tr>
@@ -393,10 +424,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_aulas){echo 'style="display:none"';}?> id="habilitarFuncionalidade_aulas">
 					<table border="0">
 						<th></th>
+						<th class="formador">Habilitado para Formadores</td>
+						<th class="todos">Habilitado para Todos</td>
+<!--Versão anterior a 08/05/2014						
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
+-->						
 					<tr>
 						<td class="opcaoGerenciamento">Criar Aulas</td>
 					</tr>
