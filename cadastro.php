@@ -92,7 +92,7 @@ if($erro != 1){
 
 // Cria-se o terreno do QUARTO DO ALUNO.
 if($erro != 1){
-	$registrar->solicitar("INSERT INTO $tabela_terrenos (terreno_nome, terreno_solo) VALUES ('$usuario', '6')");
+	$registrar->solicitar("INSERT INTO $tabela_terrenos (nome, tipo, chat_id, patio) VALUES ('$usuario', '6', 0, 0)");
 	if($registrar->erro != "") {
 		$data .= '{ "valor":"1", "texto":"Ocorreu um erro na entrada dos dados, código 7. Detalhes:'.$registrar->erro.'"}';
 		$erro = 1;
