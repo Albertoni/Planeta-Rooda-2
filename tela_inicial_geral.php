@@ -1,5 +1,5 @@
 <?php
-	require_once("class/planeta.php");
+	require_once("planeta.class.php");
 	require_once("cfg.php");
 	require_once("bd.php");
 	require_once("funcoes_aux.php");
@@ -73,19 +73,20 @@
 					$planetasQuePodeAcessar = $usuario->getPlanetasQuePodeAcessar();
 
 					foreach($planetasQuePodeAcessar as $planeta){
-						$idPlaneta = $planeta->__get("IdTerrenoPrincipal");
-						$turmaPlaneta = $planeta->__get("IdTurma");
-						$nomePlaneta = $planeta->__get("Nome");
+						//print_r($planeta);
+						$idPlaneta = $planeta->__get("idTerrenoPrincipal");
+						$turmaPlaneta = $planeta->__get("idTurma");
+						$nomePlaneta = $planeta->__get("nome");
 
-						switch($planeta->__get("Aparencia")){
-							case PlanetaBD::APARENCIA_VERDE:
-							case PlanetaBD::APARENCIA_GRAMA:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
+						switch($planeta->__get("aparencia")){
+							case Planeta::APARENCIA_VERDE:
+							case Planeta::APARENCIA_GRAMA:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
 								break;
-							case PlanetaBD::APARENCIA_LAVA:		$tipoPlaneta = "LinkPlaneta.TiposPlanetas.LAVA";
+							case Planeta::APARENCIA_LAVA:		$tipoPlaneta = "LinkPlaneta.TiposPlanetas.LAVA";
 								break;
-							case PlanetaBD::APARENCIA_GELO:		$tipoPlaneta = "LinkPlaneta.TiposPlanetas.NEVE";
+							case Planeta::APARENCIA_GELO:		$tipoPlaneta = "LinkPlaneta.TiposPlanetas.NEVE";
 								break;
-							case PlanetaBD::APARENCIA_URBANO:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.URBANO";
+							case Planeta::APARENCIA_URBANO:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.URBANO";
 								break;
 							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
 						}

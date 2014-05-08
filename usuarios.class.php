@@ -241,14 +241,15 @@ class Usuario { //estrutura para o item post do blog
 	public function getPlanetasQuePodeAcessar(){
 		$planetasQuePodeAcessar = array();
 		$conexaoIdsPlanetas = new conexao();
-		$conexaoIdsPlanetas->solicitar("SELECT P.*
+		$conexaoIdsPlanetas->solicitar("SELECT P.*, TU.codTurma
 										FROM TurmasUsuario AS TU JOIN Planetas AS P ON P.Turma = TU.codTurma
 										WHERE TU.codUsuario = ".($this->id)."
 										GROUP BY P.Nome");
 		
 		$planetasInseridos = 0;
 		for($i=0; $i<$conexaoIdsPlanetas->registros; $i++){
-			$planeta = Planeta::getPorId($conexaoIdsPlanetas->resultado['Id']);
+			$planeta = new Planeta();
+			$planeta->abrir($conexaoIdsPlanetas->resultado['Id']);
 			$planetaExiste = $planeta != null;
 			if($planetaExiste){
 				$planetasQuePodeAcessar[$planetasInseridos] = $planeta;
