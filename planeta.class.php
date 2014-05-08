@@ -1,20 +1,17 @@
 <?php
 class Planeta{
 	private $id;
-	private $nome;
 	private $aparencia;
 	private $ehVisitante;
 	private $idTerrenoPrincipal;
 	private $idTerrenoPatio;
 	private $salvo
 
-	function __construct(	$novoNome = "",
-							$novaAparencia = 0,
+	function __construct(	$novaAparencia = 0,
 							$novoEhVisitante = 0,
 							$novoIdTerrenoPrincipal = 0,
 							$novoIdTerrenoPatio = 0
 						){
-		$this->nome		= $novoNome;
 		$this->aparencia= $novaAparencia;
 		$this->ehVisitante	= $novoEhVisitante;
 		$this->idTerrenoPrincipal	= $novoIdTerrenoPrincipal;
@@ -23,7 +20,6 @@ class Planeta{
 	}
 
 	function getId()	{return $this->id;}
-	function getNome()	{return $this->nome;}
 	function getAparencia()	{return $this->aparencia;}
 	function getEhVisitante(){return $this->ehVisitante;}
 	function getIdTerrenoPrincipal()	{return $this->idTerrenoPrincipal;}
@@ -37,7 +33,6 @@ class Planeta{
 
 		if($q->registros > 0){
 			$this->__construct(
-				$q->resultado['Nome'],
 				$q->resultado['Aparencia'],
 				$q->resultado['EhVisitante'],
 				$q->resultado['IdTerrenoPrincpal'],
@@ -53,7 +48,6 @@ class Planeta{
 	function salvar(){
 		$q = new conexao();
 		if($this->salvo === false){
-			$nomeSanitizado = $q->sanitizaString($this->nome);
 			$aparenciaSanitizada = (int) $this->aparencia;
 			$ehVisitanteSanitizado = ($this->ehVisitante ? 1 : 0);
 			$idTerrenoPrincipalSanitizado = (int) $this->idTerrenoPrincipal;
@@ -62,9 +56,8 @@ class Planeta{
 
 			$q->solicitar("
 				INSERT INTO Planetas
-					(Nome, Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio);
+					(Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio);
 				VALUES(
-					'$nomeSanitizado',
 					'$aparenciaSanitizada',
 					'$ehVisitanteSanitizado',
 					'$idTerrenoPrincipalSanitizado',
@@ -78,7 +71,6 @@ class Planeta{
 		}else{
 			$query = ("
 				UPDATE Planetas SET 
-					Nome   = '$this->nomeSanitizado',
 					Aparencia   = '$this->aparenciaSanitizada',
 					EhVisitante = '$this->ehVisitanteSanitizado',
 					IdTerrenoPrincipal  = '$this->idTerrenoPrincipalSanitizado',
@@ -94,7 +86,6 @@ class Planeta{
 		
 		$json = [];
 		$json['id']     = $this->id;
-		$json['nome']   = $this->nome;
 		$json['aparencia']   = $this->aparencia;
 		$json['ehVisitante'] = $this->ehVisitante;
 		$json['idTerrenoPrincipal']  = $this->idTerrenoPrincipal;

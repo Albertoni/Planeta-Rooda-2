@@ -1,18 +1,15 @@
 <?php
 class Terreno{
 	private $id;
-	private $nome;
 	private $tipo;
 	private $idChat;
 	private $ehPatio;
 	private $salvo;
 
-	function __construct(	$nome = "",
-							$tipo = 0,
+	function __construct(	$tipo = 0,
 							$idChat = 0,
 							$ehPatio = false
 						){
-		$this->nome		= $nome;
 		$this->tipo		= $tipo;
 		$this->idChat	= $idChat;
 		$this->ehPatio	= $ehPatio;
@@ -20,7 +17,6 @@ class Terreno{
 	}
 
 	function getId()	{return $this->id;}
-	function getNome()	{return $this->nome;}
 	function getTipo()	{return $this->tipo;}
 	function getIdChat(){return $this->idChat;}
 	function getPatio()	{return $this->ehPatio;}
@@ -33,7 +29,6 @@ class Terreno{
 
 		if($q->registros > 0){
 			$this->__construct( // melhor que copicolar código?
-				$q->resultado['nome'],
 				$q->resultado['tipo'],
 				$q->resultado['idChat'],
 				$q->resultado['patio']
@@ -48,16 +43,14 @@ class Terreno{
 	function salvar(){
 		$q = new conexao();
 		if($this->salvo === false){
-			$nomeSanitizado = $q->sanitizaString($this->nome);
 			$tipoSanitizado = (int) $this->tipo;
 			$chatSanitizado = (int) $this->idChat;
 			$patioSanitizado = ($this->ehPatio ? 1 : 0);
 
 			$q->solicitar("
 				INSERT INTO terrenos 
-					(nome, tipo, idChat, patio);
+					(tipo, idChat, patio);
 				VALUES(
-					'$nomeSanitizado',
 					'$tipoSanitizado',
 					'$chatSanitizado',
 					'$patioSanitizado')");
@@ -69,7 +62,6 @@ class Terreno{
 		}else{
 			$query = ("
 				UPDATE terrenos SET 
-					nome   = '$this->nomeSanitizado',
 					tipo   = '$this->tipoSanitizado',
 					idChat = '$this->chatSanitizado',
 					patio  = '$this->patioSanitizado'
@@ -84,7 +76,6 @@ class Terreno{
 		
 		$json = [];
 		$json['id']     = $this->id;
-		$json['nome']   = $this->nome;
 		$json['tipo']   = $this->tipo;
 		$json['idChat'] = $this->idChat;
 		$json['patio']  = $this->ehPatio;
