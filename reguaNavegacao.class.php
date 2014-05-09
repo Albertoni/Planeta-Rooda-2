@@ -64,14 +64,14 @@ class reguaNavegacao {
 															 JOIN $tabela_terrenos ON terreno_id=personagem_terreno_id
 									WHERE usuario_id=$idUsuario");*/
 		$nomeTerreno = "Menu de funcionalidades (Turma Robótica)";
-		$idTerreno = 1086;
+		$idTerreno = 2;
 		if($nomeTerreno == ''){
 			$nomeTerreno = 'Terreno sem nome';
 		}
 		//$this->adicionarNivel($nomeTerreno, "http://sideshowbob/asd/desenvolvimento/");
 		
 		// TODO: DEBUG: REMOVER APOS O CURSO
-		$this->adicionarNivel($nomeTerreno, "http://www.nuted.ufrgs.br/planeta2/listaFuncionalidades.php?terreno=$idTerreno");
+		$this->adicionarNivel($nomeTerreno, "http://www.nuted.ufrgs.br/planeta2/listaFuncionalidades.php?turma=$idTerreno");
 	}
 	
 	/*
