@@ -8,6 +8,12 @@ require_once("turma.class.php");
 	function usuario_sessao() {
 		global $_SESSION;
 		session_start();
+
+		if (isset($_SESSION['user']) and (get_class($_SESSION['user']) == "Usuario")) {
+			return $_SESSION['user'];
+		}
+
+		// Nunca deve passar para baixo disso, mas caso algum problema ocorra isso possivelmente conserta ele
 		$usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
 		if ($usuario_id >= 0)
 		{
