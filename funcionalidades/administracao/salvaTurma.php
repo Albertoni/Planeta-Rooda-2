@@ -13,8 +13,8 @@ $descricao = $_POST['descricao'];
 $idProfResponsavel = $_POST['idProfResponsavel'];
 $aparenciaPlaneta = $_POST['tipoTerreno'];
 
-$novoTerrenoPrincipal = new Terreno(0,0,0); //cria o terrenoPrincipal a ser atribuido ao novoPlaneta.
-$novoTerrenoPatio = new Terreno(0,0,1); //cria o terrenoPatio a ser atribuido ao novoPlaneta.
+$novoTerrenoPrincipal = new Terreno(0,0,false); //cria o terrenoPrincipal a ser atribuido ao novoPlaneta.
+$novoTerrenoPatio = new Terreno(0,0,true); //cria o terrenoPatio a ser atribuido ao novoPlaneta.
 
 $novoTerrenoPrincipal->salvar();
 $novoTerrenoPatio->salvar();
@@ -38,3 +38,4 @@ for($i=0; $i<$numeroAlunos; $i++){
 $q->solicitar("INSERT INTO TurmasUsuario(codTurma, codUsuario, associacao)
 				VALUES".implode(',', $parteDinamica));
 				
+//magic_redirect para a página geral de administração quando a página estiver pronta.

@@ -23,6 +23,10 @@ class Turma{
 	const ARTE = 8;
 	const PLAYER = 10;
 
+	//Públicos porque são usados pelo script salvaEdicaoTurma.
+	function setNomeTurma($novoNomeTurma){	$this->nomeTurma = $novoNomeTurma;}
+	function setDescricao($novaDescricao){	$this->descricao = $novaDescricao;}
+	
 	function getId()				{return $this->id;}
 	function getNome()				{return $this->nomeTurma;}
 	function getProfResponsavel()	{return $this->profResponsavel;}
@@ -53,9 +57,9 @@ class Turma{
 	
 	function openTurma($id){
 		$q = new conexao();
-		$idSanitizado = $q->sanitizaString($id);
+		$idSanitizado = (int) $id;
 
-		$q->solicitar("SELECT * FROM Turmas WHERE codTurma = '$id'");
+		$q->solicitar("SELECT * FROM Turmas WHERE codTurma = '$idSanitizado'");
 
 		if($q->registros > 0){
 			$this->__construct(
@@ -70,7 +74,7 @@ class Turma{
 			$this->id = (int) $q->resultado['codTurma'];
 			$this->salvo = true;
 			//consultado no DB pelos usuarios da turma e..
-			$q->solicitar("SELECT * FROM TurmasUsuario WHERE codTurma = '$id'");
+			$q->solicitar("SELECT * FROM TurmasUsuario WHERE codTurma = '$idSanitizado'");
 			//.. atribui no array indexado pelo codUsuario o nivel de associacao de cada um.
 			for($i=0; $i < $q->registros; $i++){
 				$NivelPermissao[$q->resultado['codUsuario']] = $q->resultado['associacao'];
@@ -85,14 +89,16 @@ class Turma{
 	
 	function salvar(){
 		$q = new conexao();
+		
+		$nomeTurmaSanitizado = $q->sanitizaString($this->nomeTurma);
+		$profResponsavelSanitizado = (int) $this->profResponsavel;
+		$descricaoSanitizada = $q->sanitizaString($this->descricao);
+		$serieSanitizada = (int) $this->serie;
+		$escolaSanitizada = (int) $this->escola;
+		$idChatSanitizado = (int) $this->idChat;
+		$idPlanetaSanitizado = (int) $this->idPlaneta;
+
 		if($this->salvo === false){
-			$nomeTurmaSanitizado = $q->sanitizaString($this->nomeTurma);
-			$profResponsavelSanitizado = (int) $this->profResponsavel;
-			$descricaoSanitizada = $q->sanitizaString($this->descricao);
-			$serieSanitizada = (int) $this->serie;
-			$escolaSanitizada = (int) $this->escola;
-			$idChatSanitizado = (int) $this->idChat;
-			$idPlanetaSanitizado = (int) $this->idPlaneta;
 
 			$q->solicitar("
 				INSERT INTO Turmas
@@ -111,19 +117,21 @@ class Turma{
 				$this->id = $q->ultimoId();
 				$this->salvo = true;
 			}
+			
 
 		}else{
-			$query = ("
-				UPDATE Planetas SET 
-					nomeTurma   = '$this->nomeTurmaSanitizado',
-					profResponsavel   = '$this->profResponsavelSanitizado',
-					descricao = '$this->descricaoSanitizada',
-					serie  = '$this->serieSanitizada',
-					Escola = '$this->escolaSanitizada',
-					chat_id = '$this->idChatSanitizado',
-					idPlaneta = '$this->idPlanetaSanitizado',
-				WHERE CodTurma = '$this->id'");
+			$q->solicitar("
+				UPDATE Turmas SET 
+					nomeTurma   = '$nomeTurmaSanitizado',
+					profResponsavel   = '$profResponsavelSanitizado',
+					descricao = '$descricaoSanitizada',
+					serie  = '$serieSanitizada',
+					Escola = '$escolaSanitizada',
+					chat_id = '$idChatSanitizado',
+					idPlaneta = '$idPlanetaSanitizado'
+				WHERE codTurma = '$this->id'");
 		}
+		print_r($this);
 	}
 	
 	function toJson($sendHeaders = false){
