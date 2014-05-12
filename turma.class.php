@@ -96,7 +96,7 @@ class Turma{
 
 			$q->solicitar("
 				INSERT INTO Turmas
-					(nomeTurma, profResponsavel, descricao, serie, Escola, chat_ID, idPlaneta);
+					(nomeTurma, profResponsavel, descricao, serie, Escola, chat_id, idPlaneta)
 				VALUES(
 					'$nomeTurmaSanitizado',
 					'$profResponsavelSanitizado',
@@ -111,6 +111,7 @@ class Turma{
 				$this->id = $q->ultimoId();
 				$this->salvo = true;
 			}
+
 		}else{
 			$query = ("
 				UPDATE Planetas SET 
@@ -119,7 +120,7 @@ class Turma{
 					descricao = '$this->descricaoSanitizada',
 					serie  = '$this->serieSanitizada',
 					Escola = '$this->escolaSanitizada',
-					chat_ID = '$this->idChatSanitizado',
+					chat_id = '$this->idChatSanitizado',
 					idPlaneta = '$this->idPlanetaSanitizado',
 				WHERE CodTurma = '$this->id'");
 		}

@@ -49,7 +49,7 @@ class Terreno{
 
 			$q->solicitar("
 				INSERT INTO terrenos 
-					(tipo, idChat, patio);
+					(tipo, chat_id, patio)
 				VALUES(
 					'$tipoSanitizado',
 					'$chatSanitizado',
@@ -59,6 +59,7 @@ class Terreno{
 				$this->id = $q->ultimoId();
 				$this->salvo = true;
 			}
+
 		}else{
 			$query = ("
 				UPDATE terrenos SET 
@@ -74,7 +75,7 @@ class Terreno{
 			header("Content-Type: application/json");
 		}
 		
-		$json = [];
+		$json = Array();
 		$json['id']     = $this->id;
 		$json['tipo']   = $this->tipo;
 		$json['idChat'] = $this->idChat;

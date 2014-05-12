@@ -73,9 +73,10 @@ class Planeta{
 			$idTerrenoPatioSanitizado = (int) $this->idTerrenoPatio;
 			$idTurmaSanitizado = (int) $this->idTurma;
 
+
 			$q->solicitar("
 				INSERT INTO Planetas
-					(Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio);
+					(Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio, Turma) 
 				VALUES(
 					'$aparenciaSanitizada',
 					'$ehVisitanteSanitizado',
@@ -87,6 +88,7 @@ class Planeta{
 				$this->id = $q->ultimoId();
 				$this->salvo = true;
 			}
+
 		}else{
 			$query = ("
 				UPDATE Planetas SET 
