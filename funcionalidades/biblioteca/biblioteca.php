@@ -43,6 +43,10 @@ if ($perm === false) {
 			text-indent: -999px;
 			vertical-align: middle;
 		}
+
+		#entradaDados{
+			display:none;
+		}
 		</style>
 	</head>
 	<body onload="BIBLIOTECA.init();">
@@ -98,30 +102,32 @@ if ($perm === false) {
 
 							<br>
 
-							<div class="material_recurso">
-								<label class="file_label" style="display:none" id="label_material_arquivo">
-									<span class="text">Selecionar arquivo:</span><br>
-									<input type="file" name="arquivo" />
-								</label>
-								<label class="link_label" style="display:none" id="label_material_link">
-									<span class="text">Link:</span>
-									<input type="text" name="link" required />
-								</label>
-							</div>
+							<div id="entradaDados">
+								<div class="material_recurso">
+									<label class="file_label" style="display:none" id="label_material_arquivo">
+										<span class="text">Selecionar arquivo:</span><br>
+										<input type="file" name="arquivo" />
+									</label>
+									<label class="link_label" style="display:none" id="label_material_link">
+										<span class="text">Link:</span>
+										<input type="text" name="link" required />
+									</label>
+								</div>
 
-							<label>Título:<br>
-								<input type="text" name="titulo" required />
-							</label>
-							<br>
-							<label>Autor:<br>
-								<input type="text" name="autor" />
-							</label>
-							<br>
-							<label>Palavras do Material:<br>
-								<input type="text" name="tags" />
-							</label>
-							<br>
-							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
+								<label>Título:<br>
+									<input type="text" name="titulo" required />
+								</label>
+								<br>
+								<label>Autor:<br>
+									<input type="text" name="autor" />
+								</label>
+								<br>
+								<label>Palavras do Material:<br>
+									<input type="text" name="tags" />
+								</label>
+								<br>
+								<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
+							</div>
 						</form>
 						</div>
 					</div>
@@ -167,6 +173,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		<script src="../../js/rooda.js"></script>
 		<script src="../../js/ajax.js"></script>
 		<script src="../../js/ajaxFileManager.js"></script>
+		<script src="../../jquery.js"></script>
 		<script>
 
 		var form_envio_m = document.getElementById("form_envio_material");
@@ -177,7 +184,11 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		var label_material_arquivo = document.getElementById("label_material_arquivo");
 		var label_material_link = document.getElementById("label_material_link");
 
+		var entradaDados = $("#entradaDados"); // precisa ser por jQuery, depende da função fadeIn
+
 		radio_arquivo.onchange = function () {
+			entradaDados.fadeIn(3000);
+
 			var changeEvent = new Event('change');
 			label_material_arquivo.style.display = "none";
 			label_material_link.style.display = "none";
@@ -204,12 +215,13 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		radio_arquivo.style.display = "none";
 		radio_link.style.display = "none";
 
-		
+
 		var toggleEnviar = (function () {
 			var enviarDiv = document.getElementById('enviar_material');
 			return function () {
 				if (enviarDiv.style.display !== 'none') {
 					enviarDiv.style.display = 'none';
+					entradaDados.css("display", "none"); // precisa ser por jQuery, depende da função fadeIn
 				} else {
 					enviarDiv.style.display = 'block';
 					label_radio_arquivo.classList.remove('checked');
@@ -231,4 +243,4 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
 	</body>
-</html>
+</html> 
