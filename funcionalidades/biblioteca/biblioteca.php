@@ -29,6 +29,21 @@ if ($perm === false) {
 		<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 		<link type="text/css" rel="stylesheet" href="biblioteca2.css" />
 		<link type="text/css" rel="stylesheet" href="../../fileicons.css" />
+		<style type="text/css">
+		#fechaEnviar{
+			background: transparent url('../../images/botoes/bt_fechar.png') no-repeat center center;
+			border: 0 none;
+			display: inline-block;
+			float: right;
+			width: 20px;
+			height: 20px;
+			margin: 0 2px;
+			padding: 0;
+			overflow: hidden;
+			text-indent: -999px;
+			vertical-align: middle;
+		}
+		</style>
 	</head>
 	<body onload="BIBLIOTECA.init();">
 		<div id="topo">
@@ -69,7 +84,7 @@ if ($perm === false) {
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
-						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
+						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" id="fechaEnviar" onclick="toggleEnviar()">fechar</button></h1>
 						<div>
 						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
@@ -127,7 +142,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
 							<noscript>
-								<p>O seu javascript está desabilitado, esta pagina depende de javascript para funcionar corretamente.</p>
+								<p>O seu javascript está desabilitado e esta pagina depende de javascript para funcionar corretamente.</p>
 							</noscript>
 							<li>carregando materiais...</li>
 						</ul>
