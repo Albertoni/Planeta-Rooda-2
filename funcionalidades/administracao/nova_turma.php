@@ -78,7 +78,7 @@ $user = usuario_sessao();
 	***************************** -->
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div class="bts_cima" style="float:none">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
+			<a href="portfolio.php?turma=<?=$turma?>" align="left" > <!-- o link está errado porque não se sabe para onder retornaremos ainda-->
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 			<input form="postFormId" type="image" id="responder_topico" src="../../images/botoes/bt_confirm.png" align="right"/>

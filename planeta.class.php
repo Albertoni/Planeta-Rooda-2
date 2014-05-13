@@ -32,7 +32,10 @@ class Planeta{
 		$this->nome = $novoNomeTurma;
 		$this->salvo = false;
 	}
-
+//Públicos porque são usados pelo script salvaEdicaoTurma.
+ function setNome($novoNome){ $this->nome = $novoNome;}
+ function setAparencia($novaAparencia){	$this->aparencia = $novaAparencia;}
+	
 	function getId()	{return $this->id;}
 	function getAparencia()	{return $this->aparencia;}
 	function getEhVisitante(){return $this->ehVisitante;}
@@ -44,9 +47,9 @@ class Planeta{
 
 	function abrir($id){
 		$q = new conexao();
-		$idSanitizado = $q->sanitizaString($id);
+		$idSanitizado = (int) $id;
 
-		$q->solicitar("SELECT Planetas.*, Turmas.* FROM Planetas JOIN Turmas ON Turmas.idPlaneta = Planetas.Id WHERE Planetas.Id = '$id'");
+		$q->solicitar("SELECT Planetas.*, Turmas.* FROM Planetas JOIN Turmas ON Turmas.idPlaneta = Planetas.Id WHERE Planetas.Id = '$idSanitizado'");
 
 		if($q->registros > 0){
 			$this->__construct(
@@ -66,13 +69,14 @@ class Planeta{
 
 	function salvar(){
 		$q = new conexao();
+		
+		$aparenciaSanitizada = (int) $this->aparencia;
+		$ehVisitanteSanitizado = ($this->ehVisitante ? 1 : 0);
+		$idTerrenoPrincipalSanitizado = (int) $this->idTerrenoPrincipal;
+		$idTerrenoPatioSanitizado = (int) $this->idTerrenoPatio;
+		$idTurmaSanitizado = (int) $this->idTurma;
+		
 		if($this->salvo === false){
-			$aparenciaSanitizada = (int) $this->aparencia;
-			$ehVisitanteSanitizado = ($this->ehVisitante ? 1 : 0);
-			$idTerrenoPrincipalSanitizado = (int) $this->idTerrenoPrincipal;
-			$idTerrenoPatioSanitizado = (int) $this->idTerrenoPatio;
-			$idTurmaSanitizado = (int) $this->idTurma;
-
 
 			$q->solicitar("
 				INSERT INTO Planetas
@@ -90,12 +94,12 @@ class Planeta{
 			}
 
 		}else{
-			$query = ("
+			$q->solicitar("
 				UPDATE Planetas SET 
-					Aparencia   = '$this->aparenciaSanitizada',
-					EhVisitante = '$this->ehVisitanteSanitizado',
-					IdTerrenoPrincipal  = '$this->idTerrenoPrincipalSanitizado',
-					IdTerrenoPatio = '$this->idTerrenoPatioSanitizado'
+					Aparencia   = '$aparenciaSanitizada',
+					EhVisitante = '$ehVisitanteSanitizado',
+					IdTerrenoPrincipal  = '$idTerrenoPrincipalSanitizado',
+					IdTerrenoPatio = '$idTerrenoPatioSanitizado'
 				WHERE Id = '$this->id'");
 		}
 	}
