@@ -28,7 +28,6 @@ class Desenho {
 
 			if($dados->registros > 0){
 				$this->id = $id;
-				$this->criador = new Usuario($dados->resultado['CodUsuario']);
 				$this->desenho = $dados->resultado['Arquivo'];
 				$this->titulo = $dados->resultado['Titulo'];
 				$this->palavras = $dados->resultado['Palavras'];
@@ -36,9 +35,13 @@ class Desenho {
 				$this->status = $dados->resultado['Status'];
 				$this->turma = $dados->resultado['CodTurma'];
 				$this->valido = true;
+
+				$this->criador = new Usuario();
+				$this->criador->openUsuario($dados->resultado['CodUsuario']);
 			}
 		}else{
-			$this->criador = new Usuario($user_id);
+			$this->criador = new Usuario();
+			$this->criador->openUsuario($user_id);
 			$this->desenho = $desenho;
 			$this->titulo = $titulo;
 			$this->palavras = $tags;
@@ -83,12 +86,14 @@ class Desenho {
 	}
 
 	public function getAutor(){ // pega o nome do autor
-		$temp = new Usuario();
+	/*	$temp = new Usuario();
 		if ($temp->openUsuario($this->criador) === ""){ // falhou, bródis, se vira
 			return false;
 		}else{
 			return $temp;
-		}
+		}*/
+
+		return $this->criador;
 	}
 
 	public function getId()			{return $this->id;}
@@ -173,8 +178,6 @@ class Arte{
 			$dados->proximo();
 		}
 		
-		if ($dados->registros > 0){
-			$this->contador = count($this->desenhos);
-		}
+		$this->contador = count($this->desenhos);
 	}
 }
