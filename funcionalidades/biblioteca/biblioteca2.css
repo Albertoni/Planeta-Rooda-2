@@ -20,14 +20,12 @@ body,td,th {
 	background: #74d3ed;
 }
 #label_link {
-	border-width: 3px 3px 3px 0px;
-	border-top-right-radius: 5px;
-	border-bottom-right-radius: 5px;
+	border-width: 3px 3px 3px 3px;
+	border-radius: 5px;
 }
 #label_arquivo {
-	border-width: 3px 0px 3px 3px;
-	border-top-left-radius: 5px;
-	border-bottom-left-radius: 5px;
+	border-width: 3px 3px 3px 3px;
+	border-radius: 5px;
 }
 label {
 	font-weight: bold;
