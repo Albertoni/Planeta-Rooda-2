@@ -29,6 +29,25 @@ if ($perm === false) {
 		<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 		<link type="text/css" rel="stylesheet" href="biblioteca2.css" />
 		<link type="text/css" rel="stylesheet" href="../../fileicons.css" />
+		<style type="text/css">
+		#fechaEnviar{
+			background: transparent url('../../images/botoes/bt_fechar.png') no-repeat center center;
+			border: 0 none;
+			display: inline-block;
+			float: right;
+			width: 20px;
+			height: 20px;
+			margin: 0 2px;
+			padding: 0;
+			overflow: hidden;
+			text-indent: -999px;
+			vertical-align: middle;
+		}
+
+		#entradaDados{
+			display:none;
+		}
+		</style>
 	</head>
 	<body onload="BIBLIOTECA.init();">
 		<div id="topo">
@@ -69,32 +88,46 @@ if ($perm === false) {
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
 					<div class="bloco" id="enviar_material" style="display: none;">
-						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" onclick="toggleEnviar()">fechar</button></h1>
+						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" id="fechaEnviar" onclick="toggleEnviar()">fechar</button></h1>
 						<div>
 						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
-							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
+							<label id="label_arquivo">
+								Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a">
+							</label>
+							-
+							<label id="label_link">
+								Link<input id="input_link" type="radio" name="tipo" value="l">
+							</label>
+
 							<br>
-							<div class="material_recurso">
-								<label class="file_label" style="display:none" id="label_material_arquivo">
-									<span class="text">Selecionar arquivo:</span><br>
-									<input type="file" name="arquivo" />
+
+							<div id="entradaDados">
+								<div class="material_recurso">
+									<label class="file_label" style="display:none" id="label_material_arquivo">
+										<span class="text">Selecionar arquivo:</span><br>
+										<input type="file" name="arquivo" />
+									</label>
+									<label class="link_label" style="display:none" id="label_material_link">
+										<span class="text">Link:</span>
+										<input type="text" name="link" required />
+									</label>
+								</div>
+
+								<label>Título:<br>
+									<input type="text" name="titulo" required />
 								</label>
-								<label class="link_label" style="display:none" id="label_material_link">
-									<span class="text">Link:</span>
-									<input type="text" name="link" required />
+								<br>
+								<label>Autor:<br>
+									<input type="text" name="autor" />
 								</label>
+								<br>
+								<label>Palavras do Material:<br>
+									<input type="text" name="tags" />
+								</label>
+								<br>
+								<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
 							</div>
-							<label>Título:<br>
-								<input type="text" name="titulo" required />
-							</label><br>
-							<label>Autor:<br>
-								<input type="text" name="autor" />
-							</label><br>
-							<label>Palavras do Material:<br>
-								<input type="text" name="tags" />
-							</label><br>
-							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
 						</form>
 						</div>
 					</div>
@@ -127,7 +160,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 						<h1>MATERIAIS ENVIADOS</h1>
 						<ul id="ul_materiais">
 							<noscript>
-								<p>O seu javascript está desabilitado, esta pagina depende de javascript para funcionar corretamente.</p>
+								<p>O seu javascript está desabilitado e esta pagina depende de javascript para funcionar corretamente.</p>
 							</noscript>
 							<li>carregando materiais...</li>
 						</ul>
@@ -140,30 +173,9 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		<script src="../../js/rooda.js"></script>
 		<script src="../../js/ajax.js"></script>
 		<script src="../../js/ajaxFileManager.js"></script>
+		<script src="../../jquery.js"></script>
 		<script>
-		/* -  /
-		Array.prototype.forEach.call(document.getElementsByTagName("label"), function (l) {
-			if (l.control.type === 'file') {
-				t = document.createElement("span");
-				l.appendChild(t);
-				l.classList.add("file_label");
-				l.control.hidden = true;
-				l.control.onchange = function () {
-					var files = [], i;
-					for (i = 0; i < l.control.files.length; i++) {
-						files.push(l.control.files[i].name);
-					}
-					t.innerHTML = files.join(", ");
-				}
-			}
-		});
-		/* - */
-		;(function () {
-			var botao_enviar_material  = document.getElementById("botao_enviar_material");
-			var botao_buscar_materiais = document.getElementById("botao_buscar_materiais");
-			var enviar_material  = document.getElementById("enviar_material");
-			var buscar_materiais = document.getElementById("buscar_materiais");
-		}());
+
 		var form_envio_m = document.getElementById("form_envio_material");
 		var label_radio_arquivo = document.getElementById("label_arquivo");
 		var radio_arquivo = label_radio_arquivo.control;
@@ -171,7 +183,12 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		var radio_link = label_radio_link.control;
 		var label_material_arquivo = document.getElementById("label_material_arquivo");
 		var label_material_link = document.getElementById("label_material_link");
+
+		var entradaDados = $("#entradaDados"); // precisa ser por jQuery, depende da função fadeIn
+
 		radio_arquivo.onchange = function () {
+			entradaDados.fadeIn(3000);
+
 			var changeEvent = new Event('change');
 			label_material_arquivo.style.display = "none";
 			label_material_link.style.display = "none";
@@ -193,14 +210,18 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 				label_material_arquivo.control.dispatchEvent(changeEvent);
 			}
 		}
+
 		radio_link.onchange = radio_arquivo.onchange;
 		radio_arquivo.style.display = "none";
 		radio_link.style.display = "none";
+
+
 		var toggleEnviar = (function () {
 			var enviarDiv = document.getElementById('enviar_material');
 			return function () {
 				if (enviarDiv.style.display !== 'none') {
 					enviarDiv.style.display = 'none';
+					entradaDados.css("display", "none"); // precisa ser por jQuery, depende da função fadeIn
 				} else {
 					enviarDiv.style.display = 'block';
 					label_radio_arquivo.classList.remove('checked');
@@ -222,4 +243,4 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
 	</body>
-</html>
+</html> 

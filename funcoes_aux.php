@@ -11,18 +11,9 @@ require_once("turma.class.php");
 
 		if (isset($_SESSION['user']) and (get_class($_SESSION['user']) == "Usuario")) {
 			return $_SESSION['user'];
+		}else{
+			return false;
 		}
-
-		// Nunca deve passar para baixo disso, mas caso algum problema ocorra isso possivelmente conserta ele
-		$usuario_id = isset($_SESSION['SS_usuario_id']) ? (int) $_SESSION['SS_usuario_id'] : 0;
-		if ($usuario_id >= 0)
-		{
-			$usuario = new Usuario();
-			$usuario->openUsuario($usuario_id);
-			if ($usuario->getId() > 0)
-				return $usuario;
-		}
-		return false;
 	}
 	function gen_salt($length) {
 		$alph = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
