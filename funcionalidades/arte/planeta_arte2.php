@@ -170,17 +170,17 @@ for ($i = 0; $i < $numeroDesenhos; $i++){
 
 				<div id="proj_encerrados">
 <?php
-$ARTE->getGaleriaTurma();
+$ARTE->desenhosDosColegas();
 $numeroDesenhos = $ARTE->getContador();
 $arrayDesenhos = $ARTE->getDesenhos();
 
 for ($i = 0; $i < $numeroDesenhos; $i++){
 	$cor = "cor".(($i%2)+1);
-	if (isset($arrayDesenhos[$i]->id)){ // TODO: DESCOBRIR PRA QUE ISSO SERVE
-		$id = $arrayDesenhos[$i]->id;
-		$data = $arrayDesenhos[$i]->data;
-		$autor = $arrayDesenhos[$i]->criador->nome;
-		$titulo =  $arrayDesenhos[$i]->titulo;
+	//if (isset($arrayDesenhos[$i]->id)){ // TODO: DESCOBRIR PRA QUE ISSO SERVE
+		$id = $arrayDesenhos[$i]->getId();
+		$data = $arrayDesenhos[$i]->getData();
+		$autor = $arrayDesenhos[$i]->getCriador()->getName();
+		$titulo =  $arrayDesenhos[$i]->getTitulo();
 		$parametros = "desenho=$id&amp;turma=$turma&amp;existente=1";
 ?>
 	<div class="<?php echo $cor; ?>">
@@ -199,7 +199,7 @@ for ($i = 0; $i < $numeroDesenhos; $i++){
 	</div>
 
 <?php
-	}
+	//}
 }
 ?>
 
