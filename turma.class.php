@@ -131,7 +131,6 @@ class Turma{
 					idPlaneta = '$idPlanetaSanitizado'
 				WHERE codTurma = '$this->id'");
 		}
-		print_r($this);
 	}
 	
 	function toJson($sendHeaders = false){

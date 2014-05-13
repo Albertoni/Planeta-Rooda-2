@@ -13,7 +13,7 @@ if ($user === false){
 }
 
 $post_id = 1; //TODO: DEBUG
-$user_id = $_SESSION['SS_usuario_id'];
+$user_id = $user->getId();
 $turma = isset($_GET['turma'])?$_GET['turma']:0;
 $ARTE = new Arte($user_id, $turma);
 
@@ -170,7 +170,7 @@ for ($i = 0; $i < $numeroDesenhos; $i++){
 
 				<div id="proj_encerrados">
 <?php
-$ARTE->desenhosDosColegas();
+$ARTE->getGaleriaTurma();
 $numeroDesenhos = $ARTE->getContador();
 $arrayDesenhos = $ARTE->getDesenhos();
 
