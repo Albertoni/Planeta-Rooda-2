@@ -88,8 +88,16 @@ if ($perm === false) {
 						<div>
 						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
 							<strong>Tipo de material:</strong> 
-							<label id="label_arquivo">Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a"></label><label id="label_link">Link<input id="input_link" type="radio" name="tipo" value="l"></label>
+							<label id="label_arquivo">
+								Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a">
+							</label>
+							-
+							<label id="label_link">
+								Link<input id="input_link" type="radio" name="tipo" value="l">
+							</label>
+
 							<br>
+
 							<div class="material_recurso">
 								<label class="file_label" style="display:none" id="label_material_arquivo">
 									<span class="text">Selecionar arquivo:</span><br>
@@ -100,15 +108,19 @@ if ($perm === false) {
 									<input type="text" name="link" required />
 								</label>
 							</div>
+
 							<label>Título:<br>
 								<input type="text" name="titulo" required />
-							</label><br>
+							</label>
+							<br>
 							<label>Autor:<br>
 								<input type="text" name="autor" />
-							</label><br>
+							</label>
+							<br>
 							<label>Palavras do Material:<br>
 								<input type="text" name="tags" />
-							</label><br>
+							</label>
+							<br>
 							<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
 						</form>
 						</div>
@@ -156,29 +168,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		<script src="../../js/ajax.js"></script>
 		<script src="../../js/ajaxFileManager.js"></script>
 		<script>
-		/* -  /
-		Array.prototype.forEach.call(document.getElementsByTagName("label"), function (l) {
-			if (l.control.type === 'file') {
-				t = document.createElement("span");
-				l.appendChild(t);
-				l.classList.add("file_label");
-				l.control.hidden = true;
-				l.control.onchange = function () {
-					var files = [], i;
-					for (i = 0; i < l.control.files.length; i++) {
-						files.push(l.control.files[i].name);
-					}
-					t.innerHTML = files.join(", ");
-				}
-			}
-		});
-		/* - */
-		;(function () {
-			var botao_enviar_material  = document.getElementById("botao_enviar_material");
-			var botao_buscar_materiais = document.getElementById("botao_buscar_materiais");
-			var enviar_material  = document.getElementById("enviar_material");
-			var buscar_materiais = document.getElementById("buscar_materiais");
-		}());
+
 		var form_envio_m = document.getElementById("form_envio_material");
 		var label_radio_arquivo = document.getElementById("label_arquivo");
 		var radio_arquivo = label_radio_arquivo.control;
@@ -186,6 +176,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		var radio_link = label_radio_link.control;
 		var label_material_arquivo = document.getElementById("label_material_arquivo");
 		var label_material_link = document.getElementById("label_material_link");
+
 		radio_arquivo.onchange = function () {
 			var changeEvent = new Event('change');
 			label_material_arquivo.style.display = "none";
@@ -208,9 +199,12 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 				label_material_arquivo.control.dispatchEvent(changeEvent);
 			}
 		}
+
 		radio_link.onchange = radio_arquivo.onchange;
 		radio_arquivo.style.display = "none";
 		radio_link.style.display = "none";
+
+		
 		var toggleEnviar = (function () {
 			var enviarDiv = document.getElementById('enviar_material');
 			return function () {
