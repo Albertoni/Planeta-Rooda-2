@@ -360,7 +360,7 @@ if ($existente != 0){
 <!-- <div id="div_escolhe_carimbos" class="bloco" style="background-color: #FFFFFF; border: 3px solid #555555; width:700px; height:500px; position:fixed; top: 50%; left:50%; margin-left: -350px; margin-top: -250px; display:none; z-index:100;"> -->
 <div id="fundo_escolhe_carimbos" style="opacity:0.6; background-color:white; width:100%; height:100%; position:fixed; top:0px; left:0px; display:none; z-index:99;"></div>
 <div id="div_escolhe_carimbos" class="bloco" style="width:700px; height:425px; position:fixed; top: 50%; left:50%; margin-left: -350px; margin-top: -250px; display:none; z-index:100;">
-<h1> teste </h1>
+<h1>Carimbos</h1>
 <table border=0 cellspacing=1 cellpadding=1 width=100%>
 <tr>
 <td><img id="carimbo1" src="carimbos/carimbo_1.png" width="70" class="classe_carimbo"/></td>
