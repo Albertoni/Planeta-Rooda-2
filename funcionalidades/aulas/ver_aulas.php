@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -8,22 +6,26 @@ require_once("../../usuarios.class.php");
 require_once("aula.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$usuario = usuario_sessao();
+if ($usuario === false){die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");}
 
 $turma = "";
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 	$turma = $_GET['turma'];
+}else{
+	die("Voce acessou essa pagina sem a turma informada. Favor voltar e tentar novamente.");
 }
 
 $permissoes = checa_permissoes(TIPOAULA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 
+$userId = $usuario->getId();
+$userLevel = $usuario->getNivel($turma);
 
 
 
-$GAMBIARRA_ENORME = 0; // usado mais tarde pra poupar cpu
+$GAMBIARRA_ENORME = 0; // Usado para saber se a pessoa pode mover a ordem das postagens
 ?>
 <!DOCTYPE html>
 <html>
@@ -87,7 +89,7 @@ $GAMBIARRA_ENORME = 0; // usado mais tarde pra poupar cpu
 	</div>
 	</div>
 <?php
-if(sizeof($_SESSION['SS_turmas']) > 1){
+if(sizeof($usuario->getTurmas()) > 1){
 	selecionaTurmas($turma);
 }
 ?>
@@ -104,19 +106,17 @@ for($i=0; $i < count($aulas); $i++){
 			<ul class="margem_raquel">
 				<li class="tabela">
 					<div class="info">
-						<a href="aula.php?turma=<?=$turma?>&id=<?=$aulas[$i]->getId()?>"><p class="nome"><b><?=$aulas[$i]->getTitulo()?></b></p></a>
+						<a href="aula.php?turma=<?=$turma?>&amp;id=<?=$aulas[$i]->getId()?>"><p class="nome"><b><?=$aulas[$i]->getTitulo()?></b></p></a>
 <?php
-	if (($_SESSION['SS_usuario_id'] == $aulas[$i]->getAutor()) or (checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelAdmin) === 1)
-		or $usuario->podeAcessar($permissoes['aulas_editarAulas'], $turma)){
+	if (($userId == $aulas[$i]->getAutor()) or ($userLevel === NIVELPROFESSOR)){
 ?>
-							<a class="pode_editar" href="criar.php?turma=<?=$turma?>&aula_id=<?=$aulas[$i]->getId()?>">EDITAR</a>
+							<a class="pode_editar" href="criar.php?turma=<?=$turma?>&amp;aula_id=<?=$aulas[$i]->getId()?>">EDITAR</a>
 <?php
 		$GAMBIARRA_ENORME = 1;
 	}
-	if (($_SESSION['SS_usuario_id'] == $aulas[$i]->getAutor()) or (checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelAdmin) === 1)
-		or $usuario->podeAcessar($permissoes['aulas_deletarAulas'], $turma)){
+	if (($userId == $aulas[$i]->getAutor()) or ($userLevel === NIVELPROFESSOR)){
 ?>
-							<a class="pode_deletar" href="javascript:if(confirm('Deseja deletar essa aula?'))window.location='deletar_aula.php?turma=<?=$turma?>&id=<?=$aulas[$i]->getId()?>';"><b>DELETAR</b></a>
+							<a class="pode_deletar" href="javascript:if(confirm('Deseja deletar essa aula?'))window.location='deletar_aula.php?turma=<?=$turma?>&amp;id=<?=$aulas[$i]->getId()?>';"><b>DELETAR</b></a>
 <?php
 		$GAMBIARRA_ENORME = 1;
 	}
@@ -125,11 +125,11 @@ for($i=0; $i < count($aulas); $i++){
 					</div>
 				</li>
 				<li>
-					<a class="no_underline" href="aula.php?turma=<?=$turma?>&id=<?=$aulas[$i]->getId()?>"><p class="texto_resposta"><?=$aulas[$i]->getDesc()?></p></a>
+					<a class="no_underline" href="aula.php?turma=<?=$turma?>&amp;id=<?=$aulas[$i]->getId()?>"><p class="texto_resposta"><?=$aulas[$i]->getDesc()?></p></a>
 					<div id="autor" class="criado_por">Criado por: <?=$nomecriador->resultado['usuario_nome']?></div>
 <?php
-	if ($GAMBIARRA_ENORME === 1){
-		if($id_aula_anterior != 0){
+	if ($GAMBIARRA_ENORME === 1){// Se pode editar ou pode deletar, pode mover
+		permissão($id_aula_anterior != 0){
 			echo "					<a class=\"move_up\" onclick=\"trocaPosicoes(".$aulas[$i]->getId().",$turma,".$aulas[$i-1]->getId().")\">Mover para cima</a> | \n";
 		}
 		if (isset($aulas[$i+1]))
@@ -137,7 +137,7 @@ for($i=0; $i < count($aulas); $i++){
 		$id_aula_anterior = $aulas[$i]->getId();
 	}
 ?>
-					<a class="link_aula" href="aula.php?turma=<?=$turma?>&id=<?=$aulas[$i]->getId()?>"><b>Ver aula</b></a>
+					<a class="link_aula" href="aula.php?turma=<?=$turma?>&amp;id=<?=$aulas[$i]->getId()?>"><b>Ver aula</b></a>
 				</li>
 			</ul>
 		</div>

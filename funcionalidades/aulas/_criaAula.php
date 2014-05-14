@@ -1,24 +1,20 @@
 <?php
-session_start();
-
-if( ! isset($_SESSION['SS_usuario_id'])){die("Voce precisa estar logado para acessar isso, favor voltar.");}
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("aula.class.php");
 
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$usuario = usuario_sessao();
+if ($usuario === false){die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");}
+
 $turma = $_GET['turma'];
 $permissoes = checa_permissoes(TIPOAULA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 if(!$usuario->podeAcessar($permissoes['aulas_criarAulas'], $turma)){
-	$host	=	$_SERVER['HTTP_HOST'];
-	$uri	=	rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	header("Location: http://$host$uri/planeta_aulas.php?turma=$turma");
+	magic_redirect("planeta_aulas.php?turma=$turma");
+	exit();
 }
 
 

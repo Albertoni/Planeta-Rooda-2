@@ -7,9 +7,7 @@ require_once("aula.class.php");
 require_once("../../reguaNavegacao.class.php");
 
 $usuario = usuario_sessao();
-
-if ($usuario === false) // if not logged in
-	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
+if ($usuario === false){die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");}
 
 $turma = "";
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){

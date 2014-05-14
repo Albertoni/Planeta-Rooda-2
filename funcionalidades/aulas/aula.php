@@ -1,12 +1,14 @@
 <?php
-session_start();
-
 require_once("aula.class.php");
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
+
+$usuario = usuario_sessao();
+if ($usuario === false){die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");}
+
 global $tabela_Aulas;
 
 $id = isset($_GET['id']) ? $_GET['id'] : die ("Por favor acesse essa pagina com uma id de aula setada.");
@@ -121,7 +123,7 @@ function coment(){
 		</div>
 		<div id="esq" class="margem_paginas">
 			<div class="bloco" id="identsingle">
-				<a style="text-decoration:none" href="ver_aulas.php?turma=<?=$aula->getTurma()?>"><h1><?=fullUpper($aula->getTitulo())?></h1></a>
+				<a style="text-decoration:uppercase" href="ver_aulas.php?turma=<?=$aula->getTurma()?>"><h1><?=$aula->getTitulo()?></h1></a>
 				<div class="cor1">
 				<ul class="sem_estilo">
 					<li class="tabela_blog">

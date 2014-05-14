@@ -9,9 +9,8 @@ require_once("../../usuarios.class.php");
 require_once("../../funcoes_aux.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$usuario = usuario_sessao();
+if ($usuario === false){die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");}
 
 $turma = "";
 if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
