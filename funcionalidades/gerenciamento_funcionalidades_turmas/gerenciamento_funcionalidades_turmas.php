@@ -119,13 +119,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<input type="checkbox" class="habilitarFuncionalidade" name="comunicador" <?php if($turmaTem_comunicador){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_comunicador')"></li>
 				<br><span class="margem_esquerda">Possibilita interação sí­ncrona entre os usuários.</span><br><br><br>
 				<div <?php if(!$turmaTem_comunicador){echo 'style="display:none"';}?> id="habilitarFuncionalidade_comunicador">
+<!-- Versão anterior a 13/05/2014
 					<table border="0" width="100%" cellpadding="0px" cellspacing="0">
 						<th></th>
 						<th class="formador">Habilitado para Formadores</td>
 						<th class="todos">Habilitado para Todos</td>
 	<!-- Versão anterior a 08/05/2014
 						<th class="monitor">Habilitado para Monitores</td>
-						<th class="aluno">Habilitado para Alunos</td> -->
+						<th class="aluno">Habilitado para Alunos</td> 
 					<tr>
 						<td class="opcaoGerenciamento">Chat de Terreno</td>
 					</tr>
@@ -138,7 +139,7 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 					<tr>
 						<td class="opcaoGerenciamento">Chat Amigo</td>
 					</tr>
-					</table>
+					</table> -->
 				</div></div>
 			</div><br><br>
 			
@@ -151,8 +152,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_biblioteca){echo 'style="display:none"';}?> id="habilitarFuncionalidade_biblioteca">
 					<table border="0">
 						<th></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+						<th class="monitor">Habilitado para Monitores</th>
+						<th class="aluno">Habilitado para Alunos</th>
 <!-- Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>

@@ -417,3 +417,15 @@ function turmaFuncionalidade($tipo, $id)
 	$bd->solicitar($query);
 	return $bd->resultado['turma'];
 }
+
+//Esta função tem como objetivo substituir abre e fecha tags de um titulo por entidades html, 
+//para impedir que imagens (que de maneira errada foram passadas no campo titulo) sejam abertas pelo navegador. Guilherme Mottin 13/05/2014
+function normalizaTitulo($umTitulo){
+	//Arrays contendo abre e fecha tags para posterior replace
+		$abreFecha	= 		Array("<",">");
+		$substituintes	=	Array("&lt;","&gt;");
+		
+		$tituloNormal = str_replace($abreFecha,$substituintes,$umTitulo);
+		
+		return $tituloNormal;
+}

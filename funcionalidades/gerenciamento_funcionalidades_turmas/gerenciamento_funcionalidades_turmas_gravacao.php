@@ -26,7 +26,13 @@
 
 		if(((bool) $temTodos) == true and $temTodos != 'false'){//se a checkbox "Todos" estiver marcada...
 			$nivel+=$nivelProfessor+$nivelMonitor+$nivelAluno;	//...alunos também podem gerenciar a funcionalidade
-		} else $nivel = $nivelProfessor+$nivelMonitor;			//senão, apenas professores e monitores.
+		} else {
+			if(((bool) $temMonitor) == true and $temMonitor != 'false'){
+				$nivel+=$nivelMonitor;
+			}
+		}
+		
+		$nivel+=$nivelProfessor;//professor sempre pode tudo em todas as funcionalidades.
 		
 		return $nivel;
 /*		Versão anterior a 08/05/2014

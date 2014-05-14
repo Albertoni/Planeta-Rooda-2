@@ -55,9 +55,9 @@ class Desenho {
 		$id = $this->id;
 		$user_id = $this->criador->id;
 		$arquivo = $this->desenho;
-		$titulo = $this->titulo;
 		$tags = $this->palavras;
 		$turma = $this->turma;
+		$titulo = normalizaTitulo($this->titulo);
 
 		$dados = new conexao();
 		if ($this->id != 0){ // Se tem id, é para salvar num já existente.
