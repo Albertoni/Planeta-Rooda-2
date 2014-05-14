@@ -28,9 +28,7 @@ $temPoderCriarEditarImportar = $usuario->podeAcessar($permissoes['aulas_criarAul
 
 
 if(!$temPoderCriarEditarImportar){ // Se for aluno...
-	$host	=	$_SERVER['HTTP_HOST'];
-	$uri	=	rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	header("Location: http://$host$uri/ver_aulas.php?turma=$turma");
+	magic_redirect("ver_aulas.php?turma=$turma");
 }
 
 ?>
@@ -42,7 +40,6 @@ if(!$temPoderCriarEditarImportar){ // Se for aluno...
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="aulas.css" />
 <script type="text/javascript" src="../../jquery.js"></script>
-<script type="text/javascript" src="../../jquery-ui-1.8.1.custom.min.js"></script>
 <script type="text/javascript" src="../../planeta.js"></script>
 <script type="text/javascript" src="../lightbox.js"></script>
 

@@ -1,6 +1,4 @@
 <?php
-
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -8,11 +6,9 @@ require_once("../../usuarios.class.php");
 require_once("aula.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$usuario = usuario_sessao();
 
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])) // if not logged in
+if ($usuario === false) // if not logged in
 	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
 
 $turma = "";
@@ -24,9 +20,7 @@ $permissoes = checa_permissoes(TIPOAULA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
 if(!$usuario->podeAcessar($permissoes['aulas_editarAulas'], $turma)){
-	$host	=	$_SERVER['HTTP_HOST'];
-	$uri	=	rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
-	header("Location: http://$host$uri/planeta_aulas.php?turma=$turma");
+	magic_redirect("planeta_aulas.php?turma=$turma");
 }
 
 
@@ -34,7 +28,7 @@ if(!$usuario->podeAcessar($permissoes['aulas_editarAulas'], $turma)){
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta charset="utf-8">
 	<title>Planeta ROODA 2.0</title>
 	<link type="text/css" rel="stylesheet" href="../../planeta.css" />
 	<link type="text/css" rel="stylesheet" href="aulas.css" />

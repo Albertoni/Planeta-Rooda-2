@@ -1,8 +1,8 @@
 li {margin-bottom:10px}
 textarea {vertical-align:text-top}
 
-.bloco {float:left;width:100%}
-.opcao {margin-right:8px; width:160px;}
+.bloco {display:inline-block;width:100%}
+.opcao {margin-right:6px; width:160px;}
 .resize {width:158px;padding-left:1px}
 
 
