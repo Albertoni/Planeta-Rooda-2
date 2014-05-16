@@ -21,7 +21,7 @@ if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");
 
 
 $userId = $usuario->getId();
-$userLevel = $usuario->getNivel($turma);
+$userLevel = (int) $usuario->getNivel($turma);
 
 
 
@@ -129,7 +129,7 @@ for($i=0; $i < count($aulas); $i++){
 					<div id="autor" class="criado_por">Criado por: <?=$nomecriador->resultado['usuario_nome']?></div>
 <?php
 	if ($GAMBIARRA_ENORME === 1){// Se pode editar ou pode deletar, pode mover
-		permissão($id_aula_anterior != 0){
+		if($id_aula_anterior != 0){
 			echo "					<a class=\"move_up\" onclick=\"trocaPosicoes(".$aulas[$i]->getId().",$turma,".$aulas[$i-1]->getId().")\">Mover para cima</a> | \n";
 		}
 		if (isset($aulas[$i+1]))
