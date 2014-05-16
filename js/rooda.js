@@ -15,7 +15,6 @@ function formatFileInput(input) {
         }
         // adiciona texto de auxilio
         label.classList.add("file_label")
-        label.innerHTML = '<span class="text">Selecionar arquivo:</span>';
         // placeholder de arquivos selecionados
         placeholder = document.createElement("span");
         // atualiza conteudo do placeholder

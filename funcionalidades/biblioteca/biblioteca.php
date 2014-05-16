@@ -105,12 +105,12 @@ if ($perm === false) {
 							<div id="entradaDados">
 								<div class="material_recurso">
 									<label class="file_label" style="display:none" id="label_material_arquivo">
-										<span class="text">Selecionar arquivo:</span><br>
+										<span class="text">Selecionar:</span><br>
 										<input type="file" name="arquivo" />
 									</label>
 									<label class="link_label" style="display:none" id="label_material_link">
 										<span class="text">Link:</span>
-										<input type="text" name="link" required />
+										<input type="text" name="link" required style="width:100%"/>
 									</label>
 								</div>
 
