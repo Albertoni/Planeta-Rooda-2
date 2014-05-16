@@ -48,7 +48,7 @@ switch($idfundo){
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta charset="utf-8">
 <title>Planeta ROODA 2.0</title>
 <link type="text/css" rel="stylesheet" href="../../planeta.css" />
 <link type="text/css" rel="stylesheet" href="aulas.css" />

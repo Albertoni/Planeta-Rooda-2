@@ -1,21 +1,18 @@
 <?php
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("aula.class.php");
 
-if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
-	$turma = $_GET['turma'];
+$usuario = usuario_sessao();
+
+if (isset($_POST['turma']) and is_numeric($_POST['turma'])){
+	$turma = $_POST['turma'];
 }
 
-$permissoes = checa_permissoes(TIPOPLAYER, $turma);
+$permissoes = checa_permissoes(TIPOAULA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
-
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
 
 if($usuario->podeAcessar($permissoes['aulas_editarAulas'], $turma)){
 	$a = new aula();
@@ -31,4 +28,3 @@ if($usuario->podeAcessar($permissoes['aulas_editarAulas'], $turma)){
 }else{
 	echo "Opa, você precisa ter permissão de editar aulas para editar a posição delas.";
 }
-?>

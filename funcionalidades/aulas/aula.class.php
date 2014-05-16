@@ -67,6 +67,7 @@ class aula{
 		$this->tipo		= $tipo		!="" ? $tipo		:$this->erro .= "Tipo em branco;";
 		
 		$this->autor	= $autor != 0 ? $autor : $_SESSION['SS_usuario_id'];
+		$this->erro		= "";
 	}
 	
 	// Salva as mudanças
@@ -249,14 +250,18 @@ class aula{
 			$s->solicitar("SELECT turma, ordem FROM $tabela_Aulas WHERE id = $comEssa");
 			
 			if ($q->erro != "")
-			{	$this->erro = "Erro SQL ao trocar a aula $trocaEssa com $comEssa -> " . $q->erro;
+			{	$this->erro .= "Erro SQL ao trocar a aula $trocaEssa com $comEssa -> " . $q->erro;
 				return false;}
 			if ($s->erro != "")
 			{	$this->erro .= "Erro SQL durante a troca da aula $trocaEssa com $comEssa -> " . $s->erro;
 				return false;}
-			
+			if ($q->resultado['turma'] != $s->resultado['turma']){
+				$this->erro .= "As aulas passadas para serem trocadas não estão na mesma turma. Avise o administrador do Planeta.";
+				return false;
+			}
+
 			// checa se pertence a ambas as turmas e é professor de ambas.
-			if (in_array($q->resultado['turma'], $_SESSION['SS_turmas']) and in_array($s->resultado['turma'], $_SESSION['SS_turmas']) and checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelProfessor)){
+			if (in_array($q->resultado['turma'], $_SESSION['SS_turmas']) and in_array($s->resultado['turma'], $_SESSION['SS_turmas'])){
 				$posDessa = $q->resultado['ordem'];
 				$posDaOutra = $s->resultado['ordem'];
 				
@@ -303,4 +308,3 @@ class aula{
 	
 	
 }
-?>
