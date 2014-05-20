@@ -19,10 +19,11 @@
 		global $nivelMonitor;
 		global $nivelAluno;
 		$nivel=0;
-		
-		//Checkbox "Formadores" atua como placebo, uma vez que Professores e Monitores sempre terão acesso total a tudo.
-		
+
+
+        $temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
 		$temTodos		= isset($conteudoAssociativo[$_base."_todos"]) ? $conteudoAssociativo[$_base."_todos"] : false;
+
 
 		if(((bool) $temTodos) == true and $temTodos != 'false'){//se a checkbox "Todos" estiver marcada...
 			$nivel+=$nivelProfessor+$nivelMonitor+$nivelAluno;	//...alunos também podem gerenciar a funcionalidade

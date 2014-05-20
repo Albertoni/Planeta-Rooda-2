@@ -115,9 +115,15 @@ class Turma{
 
 			if($q->erro == ""){
 				$this->id = $q->ultimoId();
+				$q->solicitar("
+				    INSERT INTO TurmasUsuario
+				        (codTurma, codUsuario, associacao)
+					VALUES(
+								'$this->id',
+								'$profResponsavelSanitizado',".
+								NIVELPROFESSOR.")");
 				$this->salvo = true;
 			}
-			
 
 		}else{
 			$q->solicitar("

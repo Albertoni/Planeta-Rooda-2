@@ -108,6 +108,11 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 	<div id="conteudo_topo"></div>
 	<div id="conteudo_meio" style="height: 1719px;">
 		<div id="conteudo">
+		<div class="bts_cima" style="float:none">
+			<a href="../administracao/listaFuncionalidadesAdministracao.php?turma=<?=$_GET['idTurma']?>" align="left" >
+				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+			</a>
+		</div>
 			<big><b>Gerenciamento da Turma <?=$nomeDaTurma?></b></big><br><br><br>
 			<form name="salvar_BD" method="post" action='gerenciamento_funcionalidades_turmas_gravacao.php?'>
 			

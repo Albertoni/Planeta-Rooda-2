@@ -4,10 +4,12 @@ require('../../bd.php');
 require('../../turma.class.php');
 require('../../planeta.class.php');
 require('../../terreno.class.php');
+require('../../funcoes_aux.php'); 
 
 $q = new conexao();
 
 $nomeTurma = $_POST['turma'];
+$turmaLista = $_POST['turmaLista'];//para saber por qual turma o usuario acessou o sistema
 $descricao = $_POST['descricao']; 
 
 $idProfResponsavel = $_POST['idProfResponsavel'];
@@ -24,18 +26,5 @@ $novoPlaneta->salvar();
 
 $novaTurma = new Turma($nomeTurma,$idProfResponsavel,$descricao,0,0,0,$novoPlaneta->getId());
 $novaTurma->salvar();
-
-$alunos = explode(';', $_POST['ids_alunos']);
-
-$numeroAlunos = sizeof($alunos);
-
-$parteDinamica = array();
-for($i=0; $i<$numeroAlunos; $i++){
-	$codUsuario = $q->sanitizaString($alunos[$i]);
-	$parteDinamica[$i] = "('".$novaTurma->getId()."', '$codUsuario', 16)";//$novaTurma->getId() subistituindo $codTurma
-}
-
-$q->solicitar("INSERT INTO TurmasUsuario(codTurma, codUsuario, associacao)
-				VALUES".implode(',', $parteDinamica));
 				
-//magic_redirect para a página geral de administração quando a página estiver pronta.
+magic_redirect("listaFuncionalidadesAdministracao.php?turma=".$turmaLista);				

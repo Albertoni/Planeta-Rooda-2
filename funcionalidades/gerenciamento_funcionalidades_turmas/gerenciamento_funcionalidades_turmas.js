@@ -95,6 +95,8 @@ function criarCheckbox(_base, _tipo, _nome, _temCheck){
 	celulaTabela.align = "center";
 	elementoInput.type = 'checkbox';
 	elementoInput.name = nomeCheckbox;
+
+
 	if(_temCheck){
 		elementoInput.checked = true;
 	}else{
@@ -125,10 +127,13 @@ function criarCheckbox(_base, _tipo, _nome, _temCheck){
 function criarLinhaCheckboxesComNomes(_pai, _base, _tipo, _nomes, _estadoCheckboxes){
 	var posicaoCheckbox = 0;
 	for(posicaoCheckbox=0; posicaoCheckbox<_nomes.length; posicaoCheckbox++){
-		_pai.appendChild(criarCheckbox(_base, _tipo, _nomes[posicaoCheckbox], _estadoCheckboxes[posicaoCheckbox]));
-	}
+		    _pai.appendChild(criarCheckbox(_base, _tipo, _nomes[posicaoCheckbox], _estadoCheckboxes[posicaoCheckbox]));
+    }
 }
 
+function verificaPossibilidadeAcessoFuncionalidade(){
+
+}
 /**
 * Dada a id de um objeto, troca sua visibilidade. Isto é:
 *	+ se o objeto estiver visível, torna-se invisível
