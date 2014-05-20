@@ -77,7 +77,6 @@ class Planeta{
 		$idTurmaSanitizado = (int) $this->idTurma;
 		
 		if($this->salvo === false){
-
 			$q->solicitar("
 				INSERT INTO Planetas
 					(Aparencia, EhVisitante, IdTerrenoPrincipal, IdTerrenoPatio, Turma) 
