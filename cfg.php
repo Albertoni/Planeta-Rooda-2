@@ -40,9 +40,12 @@ define("TIPOCOMUNICADOR",6);
 define("TIPOFORUM",7);
 define("TIPOARTE",8);
 define("TIPOPLAYER",10);
-
-//define("PERMISSOES_MONITOR", Array("biblioteca_Enviar"=>true,"biblioteca_Editar"=>true,"biblioteca_Excluir"=>true,"biblioteca_Aprovar"=>true,
-
+/*
+define("PERMISSOES_MONITOR", Array( "biblioteca_Enviar"=>true,"biblioteca_Editar"=>true,"biblioteca_Excluir"=>true,"biblioteca_Aprovar"=>true,
+                                    "forum_Criar Tópico"=>true,"forum_Editar Tópico"=>true,"forum_Excluir Tópico"=>false,"forum_Responder Tópico"=>true,
+                                    "forum_Editar Resposta"=>false,"forum_Excluir Resposta"=>false,"blog_Inserir Post"=>true,"blog_Editar Post"=>true,
+                                    "blog_Inserir Comentários"=>true,"blog_Excluir Post"=>true,"blog_Adicionar Links"=>true,"blog_Adicionar Arquivos"=>true));
+*/
 
 //tipos de planetas - a ordem eh importante - na arvore de planetas, os tipos deles sao crescentes na ordem da raiz para as folhas - planeta-pai nunca pode ter tipo menor ou igual ao do filho	
 	define("PLANETARAIZ",0);

@@ -87,7 +87,7 @@
 								break;
 							case Planeta::APARENCIA_URBANO:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.URBANO";
 								break;
-							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
+							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.LAVA";
 						}
 					
 						echo "<script> menuPlanetas.adicionarLinkPlaneta(new LinkPlaneta(".$turmaPlaneta.", ".$tipoPlaneta.", '".$nomePlaneta."')); </script>";

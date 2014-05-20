@@ -241,15 +241,20 @@ class Usuario { //estrutura para o item post do blog
 	public function getPlanetasQuePodeAcessar(){
 		$planetasQuePodeAcessar = array();
 		$conexaoIdsPlanetas = new conexao();
+        $conexaoIdsPlanetas->solicitar("SELECT  T.idPlaneta
+										FROM TurmasUsuario AS TU JOIN Turmas AS T ON T.codTurma = TU.codTurma
+										WHERE TU.codUsuario = ".($this->id)."");
+     /*
 		$conexaoIdsPlanetas->solicitar("SELECT P.*, TU.codTurma
 										FROM TurmasUsuario AS TU JOIN Planetas AS P ON P.Turma = TU.codTurma
 										WHERE TU.codUsuario = ".($this->id)."
 										GROUP BY P.Nome");
+     */
 		
 		$planetasInseridos = 0;
 		for($i=0; $i<$conexaoIdsPlanetas->registros; $i++){
 			$planeta = new Planeta();
-			$planeta->abrir($conexaoIdsPlanetas->resultado['Id']);
+			$planeta->abrir($conexaoIdsPlanetas->resultado['idPlaneta']);
 			$planetaExiste = $planeta != null;
 			if($planetaExiste){
 				$planetasQuePodeAcessar[$planetasInseridos] = $planeta;
