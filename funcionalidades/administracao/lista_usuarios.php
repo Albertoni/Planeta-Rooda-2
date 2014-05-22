@@ -100,7 +100,7 @@ $user = usuario_sessao();
 	***************************** -->
 		<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 			<div class="bts_cima" style="float:none">
-				<a href="portfolio.php?turma=<?=$turma?>" align="left" >
+				<a href="listaFuncionalidadesAdministracao.php" align="left" >
 					<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 				</a>
 			</div>
@@ -208,7 +208,7 @@ function setaListaDeUsuarios(lista){
 	function imprime(estruturaDados){
 		function geraTd(textoLink, id){
 			var link = document.createElement('a');
-			link.href = "edita_usuario-Novo.php?id="+id;
+			link.href = "edita_usuario.php?id="+id;
 			link.innerHTML = textoLink;
 
 			var td = document.createElement('td');

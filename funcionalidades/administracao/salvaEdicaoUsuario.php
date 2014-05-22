@@ -10,7 +10,7 @@ $id = $q->sanitizaString($_POST['usuario_id']);
 $nomeUsuario = $q->sanitizaString($_POST['usuario_nome']);
 $usuarioLogin = $q->sanitizaString($_POST['usuario_login']);
 $data= DateTime::createFromFormat('d/m/Y', $_POST['usuario_data_aniversario']);
-$usuarioDataAniversario = $data->format('Y-m-d H:i:s');
+$usuarioDataAniversario = $data->format('d/m/Y');
 $usuarioNomeMae = $q->sanitizaString($_POST['usuario_nome_mae']);
 $usuarioEmail = $q->sanitizaString($_POST['usuario_email']);
 

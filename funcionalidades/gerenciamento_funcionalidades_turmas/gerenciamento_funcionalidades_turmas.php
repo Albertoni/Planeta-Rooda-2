@@ -12,13 +12,12 @@ O procedimento é o seguinte:
 Tudo isto é feito via javascript, na função criarCheckboxes que é chamada lá no fim deste arquivo.
 */
 
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../reguaNavegacao.class.php");
 
+$user = usuario_sessao();
 
 $codTurma = (isset($_GET['idTurma']) and is_numeric($_GET['idTurma'])) ? $_GET['idTurma'] : die("Ops, aparentemente n&atilde;o existe uma turma com esse idTurma, por favor tente de novo.");
 
@@ -109,13 +108,12 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 	<div id="conteudo_meio" style="height: 1719px;">
 		<div id="conteudo">
 		<div class="bts_cima" style="float:none">
-			<a href="../administracao/listaFuncionalidadesAdministracao.php?turma=<?=$_GET['idTurma']?>" align="left" >
+			<a href="../administracao/listaFuncionalidadesAdministracao.php" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 		</div>
 			<big><b>Gerenciamento da Turma <?=$nomeDaTurma?></b></big><br><br><br>
 			<form name="salvar_BD" method="post" action='gerenciamento_funcionalidades_turmas_gravacao.php?'>
-			
 			<ul>
 			<!-- ********************************************* GERENCIAMENTO DO COMUNICADOR ******************************************************** -->
 			<div class="bloco">

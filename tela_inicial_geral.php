@@ -22,6 +22,10 @@
 		<link href="tela_inicial_geral.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
+        <a href = "funcionalidades/administracao/listaFuncionalidadesAdministracao.php">
+        <img src="images/botoes/bt_administracao.png" style="position:absolute; right:400px; top:10px; cursor:pointer;">
+            </a>
+
 		<img id="logo" src="images/desenhos/logo_planeta.png">
 		<img onclick="redirecionarParaFuncionalidade('criarAvatar', false, <?=$_SESSION['SS_personagem_id']?>)" src="images/planeta-personalizaravatar.png" 
 			style="position:absolute; right:200px; top:10px; cursor:pointer;">

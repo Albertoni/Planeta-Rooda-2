@@ -222,7 +222,7 @@
 	}
 	
 	if(!$deuErro){
-		echo 'Dados salvos com sucesso!';
+		magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
 	}
 ?>
 </body>

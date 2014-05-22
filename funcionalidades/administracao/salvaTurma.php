@@ -9,7 +9,6 @@ require('../../funcoes_aux.php');
 $q = new conexao();
 
 $nomeTurma = $_POST['turma'];
-$turmaLista = $_POST['turmaLista'];//para saber por qual turma o usuario acessou o sistema
 $descricao = $_POST['descricao']; 
 
 $idProfResponsavel = $_POST['idProfResponsavel'];
@@ -27,4 +26,4 @@ $novoPlaneta->salvar();
 $novaTurma = new Turma($nomeTurma,$idProfResponsavel,$descricao,0,0,0,$novoPlaneta->getId());
 $novaTurma->salvar();
 				
-magic_redirect("listaFuncionalidadesAdministracao.php?turma=".$turmaLista);				
+magic_redirect("listaFuncionalidadesAdministracao.php");

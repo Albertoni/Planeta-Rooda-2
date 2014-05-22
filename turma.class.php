@@ -126,7 +126,7 @@ class Turma{
 
                 //salva as permissões de funcionalidades  padrão
                 $q->solicitar("INSERT INTO GerenciamentoTurma (codTurma,
-																					  dadosGerenciamento,
+															    dadosGerenciamento,
 			  comunicador_terreno, comunicador_turma, comunicador_privado, comunicador_amigo,
 
 			  biblioteca_enviarMateriais, biblioteca_editarMateriais, biblioteca_excluirArquivos, biblioteca_aprovarMateriais,
@@ -146,7 +146,7 @@ class Turma{
 			  aulas_criarAulas, aulas_editarAulas, aulas_importarAulas)
 
 			                    VALUES ('$this->id',
-                                    "."biblioteca_Enviar Materias_monitor,true,biblioteca_Enviar Materias_aluno,true,biblioteca_Editar Materias_monitor,true,biblioteca_Editar Materias_aluno,true,biblioteca_Excluir Arquivos_monitor,true,"
+                                    "."'biblioteca_Enviar Materias_monitor,true,biblioteca_Enviar Materias_aluno,true,biblioteca_Editar Materias_monitor,true,biblioteca_Editar Materias_aluno,true,biblioteca_Excluir Arquivos_monitor,true,"
                                      ."biblioteca_Aprovar Arquivos_monitor,true,blog_Inserir Post_monitor,true,blog_Inserir Post_aluno,true,blog_Editar Post_monitor,true,blog_Editar Post_aluno,true,blog_Inserir Comentários_monitor,true,"
                                      ."blog_Inserir Comentários_aluno,true,blog_Excluir Post_monitor,true,blog_Excluir Post_aluno,true,blog_Adicionar Links_monitor,true,blog_Adicionar Links_aluno,true,blog_Adicionar Arquivos_monitor,true,"
                                      ."blog_Adicionar Arquivos_aluno,true,portfolio_Visualizar Post_monitor,true,portfolio_Visualizar Post_aluno,true,portfolio_Inserir Post_monitor,true,portfolio_Inserir Post_aluno,false,portfolio_Editar Post_monitor,true,"
@@ -158,9 +158,9 @@ class Turma{
                                      ."arte_Excluir Comentários_monitor,true,arte_Ver Comentários_monitor,true,arte_Ver Comentários_aluno,true,pergunta_Criar Questionário_monitor,true,pergunta_Criar Questionário_aluno,true,pergunta_Criar Pergunta_monitor,true,"
                                      ."pergunta_Criar Pergunta_aluno,true,pergunta_Editar Questionário_monitor,true,pergunta_Editar Questionário_aluno,true,pergunta_Editar Pergunta_monitor,true,pergunta_Editar Pergunta_aluno,true,pergunta_Deletar Questionário_monitor,false,"
                                      ."pergunta_Deletar Questionário_aluno,false,pergunta_Deletar Pergunta_monitor,false,pergunta_Deletar Pergunta_aluno,false,player_Inserir Vídeos_monitor,true,player_Inserir Vídeos_aluno,true,player_Deletar Vídeos_monitor,true,"
-                                     ."player_Ver Comentários_monitor,true,player_Ver Comentários_aluno,true,player_Comentar Vídeos_monitor,true,player_Comentar Vídeos_aluno,true,player_Deletar Comentário_monitor,true"
+                                     ."player_Ver Comentários_monitor,true,player_Ver Comentários_aluno,true,player_Comentar Vídeos_monitor,true,player_Comentar Vídeos_aluno,true,player_Deletar Comentário_monitor,true'"
                                      .",
-			                            4, 4, 4,
+			                            4, 4, 4,4,
 
                             			28, 12, 12, 12,
 
@@ -177,6 +177,7 @@ class Turma{
 			                            28, 12, 28, 12, 28,
 
 			                            4, 4, 4)");
+
 			}
 
 		}else{
