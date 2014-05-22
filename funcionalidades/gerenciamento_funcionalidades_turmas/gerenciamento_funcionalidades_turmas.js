@@ -16,6 +16,7 @@ function definirEstadosCheckboxes(_dadosCheckboxes){
 	var index;
 	var checkbox;
 	var dadosCheckboxes = _dadosCheckboxes.split(",");
+    console.log(dadosCheckboxes);
 	for(index=0; index<dadosCheckboxes.length; index+=2){
 		checkbox = getElementoPorNome(dadosCheckboxes[index]);
 		if(dadosCheckboxes[index+1] == 'true'){
@@ -32,8 +33,12 @@ function definirEstadosCheckboxes(_dadosCheckboxes){
 *	(1) Será criada uma tabela para cada div da classe gerenciamentoFuncionalidade, o nome da classe será o nome base das checkboxes desta tabela.
 *	(2) Todos os elementos th da tabela serão considerados colunas e as checkboxes nessas colunas terão no tipo o nome da classe do th ao qual pertencem.
 *	(3) Para cada tr é criada uma linha de checkboxes, cujos nomes serão o conteúdo das tds da classe opcaoGerenciamento dentro da tr.
+*
+* @param _checkboxesQuePodemExistir  Um objeto JavaScript que contém as regras de quais
+*           elementos podem ou não ser oferecidos para o professor escolher. Vide ata
+*           de 8-9 de maio de 2014.
 */
-function criarCheckboxes(){
+function criarCheckboxes(_checkboxesQuePodemExistir){
 	var divsDaClasse = getTagsFilhasDeComClasse("div", document, CLASSE_DAS_DIVS_TABELAS);
 	var divDasLinhas;
 	var linhasPreenchiveis;
@@ -72,7 +77,7 @@ function criarCheckboxes(){
 			var tipo = tipoCelulas;
 			var nomes = classesCelulasCabecalhosColunas;
 			var estados = estadosCheckboxesLinhas;
-			criarLinhaCheckboxesComNomes(linhaDasCelulas, base, tipo, nomes, estados);
+			criarLinhaCheckboxesComNomes(linhaDasCelulas, base, tipo, nomes, estados, _checkboxesQuePodemExistir);
 		}
 	}
 }
@@ -122,12 +127,25 @@ function criarCheckbox(_base, _tipo, _nome, _temCheck){
 * @param _estadoCheckboxes Array de booleanos que indicam se as checkboxes devem
 *			estar 'checadas'. A relação com _nomes é direta. Assim, _estadoCheckboxes[0]
 *			indica o estado da checkbox que tem o nome _nomes[0].
+* @param _checkboxesQuePodemExistir Um objeto JavaScript que contém as regras de quais
+*           elementos podem ou não ser oferecidos para o professor escolher. Vide ata
+*           de 8-9 de maio de 2014.
 * @see criarCheckbox
 */
-function criarLinhaCheckboxesComNomes(_pai, _base, _tipo, _nomes, _estadoCheckboxes){
+function criarLinhaCheckboxesComNomes(_pai, _base, _tipo, _nomes, _estadoCheckboxes, _checkboxesQuePodemExistir){
 	var posicaoCheckbox = 0;
 	for(posicaoCheckbox=0; posicaoCheckbox<_nomes.length; posicaoCheckbox++){
+        /*console.log(_pai);
+        console.log(_base);
+        console.log(_tipo);
+        console.log(_nomes);*/
+        console.log(_checkboxesQuePodemExistir[_base + "_" + _tipo].indexOf(_nomes[posicaoCheckbox]));
+        if(_checkboxesQuePodemExistir[_base + "_" + _tipo] !== undefined)
+        if(_checkboxesQuePodemExistir[_base + "_" + _tipo].indexOf(_nomes[posicaoCheckbox]) != -1){
 		    _pai.appendChild(criarCheckbox(_base, _tipo, _nomes[posicaoCheckbox], _estadoCheckboxes[posicaoCheckbox]));
+        }else{
+            _pai.appendChild(document.createElement('td'));
+        }
     }
 }
 
@@ -258,4 +276,3 @@ function marcaLinha(_base){
 		document.getElementsByName(_base + possibilidades[indice])[0].checked = trocaPara;
 	}
 }
-

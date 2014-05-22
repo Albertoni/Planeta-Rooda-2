@@ -166,16 +166,16 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->
 					<tr>
-						<td class="opcaoGerenciamento">Enviar Materiais</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="biblioteca_Enviar Materiais">Enviar Materiais</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Materiais</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="biblioteca_Editar Materiais">Editar Materiais</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Arquivos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="biblioteca_Excluir Arquivos">Excluir Arquivos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Aprovar Arquivos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="biblioteca_Aprovar Arquivos">Aprovar Arquivos</td>
 					</tr>
 					</table>
 				</div></div>
@@ -190,8 +190,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_blog){echo 'style="display:none"';}?> id="habilitarFuncionalidade_blog">
 					<table border="0">
 						<th><b></b></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+						<th class="monitor">Habilitado para Monitores</th>
+						<th class="aluno">Habilitado para Alunos</th>
 <!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
@@ -199,22 +199,22 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Inserir Post">Inserir Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Editar Post">Editar Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Comentários</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Inserir Comentários">Inserir Comentários</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Excluir Post">Excluir Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Adicionar Links</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Adicionar Links">Adicionar Links</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Adicionar Arquivos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="blog_Adicionar Arquivos">Adicionar Arquivos</td>
 					</tr>
 					</table>
 				</div></div>
@@ -229,8 +229,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_portfolio){echo 'style="display:none"';}?> id="habilitarFuncionalidade_portfolio">
 					<table border="0">
 						<th><b></b></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
 <!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
@@ -238,28 +238,28 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->					
 					<tr>
-						<td class="opcaoGerenciamento">Visualizar Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Visualizar Post">Visualizar Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Inserir Post">Inserir Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Post</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Editar Post">Editar Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Comentários</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Inserir Comentários">Inserir Comentários</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Post</td>
+						<td class="opcaoGerenciamento"  data-nome-funcionalidade="portfolio_Excluir Post">Excluir Post</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Adicionar Links</td>
+						<td class="opcaoGerenciamento"  data-nome-funcionalidade="portfolio_Adicionar Links">Adicionar Links</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Enviar Arquivos</td>
+						<td class="opcaoGerenciamento"  data-nome-funcionalidade="portfolio_Enviar Arquivos">Enviar Arquivos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Arquivos</td>
+						<td class="opcaoGerenciamento"  data-nome-funcionalidade="portfolio_Excluir Arquivos">Excluir Arquivos</td>
 					</tr>
 					</table>
 				</div></div>
@@ -274,8 +274,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_forum){echo 'style="display:none"';}?> id="habilitarFuncionalidade_forum">
 					<table border="0">
 						<th><b></b></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
 <!--Versão anterior a 08/05/2014					
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
@@ -283,29 +283,31 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->
 					<tr>
-						<td class="opcaoGerenciamento">Criar Tópico</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Criar Tópico">Criar Tópico</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Tópico</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Editar Tópico">Editar Tópico</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Tópico</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Excluir Tópico">Excluir Tópico</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Responder Tópico</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Responder Tópico">Responder Tópico</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Resposta</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Editar Resposta">Editar Resposta</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Resposta</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="forum_Excluir Resposta">Excluir Resposta</td>
+					</tr>
+<!--Legado de alguma era pré-joaniana
+					<tr>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Excluir Arquivos">Editar Anexo</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Anexo</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="portfolio_Excluir Arquivos">Excluir Anexo</td>
 					</tr>
-					<tr>
-						<td class="opcaoGerenciamento">Excluir Anexo</td>
-					</tr>
+-->
 					</table>
 				</div></div>
 			</div><br><br>
@@ -319,8 +321,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_arte){echo 'style="display:none"';}?> id="habilitarFuncionalidade_arte">
 					<table border="0">
 						<td><b></b></td>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
 <!--						
 						<th class="professor">Habilitado para Professores</td>
 						<th class="monitor">Habilitado para Monitores</td>
@@ -328,19 +330,19 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</td>
 -->						
 					<tr>
-						<td class="opcaoGerenciamento">Criar Desenho</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="arte_Criar Desenho">Criar Desenho</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Desenho</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="arte_Excluir Desenho">Excluir Desenho</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Ver Comentários</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="arte_Ver Comentários">Ver Comentários</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Comentários</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="arte_Inserir Comentários">Inserir Comentários</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Excluir Comentário</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="arte_Excluir Comentários">Excluir Comentário</td>
 					</tr>
 					</table>
 				</div></div>
@@ -355,8 +357,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_pergunta){echo 'style="display:none"';}?> id="habilitarFuncionalidade_pergunta">
 					<table border="0">
 						<th></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
 <!--Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
@@ -364,22 +366,22 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->						
 					<tr>
-						<td class="opcaoGerenciamento">Criar Questionário</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Criar Questionário">Criar Questionário</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Criar Pergunta</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Criar Pergunta">Criar Pergunta</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Questionário</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Editar Questionário">Editar Questionário</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Pergunta</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Editar Pergunta">Editar Pergunta</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Deletar Questionário</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Deletar Questionário">Deletar Questionário</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Deletar Pergunta</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="pergunta_Deletar Pergunta">Deletar Pergunta</td>
 					</tr>
 					</table>
 				</div></div>
@@ -394,8 +396,8 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 				<div <?php if(!$turmaTem_player){echo 'style="display:none"';}?> id="habilitarFuncionalidade_player">
 					<table border="0">
 						<th></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
 <!--Versão anterior a 08/05/2014						
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
@@ -403,19 +405,19 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<th class="todos">Habilitado para Todos</th>
 -->						
 					<tr>
-						<td class="opcaoGerenciamento">Inserir Vídeos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="player_Inserir Vídeos">Inserir Vídeos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Deletar Vídeos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="player_Deletar Vídeos">Deletar Vídeos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Ver Comentários</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="player_Ver Comentários">Ver Comentários</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Comentar Vídeos</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="player_Comentar Vídeos">Comentar Vídeos</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Deletar Comentário</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="player_Deletar Comentário">Deletar Comentário</td>
 					</tr>
 					</table>
 				</div></div>
@@ -428,31 +430,92 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 						<input type="checkbox" class="habilitarFuncionalidade" name="aulas" <?php if($turmaTem_aulas){echo 'checked';}?> onclick="toggleVisibilidade('habilitarFuncionalidade_aulas')"></li>
 				<br><span class="margem_esquerda">[Descrição do aulas.]</span><br><br><br>
 				<div <?php if(!$turmaTem_aulas){echo 'style="display:none"';}?> id="habilitarFuncionalidade_aulas">
+<!--Versão anterior a 21/05/2014
 					<table border="0">
 						<th></th>
-						<th class="formador">Habilitado para Formadores</td>
-						<th class="todos">Habilitado para Todos</td>
-<!--Versão anterior a 08/05/2014						
+                        <th class="monitor">Habilitado para Monitores</th>
+                        <th class="aluno">Habilitado para Alunos</th>
+    Versão anterior a 08/05/2014
 						<th class="professor">Habilitado para Professores</th>
 						<th class="monitor">Habilitado para Monitores</th>
 						<th class="aluno">Habilitado para Alunos</th>
 						<th class="todos">Habilitado para Todos</th>
--->						
+
 					<tr>
-						<td class="opcaoGerenciamento">Criar Aulas</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="aulas_Criar Aulas">Criar Aulas</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Editar Aulas</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="aulas_Editar Aulas">Editar Aulas</td>
 					</tr>
 					<tr>
-						<td class="opcaoGerenciamento">Importar Aulas</td>
+						<td class="opcaoGerenciamento" data-nome-funcionalidade="aulas_Importar Aulas">Importar Aulas</td>
 					</tr>
-					</table>
+					</table>-->
 				</div></div>
 			</div>
 			</ul>
 			
-			<script>criarCheckboxes();
+			<script>
+                /*
+                 * _checkboxesQuePodemExistir  Um objeto JavaScript que contém as regras de quais
+                 *           elementos podem ou não ser oferecidos para o professor escolher. Vide ata
+                 *           de 8-9 de maio de 2014.
+                 */
+                var checkboxesQuePodemExistir = {
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade biblioteca.
+                    "biblioteca_Enviar Materiais":      ['monitor',     'aluno'],
+                    "biblioteca_Editar Materiais":      ['monitor'             ],
+                    "biblioteca_Excluir Arquivos":      ['monitor'             ],
+                    "biblioteca_Aprovar Arquivos":      ['monitor'             ],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade webfolio.
+                    "blog_Inserir Post":                ['monitor',     'aluno'],
+                    "blog_Editar Post":                 ['monitor',     'aluno'],
+                    "blog_Inserir Comentários":         ['monitor',     'aluno'],
+                    "blog_Excluir Post":                ['monitor',     'aluno'],
+                    "blog_Adicionar Links":             ['monitor',     'aluno'],
+                    "blog_Adicionar Arquivos":          ['monitor',     'aluno'],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade projetos.
+                    "portfolio_Visualizar Post":        ['monitor',     'aluno'],
+                    "portfolio_Inserir Post":           ['monitor',     'aluno'],
+                    "portfolio_Editar Post":            ['monitor',     'aluno'],
+                    "portfolio_Inserir Comentários":    ['monitor',     'aluno'],
+                    "portfolio_Excluir Post":           [                      ],
+                    "portfolio_Adicionar Links":        ['monitor',     'aluno'],
+                    "portfolio_Enviar Arquivos":        ['monitor',     'aluno'],
+                    "portfolio_Excluir Arquivos":       [                      ],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade forum.
+                    "forum_Criar Tópico":               ['monitor',     'aluno'],
+                    "forum_Editar Tópico":              ['monitor',     'aluno'],
+                    "forum_Excluir Tópico":             ['monitor',            ],
+                    "forum_Responder Tópico":           ['monitor',     'aluno'],
+                    "forum_Editar Resposta":            ['monitor',     'aluno'],
+                    "forum_Excluir Resposta":           ['monitor',     'aluno'],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade planeta arte.
+                    "arte_Criar Desenho":               ['monitor',     'aluno'],
+                    "arte_Excluir Desenho":             ['monitor'             ],
+                    "arte_Ver Comentários":             ['monitor',     'aluno'],
+                    "arte_Inserir Comentários":         ['monitor',     'aluno'],
+                    "arte_Excluir Comentário":          ['monitor'             ],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade planeta pergunta.
+                    "pergunta_Criar Questionário":      ['monitor',     'aluno'],
+                    "pergunta_Criar Pergunta":          ['monitor',     'aluno'],
+                    "pergunta_Editar Questionário":     ['monitor',     'aluno'],
+                    "pergunta_Editar Pergunta":         ['monitor',     'aluno'],
+                    "pergunta_Deletar Questionário":    ['monitor'             ],
+                    "pergunta_Deletar Pergunta":        ['monitor'             ],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade planeta player.
+                    "player_Inserir Vídeos":            ['monitor',     'aluno'],
+                    "player_Deletar Vídeos":            ['monitor'             ],
+                    "player_Ver Comentários":           ['monitor',     'aluno'],
+                    "player_Comentar Vídeos":           ['monitor',     'aluno'],
+                    "player_Deletar Comentário":        ['monitor'             ],
+                    //descreve qual cabeçalho da tabela pode ter a permissão habilitada para a funcionalidade planeta aulas.
+                    "aulas_Criar Aulas":                [                      ],
+                    "aulas_Editar Aulas":               [                      ],
+                    "aulas_Importar Aulas":             [                      ]
+                };
+
+                criarCheckboxes(checkboxesQuePodemExistir);
 			<?php
 				if(0 < $conexaoBuscaDadosGerenciamentoTurma->registros){
 					$estadosCheckboxes = $conexaoBuscaDadosGerenciamentoTurma->resultado['dadosGerenciamento'];

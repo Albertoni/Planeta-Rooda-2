@@ -22,11 +22,11 @@
 
 
         $temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
-		$temTodos		= isset($conteudoAssociativo[$_base."_todos"]) ? $conteudoAssociativo[$_base."_todos"] : false;
+		$temAluno		= isset($conteudoAssociativo[$_base."_aluno"]) ? $conteudoAssociativo[$_base."_aluno"] : false;
 
 
-		if(((bool) $temTodos) == true and $temTodos != 'false'){//se a checkbox "Todos" estiver marcada...
-			$nivel+=$nivelProfessor+$nivelMonitor+$nivelAluno;	//...alunos também podem gerenciar a funcionalidade
+		if(((bool) $temAluno) == true and $temAluno != 'false'){
+			$nivel+=$nivelAluno;
 		} else {
 			if(((bool) $temMonitor) == true and $temMonitor != 'false'){
 				$nivel+=$nivelMonitor;
