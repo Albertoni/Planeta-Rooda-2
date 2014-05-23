@@ -3,7 +3,7 @@ mb_internal_encoding('UTF-8');
 	
 	
 	/*================================================
-		Sessao até o presente momento
+		Sessao atï¿½ o presente momento
 	================================================
 					$_SESSION['SS_usuario_id']
 					$_SESSION['SS_usuario_nome']
@@ -11,11 +11,11 @@ mb_internal_encoding('UTF-8');
 					$_SESSION['SS_usuario_email']
 					$_SESSION['SS_personagem_id']
 					$_SESSION['SS_terreno_id']
-					$_SESSION['SS_link_pai'] (contém o link da página que chamou a aplicação externa)
+					$_SESSION['SS_link_pai'] (contï¿½m o link da pï¿½gina que chamou a aplicaï¿½ï¿½o externa)
 					$_SESSION['SS_nivel_ultimo']
 					S_SESSION['SS_turmas'] (Array)
 	================================================
-	Obs.: Não temos observações a serem feitas
+	Obs.: Nï¿½o temos observaï¿½ï¿½es a serem feitas
 	==============================================*/
 
 $email_administrador = "admplaneta2@gmail.com";
@@ -49,7 +49,7 @@ define("TIPOPLAYER",10);
 	define("PLANETAALUNO",4);
 	define("NUMTIPOSPLANETAS",4); //numero de tipos de planetas --- se se aumentar o numero de tipos de planetas aumentar essa variavel tambem
 
-$debug = true;	// não sei se isso é usado
+$debug = true;	// nï¿½o sei se isso ï¿½ usado
 
 
 //nome tabelas
@@ -115,7 +115,7 @@ $tabela_blogs				= "blogblogs";
 $tabela_comentarios			= "blogcomentarios";
 $tabela_arquivos			= "arquivos";
 */
-//Níveis básicos
+//Nï¿½veis bï¿½sicos
 $nivelAdmin			= 1; // b1
 $admin				= "administrador";
 $nivelCoordenador	= 2; // b10
@@ -128,11 +128,13 @@ $nivelAluno			= 16; // b10000
 $aluno				= "aluno";
 $nivelVisitante		= 256; // b100000000
 $visitante			= "visitante";
+
 define("NIVELADMIN", 1);
 define("NIVELPROFESSOR", 4);
+define("NIVELMONITOR", 8);
 define("NIVELALUNO", 16);
 
-//Sistemas Básicos
+//Sistemas Bï¿½sicos
 $sistAdmin 		= "Planeta Rooda";
 $sistAdminId 	= 1;
 $sistAluno 		= "Sistema dos Alunos";

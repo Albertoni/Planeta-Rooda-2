@@ -2,13 +2,14 @@
 	require_once("cfg.php");
 	require_once("bd.php");
 	require_once("funcoes_aux.php");
-	
+
 	require_once("planeta.class.php");
 	require_once("usuarios.class.php");
 	require_once("turma.class.php");
 	require_once("AlteracoesTurmasUsuario.php");
-	
-	$usuario = usuario_sessao();
+    require_once("funcionalidades/administracao/verificaPermissoesAdministracao.php");
+
+    $usuario = usuario_sessao();
 	
 	if (!$usuario){ // Se isso não estiver setado, o usuario não está logado
 		die("<a href=\"index.php\">Por favor volte e entre em sua conta.</a>");
@@ -22,6 +23,12 @@
 		<link href="tela_inicial_geral.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
+       <? if(verificaSeProfessor($usuario->getId())){
+          echo  "<a href = \"funcionalidades/administracao/listaFuncionalidadesAdministracao.php\">
+                <img src=\"images/botoes/bt_administracao.png\" style=\"position:absolute; right:400px; top:10px; cursor:pointer;\">
+                </a>";
+       }
+       ?>
 		<img id="logo" src="images/desenhos/logo_planeta.png">
 		<img onclick="redirecionarParaFuncionalidade('criarAvatar', false, <?=$_SESSION['SS_personagem_id']?>)" src="images/planeta-personalizaravatar.png" 
 			style="position:absolute; right:200px; top:10px; cursor:pointer;">
@@ -87,7 +94,7 @@
 								break;
 							case Planeta::APARENCIA_URBANO:	$tipoPlaneta = "LinkPlaneta.TiposPlanetas.URBANO";
 								break;
-							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.GRAMA";
+							default:						$tipoPlaneta = "LinkPlaneta.TiposPlanetas.LAVA";
 						}
 					
 						echo "<script> menuPlanetas.adicionarLinkPlaneta(new LinkPlaneta(".$turmaPlaneta.", ".$tipoPlaneta.", '".$nomePlaneta."')); </script>";

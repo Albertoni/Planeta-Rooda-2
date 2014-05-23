@@ -115,9 +115,70 @@ class Turma{
 
 			if($q->erro == ""){
 				$this->id = $q->ultimoId();
+				$q->solicitar("
+				    INSERT INTO TurmasUsuario
+				        (codTurma, codUsuario, associacao)
+					VALUES(
+								'$this->id',
+								'$profResponsavelSanitizado',".
+								NIVELPROFESSOR.")");
 				$this->salvo = true;
+
+                //salva as permissões de funcionalidades  padrão
+                $q->solicitar("INSERT INTO GerenciamentoTurma (codTurma,
+															    dadosGerenciamento,
+			  comunicador_terreno, comunicador_turma, comunicador_privado, comunicador_amigo,
+
+			  biblioteca_enviarMateriais, biblioteca_editarMateriais, biblioteca_excluirArquivos, biblioteca_aprovarMateriais,
+
+			  blog_inserirPost, blog_editarPost, blog_inserirComentarios, blog_excluirPost, blog_adicionarLinks, blog_adicionarArquivos,
+
+			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_enviarArquivos, portfolio_excluirArquivos,
+
+			  forum_criarTopico, forum_editarTopico, forum_excluirTopico, forum_responderTopico, forum_editarResposta, forum_excluirResposta,
+
+			  arte_criarDesenho, arte_excluirDesenho, arte_inserirComentarios, arte_verComentarios, arte_excluirComentarios,
+
+			  pergunta_criarQuestionario, pergunta_criarPergunta, pergunta_editarQuestionario, pergunta_editarPergunta, pergunta_deletarQuestionario, pergunta_deletarPergunta,
+
+			  player_inserirVideos, player_deletarVideos, player_inserirComentario, player_deletarComentario, player_verComentario,
+
+			  aulas_criarAulas, aulas_editarAulas, aulas_importarAulas)
+
+			                    VALUES ('$this->id',
+                                    "."'biblioteca_Enviar Materias_monitor,true,biblioteca_Enviar Materias_aluno,true,biblioteca_Editar Materias_monitor,true,biblioteca_Editar Materias_aluno,true,biblioteca_Excluir Arquivos_monitor,true,"
+                                     ."biblioteca_Aprovar Arquivos_monitor,true,blog_Inserir Post_monitor,true,blog_Inserir Post_aluno,true,blog_Editar Post_monitor,true,blog_Editar Post_aluno,true,blog_Inserir Comentários_monitor,true,"
+                                     ."blog_Inserir Comentários_aluno,true,blog_Excluir Post_monitor,true,blog_Excluir Post_aluno,true,blog_Adicionar Links_monitor,true,blog_Adicionar Links_aluno,true,blog_Adicionar Arquivos_monitor,true,"
+                                     ."blog_Adicionar Arquivos_aluno,true,portfolio_Visualizar Post_monitor,true,portfolio_Visualizar Post_aluno,true,portfolio_Inserir Post_monitor,true,portfolio_Inserir Post_aluno,false,portfolio_Editar Post_monitor,true,"
+                                     ."portfolio_Editar Post_aluno,false,portfolio_Inserir Comentários_monitor,true,portfolio_Inserir Comentários_aluno,true,portfolio_Excluir Post_monitor,false,portfolio_Excluir Post_aluno,false,"
+                                     ."portfolio_Adicionar Links_monitor,true,portfolio_Adicionar Links_aluno,false,portfolio_Adicionar Arquivos_monitor,true,portfolio_Adicionar Arquivos_aluno,false,forum_Criar Tópico_monitor,true,"
+                                     ."forum_Criar Tópico_aluno,false,forum_Editar Tópico_monitor,true,forum_Editar Tópico_aluno,false,forum_Excluir Tópico_monitor,false,forum_Excluir Tópico_aluno,false,forum_Responder Tópico_monitor,false,"
+                                     ."forum_Responder Tópico_aluno,false,forum_Editar Resposta_monitor,false,forum_Editar Resposta_aluno,false,forum_Excluir Resposta_monitor,false,forum_Excluir Resposta_aluno,false,arte_Criar Desenho_monitor,true,"
+                                     ."arte_Criar Desenho_aluno,true,arte_Comentar Desenho_monitor,true,arte_Comentar Desenho_aluno,true,arte_Excluir Desenho_monitor,false,arte_Inserir Comentários_monitor,true,arte_Inserir Comentários_aluno,true,"
+                                     ."arte_Excluir Comentários_monitor,true,arte_Ver Comentários_monitor,true,arte_Ver Comentários_aluno,true,pergunta_Criar Questionário_monitor,true,pergunta_Criar Questionário_aluno,true,pergunta_Criar Pergunta_monitor,true,"
+                                     ."pergunta_Criar Pergunta_aluno,true,pergunta_Editar Questionário_monitor,true,pergunta_Editar Questionário_aluno,true,pergunta_Editar Pergunta_monitor,true,pergunta_Editar Pergunta_aluno,true,pergunta_Deletar Questionário_monitor,false,"
+                                     ."pergunta_Deletar Questionário_aluno,false,pergunta_Deletar Pergunta_monitor,false,pergunta_Deletar Pergunta_aluno,false,player_Inserir Vídeos_monitor,true,player_Inserir Vídeos_aluno,true,player_Deletar Vídeos_monitor,true,"
+                                     ."player_Ver Comentários_monitor,true,player_Ver Comentários_aluno,true,player_Comentar Vídeos_monitor,true,player_Comentar Vídeos_aluno,true,player_Deletar Comentário_monitor,true'"
+                                     .",
+			                            4, 4, 4,4,
+
+                            			28, 12, 12, 12,
+
+			                            28, 28, 28, 28, 28, 28,
+
+			                            28, 12, 12, 28, 4, 12, 12, 4,
+
+			                            12, 12, 4, 4, 4, 4,
+
+			                            28, 4, 28, 28, 12,
+
+			                            28, 28, 28, 28, 12, 12,
+
+			                            28, 12, 28, 12, 28,
+
+			                            4, 4, 4)");
+
 			}
-			
 
 		}else{
 			$q->solicitar("
