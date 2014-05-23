@@ -16,8 +16,12 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../reguaNavegacao.class.php");
+require_once("../../reguaNavegacao.class.php");
+require_once("verificaPermissoesAdministracao.php");
 
 $user = usuario_sessao();
+
+validaPermissaoAcesso($user->getId());
 
 $codTurma = (isset($_GET['idTurma']) and is_numeric($_GET['idTurma'])) ? $_GET['idTurma'] : die("Ops, aparentemente n&atilde;o existe uma turma com esse idTurma, por favor tente de novo.");
 

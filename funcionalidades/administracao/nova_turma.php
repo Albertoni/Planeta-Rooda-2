@@ -3,8 +3,10 @@ require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
+require_once("verificaPermissoesAdministracao.php");
 
 $user = usuario_sessao();
+validaPermissaoAcesso($user->getId());
 
 /*if($user === false){
 	die("Voce nao esta logado em sua conta. Por favor volte e logue.");

@@ -1,11 +1,10 @@
 <?php
-require_once("cfg.php");
-require_once("bd.php");
-//sempre que usar este arquivo, inclua ele por ultimo.
+//sempre que usar este arquivo, garantir que ele é incluido por ultimo
 
 //Para chamar quando for preciso verificar se um usuario é professor para determinar se ele pode ver a página.
 function validaPermissaoAcesso($umId){
-    if(!verificaSeProfessor($umId)){ die("Você não tem permissão para acessar esta página.");}
+    if(!verificaSeProfessor($umId)){
+        die("<b>Acesso negado.<br><a href=\"../../tela_inicial_geral.php\">Retornar para a tela inicial.</a></b>");}
 }
 
 //Verifica se o usuario é professor em alguma turma, retornando true se for.
