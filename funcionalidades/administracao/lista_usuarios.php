@@ -132,7 +132,7 @@ $user = usuario_sessao();
 						</table>
 				</ul>
 			<div class="bts_baixo">
-			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
+			<a href="listaFuncionalidadesAdministracao.php" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 			<!-- <input type="image" src="../../images/botoes/bt_confirm.png" align="right"/> -->
