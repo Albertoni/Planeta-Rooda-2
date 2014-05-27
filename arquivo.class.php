@@ -286,7 +286,7 @@ class Arquivo {
 			$bd = new conexao();
 			$id = (int) $this->id;
 			$bd->solicitar(
-				"DELETE FROM $tabela_arquivos WHERE arquivo_id = $id"
+				"DELETE FROM arquivos WHERE arquivo_id = $id"
 			);
 			if ($bd->erro !== '') {
 				throw new Exception('BD: ' . $this->consulta->erro, 1);

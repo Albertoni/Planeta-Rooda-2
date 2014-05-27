@@ -43,6 +43,8 @@ function listar() {
 			return;
 		}
 	}
+
+
 	// se as duas variaveis abaixo forem 0, deve mandar os 10 materiais mais novos.
 	// se definido o cliente pede por materiais mais novos do que o id nessa variavel
 	$mais_novo = isset($_GET['mais_novo']) ? (int) $_GET['mais_novo'] : 0;
@@ -53,8 +55,9 @@ function listar() {
 		 'usuario'    => $usuario->getId(),
 		 'mais_velho' => $mais_velho,
 		 'mais_novo'  => $mais_novo);
+
 	if($usuario->podeAcessar($perm['biblioteca_aprovarMateriais'], $idTurma)) {
-		$opcoes['nao_aprovados'] = true;
+        $opcoes['nao_aprovados'] = true;
 		$json['pode_aprovar'] = true;
 	}
 	if($usuario->podeAcessar($perm['biblioteca_excluirArquivos'], $idTurma)) {
