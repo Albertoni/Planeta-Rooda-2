@@ -41,16 +41,39 @@ class aula{
 	private $fileId = 0;
 	
 	// FALA COM O JAVA, ELE ME MANDOU FAZER ASSIM PORQUE DE ACORDO COM ELE É MAIS SEGURO E BONITO E DE ACORDO COM ELE ATÉ CONSTANTE DEVERIA TER GETTER E SETTER
-	function getId()		{return $this->id;}
-	function getTurma()		{return $this->turma;}
-	function getTitulo()	{return $this->titulo;}
-	function getData()		{return $this->data;}
-	function getDesc()		{return $this->desc;}
-	function getMaterial()	{return $this->material;}
-	function getFundo()		{return $this->fundo;}
-	function getAutor()		{return $this->autor;}
-	function getTipo()		{return $this->tipo;}
-	function getNomeTurma()	{return $this->nomeTurma;}
+	public function getId()			{return $this->id;}
+	public function getTurma()		{return $this->turma;}
+	public function getTitulo()		{return $this->titulo;}
+	public function getData()		{return $this->data;}
+	public function getDesc()		{return $this->desc;}
+	public function getMaterial()	{return $this->material;}
+	public function getAutor()		{return $this->autor;}
+	public function getTipo()		{return $this->tipo;}
+	public function getNomeTurma()	{return $this->nomeTurma;}
+
+	public function getFundo()		{return $this->fundo;}
+	public function getNomeImagemFundo(){
+		$fundo = $this->getFundo();
+		return "fundo".($fundo == "1" ? "" : $fundo).".png";
+	}
+	public function getCorFundo(){
+		switch($this->getFundo()){
+			case "":
+				return "AACCCA";
+			case 2:
+				return "C0D7B6";
+			case 3:
+				return "B5D5E6";
+			case 5:
+				return "E4D5D7";
+			case 6:
+				return "EEBB85";
+			case 7:
+				return "A9ABC8";
+			default:
+				return "000";
+		}
+	}
 	
 	function temErro()		{if($this->erro != "") return true; else return false;}
 	function getErro()		{return $this->erro;}

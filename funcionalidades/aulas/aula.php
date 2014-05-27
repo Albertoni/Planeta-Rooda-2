@@ -21,29 +21,8 @@ $q = new conexao();
 $dono = new Usuario();
 $dono->openUsuario($aula->getAutor());
 
-$idfundo = $aula->getFundo() == "1" ? "" : $aula->getFundo(); // pra diferenciar entre fundo.png e fundo#.png
-switch($idfundo){
-	case "":
-		$corfundo="AACCCA";
-		break;
-	case 2:
-		$corfundo="C0D7B6";
-		break;
-	case 3:
-		$corfundo="B5D5E6";
-		break;
-	case 5:
-		$corfundo="E4D5D7";
-		break;
-	case 6:
-		$corfundo="EEBB85";
-		break;
-	case 7:
-		$corfundo="A9ABC8";
-		break;
-	default:
-		$corfundo="000";
-}
+$corfundo = $aula->getCorFundo();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -58,7 +37,7 @@ switch($idfundo){
 <script type="text/javascript" src="../lightbox.js"></script>
 <style type="text/css">
 	body{background-color:#<?=$corfundo?>;
-		background-image:url("../../images/fundos/fundo<?=$idfundo?>.png");}
+		background-image:url("../../images/fundos/<?=$aula->getNomeImagemFundo()?>");}
 </style>
 <script language="javascript">
 
