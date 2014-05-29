@@ -9,10 +9,10 @@ require('../../funcoes_aux.php');
 $q = new conexao();
 
 $nomeTurma = $_POST['turma'];
-$descricao = $_POST['descricao']; 
-
-$idProfResponsavel = $_POST['idProfResponsavel'];
+$descricao = $_POST['descricao'];
 $aparenciaPlaneta = $_POST['tipoTerreno'];
+
+$idProfResponsavel = explode(';', $_POST['ids_professores']);
 
 $novoTerrenoPrincipal = new Terreno(0,0,false); //cria o terrenoPrincipal a ser atribuido ao novoPlaneta.
 $novoTerrenoPatio = new Terreno(0,0,true); //cria o terrenoPatio a ser atribuido ao novoPlaneta.
@@ -23,7 +23,7 @@ $novoTerrenoPatio->salvar();
 $novoPlaneta = new Planeta($aparenciaPlaneta,0,$novoTerrenoPrincipal->getId(),$novoTerrenoPatio->getId());
 $novoPlaneta->salvar();
 
-$novaTurma = new Turma($nomeTurma,$idProfResponsavel,$descricao,0,0,0,$novoPlaneta->getId());
+$novaTurma = new Turma($nomeTurma,$idProfResponsavel[0],$descricao,0,0,0,$novoPlaneta->getId());
 $novaTurma->salvar();
 				
 magic_redirect("listaFuncionalidadesAdministracao.php");
