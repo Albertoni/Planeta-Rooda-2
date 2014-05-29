@@ -7,14 +7,15 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-if (isset($_GET['id']) == false)
+if (isset($_GET['id']) == false){
 	die ("Voce precisa acessar esta pagina com um id de questionario. Por favor, <a href=\"planeta_pergunta.php\">volte</a> e tente novamente.");
+}
 
-
-if (is_numeric($_GET['id']) == false)
+if (is_numeric($_GET['id']) == false){
 	die ("Nao sabemos o que aconteceu, mas pelo menos estamos lhe dando uma mensagem de erro amigavel. Por favor <a href=\"planeta_pergunta.php\">clique aqui para voltar</a> e tente novamente.");
-else
+}else{
 	$id = $_GET['id'];
+}
 
 // IMPORTANTE: TODO: NÃO PRECISA DE PERMISSÃO PRA RESPONDER UM QUESTIONÁRIO
 

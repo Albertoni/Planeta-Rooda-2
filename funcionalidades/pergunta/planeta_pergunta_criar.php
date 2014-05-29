@@ -5,8 +5,7 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-
+$usuario = usuario_sessao();
 
 function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 	$data = getdate(); // Pega a data
@@ -29,8 +28,6 @@ if (isset($_GET['turma']) and $_GET['turma'] != ""){
 	$turma = $_SESSION['SS_turmas'][0];
 }
 
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
 $permissoes = checa_permissoes(TIPOPERGUNTA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 if(!$usuario->podeAcessar($permissoes['pergunta_criarQuestionario'], $turma)){

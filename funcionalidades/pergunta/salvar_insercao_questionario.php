@@ -12,7 +12,7 @@ $q = new conexao(); global $tabela_PerguntaPerguntas;
 global $tabela_PerguntaRespostas;
 
 $questionario = (int) $_POST['idquest'];
-$usuario = $_SESSION['SS_usuario_id'];
+$usuario = usuario_sessao();
 
 $permissoes = checa_permissoes(TIPOPERGUNTA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}

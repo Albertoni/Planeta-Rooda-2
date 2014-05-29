@@ -5,12 +5,9 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-
 $id = $_GET['id'];
 
-$usuario = $_SESSION['user'];
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
+$usuario = sessao_usuario();
 
 if (isset($_GET['turma']) and $_GET['turma'] != ""){
 	$turma = $_GET['turma'];
@@ -212,7 +209,7 @@ while ($j < $numops) { // ARRAY DE PHP COMEÇA NO ZERO
 						<div align="center"><?=VFbonitinho(isset($aluno_respostas[$j]) ? $aluno_respostas[$j] : "b", isset($respostas_corretas[$j]) ? $respostas_corretas[$j] : "8D")?></div>
 					</td>
 					<td style="width:65px; border-left: 2px solid c#EEE8EF">
-						<div align="center"><?=isset($respostas_corretas[$j]) ? $respostas_corretas[$j] : "ERROR: HACKERS ESTÃO INVADINDO O SEU SISTEM. MILHARES DELES."?></div>
+						<div align="center"><?=isset($respostas_corretas[$j]) ? $respostas_corretas[$j] : "Erro: Número contabilizado de respostas não fecha com o número real de respostas. - INDEX_OUT_OF_BOUNDS_EXCEPTION - 0xDEADB1FE"?></div>
 					</td>
 				</tr>
 <?php

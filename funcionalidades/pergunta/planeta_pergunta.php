@@ -5,11 +5,11 @@ require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 
-session_start();
-$usuario = new Usuario();
-$usuario->openUsuario($_SESSION['SS_usuario_id']);
 
-if (!isset($_SESSION['SS_usuario_nivel_sistema'])){ // if not logged in
+$usuario = usuario_sessao();
+
+
+if ($usuario === false){ // if not logged in
 	die("Voce precisa estar logado para acessar essa pagina. <a href=\"../../\">Favor voltar.</a>");
 }
 

@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -23,6 +21,8 @@ if (isset($_GET['turma']) and is_numeric($_GET['turma'])){
 		die('A id de turma nao foi passada para a pagina. Por favor avise os desenvolvedores disso, junto com o seu nome e o que voce estava tentando fazer.');
 	}
 }
+
+$usuario = usuario_sessao();
 
 $permissoes = checa_permissoes(TIPOPERGUNTA, $turma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
