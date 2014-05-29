@@ -12,8 +12,8 @@ class Planeta{
 
 	const APARENCIA_VERDE='6';
 	const APARENCIA_GRAMA='1';
-	const APARENCIA_LAVA='2';
-	const APARENCIA_GELO='3';
+	const APARENCIA_LAVA='3';
+	const APARENCIA_GELO='2';
 	const APARENCIA_URBANO='4';
 	const APARENCIA_QUARTO='5';
 
