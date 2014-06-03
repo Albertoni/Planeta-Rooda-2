@@ -45,7 +45,7 @@ if ($perm === false) {
 		}
 
 		#entradaDados{
-			display:none;
+			visibility:hidden;
 		}
 		</style>
 	</head>
@@ -188,6 +188,11 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 
 		radio_arquivo.onchange = function () {
 			entradaDados.fadeIn(3000);
+			entradaDados.animate(
+				{opacity: 1},
+				 'slow',
+				 function(){entradaDados.css('visibility', 'visible');}
+				 );
 
 			var changeEvent = new Event('change');
 			label_material_arquivo.style.display = "none";
@@ -221,7 +226,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 			return function () {
 				if (enviarDiv.style.display !== 'none') {
 					enviarDiv.style.display = 'none';
-					entradaDados.css("display", "none"); // precisa ser por jQuery, depende da função fadeIn
+					entradaDados.css("visibility", "hidden"); // precisa ser por jQuery, depende da função fadeIn
 				} else {
 					enviarDiv.style.display = 'block';
 					label_radio_arquivo.classList.remove('checked');
