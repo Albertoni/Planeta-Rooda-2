@@ -30,7 +30,7 @@ body,td,th {
 label {
 	font-weight: bold;
 }
- 
+
 #form_edicao_material,
 #form_envio_material {
 	font-size: 15px;
@@ -45,7 +45,7 @@ label {
 	border-color: #74d3ed;
 	width: 400px;
 	margin: -140px 0 0 -200px;
-	z-index: 10;
+	z-index: 101;
 }
 #editar_material h1,
 #enviar_material h1 {
