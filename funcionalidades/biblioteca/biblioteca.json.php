@@ -107,7 +107,7 @@ function enviar() {
 			return;
 		}
     }
-    
+
 	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$idTurma)) {
 		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.'.$perm['biblioteca_enviarMateriais'];
 
