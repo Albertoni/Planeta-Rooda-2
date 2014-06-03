@@ -1,7 +1,7 @@
 <?php
 mb_internal_encoding('UTF-8');
-	
-	
+
+
 	/*================================================
 		Sessao at� o presente momento
 	================================================
@@ -21,9 +21,9 @@ mb_internal_encoding('UTF-8');
 $email_administrador = "admplaneta2@gmail.com";
 
 $BD_host1 = "localhost";
-$BD_base1 = "nuted_planeta";
-$BD_user1 = "root";
-$BD_pass1 = "root";
+$BD_base1 = "planeta";
+$BD_user1 = "planeta";
+$BD_pass1 = "35283743";
 
 $linkServidor = "http://sideshowbob/Planeta-Rooda-2/";
 
@@ -41,7 +41,7 @@ define("TIPOFORUM",7);
 define("TIPOARTE",8);
 define("TIPOPLAYER",10);
 
-//tipos de planetas - a ordem eh importante - na arvore de planetas, os tipos deles sao crescentes na ordem da raiz para as folhas - planeta-pai nunca pode ter tipo menor ou igual ao do filho	
+//tipos de planetas - a ordem eh importante - na arvore de planetas, os tipos deles sao crescentes na ordem da raiz para as folhas - planeta-pai nunca pode ter tipo menor ou igual ao do filho
 	define("PLANETARAIZ",0);
 	define("PLANETASERIE",1);
 	define("PLANETATURMA",2);

@@ -47,12 +47,20 @@ if ($perm === false) {
 		#entradaDados{
 			visibility:hidden;
 		}
+
+		#lightbox{
+			background-image:url("1x1.png");
+			position:fixed;
+			left:0; top:0;
+			width:100%;
+			z-index:100;
+		}
 		</style>
 	</head>
 	<body onload="BIBLIOTECA.init();">
 		<div id="topo">
 			<div id="centraliza_topo">
-				<?php 
+				<?php
 					$regua = new reguaNavegacao();
 					$regua->adicionarNivel("Biblioteca");
 					$regua->imprimir();
@@ -87,48 +95,50 @@ if ($perm === false) {
 						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
-					<div class="bloco" id="enviar_material" style="display: none;">
-						<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" id="fechaEnviar" onclick="toggleEnviar()">fechar</button></h1>
-						<div>
-						<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
-							<strong>Tipo de material:</strong> 
-							<label id="label_arquivo">
-								Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a">
-							</label>
-							-
-							<label id="label_link">
-								Link<input id="input_link" type="radio" name="tipo" value="l">
-							</label>
+					<div id="lightbox">
+						<div class="bloco" id="enviar_material" style="display: none;">
+							<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" id="fechaEnviar" onclick="toggleEnviar()">fechar</button></h1>
+							<div>
+							<form id="form_envio_material" method="post" enctype="multipart/form-data" action="biblioteca.json.php?turma=<?=$idTurma?>&amp;acao=enviar">
+								<strong>Tipo de material:</strong>
+								<label id="label_arquivo">
+									Arquivo<input id="input_arquivo" type="radio" name="tipo" value="a">
+								</label>
+								-
+								<label id="label_link">
+									Link<input id="input_link" type="radio" name="tipo" value="l">
+								</label>
 
-							<br>
+								<br>
 
-							<div id="entradaDados">
-								<div class="material_recurso">
-									<label class="file_label" style="display:none" id="label_material_arquivo">
-										<span class="text">Selecionar:</span><br>
-										<input type="file" name="arquivo" />
+								<div id="entradaDados">
+									<div class="material_recurso">
+										<label class="file_label" style="display:none" id="label_material_arquivo">
+											<span class="text">Selecionar:</span><br>
+											<input type="file" name="arquivo" />
+										</label>
+										<label class="link_label" style="display:none" id="label_material_link">
+											<span class="text">Link:</span>
+											<input type="text" name="link" required style="width:100%"/>
+										</label>
+									</div>
+
+									<label>Título:<br>
+										<input type="text" name="titulo" required />
 									</label>
-									<label class="link_label" style="display:none" id="label_material_link">
-										<span class="text">Link:</span>
-										<input type="text" name="link" required style="width:100%"/>
+									<br>
+									<label>Autor:<br>
+										<input type="text" name="autor" />
 									</label>
+									<br>
+									<label>Palavras do Material:<br>
+										<input type="text" name="tags" />
+									</label>
+									<br>
+									<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
 								</div>
-
-								<label>Título:<br>
-									<input type="text" name="titulo" required />
-								</label>
-								<br>
-								<label>Autor:<br>
-									<input type="text" name="autor" />
-								</label>
-								<br>
-								<label>Palavras do Material:<br>
-									<input type="text" name="tags" />
-								</label>
-								<br>
-								<button id="bota_enviar_material" type="submit" class="submit">Enviar</button>
+							</form>
 							</div>
-						</form>
 						</div>
 					</div>
 					<div class="bloco" id="editar_material" style="display: none;">
@@ -185,9 +195,10 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		var label_material_link = document.getElementById("label_material_link");
 
 		var entradaDados = $("#entradaDados"); // precisa ser por jQuery, depende da função fadeIn
+		var fundoLightbox = $("#lightbox");
 
 		radio_arquivo.onchange = function () {
-			entradaDados.fadeIn(3000);
+			//entradaDados.fadeIn(3000);
 			entradaDados.animate(
 				{opacity: 1},
 				 'slow',
@@ -224,6 +235,7 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 		var toggleEnviar = (function () {
 			var enviarDiv = document.getElementById('enviar_material');
 			return function () {
+				$("#lightbox").toggle();
 				if (enviarDiv.style.display !== 'none') {
 					enviarDiv.style.display = 'none';
 					entradaDados.css("visibility", "hidden"); // precisa ser por jQuery, depende da função fadeIn
@@ -243,9 +255,13 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 				}
 			};
 		}());
+
+		$(document).ready(function(){
+			$("#lightbox").css("height", $(document).height()).hide();
+		})
 		</script>
 		<script src="../../jquery.js"></script>
 		<script src="../../planeta.js"></script>
 		<script src="biblioteca2.js"></script>
 	</body>
-</html> 
+</html>
