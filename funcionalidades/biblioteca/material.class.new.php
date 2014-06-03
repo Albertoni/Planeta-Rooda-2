@@ -164,12 +164,12 @@ WHERE codMaterial = $id"
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
 			$aprovado     = $this->aprovado ? '1' : '0';
 			$bd->solicitar(
-"UPDATE $tabela_Materiais 
-SET titulo = '$titulo', 
-	autor = '$autor', 
-	tags = '$tags', 
-	materialAprovado = $aprovado
-WHERE codMaterial = {$this->id}"
+                    "UPDATE $tabela_Materiais
+                      SET titulo = '$titulo',
+                        	autor = '$autor',
+	                        tags = '$tags',
+	                        materialAprovado = $aprovado
+                      WHERE codMaterial = {$this->id}"
 			);
 		}
 	}

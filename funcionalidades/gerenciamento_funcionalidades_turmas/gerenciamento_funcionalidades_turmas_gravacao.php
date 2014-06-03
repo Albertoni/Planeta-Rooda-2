@@ -27,10 +27,10 @@
 
 		if(((bool) $temAluno) == true and $temAluno != 'false'){
 			$nivel+=$nivelAluno;
-		} else {
-			if(((bool) $temMonitor) == true and $temMonitor != 'false'){
+		}
+
+		if(((bool) $temMonitor) == true and $temMonitor != 'false'){
 				$nivel+=$nivelMonitor;
-			}
 		}
 		
 		$nivel+=$nivelProfessor;//professor sempre pode tudo em todas as funcionalidades.

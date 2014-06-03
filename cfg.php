@@ -21,9 +21,9 @@ mb_internal_encoding('UTF-8');
 $email_administrador = "admplaneta2@gmail.com";
 
 $BD_host1 = "localhost";
-$BD_base1 = "nuted_planeta";
-$BD_user1 = "root";
-$BD_pass1 = "root";
+$BD_base1 = "planeta";
+$BD_user1 = "planeta";
+$BD_pass1 = "35283743";
 
 $linkServidor = "http://sideshowbob/Planeta-Rooda-2/";
 
