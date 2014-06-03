@@ -239,6 +239,8 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 				if (enviarDiv.style.display !== 'none') {
 					enviarDiv.style.display = 'none';
 					entradaDados.css("visibility", "hidden"); // precisa ser por jQuery, depende da função fadeIn
+
+					$(document).unbind('keyup');
 				} else {
 					enviarDiv.style.display = 'block';
 					label_radio_arquivo.classList.remove('checked');
@@ -252,6 +254,10 @@ echo "						<h1>EDITAR MATERIAL<button type=\"button\" class=\"bt_fechar\" name=
 					label_material_arquivo.control.value = "";
 					label_material_link.control.value = "";
 					form_envio_m.reset();
+
+					$(document).bind('keyup', function(e){
+						if (e.keyCode == 27 /* Esc apertado, fecha janela */){toggleEnviar()};
+					});
 				}
 			};
 		}());
