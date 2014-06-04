@@ -32,9 +32,9 @@
 				$nivel+=$nivelMonitor;
 			}
 		}
-		
+
 		$nivel+=$nivelProfessor;//professor sempre pode tudo em todas as funcionalidades.
-		
+
 		return $nivel;
 /*		Versão anterior a 08/05/2014
 		$temProfessor	= isset($conteudoAssociativo[$_base."_professor"]) ? $conteudoAssociativo[$_base."_professor"] : false;
@@ -164,18 +164,21 @@
 		echo $mensagemDeErro.$conexaoSalvarDadosGerenciamentoTurma->erro;
 		$deuErro = true;
 	}
-	
+
 	$conteudoCheckboxesGerenciamento = $conexaoSalvarDadosGerenciamentoTurma->sanitizaString($conteudoCheckboxesGerenciamento);
 
-	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO GerenciamentoTurma (codTurma, 
+	$nivelMonitor = NIVELMONITOR;
+	$nivelProfessor = NIVELPROFESSOR;
+	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO GerenciamentoTurma (codTurma,
 																					  dadosGerenciamento,
 			  comunicador_terreno, comunicador_turma, comunicador_privado, comunicador_amigo,
 
+			  -- Não existem comentários na biblioteca pois não faz sentido comentar em materiais postados pelo professor, mesmo que no banco tenha. Não removo do banco por receio de quebrar algo. -João, 4/6/2014
 			  biblioteca_enviarMateriais, biblioteca_editarMateriais, biblioteca_excluirArquivos, biblioteca_aprovarMateriais,
 
-			  blog_inserirPost, blog_editarPost, blog_inserirComentarios, blog_excluirPost, blog_adicionarLinks, blog_adicionarArquivos,
+			  blog_inserirPost, blog_editarPost, blog_inserirComentarios, blog_verComentarios, blog_excluirComentarios, blog_excluirPost, blog_adicionarLinks, blog_adicionarArquivos,
 
-			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_enviarArquivos, portfolio_excluirArquivos,
+			  portfolio_visualizarPost, portfolio_inserirPost, portfolio_editarPost, portfolio_inserirComentarios, portfolio_verComentarios, portfolio_excluirComentarios, portfolio_excluirPost, portfolio_adicionarLinks, portfolio_enviarArquivos, portfolio_excluirArquivos,
 
 			  forum_criarTopico, forum_editarTopico, forum_excluirTopico, forum_responderTopico, forum_editarResposta, forum_excluirResposta,
 
@@ -191,9 +194,11 @@
 
 			  $biblioteca_enviarMateriais, $biblioteca_editarMateriais, $biblioteca_excluirArquivos, $biblioteca_aprovarMateriais,
 
-			  $blog_inserirPost, $blog_editarPost, $blog_inserirComentarios, $blog_excluirPost, $blog_adicionarLinks, $blog_adicionarArquivos,
+			  -- 255 e nivelMonitor são respectivamente: Ver comentários e excluir comentários. 255 porque todo mundo pode ver os comentários, se está na turma.
+			  $blog_inserirPost, $blog_editarPost, $blog_inserirComentarios, 255, $nivelMonitor, $blog_excluirPost, $blog_adicionarLinks, $blog_adicionarArquivos,
 
-			  $portfolio_visualizarPost, $portfolio_inserirPost, $portfolio_editarPost, $portfolio_inserirComentarios, $portfolio_excluirPost, $portfolio_adicionarLinks, $portfolio_enviarArquivos, $portfolio_excluirArquivos,
+			  -- Vide comentário acima.
+			  $portfolio_visualizarPost, $portfolio_inserirPost, $portfolio_editarPost, $portfolio_inserirComentarios, 255, $nivelMonitor, $portfolio_excluirPost, $portfolio_adicionarLinks, $portfolio_enviarArquivos, $portfolio_excluirArquivos,
 
 			  $forum_criarTopico, $forum_editarTopico, $forum_excluirTopico, $forum_responderTopico, $forum_editarResposta, $forum_excluirResposta,
 
@@ -203,24 +208,25 @@
 
 			  $player_inserirVideos, $player_deletarVideos, $player_inserirComentario, $player_deletarComentario, $player_verComentario,
 
-			  $aulas_criarAulas, $aulas_editarAulas, $aulas_importarAulas)");
-			
+			  -- Só o professor pode fazer coisas no aulas
+			  $nivelProfessor, $nivelProfessor, $nivelProfessor)");
+
 	if($conexaoSalvarDadosGerenciamentoTurma->erro != ''){
 		echo $mensagemDeErro.$conexaoSalvarDadosGerenciamentoTurma->erro;
 		$deuErro = true;
 	}
 
 	$conexaoSalvarDadosGerenciamentoTurma->solicitar("DELETE FROM FuncionalidadesTurma WHERE codTurma = $codTurma");
-	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO FuncionalidadesTurma (codTurma, 
+	$conexaoSalvarDadosGerenciamentoTurma->solicitar("INSERT INTO FuncionalidadesTurma (codTurma,
 				 batePapo, biblioteca, blog, portfolio, forum, planetaArte, planetaPergunta, planetaPlayer, aulas)
 													  VALUES($codTurma,
-				 '$estahHabilitado_comunicador', '$estahHabilitado_biblioteca', '$estahHabilitado_blog', '$estahHabilitado_portfolio', 
+				 '$estahHabilitado_comunicador', '$estahHabilitado_biblioteca', '$estahHabilitado_blog', '$estahHabilitado_portfolio',
 				 '$estahHabilitado_forum', '$estahHabilitado_arte', '$estahHabilitado_pergunta', '$estahHabilitado_player', '$estahHabilitado_aulas')");
 	if($conexaoSalvarDadosGerenciamentoTurma->erro != ''){
 		echo $mensagemDeErro.$conexaoSalvarDadosGerenciamentoTurma->erro;
 		$deuErro = true;
 	}
-	
+
 	if(!$deuErro){
 		magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
 	}
