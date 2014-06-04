@@ -40,6 +40,8 @@ if ($turma <= 0) {
 		<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 			<div id="conteudo" style="position:relative;margin-top:0;"><!-- tem que estar dentro da div 'conteudo_meio' -->
 				<ul class="listaFun">
+                    <li><a href="funcionalidades/administracao/listaUsuariosTurma.php?turma=<?=$turma?>">lista de usuários</a></li>
+                    <hr>
 <?php
 // Biblioteca
 if(checa_permissoes(TIPOBIBLIOTECA, $turma)) { 
