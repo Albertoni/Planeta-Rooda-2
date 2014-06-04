@@ -6,7 +6,7 @@
 ?>
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+<head><meta charset="utf-8"></head>
 <body>
 <?php
 
@@ -21,7 +21,7 @@
 		$nivel=0;
 
 
-        $temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
+		$temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
 		$temAluno		= isset($conteudoAssociativo[$_base."_aluno"]) ? $conteudoAssociativo[$_base."_aluno"] : false;
 
 
@@ -36,27 +36,6 @@
 		$nivel+=$nivelProfessor;//professor sempre pode tudo em todas as funcionalidades.
 
 		return $nivel;
-/*		Versão anterior a 08/05/2014
-		$temProfessor	= isset($conteudoAssociativo[$_base."_professor"]) ? $conteudoAssociativo[$_base."_professor"] : false;
-		$temMonitor		= isset($conteudoAssociativo[$_base."_monitor"]) ? $conteudoAssociativo[$_base."_monitor"] : false;
-		$temAluno		= isset($conteudoAssociativo[$_base."_aluno"]) ? $conteudoAssociativo[$_base."_aluno"] : false;
-		$temTodos		= isset($conteudoAssociativo[$_base."_todos"]) ? $conteudoAssociativo[$_base."_todos"] : false;
-
-		if(((bool) $temTodos) == true and $temTodos != 'false'){
-			$nivel+=$nivelProfessor+$nivelMonitor+$nivelAluno;
-		} else {
-			if(((bool) $temProfessor) == true and $temProfessor != 'false'){
-				$nivel+=$nivelProfessor;
-			}
-			if(((bool) $temMonitor) == true and $temMonitor != 'false'){
-				$nivel+=$nivelMonitor;
-			}
-			if(((bool) $temAluno) == true and $temAluno != 'false'){
-				$nivel+=$nivelAluno;
-			}
-		}
-		return $nivel;
-*/
 	}
 
 
@@ -228,8 +207,11 @@
 	}
 
 	if(!$deuErro){
-		magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
+		echo "<script>alert('Dados salvos com sucesso! Clique para voltar.');</script>";
+	}else{
+		echo "<script>alert('Aconteceu um erro ao salvar os dados!');</script>";
 	}
+	magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
 ?>
 </body>
 </html>
