@@ -143,7 +143,8 @@ WHERE codMaterial = $id"
 			$codUsuario   = (int) $this->codUsuario;
 			$tipoMaterial = $bd->sanitizaString($this->tipo);
 			$refMaterial  = $this->codRecurso;
-			$aprovado     = $this->aprovado ? '1' : '0';
+            //Sempre ao salvar indicará o arquivo como não aprovado, para
+			$aprovado     = 0;
 			$data = $bd->sanitizaString($this->data);
 			$bd->solicitar(
 				"INSERT INTO $tabela_Materiais
@@ -162,16 +163,17 @@ WHERE codMaterial = $id"
 			$titulo       = $bd->sanitizaString($this->titulo);
 			$autor        = $bd->sanitizaString($this->autor);
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
-			$aprovado     = $this->aprovado ? '1' : '0';
+			$aprovado     = 0;
 			$bd->solicitar(
-"UPDATE $tabela_Materiais 
-SET titulo = '$titulo', 
-	autor = '$autor', 
-	tags = '$tags', 
-	materialAprovado = $aprovado
-WHERE codMaterial = {$this->id}"
+                    "UPDATE $tabela_Materiais
+                      SET titulo = '$titulo',
+                        	autor = '$autor',
+	                        tags = '$tags',
+	                        materialAprovado = $aprovado
+                      WHERE codMaterial = {$this->id}"
 			);
 		}
+        //Envia email para o professores, avisando que há material necessitando aprovação.
 	}
 	public function existe() { return ($this->id !== false && !$this->novo); }
 	public function getId() { return $this->id; }

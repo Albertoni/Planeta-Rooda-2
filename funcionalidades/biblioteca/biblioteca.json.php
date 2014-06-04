@@ -99,15 +99,18 @@ function enviar() {
 		// usuário não pertence a turma.
 		$json['errors'][] = "erro: voc&ecirc; n&atilde;o tem permiss&atilde;o para acessar este material.";
 		return;
-	} else {
+	}
+    else{
 		$perm = checa_permissoes(TIPOBIBLIOTECA, $idTurma);
 		if ($perm === false) {
 			$json['errors'][] = "Biblioteca desabilitada para esta turma.";
 			return;
 		}
-	}
+    }
+
 	if (!$usuario->podeAcessar($perm['biblioteca_enviarMateriais'],$idTurma)) {
-		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.';
+		$json['errors'][] = 'Você não tem permissão para enviar materiais nesta biblioteca.'.$perm['biblioteca_enviarMateriais'];
+
 		return;
 	}
 	$titulo = isset($_POST['titulo']) ? utf8_encode($_POST['titulo']) : '';
