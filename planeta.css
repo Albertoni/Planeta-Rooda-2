@@ -1,5 +1,5 @@
-body {background-image:url(images/fundos/fundo.png); background-repeat:repeat-x; 
-background-color:#AACCCA; margin:0 0 0 0; height:100%; font-family: "Trebuchet MS", Tahoma, Verdana, Sans; 
+body {background-image:url(images/fundos/fundo.png); background-repeat:repeat-x;
+background-color:#AACCCA; margin:0 0 0 0; height:100%; font-family: "Trebuchet MS", Tahoma, Verdana, Sans;
 font-size:13px; color:#333333;
 text-transform: uppercase;
 }
@@ -133,14 +133,14 @@ textarea:hover {background-color:#74d3ed}
 position:relative; z-index:100; display:table; font-family:Tahoma, Verdana}
 #centraliza_topo { width:775px; margin:auto}
 #hist {float:left; font-size:14px; margin:4px}
-#bt_ajuda {cursor:pointer; float:right; font-size:12px; 
+#bt_ajuda {cursor:pointer; float:right; font-size:12px;
 font-weight:bold; margin:6px; color:#333333}
 #bt_ajuda:hover {color:#CC6600}
 
 #cabecalho {width:100%; position:relative; height:150px}
 #ajuda {width:100%; position:relative; display:block; z-index:1}
 #ajuda_meio {background-image:url(images/fundos/tira.png); background-repeat:repeat-y;  width:100%; height:90px}
-#ajuda_base {background-image:url(images/fundos/corpo_base2.png); background-repeat:no-repeat; 
+#ajuda_base {background-image:url(images/fundos/corpo_base2.png); background-repeat:no-repeat;
 width:100%; height:59px}
 #ajudante {width:680px; height:100%; position:absolute; margin-left:47px; margin-right:47px}
 #personagem {float:left; height:100%; width:20%}
@@ -149,11 +149,11 @@ width:100%; height:59px}
 #rel {position:relative; z-index:inherit; zoom:1; height:100%} /*para funcionar borda arredondada nos IE*/
 
 /*coisas do conteudo*/
-#conteudo_topo {background-image:url(images/fundos/corpo_topo.png); background-repeat: no-repeat; 
+#conteudo_topo {background-image:url(images/fundos/corpo_topo.png); background-repeat: no-repeat;
 width:100%; height:59px; position:relative; margin-top:20px;}
-#conteudo_meio {background-image:url(images/fundos/tira.png); background-repeat:repeat-y; 
+#conteudo_meio {background-image:url(images/fundos/tira.png); background-repeat:repeat-y;
 width:100%; position:relative; z-index:100}
-#conteudo_base {background-image:url(images/fundos/corpo_base.png); background-repeat: no-repeat; 
+#conteudo_base {background-image:url(images/fundos/corpo_base.png); background-repeat: no-repeat;
 width:100%; height:59px; position:relative}
 
 #conteudo {width:680px; margin-left:47px; margin-right:47px; /*margin-top:-10px; position:absolute */ }
@@ -169,7 +169,7 @@ width:100%; height:59px; position:relative}
 border-right:1px solid #aaaaaa; border-bottom:1px solid #aaaaaa; min-height:20px}
 .move_bloco {border:white dotted 2px; height:50px; margin-bottom:22px; width:234px;}
 
-h1 {font-size:15px; margin-top:-22px; color:white; font-family:Tahoma, Verdana; text-indent:22px; 
+h1 {font-size:15px; margin-top:-22px; color:white; font-family:Tahoma, Verdana; text-indent:22px;
 position:relative; letter-spacing:1px; font-weight:normal; cursor:default; margin-bottom:4px; font-weight: bold;
 text-transform: uppercase;
 }
@@ -195,7 +195,7 @@ text-transform: uppercase;
 
 #novo_coment {margin-top:15px; border-top:1px solid; padding-top:5px; margin-bottom:15px}
 
-#light_box {width:100%; height:100%; background-color:#ffffff; -moz-opacity:0.5; opacity:0.5; 
+#light_box {width:100%; height:100%; background-color:#ffffff; -moz-opacity:0.5; opacity:0.5;
 filter: alpha(opacity=50); display:none; z-index:500; position:absolute;}
 
 .recebe_coments {overflow:auto; height:100%; position:relative}
@@ -203,7 +203,7 @@ filter: alpha(opacity=50); display:none; z-index:500; position:absolute;}
 .fechar_coments {float:right; display:table-cell; margin-top:-25px; position:relative; cursor:pointer; z-index:1337}
 
 .troca_paginas {background-color:#EEF5F5; width:100%; clear: both;}
-.troca_paginas a {margin-left:3px; margin-right:3px; text-decoration:none; color:#000000; 
+.troca_paginas a {margin-left:3px; margin-right:3px; text-decoration:none; color:#000000;
 font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
 .troca_paginas a:hover {color:#C60;}
 
@@ -320,7 +320,7 @@ font-family:Trebuchet MS, Tahoma, Verdana, Sans; font-size:10pt;}
 .alert_ok {
     background: transparent url('images/ui/ok.png');
     left: 600px;
-    
+
 }
 .confirm_yes {
     background: transparent url('images/ui/sim.png');
@@ -397,12 +397,12 @@ ul.listaFun li a {
 }
 
 .bt_fecharComentarios{
-	background: transparent url('images/botoes/bt_fechar.png') no-repeat bottom left;
+	background: transparent url('images/botoes/bt_fechar.png') no-repeat center center;
 	border: 0 none;
 	display: inline-block;
 	float: right;
-	width: 24px;
-	height: 22px;
+	width: 20px;
+	height: 20px;
 	margin: 0;
 	padding: 0;
 	overflow: hidden;
