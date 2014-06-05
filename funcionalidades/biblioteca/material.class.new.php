@@ -100,7 +100,11 @@ WHERE codMaterial = $id"
 		}
 	}
 	public function salvar() {
+        global $usuario;
+        global $email_administrador;
 		global $tabela_Materiais;
+        global $linkServidor;
+
 		if ($this->titulo === '') {
 			$this->erros[] = '[material] Não pode salvar material sem título.';
 		}
@@ -143,7 +147,7 @@ WHERE codMaterial = $id"
 			$codUsuario   = (int) $this->codUsuario;
 			$tipoMaterial = $bd->sanitizaString($this->tipo);
 			$refMaterial  = $this->codRecurso;
-            //Sempre ao salvar indicará o arquivo como não aprovado, para
+            //Sempre ao salvar indicará o arquivo como não aprovado, para que o professor sempre tenha que aprovar.
 			$aprovado     = 0;
 			$data = $bd->sanitizaString($this->data);
 			$bd->solicitar(
@@ -163,6 +167,7 @@ WHERE codMaterial = $id"
 			$titulo       = $bd->sanitizaString($this->titulo);
 			$autor        = $bd->sanitizaString($this->autor);
 			$tags         = $bd->sanitizaString(implode(',', $this->tags));
+            //Sempre ao salvar indicará o arquivo como não aprovado, para que o professor sempre tenha que aprovar.
 			$aprovado     = 0;
 			$bd->solicitar(
                     "UPDATE $tabela_Materiais
@@ -173,7 +178,58 @@ WHERE codMaterial = $id"
                       WHERE codMaterial = {$this->id}"
 			);
 		}
-        //Envia email para o professores, avisando que há material necessitando aprovação.
+    //Envia email para os professores, avisando que há material necessitando aprovação.
+        //Consulta no BD buscando por todos os professores da turma em que o material foi salvo.
+        $destinatario=$bd->solicitar("SELECT usuario_email, usuario_id FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id
+                                            WHERE codTurma='$this->codTurma' AND associacao=".NIVELPROFESSOR);
+        $assunto = "Um item de uma biblioteca precisa de sua aprovação";
+
+        $nivelDeQuemPostou = $bd->solicitar("SELECT associacao FROM TurmasUsuario
+                                                                WHERE codTurma='$this->codTurma' AND codUsuario='$this->codUsuario'");
+        switch($nivelDeQuemPostou){
+            case 4: $nivelDeQuemPostou = "professor";
+                    break;
+            case 8: $nivelDeQuemPostou = "monitor";
+                    break;
+            case 16: $nivelDeQuemPostou = "aluno";
+                    break;
+            default: $nivelDeQuemPostou = "usuário";
+        }
+
+        $nomeDaTurma = $bd->solicitar("SELECT nomeTurma FROM Turmas
+                                                        WHERE codTurma='$this->codTurma'");
+
+        if(!$this->arquivo===NULL) $item="arquivo";
+        else if(!$this->link===NULL) $item="link";
+
+        // Para onde o usuário será redirecionado
+        $enderecoBiblioteca = base64_encode("/funcionalidades/biblioteca/biblioteca.php?turma=".$this->codTurma);
+
+        //O email do remetente está descrito no cfg.php
+        $remetente = $email_administrador;
+        $anexos=Array();
+
+        for($i=0;i<$destinatario.registros();$i++)
+        {
+        // Para não permitir alguem mandar uma URL maliciosa para redirecionar o cara para roubar a senha dele ou coisa pior.
+            $better_token = uniqid(rand(), true);
+            $bd->solicitar("INSERT INTO ChavesRedirecionamento (uniqueId,userId)
+                                        VALUES ()");
+//05/06/2014 Veja no link documentação sobre heredocs em php e descubra porque o trecho abaixo não está identado.
+//http://www.php.net/manual/pt_BR/language.types.string.php porque
+            $mensagem = <<<EOT
+O $nivelDeQuemPostou $usuario->getName() alterou a biblioteca da turma $nomeDaTurma. Veja mais detalhes abaixo:
+
+    Nome do envio: $titulo
+    Tipo: $item
+
+<a href="$linkServidor?redir=$enderecoBiblioteca&key=$key">Clique aqui para entrar em sua conta e aprovar o conteúdo.</a>
+
+
+EOT;
+            multi_attach_email ( $destinatario['usuario_email'], $assunto, $mensagem, $remetente, $anexos);
+            $destinatario->proximo();
+        }
 	}
 	public function existe() { return ($this->id !== false && !$this->novo); }
 	public function getId() { return $this->id; }

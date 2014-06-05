@@ -106,7 +106,7 @@ $user = usuario_sessao();
             </div>
 
             <div id="exibe_usuarios" class="bloco">
-                <h1>Usuários da turma <?=$_GET['turma']?></h1>
+                <h1>Participantes da turma <?=$_GET['turma']?></h1>
 
                 <ul class="sem_estilo">
                     <div id="containerPesquisa">
@@ -127,20 +127,18 @@ $user = usuario_sessao();
                         </tbody>
                     </table>
                 </ul>
-                <div class="bts_baixo">
-                    <a href="../../listaFuncionalidades.php?turma=<?=$_GET['turma']?>" align="left" >
-                        <img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
-                    </a>
-                </div>
                 <div style="clear:both;"></div>
             </div><!-- Fecha Div conteudo -->
+            <div class="bts_baixo">
+                <a href="../../listaFuncionalidades.php?turma=<?=$_GET['turma']?>" align="left" >
+                    <img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+                </a>
+            </div>
         </div><!-- Fecha Div conteudo_meio -->
     </div><!-- fim da geral -->
     <div id="conteudo_base">
     </div><!-- para a imagem de fundo da base -->
 </div>
-</body>
-
 <script type="text/javascript">
     function ajusta_img() {
         if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
@@ -172,7 +170,7 @@ $user = usuario_sessao();
                         break;
                 default: $nivelPorExtenso = "Não identificado";
             }
-            echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", email:\"".$consulta->resultado['usuario_email']."\", login:\"".$consulta->resultado['usuario_login']."\", assossiacao:\"".$nivelPorExtenso."\"},\n";
+            echo "{nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"},\n";
             $consulta->proximo();
         }
             //Necessário repetir senão viria com nivel do elemento n-1
@@ -185,7 +183,7 @@ $user = usuario_sessao();
                         break;
                 default: $nivelPorExtenso = "Não identificado";
             }
-        echo "{idUsuario:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", email:\"".$consulta->resultado['usuario_email']."\", login:\"".$consulta->resultado['usuario_login']."\", assossiacao:\"".$nivelPorExtenso."\"}\n";
+        echo "{nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"}\n";
         ?>
     ];
 
@@ -222,9 +220,8 @@ $user = usuario_sessao();
         elementoLista.innerHTML = ""; // Precisa limpar ela pra inserir os dados atualizados
 
         function imprime(estruturaDados){
-            function geraTd(textoLink, id){
+            function geraTd(textoLink){
                 var link = document.createElement('p');
-
                 link.innerHTML = textoLink;
                 var td = document.createElement('td');
                 td.appendChild(link);
@@ -234,8 +231,8 @@ $user = usuario_sessao();
             var tr = document.createElement('tr');
             tr.className = 'trTabelaAlunos';
 
-            var tdNome = geraTd(estruturaDados['nome'], estruturaDados['idUsuario']);
-            var tdNivel = geraTd(estruturaDados['assossiacao'],estruturaDados['idUsuario']);
+            var tdNome = geraTd(estruturaDados['nome']);
+            var tdNivel = geraTd(estruturaDados['assossiacao']);
             //var tdEmail = geraTd(estruturaDados['email'], estruturaDados['idUsuario']);
 
             tr.appendChild(tdNome);
@@ -251,5 +248,5 @@ $user = usuario_sessao();
 
     setaListaDeUsuarios(listaUsuarios);
 </script>
-
+</body>
 </html>

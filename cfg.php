@@ -25,7 +25,7 @@ $BD_base1 = "planeta";
 $BD_user1 = "planeta";
 $BD_pass1 = "35283743";
 
-$linkServidor = "http://sideshowbob/Planeta-Rooda-2/";
+$linkServidor = "http://143.54.95.107/Planeta/";
 
 $upload_max_filesize = ini_get('upload_max_filesize');
 

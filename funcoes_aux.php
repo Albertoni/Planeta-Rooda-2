@@ -429,3 +429,39 @@ function normalizaTitulo($umTitulo){
 		
 		return $tituloNormal;
 }
+
+//Esta função foi pega do ETC, está contida no arquivo general_purpose.inc.php
+//Os dados são esperados em UTF-8, por ser a codificação nativa do ETC
+function multi_attach_email ( $to, $subject, $message, $senderemail, $anexos = array() ) {
+    $random_hash	= md5( uniqid( '', TRUE ) );
+    $mime_boundary	= "==Multipart_Boundary_x{$random_hash}x";
+
+    $subject	= utf8_decode( $subject );
+    $headers	= "From: Planeta ROODA 2.0 <".$senderemail.">\n".
+        "MIME-Version: 1.0\n".
+        "Content-Type: multipart/mixed;\n".
+        " boundary=\"{$mime_boundary}\"";
+    $message	= "--{$mime_boundary}\n".
+        "Content-Type: text/html; charset=\"utf-8\"\n".
+        "Content-Transfer-Encoding: 7bit\n\n".
+        $message."\n\n";
+
+    //$anexos é um array de arquivos do tipo de $_FILES[]
+    for ( $i = 0; $i < count( $anexos ); $i++ ) {
+        if ( is_file( $anexos[$i]['tmp_name'] ) ) {
+            $fp			 = @fopen( $anexos[$i]['tmp_name'], 'rb' );
+            $data		 = @fread( $fp, filesize($anexos[$i]['tmp_name'] ) );
+            @fclose( $fp );
+            $data		 = chunk_split( base64_encode( $data ) );
+            $message	.= "--{$mime_boundary}\n".
+                "Content-Type: application/octet-stream; name=\"".basename( $anexos[$i]['name'] )."\"\n".
+                "Content-Description: ".basename( $anexos[$i]['name'] )."\n".
+                "Content-Disposition: attachment;\n".
+                "filename=\"".basename( $anexos[$i]['name'] )."\"; size=".filesize( $anexos[$i]['tmp_name'] ).";\n".
+                "Content-Transfer-Encoding: base64\n\n".$data."\n\n";
+        }
+    }
+    $message		.= "--{$mime_boundary}--";
+
+    return mail( $to, $subject, $message, $headers, '-f'.$senderemail );
+}
