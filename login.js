@@ -255,6 +255,11 @@ function validar_cadastro(nomeA,loginA,emailA,passwordA,passwordB) {
 function login(){
 	var parametros = "login1=" + encodeURI(document.getElementById('login1').value);
 	parametros = parametros + "&password1=" + encodeURI(document.getElementById('password1').value);
+
+	if((document.getElementById('redir').value != "") && (document.getElementById('key').value != "")){
+		parametros = parametros + "&redir=" + encodeURI(document.getElementById('redir').value);
+		parametros = parametros + "&key=" + encodeURI(document.getElementById('key').value);
+	}
 	
 	http_login.abort();
 	http_login.open("POST", "login.php", true);
