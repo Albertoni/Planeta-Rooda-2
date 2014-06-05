@@ -212,9 +212,12 @@ WHERE codMaterial = $id"
         for($i=0;i<$destinatario.registros();$i++)
         {
         // Para não permitir alguem mandar uma URL maliciosa para redirecionar o cara para roubar a senha dele ou coisa pior.
-            $better_token = uniqid(rand(), true);
-            $bd->solicitar("INSERT INTO ChavesRedirecionamento (uniqueId,userId)
-                                        VALUES ()");
+            $key= uniqid(rand(), true);
+            $idDestinatario = $destinatario['usuario_id'];
+            $bd->solicitar("INSERT INTO ChavesRedirecionamento (uniqueId, userId)
+                                        VALUES ('$key',
+                                                '$idDestinatario')");
+
 //05/06/2014 Veja no link documentação sobre heredocs em php e descubra porque o trecho abaixo não está identado.
 //http://www.php.net/manual/pt_BR/language.types.string.php porque
             $mensagem = <<<EOT
