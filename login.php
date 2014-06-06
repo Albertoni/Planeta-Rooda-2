@@ -65,10 +65,7 @@
 			if ($confereKey->resultado['uniqueId'] == $key){
 				// Código meio bruto, provavelmente vai bugar caso mais redirecionamentos sejam adicionados fora o da biblioteca.
 				$redir = base64_decode($_POST['redir']);
-
-
 				$validaRedir = explode("=", $redir, 2);
-=
 				if(	!(($validaRedir[0] == "/funcionalidade/biblioteca/biblioteca.php?turma")
 						&&
 						is_numeric($validaRedir[1]))){
