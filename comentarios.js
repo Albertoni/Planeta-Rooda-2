@@ -91,7 +91,7 @@
 		}
 	});
 	Comentarios.html = $('<div>').addClass('comentarios')
-			.append($('<h1>').append('COMENTARIOS - ')
+			.append($('<h1>').append('COMENTÁRIOS - ')
 			                 .append(Comentarios.htmlDinamico.titulo)
 			                 .append(Comentarios.htmlDinamico.botaoFechar))
 			.append(Comentarios.htmlDinamico.listaComentarios)
