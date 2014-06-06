@@ -49,6 +49,15 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <!--[if IE 6]>
 <script type="text/javascript" src="planeta_ie6.js"></script>
 <![endif]-->
+<style>
+/* Customização de cores do sistema de comentários */
+.comentarios{background: #FFAA4F;}
+.comentarios > h1 {background: #53686F;}
+.comentarios > ul > li:nth-child(odd) {background: #E28725;}
+.comentarios > ul > li:nth-child(even){background: #F5A34C;}
+input[type=text]:hover, .falso_text:hover {background-color:#FAC993}
+.comentarios > ul > li > .info > .data {color: black}
+</style>
 
 </head>
 
