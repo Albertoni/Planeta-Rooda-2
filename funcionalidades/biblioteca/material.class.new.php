@@ -219,7 +219,7 @@ WHERE codMaterial = $id"
                                                 '$idDestinatario')");
 
 //05/06/2014 Veja no link documentação sobre heredocs em php e descubra porque o trecho abaixo não está identado.
-//http://www.php.net/manual/pt_BR/language.types.string.php porque
+//http://www.php.net/manual/pt_BR/language.types.string.php
             $mensagem = <<<EOT
 O $nivelDeQuemPostou $usuario->getName() alterou a biblioteca da turma $nomeDaTurma. Veja mais detalhes abaixo:
 
