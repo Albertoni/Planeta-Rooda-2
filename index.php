@@ -16,7 +16,7 @@
 	}
 	
 //================================================
-//Head
+// Coisas relativas a logout
 //================================================
 	
 	if($action == "log0001") {
@@ -46,6 +46,10 @@
 		}
 	}
 
+//================================================
+// Níveis para o cadastro -- TODO: REMOVER OS NIVEIS DO CADASTRO
+//================================================
+
 	$niveis = "";
 	$pesquisa1 = new conexao();
 	$pesquisa1->solicitar("select * from $tabela_nivel_permissoes ORDER BY nivel");
@@ -56,6 +60,19 @@
 			$niveis .= "				<option value=\"$numero\">$nome</option>\\\n";
 		}
 		$pesquisa1->proximo();
+	}
+
+//===================================
+// Dados relativos ao redirecionamento para biblioteca
+//===================================
+	// Inicializado como vazio para caso não esteja setado, ou seja, 99% dos acessos, não dar problema.
+	$redir = "";
+	$key = "";
+
+	// Se e somente se as duas coisas estão setadas, se passa elas pro login.php.
+	if (isset($_GET['redir']) and isset($_GET['key'])) {
+		$redir = $_GET['redir'];
+		$key = $_GET['key'];
 	}
 ?>
 <!DOCTYPE html>
@@ -103,6 +120,8 @@
 			<li> <input id="password1" name="password1" type="password" class="campo_texto" onkeypress="return captureKeys(event);" /> </li>
 			<li> <a href="#" onclick="abaDireita('senha');">Esqueci minha senha</a> </li>
 			<li> <center><input type="button" value="" id="botao_entrar" onfocus="this.blur()" onClick="login();" /></center></li>
+			<input type="hidden" id="redir" name="redir" value="<?=$redir?>">
+			<input type="hidden" id="key" name="key" value="<?=$key?>">
 		</ul>
 	</div> <!-- fim da caixa_login-->
 	<div id="caixa_criar">

@@ -55,7 +55,29 @@
 			$_SESSION['SS_turmas'][] = $turmas->resultado['codTurma'];
 			$turmas->proximo();
 		}
-		$data = '{ "valor":"0", "texto":"tela_inicial_geral.php"}';
+
+		if (isset($_POST['redir']) and isset($_POST['key'])) {
+			$confereKey = new conexao();
+			$key = $confereKey->sanitizaString($_POST['key']);
+			$confereKey->solicitarSI("SELECT * FROM ChavesRedirecionamento
+				WHERE uniqueId = '$key' AND userId = '$idusuario'");
+
+			if ($confereKey->resultado['uniqueId'] == $key){
+				// Código meio bruto, provavelmente vai bugar caso mais redirecionamentos sejam adicionados fora o da biblioteca.
+				$redir = base64_decode($_POST['redir']);
+
+				$validaRedir = explode("=", $redir, 2);
+				if(	!(($validaRedir[0] == "/funcionalidade/biblioteca/biblioteca.php?turma")
+						&&
+						is_numeric($validaRedir[1]))){
+					$redir = "tela_inicial_geral.php";
+				}
+				// else, é um endereço tão válido quanto podemos assegurar? Acho que sim.
+			}
+		}else{
+			$redir = "tela_inicial_geral.php";
+		}
+		$data = '{"valor":"0", "texto":"'.$redir.'"}';
 	}
 
 	exit ('{"login":'.$data.'}');

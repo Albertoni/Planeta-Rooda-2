@@ -255,6 +255,11 @@ function validar_cadastro(nomeA,loginA,emailA,passwordA,passwordB) {
 function login(){
 	var parametros = "login1=" + encodeURI(document.getElementById('login1').value);
 	parametros = parametros + "&password1=" + encodeURI(document.getElementById('password1').value);
+
+	if((document.getElementById('redir').value != "") && (document.getElementById('key').value != "")){
+		parametros = parametros + "&redir=" + encodeURI(document.getElementById('redir').value);
+		parametros = parametros + "&key=" + encodeURI(document.getElementById('key').value);
+	}
 	
 	http_login.abort();
 	http_login.open("POST", "login.php", true);
@@ -270,12 +275,14 @@ function login(){
 				}
 			}
 			catch(erro){
-				console.log(erro.message);
+				console.log(erro.message+http_login.responseText);
 			}
 		}
 	}
-	http_login.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http_login.setRequestHeader("Content-length", parametros.length);
+	http_login.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    //João, o Chrome não deixa executar esta operação, explicações aqui:
+    //http://stackoverflow.com/questions/7210507/ajax-post-error-refused-to-set-unsafe-header-connection
+	//http_login.setRequestHeader("Content-Length", parametros.length);
 	http_login.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=utf-8");
 	http_login.send(parametros);
 }
