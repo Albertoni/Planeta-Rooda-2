@@ -53,12 +53,15 @@ $usuarioDataAniversario = $data->format('d/m/Y');
 			display:none;
 		}
 
-		#campoEmail:invalid {
-		background-color: #ffdddd;
+		input:invalid {
+			background-color: #ffdddd;
 		}
 
-		#campoEmail:valid {
-		background-color: #ddffdd;
+		input:valid {
+			background-color: #ddffdd;
+		}
+		.textoInvalido {
+			display:none;
 		}
 	</style>
 </head>
@@ -106,17 +109,17 @@ $usuarioDataAniversario = $data->format('d/m/Y');
 			<form action="salvaEdicaoUsuario.php" method="post">
 				<input type="hidden" name="usuario_id" value="<?=$user->getId()?>">
 				<ul class="sem_estilo">
-					<li>Nome</li> <li><input required name="usuario_nome" type="text" value="<?=$user->getName()?>"/></li>
-					<li>Login</li> <li><input required name="usuario_login" type="text" value="<?=$user->getUser()?>"/></li>
+					<li>Nome</li> <li><input class="required" required name="usuario_nome" type="text" value="<?=$user->getName()?>"/><span class="textoInvalido"> - Campo inválido</span></li>
+					<li>Login</li> <li><input class="required" required name="usuario_login" type="text" value="<?=$user->getUser()?>"/><span class="textoInvalido"> - Campo inválido</span></li>
 					<li>
-					<button type="button" onclick="mostraTrocarSenha()" id="botaoTrocaSenha">Clique aqui para trocar a senha do usuario</button>
+					<button type="button" onclick="mostraTrocarSenha()" id="botaoTrocaSenha">Trocar senha</button>
 					<div id="usuarioSenha" class="sem_estilo">
 						Digite uma nova senha: <input name="usuario_senha" type="text"/>
 					</div>
 					</li>
 					<li>Data de nascimento</li> <li><input required name="usuario_data_aniversario" id="dataNascimento" type="text" value="<?=$usuarioDataAniversario?>"/></li>
-					<li>Nome da mãe</li> <li><input required name="usuario_nome_mae" type="text" value="<?=$user->getNomeMae()?>" /></li>
-					<li>E-mail</li> <li><input required id="campoEmail" name="usuario_email" type="email" value="<?=$user->getEmail()?>"/></li>
+					<li>Nome da mãe</li> <li><input name="usuario_nome_mae" type="text" value="<?=$user->getNomeMae()?>" /></li>
+					<li>E-mail</li> <li><input class="required" required id="campoEmail" name="usuario_email" type="email" value="<?=$user->getEmail()?>"/><span class="textoInvalido"> - Campo inválido</span></li>
 					<li><input name="Salvar" type="submit" value="Salvar" /></li>
 				</ul>
 			</form>
@@ -134,7 +137,7 @@ $usuarioDataAniversario = $data->format('d/m/Y');
 <script>
 $.datepicker.regional['pt'] = {
 	closeText: 'Fechar',
-	prevText: '&#x3c;Anterior',
+	prevText: 'Anterior',
 	nextText: 'Seguinte',
 	currentText: 'Hoje',
 	monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho',
@@ -160,5 +163,13 @@ function mostraTrocarSenha()
 	$("#usuarioSenha").css('display','block');
 	$("#botaoTrocaSenha").css('display','none');
 }
+
+$(".required").on("keyup", function(){	
+	if(this.validity.valid){
+		this.parentNode.lastChild.style.display = "none";
+	}else{
+		this.parentNode.lastChild.style.display = "inline";
+	}
+});
 </script>
 </body>
