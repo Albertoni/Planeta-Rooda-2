@@ -331,6 +331,8 @@ if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
 global $nivelProfessor;
 if(($this->emAndamento == true) && ($user->getNivel($turma)>=$nivelProfessor)){
 	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"fechaProjeto($projeto_id, $projeto_id);\">[Encerrar projeto]</a>\n";
+}else if(($this->emAndamento == false) && ($user->getNivel($turma)>=$nivelProfessor)){
+	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"reativaProjeto($projeto_id, $projeto_id);\">[Reativar projeto]</a>\n";
 }else{
 	$encerrarProjeto = "";
 }
