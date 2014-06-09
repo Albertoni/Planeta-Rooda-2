@@ -22,10 +22,10 @@ $email_administrador = "admplaneta2@gmail.com";
 
 $BD_host1 = "localhost";
 $BD_base1 = "planeta";
-$BD_user1 = "planeta";
-$BD_pass1 = "35283743";
+$BD_user1 = "root";
+$BD_pass1 = "root";
 
-$linkServidor = "http://143.54.95.107/Planeta/";
+$linkServidor = "http://143.54.95.109/Planeta/";
 
 $upload_max_filesize = ini_get('upload_max_filesize');
 
