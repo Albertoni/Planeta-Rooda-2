@@ -86,6 +86,7 @@ $q = new conexao();
                             </div>
                         </ul>
                     </div>
+                <input type="hidden" name="deOndeVem" value="listaFuncionalidadesAdministracao.php">
 			</div>
 		</div>
 		<div id="conteudo_base">

@@ -112,7 +112,14 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 	<div id="conteudo_meio" style="height: 1719px;">
 		<div id="conteudo">
 		<div class="bts_cima" style="float:none">
-			<a href="../administracao/listaFuncionalidadesAdministracao.php" align="left" >
+            <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
+            ficou combinado de criar uma gerencia dentro da turma.-->
+            <?php
+            if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")){
+                echo "<a href=\"../administracao/listaFuncionalidadesAdministracao.php?turma=".$_GET['idTurma']."\" align=\"left\" >";
+            }
+            else{   echo "<a href=\"../administracao/listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['idTurma']."\" align=\"left\" >";}
+            ?>
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
 		</div>

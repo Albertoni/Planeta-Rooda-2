@@ -106,7 +106,13 @@ $user = usuario_sessao();
             </div>
 
             <div id="exibe_usuarios" class="bloco">
-                <h1>Participantes da turma <?=$_GET['turma']?></h1>
+                <?php
+                    $q = new conexao();
+                    $numTurma = $_GET['turma'];
+                    $q->solicitar("SELECT nomeTurma FROM Turmas WHERE codTurma=$numTurma");
+                    $nomeTurma = $q->resultado['nomeTurma'];
+                ?>
+                <h1>Participantes da turma <?=$nomeTurma?></h1>
 
                 <ul class="sem_estilo">
                     <div id="containerPesquisa">
