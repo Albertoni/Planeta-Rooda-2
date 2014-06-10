@@ -228,10 +228,10 @@ function validaForm(){
 	window.frames["deletante"].location = "deleteBd.php?id="+id+"&tabela="+tabela+"&coluna="+coluna+"&turma="+turma;
 }*/
 
-function fechaProjeto(id, indiceFeedback){
+function trocaEstadoProjeto(id, acao){
 	var a = newAjax();
 	if(a){
-		a.open('GET','fechaProjeto.php?id='+id,true);
+		a.open('GET','fechaProjeto.php?id='+id+'&'+acao+'=true',true);
 		a.setRequestHeader('Content-Type','text/html');
 		a.send(null);
 		a.onreadystatechange = function() {
@@ -240,7 +240,7 @@ function fechaProjeto(id, indiceFeedback){
 					if (a.responseText != "ok"){
 						alert('Erro com a solicitação! ('+a.responseText+')');
 					}else{
-						document.getElementById("proj_id"+indiceFeedback).style.display = "none";
+						location.reload(true);
 					}
 				}
 			}
