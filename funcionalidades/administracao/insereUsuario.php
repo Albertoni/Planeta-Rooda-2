@@ -124,7 +124,14 @@ $q = new conexao();
                             </ul>
                     </div>
 					<div class="bts_baixo">
-						<a href="listaFuncionalidadesAdministracao.php" align="left" >
+                        <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
+                        ficou combinado de criar uma gerencia dentro da turma.-->
+                        <?php
+                        if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")){
+                            echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".$_GET['turma']."\" align=\"left\" >";
+                        }
+                        else{   echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";}
+                        ?>
 							<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 						</a>
 						<input form="postFormId" type="image" src="../../images/botoes/bt_confirm.png" align="right"/>

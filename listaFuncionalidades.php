@@ -40,6 +40,24 @@ if ($turma <= 0) {
 		<div id="conteudo_meio"><!-- para a imagem de fundo do meio -->
 			<div id="conteudo" style="position:relative;margin-top:0;"><!-- tem que estar dentro da div 'conteudo_meio' -->
 				<ul class="listaFun">
+
+
+
+ <?php
+      $idUsuario = $_SESSION['SS_usuario_id'];
+      $q = new conexao();
+      $nivelUsuarioNaTurma = $q->solicitar("SELECT associacao FROM TurmasUsuario
+                                                                WHERE codTurma=$turma AND codUsuario= $idUsuario");
+      if($nivelUsuarioNaTurma==NIVELPROFESSOR){
+?>
+                    <li><a href="funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php?turma=<?=$turma?>">
+                            <img src="images/botoes/bt_gerenciaTurma.png" border="0" align="left"/>
+                    </a></li>
+<?php
+ }
+?>
+                    <br>
+                    <br>
                     <li><a href="funcionalidades/administracao/listaUsuariosTurma.php?turma=<?=$turma?>">lista de usuários</a></li>
                     <hr>
 <?php

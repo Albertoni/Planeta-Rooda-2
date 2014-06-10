@@ -181,11 +181,6 @@ validaPermissaoAcesso($user->getId());
             alert("Selecione apenas um professor para ser o responsável da turma.");
             return false;
         }
-
-        else {
-            alert("Não foi selecionado um professor responsável, por favor selecione um.");
-            return false;
-        }
     };
 
     var listaUsuarios = [

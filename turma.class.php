@@ -26,6 +26,7 @@ class Turma{
 	//Públicos porque são usados pelo script salvaEdicaoTurma.
 	function setNomeTurma($novoNomeTurma){	$this->nomeTurma = $novoNomeTurma;}
 	function setDescricao($novaDescricao){	$this->descricao = $novaDescricao;}
+    function setProfessorResponsavel($novoProfessorResponsavel){    $this->profResponsavel = $novoProfessorResponsavel;  }
 	
 	function getId()				{return $this->id;}
 	function getNome()				{return $this->nomeTurma;}
