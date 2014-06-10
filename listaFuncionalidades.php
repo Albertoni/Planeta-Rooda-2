@@ -51,13 +51,11 @@ if ($turma <= 0) {
       if($nivelUsuarioNaTurma==NIVELPROFESSOR){
 ?>
                     <li><a href="funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php?turma=<?=$turma?>">
-                            <img src="images/botoes/bt_gerenciaTurma.png" border="0" align="left"/>
+                            <img src="images/botoes/bt_gerenciaTurma.png" border="0" align="right"/>
                     </a></li>
 <?php
  }
 ?>
-                    <br>
-                    <br>
                     <li><a href="funcionalidades/administracao/listaUsuariosTurma.php?turma=<?=$turma?>">lista de usuários</a></li>
                     <hr>
 <?php
@@ -110,6 +108,11 @@ if(checa_permissoes(TIPOPLAYER, $turma)) {
 <?php
 }
 ?>
+                    <hr>
+
+                    <li><a href="tela_inicial_geral.php?turma" align="left">
+                        <img src="./images/botoes/bt_voltar.png" border="0" align="right"/>
+                    </a></li>
 				</ul>
 			</div>
 		</div>

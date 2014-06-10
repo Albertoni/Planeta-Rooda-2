@@ -86,7 +86,7 @@ validaPermissaoAcesso($user->getId());
             <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
             ficou combinado de criar uma gerencia dentro da turma.-->
             <?php
-                if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")){
+                if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
 			        echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".$_GET['turma']."\" align=\"left\" >";
                 }
                 else{   echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";}
@@ -97,7 +97,13 @@ validaPermissaoAcesso($user->getId());
 		</div>
 		<div id="esq">
 		<div class="bloco">
-				<h1>Editar a turma <?=$_GET['turma']?></h1>
+            <?php
+                $q = new conexao();
+                $idTurma = $_GET['turma'];
+                $q->solicitar("SELECT nomeTurma FROM Turmas WHERE codTurma = '$idTurma'");
+                $nomeTurma = $q->resultado['nomeTurma'];
+            ?>
+				<h1>Editar a turma <?=$nomeTurma?></h1>
 				<ul class="sem_estilo">
 					<li>Turma <span class="exemplo">(Opcional)</span></li>
 					<li><input form="postFormId" name="novoNomeTurma" type="text"></li>
@@ -150,7 +156,7 @@ validaPermissaoAcesso($user->getId());
                 </div>
         </div>
             <?php
-            if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")){
+            if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
                 echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".$_GET['turma']."\" align=\"left\" >";
             }
             else{   echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";}
