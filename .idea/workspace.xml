@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="a3b1dbea-2ed9-49d6-9436-e3c592ed312f" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/images/botoes/bt_gerenciaTurma.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/funcionalidades/administracao/importarAlunosTurma.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/funcionalidades/administracao/verificaPermissoesAdministracao.php" afterPath="$PROJECT_DIR$/funcionalidades/administracao/verificaPermissoesAdministracao.php" />
+    </list>
+    <ignored path="PrGuilherme.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FavoritesManager">
+    <favorites_list name="PrGuilherme" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="importarAlunosTurma.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/importarAlunosTurma.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="265" column="27" selection-start="11790" selection-end="11790" vertical-scroll-proportion="-1.4074074" vertical-offset="4391" max-vertical-offset="6222">
+              <folding>
+                <element signature="n#style#0;n#span#1;n#p#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#div#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#div#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1402517278108" expanded="true" signature="4593:4649" placeholder="SELECT nomeT..Turmas..." />
+                <marker date="1402517278108" expanded="true" signature="618:665" placeholder="SELECT codTu..Turmas..." />
+                <marker date="1402517278108" expanded="true" signature="8576:8623" placeholder="SELECT codTu..Turmas..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="listaFuncionalidadesGerenciaTurma.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="68" column="14" selection-start="3191" selection-end="3191" vertical-scroll-proportion="-43.76923" vertical-offset="18" max-vertical-offset="1394">
+              <folding>
+                <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <marker date="1402431869770" expanded="true" signature="2056:2112" placeholder="SELECT nomeT..Turmas..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="verificaPermissoesAdministracao.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/verificaPermissoesAdministracao.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="23" column="0" selection-start="835" selection-end="835" vertical-scroll-proportion="-15.038462" vertical-offset="0" max-vertical-offset="748">
+              <folding>
+                <marker date="1402513207533" expanded="true" signature="577:640" placeholder="SELECT assoc..TurmasUsuario..." />
+                <marker date="1402513207533" expanded="true" signature="985:1048" placeholder="SELECT assoc..TurmasUsuario..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="retornaAlunosTurma.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/retornaAlunosTurma.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="11" selection-start="1367" selection-end="1367" vertical-scroll-proportion="0.6759941" vertical-offset="0" max-vertical-offset="679">
+              <folding>
+                <marker date="1402517226105" expanded="true" signature="621:734" placeholder="SELECT * FRO..TurmasUsuario..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="insereUsuario.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/insereUsuario.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="161" column="9" selection-start="6095" selection-end="6095" vertical-scroll-proportion="-8.461538" vertical-offset="2517" max-vertical-offset="4675">
+              <folding>
+                <marker date="1402431592548" expanded="true" signature="2467:2523" placeholder="SELECT nomeT..Turmas..." />
+                <marker date="1402431592548" expanded="true" signature="6690:6720" placeholder="SELECT * FRO..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cfg.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/cfg.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="27" column="37" selection-start="853" selection-end="853" vertical-scroll-proportion="53.653847" vertical-offset="1854" max-vertical-offset="2584">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/tela_inicial_geral.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas_gravacao.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.json.php" />
+        <option value="$PROJECT_DIR$/cfg.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/biblioteca/material.class.new.php" />
+        <option value="$PROJECT_DIR$/login.js" />
+        <option value="$PROJECT_DIR$/login.php" />
+        <option value="$PROJECT_DIR$/funcoes_aux.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesAdministracao.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/listaUsuariosTurma.php" />
+        <option value="$PROJECT_DIR$/turma.class.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/nova_turma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/salvaEdicaoTurma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/editaTurma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php" />
+        <option value="$PROJECT_DIR$/listaFuncionalidades.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/antigos/importarAlunosTurma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/insereUsuario.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/verificaPermissoesAdministracao.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/retornaAlunosTurma.php" />
+        <option value="$PROJECT_DIR$/funcionalidades/administracao/importarAlunosTurma.php" />
+      </list>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1456" />
+    <option name="height" value="876" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funcionalidades" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funcionalidades" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="portfolio" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funcionalidades" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gerenciamento_funcionalidades_turmas" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funcionalidades" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="biblioteca" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="PrGuilherme" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="funcionalidades" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="administracao" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="SearchEverywhereHistory" value="'" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="163" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="181" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="187" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="866" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="185" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="173" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="180" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="859" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="Z:\PrGuilherme\funcionalidades\administracao" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <TestRunner />
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug" singleton="true">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method />
+    </configuration>
+    <list size="0" />
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a3b1dbea-2ed9-49d6-9436-e3c592ed312f" name="Default" comment="" />
+      <created>1401819212496</created>
+      <updated>1401819212496</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="DB Browser" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="DB Execution Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/listaFuncionalidades.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="29" selection-start="342" selection-end="356" vertical-scroll-proportion="0.0" vertical-offset="170" max-vertical-offset="1802">
+          <folding>
+            <marker date="1402429926359" expanded="true" signature="-1:-1" placeholder="SELECT assoc..TurmasUsuario..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tela_inicial_geral.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="682" selection-end="1000" vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1989" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesAdministracao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="55" column="26" selection-start="0" selection-end="5497" vertical-scroll-proportion="0.0" vertical-offset="935" max-vertical-offset="2074" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/usuarios.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="84" column="22" selection-start="2747" selection-end="2747" vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="6358" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcoes_aux.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="46" selection-start="358" selection-end="358" vertical-scroll-proportion="0.0" vertical-offset="187" max-vertical-offset="7429" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.json.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="8" selection-start="349" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="5916" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/material.class.new.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="93" selection-start="7360" selection-end="7360" vertical-scroll-proportion="0.0" vertical-offset="3332" max-vertical-offset="9231" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turma.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="1377" max-vertical-offset="5372" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/usuarios.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="327" column="30" selection-start="11800" selection-end="11800" vertical-scroll-proportion="0.0" vertical-offset="5559" max-vertical-offset="6358" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cfg.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="37" selection-start="860" selection-end="860" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="2584">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcoes_aux.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="29" selection-start="481" selection-end="488" vertical-scroll-proportion="0.0" vertical-offset="289" max-vertical-offset="8041" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.json.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="8" selection-start="349" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="5916" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/material.class.new.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="221" column="59" selection-start="8175" selection-end="8175" vertical-scroll-proportion="0.0" vertical-offset="2975" max-vertical-offset="9231" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turma.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="1377" max-vertical-offset="5372" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/usuarios.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="327" column="30" selection-start="11800" selection-end="11800" vertical-scroll-proportion="0.0" vertical-offset="5559" max-vertical-offset="6358" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cfg.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="37" selection-start="860" selection-end="860" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="2584">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcoes_aux.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="29" selection-start="481" selection-end="488" vertical-scroll-proportion="0.0" vertical-offset="81" max-vertical-offset="8041" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/insereUsuario.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="183" column="49" selection-start="6274" selection-end="6274" vertical-scroll-proportion="0.0" vertical-offset="2925" max-vertical-offset="4471" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/listaFuncionalidades.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="46" column="46" selection-start="1704" selection-end="1705" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="1836" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.json.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="313" column="1" selection-start="9620" selection-end="9620" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5916" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="93" selection-start="2901" selection-end="2902" vertical-scroll-proportion="0.0" vertical-offset="226" max-vertical-offset="4624" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="12070" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/material.class.new.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="175" column="90" selection-start="5737" selection-end="5737" vertical-scroll-proportion="0.0" vertical-offset="2495" max-vertical-offset="8228" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcoes_aux.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="304" column="64" selection-start="10623" selection-end="10623" vertical-scroll-proportion="0.0" vertical-offset="987" max-vertical-offset="7429" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-0.21702127" vertical-offset="153" max-vertical-offset="12070" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cadastro.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="7" selection-start="116" selection-end="116" vertical-scroll-proportion="0.20029455" vertical-offset="0" max-vertical-offset="2448" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/lista_usuarios.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="182" column="25" selection-start="0" selection-end="8070" vertical-scroll-proportion="-116.38461" vertical-offset="0" max-vertical-offset="4352" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="100" column="33" selection-start="2901" selection-end="2902" vertical-scroll-proportion="1.3019146" vertical-offset="816" max-vertical-offset="4726" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/biblioteca.json.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="8" selection-start="349" selection-end="357" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="5916" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/biblioteca/material.class.new.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="228" column="57" selection-start="8393" selection-end="8421" vertical-scroll-proportion="-26.807692" vertical-offset="3179" max-vertical-offset="9231" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="56" selection-start="2357" selection-end="2357" vertical-scroll-proportion="0.77890176" vertical-offset="583" max-vertical-offset="1479" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="277" column="64" selection-start="9648" selection-end="9648" vertical-scroll-proportion="0.24113475" vertical-offset="4539" max-vertical-offset="6205" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/usuarios.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="84" column="22" selection-start="2747" selection-end="2747" vertical-scroll-proportion="0.0" vertical-offset="1428" max-vertical-offset="6358" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tela_inicial_geral.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="682" selection-end="1000" vertical-scroll-proportion="0.0" vertical-offset="425" max-vertical-offset="1989" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcoes_aux.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="26" selection-start="1389" selection-end="1389" vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="8041" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/listaUsuariosTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="114" column="43" selection-start="3643" selection-end="3643" vertical-scroll-proportion="0.42562592" vertical-offset="1581" max-vertical-offset="4420">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesAdministracao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="88" column="100" selection-start="4618" selection-end="4702" vertical-scroll-proportion="-3.2307692" vertical-offset="1412" max-vertical-offset="2091" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/salvaEdicaoTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="47" column="5" selection-start="2090" selection-end="2090" vertical-scroll-proportion="0.28757226" vertical-offset="600" max-vertical-offset="1292" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/salvaTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="26" column="21" selection-start="909" selection-end="909" vertical-scroll-proportion="0.6387283" vertical-offset="0" max-vertical-offset="692" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/turma.class.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="122" selection-start="842" selection-end="842" vertical-scroll-proportion="-2.1045656" vertical-offset="1905" max-vertical-offset="5389" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/nova_turma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="188" column="32" selection-start="7184" selection-end="7184" vertical-scroll-proportion="2.8541973" vertical-offset="1258" max-vertical-offset="4811">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas_gravacao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="9" selection-start="903" selection-end="903" vertical-scroll-proportion="-0.65384614" vertical-offset="544" max-vertical-offset="3791" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="16" selection-start="5579" selection-end="5657" vertical-scroll-proportion="-18.76923" vertical-offset="1433" max-vertical-offset="9180">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/editaTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="89" column="117" selection-start="2847" selection-end="2938" vertical-scroll-proportion="0.35051546" vertical-offset="1275" max-vertical-offset="5304">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cfg.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="37" selection-start="853" selection-end="853" vertical-scroll-proportion="53.653847" vertical-offset="1854" max-vertical-offset="2584">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/listaFuncionalidades.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="107" column="5" selection-start="3509" selection-end="3509" vertical-scroll-proportion="0.45953757" vertical-offset="1501" max-vertical-offset="2193">
+          <folding>
+            <marker date="1402429926359" expanded="true" signature="-1:-1" placeholder="SELECT assoc..TurmasUsuario..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/insereUsuario.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="161" column="9" selection-start="6095" selection-end="6095" vertical-scroll-proportion="-8.461538" vertical-offset="2517" max-vertical-offset="4675">
+          <folding>
+            <marker date="1402431592548" expanded="true" signature="2467:2523" placeholder="SELECT nomeT..Turmas..." />
+            <marker date="1402431592548" expanded="true" signature="6690:6720" placeholder="SELECT * FRO..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/verificaPermissoesAdministracao.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="23" column="0" selection-start="835" selection-end="835" vertical-scroll-proportion="-15.038462" vertical-offset="0" max-vertical-offset="748">
+          <folding>
+            <marker date="1402513207533" expanded="true" signature="577:640" placeholder="SELECT assoc..TurmasUsuario..." />
+            <marker date="1402513207533" expanded="true" signature="985:1048" placeholder="SELECT assoc..TurmasUsuario..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="68" column="14" selection-start="3191" selection-end="3191" vertical-scroll-proportion="-43.76923" vertical-offset="18" max-vertical-offset="1394">
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1402431869770" expanded="true" signature="2056:2112" placeholder="SELECT nomeT..Turmas..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/importarAlunosTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="265" column="27" selection-start="11790" selection-end="11790" vertical-scroll-proportion="-1.4074074" vertical-offset="4391" max-vertical-offset="6222">
+          <folding>
+            <element signature="n#style#0;n#span#1;n#p#0;n#div#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#div#0;n#ul#0;n#div#0;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#div#0;n#ul#0;n#div#1;n#div#0;n#div#0;n#div#2;n#div#2;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <marker date="1402517278108" expanded="true" signature="4593:4649" placeholder="SELECT nomeT..Turmas..." />
+            <marker date="1402517278108" expanded="true" signature="618:665" placeholder="SELECT codTu..Turmas..." />
+            <marker date="1402517278108" expanded="true" signature="8576:8623" placeholder="SELECT codTu..Turmas..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/funcionalidades/administracao/retornaAlunosTurma.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="11" selection-start="1367" selection-end="1367" vertical-scroll-proportion="0.6759941" vertical-offset="0" max-vertical-offset="679">
+          <folding>
+            <marker date="1402517226105" expanded="true" signature="621:734" placeholder="SELECT * FRO..TurmasUsuario..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
