@@ -62,6 +62,7 @@ $q = new conexao();
                         <!--Gerenciamento-->
                         <li><a href="../gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php?idTurma=<?=$_GET['turma']?>">Gerenciamento de Funcionalidades</a></li>
                         <!--Por enquanto, direciona o usuario para a pagina de gerenciamento de funcionalidades -->
+                        <li><a href="importarAlunosTurma.php?turma=<?=$_GET['turma']?>">Importar alunos de uma turma</a></li>
                     </div>
                 </ul>
             </div>
