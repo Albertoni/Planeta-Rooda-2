@@ -6,7 +6,6 @@ require('../../funcoes_aux.php');
 
 $q = new conexao();
 
-$associacao = $_POST['associacao'];
 $codTurma = $_POST['turmaLista'];//para saber por qual turma o usuario acessou o sistema
 $turma = new Turma("",0,"",0,0,0,0);
 $turma->openTurma($codTurma);
@@ -18,13 +17,13 @@ $numeroAlunos = sizeof($alunos);
 $parteDinamica = array();
 
 for($i=0; $i<$numeroAlunos; $i++){
-	$codUsuario = $q->sanitizaString($alunos[$i]);
+    $codUsuario = $q->sanitizaString($alunos[$i]);
     $usuario = new Usuario();
     $usuario->openUsuario($codUsuario);
 
     if($usuario->pertenceTurma($codTurma)){
         $q->solicitar("UPDATE TurmasUsuario
-                          SET associacao='$associacao'
+                          SET associacao=".NIVELALUNO."
                             WHERE codTurma = '$codTurma' AND codUsuario = '$codUsuario'");
     }
     else{
@@ -32,9 +31,8 @@ for($i=0; $i<$numeroAlunos; $i++){
 				VALUES
 				    ('$codTurma',
 				    '$codUsuario',
-				    '$associacao')");
+				    ".NIVELALUNO.")");
     }
-
 }
 
-magic_redirect("insereUsuario.php?turma=".$codTurma);
+magic_redirect("listaFuncionalidadesGerenciaTurma.php?turma=".$codTurma);

@@ -86,7 +86,8 @@ $q = new conexao();
                             </div>
                         </ul>
                     </div>
-                <input type="hidden" name="deOndeVem" value="listaFuncionalidadesAdministracao.php">
+
+               <input form="postFormId" type="hidden" name="deOndeVem" value="listaFuncionalidadesAdministracao.php">
 			</div>
 		</div>
 		<div id="conteudo_base">
@@ -109,7 +110,7 @@ $q = new conexao();
             for(i=0; i < links.length; i++){
                 var link = links[i].href;
                 var posCodTurma = link.indexOf('=');
-                link = link.substr(0,posCodTurma+1) + codTurma;
+                link = link.substr(0,posCodTurma+1) + codTurma +"&deOndeVem=listaFuncionalidadesAdministracao.php";
                 links[i].href = link;
             }
         }

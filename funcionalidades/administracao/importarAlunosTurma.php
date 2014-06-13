@@ -92,7 +92,7 @@ $q = new conexao();
                         <div id="containerPesquisa">
                             Pesquisar por
                             <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="nomeTurma" checked><span style="margin-right:2em;">Nome da Turma</span>
-                            <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="descricao"><span style="margin-right:2em;">Descrição</span>
+                            <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="profResponsavel"><span style="margin-right:2em;">Descrição</span>
                             <br><br>
                             <input id="filtroTurma" type="text" onkeyup="filtrarTurmas()">
                         </div>
@@ -102,7 +102,7 @@ $q = new conexao();
                                 <tr>
                                     <th></th>
                                     <th>Nome da Turma</th>
-                                    <th>Descrição</th>
+                                    <th>Professor Responsável</th>
                                 </tr>
                                 </thead>
                                 <tbody id="lista_turmas">
@@ -130,14 +130,14 @@ $q = new conexao();
                             <input id="filtro" type="text" onkeyup="filtrar()">
                         </div>
 
-                        <form name="fConteudo" id="postFormId" action="salvaInsereUsuario.php" method="post">
+                        <form name="fConteudo" id="postFormId" action="salvaImportarAlunosTurma.php" method="post">
                             <input type="hidden" name="ids_alunos" id="ids_alunos" value="" />
                             <input name="turmaLista" type="hidden" value="<?=$_GET['turma']?>">
                             <table>
                                 <colgroup span="4"></colgroup>
                                 <thead>
                                 <tr>
-                                    <th></th>
+                                    <th><input type="checkbox" name="checkBoxMestre" onclick="marcaDesmarcaTodasCheckboxes(this)"/></th>
                                     <th>Nome</th>
                                     <th>Email</th>
                                     <th>Login</th>
@@ -198,13 +198,13 @@ $q = new conexao();
     var listaTurmas = [
         <?php
         $consulta = new conexao();
-        $consulta->solicitar("SELECT codTurma,nomeTurma,descricao FROM Turmas");
+        $consulta->solicitar("SELECT codTurma,nomeTurma,usuario_nome FROM Turmas JOIN usuarios ON profResponsavel=usuario_id");
 
         for($i=0; $i < ($consulta->registros - 1); $i++){ // for precisa do -1 porque o ultimo não pode ter virgula
-            echo "{idTurma:\"".$consulta->resultado['codTurma']."\", nomeTurma:\"".$consulta->resultado['nomeTurma']."\", descricao:\"".$consulta->resultado['descricao']."\"},\n";
+            echo "{idTurma:\"".$consulta->resultado['codTurma']."\", nomeTurma:\"".$consulta->resultado['nomeTurma']."\", profResponsavel:\"".$consulta->resultado['usuario_nome']."\"},\n";
             $consulta->proximo();
         }
-        echo "{idTurma:\"".$consulta->resultado['codTurma']."\", nomeTurma:\"".$consulta->resultado['nomeTurma']."\", descricao:\"".$consulta->resultado['descricao']."\"}\n";
+        echo "{idTurma:\"".$consulta->resultado['codTurma']."\", nomeTurma:\"".$consulta->resultado['nomeTurma']."\", profResponsavel:\"".$consulta->resultado['usuario_nome']."\"}\n";
         ?>
     ];
 
@@ -263,9 +263,9 @@ $q = new conexao();
     }
 
     function setaListaDeUsuarios(lista){
-        console.log(lista);
+
         var lista = JSON.parse(lista);
-        console.log(lista);
+
         var tamanhoLista = lista.length;
         var elementoLista = document.getElementById('lista_usuarios');
 
@@ -284,6 +284,7 @@ $q = new conexao();
             var tdCheckbox = document.createElement('td');
             var checkbox = document.createElement('input');
             checkbox.type = "checkbox";
+            checkbox.className = "checkboxConsulta";
             checkbox.value = estruturaDados['idUsuario'];
             checkbox.addEventListener("click", function(){
                 listaUsuariosSelecionados[this.value] = this.checked;
@@ -342,7 +343,7 @@ $q = new conexao();
             tdCheckbox.appendChild(checkbox);
 
             var tdNomeTurma = geraTd(estruturaDados['nomeTurma'], estruturaDados['idTurma']);
-            var tdDescricao = geraTd(estruturaDados['descricao'], estruturaDados['idTurma']);
+            var tdDescricao = geraTd(estruturaDados['profResponsavel'], estruturaDados['idTurma']);
 
 
             tr.appendChild(tdCheckbox);
@@ -355,6 +356,17 @@ $q = new conexao();
             imprime(lista[i]);
         };
     }
+
+    function marcaDesmarcaTodasCheckboxes(checkboxMestre){
+        var checkboxesDaPagina = document.getElementsByClassName("checkboxConsulta");
+
+        for(i=0;i<checkboxesDaPagina.length;i++){
+                checkboxesDaPagina[i].checked=checkboxMestre.checked;
+        }
+    }
+
     setaListaDeTurmas(listaTurmas);
+
+
 </script>
 </html>

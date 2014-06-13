@@ -24,7 +24,7 @@
 	</head>
 	<body>
        <?php 
-       if(verificaSeProfessor($usuario->getId())){
+       if(verificaSeAdministrador($usuario->getId())){
           echo  "<a href = \"funcionalidades/administracao/listaFuncionalidadesAdministracao.php\">
                 <img src=\"images/botoes/bt_administracao.png\" style=\"position:absolute; right:400px; top:10px; cursor:pointer;\">
                 </a>";

@@ -16,7 +16,8 @@ validaPermissaoAcesso($user->getId());
 $consulta = new conexao();
 $idTurmaSelecionadaSanitizado=(int) $_GET['idTurma'];
 
-$consulta->solicitar("SELECT * FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id WHERE codTurma='$idTurmaSelecionadaSanitizado'");
+$consulta->solicitar("SELECT * FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id
+                                                WHERE codTurma='$idTurmaSelecionadaSanitizado' AND associacao=".NIVELALUNO);
 
 $superArray = array();
 

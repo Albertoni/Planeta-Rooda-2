@@ -86,10 +86,14 @@ validaPermissaoAcesso($user->getId());
             <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
             ficou combinado de criar uma gerencia dentro da turma.-->
             <?php
-                if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
+                if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
 			        echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".$_GET['turma']."\" align=\"left\" >";
                 }
-                else{   echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";}
+                else if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0)
+                {
+                    echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";
+                }
+
             ?>
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
 			</a>
@@ -115,12 +119,12 @@ validaPermissaoAcesso($user->getId());
 					<h1>Editar a aparencia do Planeta</h1>
 					<ul id="seletorPlaneta" class="sem_estilo">
 						<li>
-							<input form="postFormId" name="novaAparencia" type="radio" value="1"><img src="../../images/tela_inicial/planetagrama.png">
-							<input form="postFormId" name="novaAparencia" type="radio" value="2" style="margin-left:150px;"><img src="../../images/tela_inicial/planetagelo.png">
+							<input name="novaAparencia" type="radio" value="1"><img src="../../images/tela_inicial/planetagrama.png">
+							<input name="novaAparencia" type="radio" value="2" style="margin-left:150px;"><img src="../../images/tela_inicial/planetagelo.png">
 						</li>
 						<li>
-							<input form="postFormId" name="novaAparencia" type="radio" value="3"><img src="../../images/tela_inicial/planetalava.png">
-							<input form="postFormId" name="novaAparencia" type="radio" value="4" style="margin-left:150px"><img src="../../images/tela_inicial/planetaurbano.png">
+							<input name="novaAparencia" type="radio" value="3"><img src="../../images/tela_inicial/planetalava.png">
+							<input name="novaAparencia" type="radio" value="4" style="margin-left:150px"><img src="../../images/tela_inicial/planetaurbano.png">
 						</li>
 					</ul>
 				</div>
@@ -135,7 +139,7 @@ validaPermissaoAcesso($user->getId());
                         <br><br>
                         <input id="filtro" type="text" onkeyup="filtrar()">
                     </div>
-                    <form name="fConteudo" id="postFormId" action="salvaTurma.php" method="post">
+
                         <input type="hidden" name="ids_professores" id="ids_professores" value="" />
                         <table>
                             <colgroup span="4"></colgroup>
@@ -151,12 +155,12 @@ validaPermissaoAcesso($user->getId());
                             <tr class="cor1"><td>Só um instante, carregando os usuários...</td></tr>
                             </tbody>
                         </table>
-                    </form>
+
                     </ul>
                 </div>
         </div>
             <?php
-            if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
+            if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
                 echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".$_GET['turma']."\" align=\"left\" >";
             }
             else{   echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['turma']."\" align=\"left\" >";}

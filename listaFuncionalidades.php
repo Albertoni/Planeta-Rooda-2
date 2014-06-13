@@ -56,7 +56,7 @@ if ($turma <= 0) {
 <?php
  }
 ?>
-                    <li><a href="funcionalidades/administracao/listaUsuariosTurma.php?turma=<?=$turma?>">lista de usuários</a></li>
+                    <li><a href="funcionalidades/administracao/listaUsuariosTurma.php?turma=<?=$turma?>">Participantes da Turma</a></li>
                     <hr>
 <?php
 // Biblioteca
