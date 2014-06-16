@@ -111,18 +111,19 @@ if(0 < $conexaoBuscaDadosFuncionalidadesTurma->registros){
 	<div id="conteudo_topo"></div>
 	<div id="conteudo_meio" style="height: 1719px;">
 		<div id="conteudo">
-		<div class="bts_cima" style="float:none">
-            <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
-            ficou combinado de criar uma gerencia dentro da turma.-->
-            <?php
-            if(strnatcmp($_POST['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
-                echo "<a href=\"../administracao/listaFuncionalidadesAdministracao.php?turma=".$_GET['idTurma']."\" align=\"left\" >";
-            }
-            else{   echo "<a href=\"../administracao/listaFuncionalidadesGerenciaTurma.php?turma=".$_GET['idTurma']."\" align=\"left\" >";}
-            ?>
-				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
-			</a>
-		</div>
+		    <div class="bts_cima" style="float:none">
+                <!-- Retorna o usuário para o local de onde ele veio. Foi preciso tratar isso a partir da ata de 28/05, quando
+                ficou combinado de criar uma gerencia dentro da turma.-->
+                <?php
+                if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
+                    echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".(int)$_GET['turma']."\" align=\"left\" >";
+                }
+                else if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesGerencia.php")==0){
+                    echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".(int)$_GET['turma']."\" align=\"left\" >";}
+                ?>
+                <img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
+                </a>
+		    </div>
 			<big><b>Gerenciamento da Turma <?=$nomeDaTurma?></b></big><br><br><br>
 			<form name="salvar_BD" method="post" action='gerenciamento_funcionalidades_turmas_gravacao.php?'>
 			<ul>
