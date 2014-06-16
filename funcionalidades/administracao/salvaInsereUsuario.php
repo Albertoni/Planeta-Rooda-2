@@ -34,7 +34,6 @@ for($i=0; $i<$numeroAlunos; $i++){
 				    '$codUsuario',
 				    '$associacao')");
     }
-
 }
 
 magic_redirect("insereUsuario.php?turma=".$codTurma);
