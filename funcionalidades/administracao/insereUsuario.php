@@ -8,6 +8,10 @@ require_once("verificaPermissoesAdministracao.php");
 $user = usuario_sessao();
 validaPermissaoAcesso($user->getId());
 $q = new conexao();
+
+$idTurma = $_GET['turma'];
+$q->solicitar("SELECT nomeTurma FROM Turmas WHERE codTurma = '$idTurma'");
+$nomeTurma = $q->resultado['nomeTurma'];
 /*if($user === false){
 	die("Voce nao esta logado em sua conta. Por favor volte e logue.");
 }*/
@@ -81,12 +85,6 @@ $q = new conexao();
 	<div id="conteudo"><!-- tem que estar dentro da div 'conteudo_meio' -->
 		<div id="esq">
 			<div id="add_colegas" class="bloco">
-                <?php
-                $q = new conexao();
-                $idTurma = $_GET['turma'];
-                $q->solicitar("SELECT nomeTurma FROM Turmas WHERE codTurma = '$idTurma'");
-                $nomeTurma = $q->resultado['nomeTurma'];
-                ?>
 				<h1>Escolher participantes para a turma <?=$nomeTurma?></h1>
 				<ul class="sem_estilo">
 					<div id="containerPesquisa">
