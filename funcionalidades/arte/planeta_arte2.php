@@ -51,10 +51,10 @@ function proximo_ano () { // A SER USADO SOMENTE NOS OPTIONS LÁ EMBAIXO
 <![endif]-->
 <style>
 /* Customização de cores do sistema de comentários */
-.comentarios{background: #FFAA4F;}
+.comentarios{background: #F6DBBD;}
 .comentarios > h1 {background: #53686F;}
-.comentarios > ul > li:nth-child(odd) {background: #E28725;}
-.comentarios > ul > li:nth-child(even){background: #F5A34C;}
+.comentarios > ul > li:nth-child(odd) {background: #EEBB84;}
+.comentarios > ul > li:nth-child(even){background: #F6DBBD;}
 input[type=text]:hover, .falso_text:hover {background-color:#FAC993}
 .comentarios > ul > li > .info > .data {color: black}
 </style>
