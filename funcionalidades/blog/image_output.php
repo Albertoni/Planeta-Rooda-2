@@ -34,7 +34,7 @@
 		
 		if ($image === false) {
 			$nova = imagecreatetruecolor(192, 192);
-			imagettftext($nova, 14, 0, 20, 30, imagecolorallocate($nova,255,255,255), $fonte_mensagem_erro, "ESSA IMAGEM AINDA\nNÃO FOI CRIADA. \nALGO DE ERRADO\nACONTECEU.\nNOSSA EQUIPE DE\nMACACOS ALTAMENTE\nTREINADOS ESTA\nTENTANDO RESOLVER\nISSO."); // Em caso de erro...
+			imagettftext($nova, 14, 0, 20, 30, imagecolorallocate($nova,255,255,255), $fonte_mensagem_erro, "SEU AVATAR AINDA\nNÃO FOI ESCOLHIDO."); // Em caso de erro...
 			
 		} else {// Processamento, resize.
 			$nova = imagecreatetruecolor(192, 192);
