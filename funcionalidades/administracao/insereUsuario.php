@@ -52,7 +52,7 @@ $nomeTurma = $q->resultado['nomeTurma'];
 	</style>
 </head>
 
-<body onload="atualiza('ajusta()');inicia();ajusta_img();">
+<body onload="atualiza('ajusta()');inicia();">
 	<div id="descricao"></div>
 	<div id="topo">
 		<div id="centraliza_topo">
@@ -151,13 +151,6 @@ $nomeTurma = $q->resultado['nomeTurma'];
 	</div><!-- fim da geral -->
 
     <script type="text/javascript">
-        function ajusta_img() {
-            if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
-                $('#cont_img3').css('width','436px');
-                $('#cont_img3').css('padding-right','20px');
-                $('#cont_img').css('height','170px');
-            }
-        }
 
         // setando o formulário
         document.getElementById('postFormId').onsubmit = function(){
