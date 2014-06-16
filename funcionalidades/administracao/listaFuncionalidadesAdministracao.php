@@ -80,9 +80,10 @@ $q = new conexao();
                             <li><a class="precisaPreparar" href="editaTurma.php?turma=">Editar Turma</a></li>
                             <!--Inserir Usuarios na Turma -->
                             <li><a class="precisaPreparar" href="insereUsuario.php?turma=">Inserir Usuarios</a></li>
-                            <!--Gerenciamento-->
+                            <!--Gerenciamento Funcionalidades Turma-->
                             <li><a class="precisaPreparar" href="../gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php?idTurma=">Gerenciamento de Funcionalidades</a></li>
-                            <!--Por enquanto, direciona o usuario para a pagina de gerenciamento de funcionalidades -->
+                            <!--Inserir Usuarios na Turma -->
+                            <li><a class="precisaPreparar" href="importarAlunosTurma.php?turma=">Importar Alunos</a></li>
                             </div>
                         </ul>
                     </div>

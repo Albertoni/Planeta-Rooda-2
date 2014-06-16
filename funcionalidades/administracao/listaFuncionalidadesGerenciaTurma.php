@@ -56,18 +56,17 @@ $q = new conexao();
                 <ul class="sem_estilo">
                     <!--Editar Turma-->
                     <div>
-                        <li><a href="editaTurma.php?turma=<?=$_GET['turma']?>">Editar Turma</a></li>
+                        <li><a href="editaTurma.php?turma=<?=(int)$_GET['turma']?>&deOndeVem=listaFuncionalidadesGerencia.php">Editar Turma</a></li>
                         <!--Inserir Usuarios na Turma -->
-                        <li><a href="insereUsuario.php?turma=<?=$_GET['turma']?>">Inserir Usuarios</a></li>
+                        <li><a href="insereUsuario.php?turma=<?=(int)$_GET['turma']?>&deOndeVem=listaFuncionalidadesGerencia.php">Inserir Usuarios</a></li>
                         <!--Gerenciamento-->
-                        <li><a href="../gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php?idTurma=<?=$_GET['turma']?>">Gerenciamento de Funcionalidades</a></li>
+                        <li><a href="../gerenciamento_funcionalidades_turmas/gerenciamento_funcionalidades_turmas.php?idTurma=<?=(int)$_GET['turma']?>&deOndeVem=listaFuncionalidadesGerenciaTurma.php">Gerenciamento de Funcionalidades</a></li>
                         <!--Por enquanto, direciona o usuario para a pagina de gerenciamento de funcionalidades -->
-                        <li><a href="importarAlunosTurma.php?turma=<?=$_GET['turma']?>">Importar alunos de uma turma</a></li>
+                        <li><a href="importarAlunosTurma.php?turma=<?=(int)$_GET['turma']?>&deOndeVem=listaFuncionalidadesGerencia.php">Importar alunos de uma turma</a></li>
                     </div>
                 </ul>
             </div>
         </div>
-        <input type="hidden" name="deOndeVem" value="listaFuncionalidadesGerenciaTurma.php">
     </div>
     <div id="conteudo_base">
     </div><!-- para a imagem de fundo da base -->
