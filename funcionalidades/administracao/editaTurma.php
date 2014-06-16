@@ -87,7 +87,7 @@ validaPermissaoAcesso($user->getId());
             ficou combinado de criar uma gerencia dentro da turma.-->
             <?php
             if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
-                echo "<a href=\"listaFuncionalidadesAdministracao.php?turma=".(int)$_GET['turma']."\" align=\"left\" >";
+                echo "<a href=\"listaFuncionalidadesAdministracao.php\" align=\"left\" >";
             }
             else if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesGerencia.php")==0){
                 echo "<a href=\"listaFuncionalidadesGerenciaTurma.php?turma=".(int)$_GET['turma']."\" align=\"left\" >";}

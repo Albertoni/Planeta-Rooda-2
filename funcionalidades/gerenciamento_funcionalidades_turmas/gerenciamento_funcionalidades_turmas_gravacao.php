@@ -211,7 +211,14 @@
 	}else{
 		echo "<script>alert('Aconteceu um erro ao salvar os dados!');</script>";
 	}
-	magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
+
+
+    if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesAdministracao.php")==0){
+       magic_redirect("../administracao/listaFuncionalidadesAdministracao.php");
+    }
+    else if(strnatcmp($_GET['deOndeVem'],"listaFuncionalidadesGerenciaTurma.php")==0){
+       magic_redirect("../administracao/listaFuncionalidadesGerenciaTurma.php?turma=".$codTurma);
+    }
 ?>
 </body>
 </html>
