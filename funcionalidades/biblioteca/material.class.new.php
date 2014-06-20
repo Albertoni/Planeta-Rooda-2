@@ -180,12 +180,19 @@ WHERE codMaterial = $id"
 		}
     //Envia email para os professores, avisando que há material necessitando aprovação.
         //Consulta no BD buscando por todos os professores da turma em que o material foi salvo.
-        $destinatario=$bd->solicitar("SELECT usuario_email, usuario_id FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id
-                                            WHERE codTurma='$this->codTurma' AND associacao=".NIVELPROFESSOR);
+        $quemPodeAprovar=$bd->solicitar("SELECT biblioteca_aprovarMateriais FROM GerenciamentoTurma WHERE codTurma=(int)'$this->codTurma'");
+        if($quemPodeAprovar==4){
+            $destinatario=$bd->solicitar("SELECT usuario_email, usuario_id FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id
+                                                WHERE codTurma='$this->codTurma' AND associacao=".NIVELPROFESSOR);
+        }
+        else if($quemPodeAprovar==12){
+            $destinatario=$bd->solicitar("SELECT usuario_email, usuario_id FROM TurmasUsuario JOIN usuarios ON codUsuario=usuario_id
+                                                WHERE codTurma='$this->codTurma' AND (associacao=".NIVELPROFESSOR." OR associacao=".NIVELMONITOR);
+        }
         $assunto = "Um item de uma biblioteca precisa de sua aprovação";
 
         $nivelDeQuemPostou = $bd->solicitar("SELECT associacao FROM TurmasUsuario
-                                                                WHERE codTurma='$this->codTurma' AND codUsuario='$this->codUsuario'");
+                                                                WHERE codTurma=(int)'$this->codTurma' AND codUsuario=(int)'$this->codUsuario'");
         switch($nivelDeQuemPostou){
             case 4: $nivelDeQuemPostou = "professor";
                     break;

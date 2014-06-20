@@ -1,55 +1,55 @@
 /**
-*	Este arquivo destina-se à implementação da classe Mural.
+*	Este arquivo destina-se ï¿½ implementaï¿½ï¿½o da classe Mural.
 */
 function Mural(/*void*/){
 	/**
-	* Calcula a altura da tela para o mural ocupar todo o espaço possivel
+	* Calcula a altura da tela para o mural ocupar todo o espaï¿½o possivel
 	*/
 	/*int*/ this.detectaAlturaDisponivelParaMural = function(/*void*/){
 		var alturaJanela = $(window).height();
-		var alturaOcupada = 162 /*vem do #mural_topo, mudar o CSS também caso necessário*/ + $("body").height() + 16; // 16 é porque a página tem 8 de margem em cima e embaixo
+		var alturaOcupada = 162 /*vem do #mural_topo, mudar o CSS tambï¿½m caso necessï¿½rio*/ + $("body").height() + 16; // 16 ï¿½ porque a pï¿½gina tem 8 de margem em cima e embaixo
 		
 		return alturaJanela - alturaOcupada;
 	}
 	
 	// Com base na altura do monitor, calcula quantas janelas o mural pode mostrar.
 	/*int*/this.calcularJanelasExibidas = function(/*void*/){
-		espacoOcupadoPorUmaJanela = 164/*altura da janela*/+32;/*altura do espaçamento entre elas*/
+		espacoOcupadoPorUmaJanela = 164/*altura da janela*/+32;/*altura do espaï¿½amento entre elas*/
 		espacoLivre = this.detectaAlturaDisponivelParaMural();
 		
 		return Math.floor(espacoLivre/espacoOcupadoPorUmaJanela);
 	}
 	
 //dados
-	//Id da div que contém o mural e só ele.
+	//Id da div que contï¿½m o mural e sï¿½ ele.
 	/*String*/ this.paiId = 'caixaMural';
 	//Id deste mural.
 	/*String*/ this.id = 'Mural';
-	//Id do botão UP (ver janelas acima).
+	//Id do botï¿½o UP (ver janelas acima).
 	/*String*/ this.idBotaoUp = 'up'+this.id;
-	//Id do botão DOWN (ver janelas abaixo).
+	//Id do botï¿½o DOWN (ver janelas abaixo).
 	/*String*/ this.idBotaoDown = 'down'+this.id;
-	//Array de janelas deste mural. As janelas são ordenadas (visivelmente) segundo suas posições no array.
+	//Array de janelas deste mural. As janelas sï¿½o ordenadas (visivelmente) segundo suas posiï¿½ï¿½es no array.
 	 /*array*/ this.janelas = new Array();
-	//A quantidade de janelas que são exibidas a qualquer momento.
+	//A quantidade de janelas que sï¿½o exibidas a qualquer momento.
 	/*int*/ this.quantidadeJanelasExibidas = this.calcularJanelasExibidas();
-	//A primeira janela que é exibida. A posição desta no array.
+	//A primeira janela que ï¿½ exibida. A posiï¿½ï¿½o desta no array.
 	/*int*/ this.indiceArrayPrimeiraJanelaExibida = 0;
 	
-//métodos
+//mï¿½todos
 	/**
-	* @return Booleano	Indica se há janela escondida imediatamente abaixo das janelas expostas.
+	* @return Booleano	Indica se hï¿½ janela escondida imediatamente abaixo das janelas expostas.
 	*/
 	/*Booleano*/ this.haJanelaAbaixo = function(/*void*/){ return (this.indiceArrayPrimeiraJanelaExibida+this.quantidadeJanelasExibidas < this.janelas.length); }
 	
 	/**
-	* @return Booleano	Indica se há janela escondida imediatamente acima das janelas expostas.
+	* @return Booleano	Indica se hï¿½ janela escondida imediatamente acima das janelas expostas.
 	*/
 	/*Booleano*/ this.haJanelaAcima = function(/*void*/){ return (0 < this.indiceArrayPrimeiraJanelaExibida); }
 	
 	/**
 	* Esconde a janela de cima e mostra a de baixo.
-	* Caso não haja janela abaixo, não fará nada.
+	* Caso nï¿½o haja janela abaixo, nï¿½o farï¿½ nada.
 	*/
 	/*void*/ this.percorrerUmaParaBaixo = function(/*void*/){
 		if(this.haJanelaAbaixo()){
@@ -60,7 +60,7 @@ function Mural(/*void*/){
 	
 	/**
 	* Esconde a janela de baixo e mostra a de cima.
-	* Caso não haja janela acima, não fará nada.
+	* Caso nï¿½o haja janela acima, nï¿½o farï¿½ nada.
 	*/
 	/*void*/ this.percorrerUmaParaCima = function(/*void*/){
 		if(this.haJanelaAcima()){
@@ -70,7 +70,7 @@ function Mural(/*void*/){
 	}
 	
 	/**
-	* Atualiza o mural com as modificações feitas.
+	* Atualiza o mural com as modificaï¿½ï¿½es feitas.
 	*/
 	/*void*/ this.redesenhar = function(/*void*/){
 		var containerMural = document.getElementById(this.paiId);
@@ -78,7 +78,7 @@ function Mural(/*void*/){
 	}
 	
 	//-------------------------------------------------------------------------------------------------------------------------
-	//											CONSTANTES ESTÁTICAS
+	//											CONSTANTES ESTï¿½TICAS
 	//-------------------------------------------------------------------------------------------------------------------------
 	/*float*/ this.COMPRIMENTO = 511;
 	/*float*/ this.ALTURA = 554;
@@ -87,7 +87,7 @@ function Mural(/*void*/){
 
 
 //-------------------------------------------------------------------------------------------------------------------------
-//											MÉTODOS PÚBLICOS
+//											Mï¿½TODOS Pï¿½BLICOS
 //-------------------------------------------------------------------------------------------------------------------------
 
 /**
@@ -95,7 +95,7 @@ function Mural(/*void*/){
 */
 Mural.prototype.converterParaHtml = /*String*/ function(){
 	var htmlMural = "";
-	htmlMural += "<div id="+this.paiId+"\>";
+	htmlMural += "<div id="+this.paiId+"/>";
 	htmlMural += "<div id=\"mural_topo\"></div>";
 	htmlMural += "<div id="+this.id+" class=\"mural\" style=\"height:"+this.detectaAlturaDisponivelParaMural()+"px\">";
 	htmlMural += "<div id=\"contemJanelas\">";
@@ -110,7 +110,7 @@ Mural.prototype.converterParaHtml = /*String*/ function(){
 	htmlMural += "</div>";
 	htmlMural += "<div id=\"contemBotoes\">";
 		htmlMural += "<div id="+this.idBotaoUp+" class=\"botao_cima\" style=\"visibility:"+(this.haJanelaAcima() ? 'visible' : 'hidden')+";\" onclick='Mural.percorrerJanelas(-1)'></div>";
-		htmlMural += "<div id=\"espacador_botoes\" style=\"height:325px\"><!-- Diz a lenda que IE odeia div sem nada dentro, e que um comentário conserta --></div>"
+		htmlMural += "<div id=\"espacador_botoes\" style=\"height:325px\"><!-- Diz a lenda que IE odeia div sem nada dentro, e que um comentï¿½rio conserta --></div>"
 		htmlMural += "<div id="+this.idBotaoDown+" class=\"botao_baixo\" style=\"visibility:"+(this.haJanelaAbaixo()? 'visible' : 'hidden')+";\" onclick='Mural.percorrerJanelas(1)'></div>"
 	htmlMural += "</div>";
 	htmlMural += "</div>";
@@ -131,7 +131,7 @@ Mural.prototype.adicionarJanela = /*void*/ function(/*String*/ _textoJanela){
 *	Percorre as janelas do mural, escondendo algumas e mostrando outras.
 *
 *	@param int _deslocamento 	A quantidade de janelas que devem ser 'puladas'. 
-*								quantidadeJanelasNoMural < |_deslocamento| 	=> Deslocar até a última.
+*								quantidadeJanelasNoMural < |_deslocamento| 	=> Deslocar atï¿½ a ï¿½ltima.
 *								quantidadeJanelasNoMural < 0 				=> Esconder as de cima, mostrar as de baixo.
 *								0 < quantidadeJanelasNoMural 				=> Esconder as de baixo, mostrar as de cima.
 *								_deslocamento = 0							=> Fazer nada.

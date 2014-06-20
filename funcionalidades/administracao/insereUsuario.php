@@ -100,6 +100,7 @@ $nomeTurma = $q->resultado['nomeTurma'];
 						<input type="hidden" name="ids_alunos" id="ids_alunos" value="" />
 						<input type="hidden" name="idProfResponsavel" value="<?= $user->getId(); ?>" />
 						<input name="turmaLista" type="hidden" value="<?=$_GET['turma']?>">
+                        <input type="hidden" name="deOndeVem" value="<?=$_GET['deOndeVem']?>"/>
 						<table>
 							<colgroup span="4"></colgroup>
 							<thead>
