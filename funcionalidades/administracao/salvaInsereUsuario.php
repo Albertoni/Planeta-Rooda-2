@@ -8,6 +8,7 @@ $q = new conexao();
 
 $associacao = $_POST['associacao'];
 $codTurma = $_POST['turmaLista'];//para saber por qual turma o usuario acessou o sistema
+$deOndeVem = $_POST['deOndeVem'];//para saber por qual menu o usuario inseriu alunos
 $turma = new Turma("",0,"",0,0,0,0);
 $turma->openTurma($codTurma);
 
@@ -36,4 +37,4 @@ for($i=0; $i<$numeroAlunos; $i++){
     }
 }
 
-magic_redirect("insereUsuario.php?turma=".$codTurma);
+magic_redirect("insereUsuario.php?turma=".$codTurma."&deOndeVem=".$deOndeVem);

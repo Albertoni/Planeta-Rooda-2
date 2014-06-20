@@ -176,7 +176,7 @@ $user = usuario_sessao();
                         break;
                 default: $nivelPorExtenso = "Não identificado";
             }
-            echo "{nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"},\n";
+            echo "{id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"},\n";
             $consulta->proximo();
         }
             //Necessário repetir senão viria com nivel do elemento n-1
@@ -189,7 +189,7 @@ $user = usuario_sessao();
                         break;
                 default: $nivelPorExtenso = "Não identificado";
             }
-        echo "{nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"}\n";
+        echo "{ id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"}\n";
         ?>
     ];
 
@@ -227,8 +227,17 @@ $user = usuario_sessao();
 
         function imprime(estruturaDados){
             function geraTd(textoLink){
-                var link = document.createElement('p');
+                var link = document.createElement('a');
+                //TODO: fiz essa tentativa a partir do conteudo deste site: https://linkpeek.com/blog/display-image-on-hover-using-html-javascript-and-css.html
+                link.href = "";//TODO para onde mandar ao clicar no nome da criatura?
+                link.onmouseover = "";//TODO como fazer para a carteira aparecer ao deixar o mouse em cima??
+                link.onmouseout = "";//TODO como fazer para voltar ao normal quando o mouse sair de cima?
                 link.innerHTML = textoLink;
+                var carteira = document.createElement('img');
+                carteira.src = "";
+                carteira.id = "placeHolder";
+                carteira.style = "zindex:100; position:absolute;";
+                link.appendChild(carteira);
                 var td = document.createElement('td');
                 td.appendChild(link);
 
@@ -237,8 +246,8 @@ $user = usuario_sessao();
             var tr = document.createElement('tr');
             tr.className = 'trTabelaAlunos';
 
-            var tdNome = geraTd(estruturaDados['nome']);
-            var tdNivel = geraTd(estruturaDados['assossiacao']);
+            var tdNome = geraTd(estruturaDados['nome'],estruturaDados['id']);
+            var tdNivel = geraTd(estruturaDados['assossiacao'],estruturaDados['id']);
             //var tdEmail = geraTd(estruturaDados['email'], estruturaDados['idUsuario']);
 
             tr.appendChild(tdNome);

@@ -9,6 +9,7 @@ $q = new conexao();
 $codTurma = $_POST['turmaLista'];//para saber por qual turma o usuario acessou o sistema
 $turma = new Turma("",0,"",0,0,0,0);
 $turma->openTurma($codTurma);
+$deOndeVem=$_POST['deOndeVem'];//para saber por qual menu (se administração ou gerencia) o usuario acessou a funcionalidade.
 
 $alunos = explode(';', $_POST['ids_alunos']);
 
