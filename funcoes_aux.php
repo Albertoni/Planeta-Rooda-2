@@ -7,8 +7,16 @@ require_once("turma.class.php");
 //---------------------------------------------------------------
 	function usuario_sessao() {
 		global $_SESSION;
+
+		//Precisa conferir aqui para não dar erro de iniciar sessão uma segunda vez.
+		if (isset($_SESSION['user']) and (get_class($_SESSION['user']) == "Usuario")) {
+			return $_SESSION['user'];
+		}
+
+		// Se não está iniciada corretamente, tenta iniciar novamente.
 		session_start();
 
+		//Precisa conferir de novo aqui para retornar o valor correto.
 		if (isset($_SESSION['user']) and (get_class($_SESSION['user']) == "Usuario")) {
 			return $_SESSION['user'];
 		}else{

@@ -49,7 +49,7 @@ if ($perm === false) {
 		}
 
 		#lightbox{
-			background-image:url("1x1.png");
+			background-image:url("../../images/fundos/1x1.png");
 			position:fixed;
 			left:0; top:0;
 			width:100%;

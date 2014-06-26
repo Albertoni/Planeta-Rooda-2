@@ -35,130 +35,130 @@ var BIBLIOTECA = (function () {
 	}
 	var busca = (function () {
 		var selecionada, ativa, dom = { 
-		    	'container' : document.createElement("span"),
-		    	'title' : document.createElement("span"),
-		    	'typeLabel' : document.createElement("label"),
-		    	'type' : document.createElement("select"),
-		    	'queryLabel' : document.createElement("label"),
-		    	'submit' : document.createElement("button"),
-		    	'tags' : document.createElement("select")
-		    },
-		    // dicionarios de indexação
-		    indices = {
-		    	'tags' : {}, 
-		    	'autores' : {}, 
-		    	'usuarios' : {}
-		    },
-		    // tipos de busca
-		    searchTypes = {
-		    	// BUSCA POR TITULO
-		    	'all' : {
-		    		'text' : 'mostrar todos',
-		    		'field' : document.createElement('span'),
-		    		'lists' : {},
-		    		'def' : true, 
-		    		'onselect' : function () {
-		    			while (dom.queryLabel.firstElementChild) {
-		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
-		    			}
-		    		},
-		    		'apply' : function () {
-		    			atualizaLista(materiais);
-		    		}
-		    	},
-		    	'title' : { 
-		    		'text' : 'título',
-		    		'field' : document.createElement('input'),
-		    		'lists' : {},
-		    		'onselect' : function () {
-		    			while (dom.queryLabel.firstElementChild) {
-		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
-		    			}
-		    			dom.queryLabel.appendChild(this.field);
-		    		},
-		    		'apply' : function () {
-		    			var that = this;
-		    			atualizaLista(materiais.filter(function (m) {
-		    				return (m.titulo.toLowerCase().search(that.field.value.toLowerCase()) !== -1);
-		    			}));
-		    		}
-		    	},
-		    	// BUSCA POR AUTOR
-		    	'author' : { 
-		    		'text' : 'autor', 
-		    		'field' : document.createElement('select'),
-		    		'lists' : {},
-		    		'onselect' : function () {
-		    			var that = this;
-		    			while (this.field.firstElementChild) {
-		    				this.field.removeChild(this.field.firstElementChild);
-		    			}
-		    			Object.keys(this.lists).forEach(function (autor) {
-		    				var opt = document.createElement("option");
-		    				opt.value = autor;
-		    				opt.text = autor;
-		    				that.field.add(opt);
-		    			});
-		    			while (dom.queryLabel.firstElementChild) {
-		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
-		    			}
-		    			dom.queryLabel.appendChild(this.field);
-		    		},
-		    		'apply' : function () {
-		    			atualizaLista(this.lists[this.field.value]);
-		    		}
-		    	},
-		    	// BUSCA POR TAGS
-		    	'tags' : { 
-		    		'text' : 'palavras chave', 
-		    		'field' : dom.tags,
-		    		'lists' : {},
-		    		'onselect' : function () {
-		    			var that = this;
-		    			while (this.field.firstElementChild) {
-		    				this.field.removeChild(this.field.firstElementChild);
-		    			}
-		    			Object.keys(this.lists).forEach(function (tag) {
-		    				var opt = document.createElement("option");
-		    				opt.value = tag;
-		    				opt.text = tag;
-		    				that.field.add(opt);
-		    			});
-		    			while (dom.queryLabel.firstElementChild) {
-		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
-		    			}
-		    			dom.queryLabel.appendChild(this.field);
-		    		},
-		    		'apply' : function () {
-		    			atualizaLista(this.lists[this.field.value]);
-		    		}
-		    	},
-		    	// BUSCA POR USUARIO
-		    	'user' : { 
-		    		'text' : 'usuário', 
-		    		'field' : document.createElement('select'),
-		    		'lists' : {},
-		    		'onselect' : function () {
-		    			var that = this;
-		    			while (this.field.firstElementChild) {
-		    				this.field.removeChild(this.field.firstElementChild);
-		    			}
-		    			Object.keys(this.lists).forEach(function (usuario) {
-		    				var opt = document.createElement("option");
-		    				opt.value = usuario;
-		    				opt.text = usuario;
-		    				that.field.add(opt);
-		    			});
-		    			while (dom.queryLabel.firstElementChild) {
-		    				dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
-		    			}
-		    			dom.queryLabel.appendChild(this.field);
-		    		},
-		    		'apply' : function () {
-		    			atualizaLista(this.lists[this.field.value]);
-		    		}
-		    	}
-		    };
+				'container' : document.createElement("span"),
+				'title' : document.createElement("span"),
+				'typeLabel' : document.createElement("label"),
+				'type' : document.createElement("select"),
+				'queryLabel' : document.createElement("label"),
+				'submit' : document.createElement("button"),
+				'tags' : document.createElement("select")
+			},
+			// dicionarios de indexação
+			indices = {
+				'tags' : {}, 
+				'autores' : {}, 
+				'usuarios' : {}
+			},
+			// tipos de busca
+			searchTypes = {
+				// BUSCA POR TITULO
+				'all' : {
+					'text' : 'mostrar todos',
+					'field' : document.createElement('span'),
+					'lists' : {},
+					'def' : true, 
+					'onselect' : function () {
+						while (dom.queryLabel.firstElementChild) {
+							dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+						}
+					},
+					'apply' : function () {
+						atualizaLista(materiais);
+					}
+				},
+				'title' : { 
+					'text' : 'título',
+					'field' : document.createElement('input'),
+					'lists' : {},
+					'onselect' : function () {
+						while (dom.queryLabel.firstElementChild) {
+							dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+						}
+						dom.queryLabel.appendChild(this.field);
+					},
+					'apply' : function () {
+						var that = this;
+						atualizaLista(materiais.filter(function (m) {
+							return (m.titulo.toLowerCase().search(that.field.value.toLowerCase()) !== -1);
+						}));
+					}
+				},
+				// BUSCA POR AUTOR
+				'author' : { 
+					'text' : 'autor', 
+					'field' : document.createElement('select'),
+					'lists' : {},
+					'onselect' : function () {
+						var that = this;
+						while (this.field.firstElementChild) {
+							this.field.removeChild(this.field.firstElementChild);
+						}
+						Object.keys(this.lists).forEach(function (autor) {
+							var opt = document.createElement("option");
+							opt.value = autor;
+							opt.text = autor;
+							that.field.add(opt);
+						});
+						while (dom.queryLabel.firstElementChild) {
+							dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+						}
+						dom.queryLabel.appendChild(this.field);
+					},
+					'apply' : function () {
+						atualizaLista(this.lists[this.field.value]);
+					}
+				},
+				// BUSCA POR TAGS
+				'tags' : { 
+					'text' : 'palavras chave', 
+					'field' : dom.tags,
+					'lists' : {},
+					'onselect' : function () {
+						var that = this;
+						while (this.field.firstElementChild) {
+							this.field.removeChild(this.field.firstElementChild);
+						}
+						Object.keys(this.lists).forEach(function (tag) {
+							var opt = document.createElement("option");
+							opt.value = tag;
+							opt.text = tag;
+							that.field.add(opt);
+						});
+						while (dom.queryLabel.firstElementChild) {
+							dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+						}
+						dom.queryLabel.appendChild(this.field);
+					},
+					'apply' : function () {
+						atualizaLista(this.lists[this.field.value]);
+					}
+				},
+				// BUSCA POR USUARIO
+				'user' : { 
+					'text' : 'usuário', 
+					'field' : document.createElement('select'),
+					'lists' : {},
+					'onselect' : function () {
+						var that = this;
+						while (this.field.firstElementChild) {
+							this.field.removeChild(this.field.firstElementChild);
+						}
+						Object.keys(this.lists).forEach(function (usuario) {
+							var opt = document.createElement("option");
+							opt.value = usuario;
+							opt.text = usuario;
+							that.field.add(opt);
+						});
+						while (dom.queryLabel.firstElementChild) {
+							dom.queryLabel.removeChild(dom.queryLabel.firstElementChild);
+						}
+						dom.queryLabel.appendChild(this.field);
+					},
+					'apply' : function () {
+						atualizaLista(this.lists[this.field.value]);
+					}
+				}
+			};
 		// estrutura
 		//dom.container.classList.add("bloco");
 		dom.container.appendChild(dom.title);

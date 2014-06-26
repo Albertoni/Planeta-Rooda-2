@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once("../../cfg.php");
 require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
@@ -11,8 +10,8 @@ $codTurma = (isset($_POST['codTurma']) and is_numeric($_POST['codTurma'])) ? $_P
 $permissoes = checa_permissoes(TIPOPLAYER, $codTurma);
 if ($permissoes === false){die("Funcionalidade desabilitada para a sua turma.");}
 
-$user = new Usuario();
-$user->openUsuario($_SESSION['SS_usuario_id']);
+$user = usuario_sessao();
+//$user->openUsuario($_SESSION['SS_usuario_id']);
 if (!$user->podeAcessar($permissoes['player_inserirVideos'], $codTurma)){
 	die("Ops, voc&ecirc; n&atilde;o tem permiss&atilde;o para inserir um video.");
 }
