@@ -25,6 +25,7 @@ if (!$user->pertenceTurma($turma)) {
 	<title>Planeta ROODA 2.0</title>
 
 	<link type="text/css" rel="stylesheet" href="../../planeta.css" />
+	<link type="text/css" rel="stylesheet" href="../../carteira.css" />
 
 	<script type="text/javascript" src="../../js/compatibility.js"></script>
 	<script type="text/javascript" src="../../jquery.js"></script>
@@ -131,11 +132,22 @@ if (!$user->pertenceTurma($turma)) {
 				</a>
 			</div>
 			<div id="lightbox">
-				<div class="bloco" id="carteira">
-					<h1>ENVIAR MATERIAL<button type="button" class="bt_fechar" id="fechaEnviar" onclick="toggleCarteira()">fechar</button></h1>
-					<div>
-					QUACK QUACK QUACK
+				<div id="carteira-usuario" style="background-color:<?=$user->getCorLuva()?>">
+					<h2>Fulaninho</h2>
+					<div id="descricao-usuario">
+						<ul>
+							<li><strong>Nome:</strong> <span id="carteiraNome"></span></li>
+							<li><strong>Email:</strong> <span id="carteiraEmail"></span></li>
+							<li><strong>Turma:</strong> <span id="carteiraTurma"></span></li>
+							<li><strong>Gosto:</strong> <span id="carteiraGosto"></span></li>
+							<li><strong>Não gosto:</strong> <span id="carteiraNaoGosto"></span></li>
+						</ul>
 					</div>
+					<div id="imagem-carteira">
+						<img id="img-cart-1" src="fadeout1.png" alt="Imagem do avatar do usu&aacute;rio" border="0" />
+						<img id="img-cart-2" src="fadeout2.jpg" alt="Imagem real do usu&aacute;rio" border="0" />
+					</div>
+					<button onclick="clearInterval(idIntervaloFoto); idIntervaloFoto = window.setInterval(trocaFoto, 10);">VAI!</button>
 				</div>
 			</div>
 
@@ -188,32 +200,6 @@ if (!$user->pertenceTurma($turma)) {
 		}
 	}
 
-	function toggleCarteira() {
-		if ($("#lightbox").css('display') !== 'none') {
-			$("#lightbox").hide();
-			//entradaDados.css("visibility", "hidden"); // precisa ser por jQuery, depende da função fadeIn
-
-			$(document).unbind('keyup');
-		} else {
-			$("#lightbox").show();
-			/*label_radio_arquivo.classList.remove('checked');
-			label_radio_link.classList.remove('checked');
-			label_radio_arquivo.control.checked = false;
-			label_radio_link.control.checked = false;
-			label_material_arquivo.control.required = true;
-			label_material_link.control.required = true;
-			label_material_arquivo.style.display = "none";
-			label_material_link.style.display = "none";
-			label_material_arquivo.control.value = "";
-			label_material_link.control.value = "";
-			form_envio_m.reset();*/
-
-			$(document).bind('keyup', function(e){
-				if (e.keyCode == 27 /* Esc apertado, fecha janela */){toggleCarteira()};
-			});
-		}
-	};
-
 
 	var listaUsuarios = [
 		<?php
@@ -225,7 +211,7 @@ if (!$user->pertenceTurma($turma)) {
 
 
 		for($i=0; $i < ($consulta->registros - 1); $i++){ // for precisa do -1 porque o ultimo não pode ter virgula
-		//Transforma a informacao sobre a assossiacao que vem do BD em algo que o usuário entenda.
+		//Transforma a informacao sobre a associacao que vem do BD em algo que o usuário entenda.
 			switch($consulta->resultado['associacao']){
 				case 4: $nivelPorExtenso = "Professor";
 						break;
@@ -235,7 +221,7 @@ if (!$user->pertenceTurma($turma)) {
 						break;
 				default: $nivelPorExtenso = "Não identificado";
 			}
-			echo "{id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"},\n";
+			echo "{id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", associacao:\"".$nivelPorExtenso."\", email:\"".$consulta->resultado['usuario_email']."\", gosto:\"DEBUG\", naogosto:\"BUG\" },\n";
 			$consulta->proximo();
 		}
 			//Necessário repetir senão viria com nivel do elemento n-1
@@ -248,9 +234,17 @@ if (!$user->pertenceTurma($turma)) {
 						break;
 				default: $nivelPorExtenso = "Não identificado";
 			}
-		echo "{ id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", assossiacao:\"".$nivelPorExtenso."\"}\n";
+		echo "{id:\"".$consulta->resultado['usuario_id']."\", nome:\"".$consulta->resultado['usuario_nome']."\", associacao:\"".$nivelPorExtenso."\", email:\"".$consulta->resultado['usuario_email']."\", gosto:\"DEBUG\", naogosto:\"BUG\" }\n";
 		?>
 	];
+
+	function setaCarteira(dados){
+		document.getElementById('carteiraNome').innerHTML = dados['nome'];
+		document.getElementById('carteiraEmail').innerHTML = dados['email'];
+		document.getElementById('carteiraTurma').innerHTML = <?php echo $nomeTurma; ?>;
+		document.getElementById('carteiraGosto').innerHTML = dados['gosto'];
+		document.getElementById('carteiraNaoGosto').innerHTML = dados['naogosto'];
+	}
 
 	function filtrar(){
 		var modoFiltragem = document.querySelector('input[name="tipoPesquisa"]:checked');
@@ -286,10 +280,28 @@ if (!$user->pertenceTurma($turma)) {
 
 		function imprime(estruturaDados){
 			function geraTd(textoLink){
+				function encapsulaToggleCarteira(estruturaDados){
+					return (function(){
+						var dados = estruturaDados;
+						return function(){
+							if ($("#lightbox").css('display') !== 'none') {
+								$("#lightbox").hide();
+								$(document).unbind('keyup');
+							}else{
+								setaCarteira(dados);
+								$("#lightbox").show();
+								$(document).bind('keyup', function(e){
+									if (e.keyCode == 27 /* Esc apertado, fecha janela */){toggleCarteira()};
+								});
+							}
+						}
+					}());
+				}
+
 				var link = document.createElement('a');
 				link.href = "#";
 				link.innerHTML = textoLink;
-				link.onclick = toggleCarteira;
+				link.onclick = encapsulaToggleCarteira(estruturaDados);
 
 				var td = document.createElement('td');
 				td.appendChild(link);
@@ -300,7 +312,7 @@ if (!$user->pertenceTurma($turma)) {
 			tr.className = 'trTabelaAlunos';
 
 			var tdNome = geraTd(estruturaDados['nome'],estruturaDados['id']);
-			var tdNivel = geraTd(estruturaDados['assossiacao'],estruturaDados['id']);
+			var tdNivel = geraTd(estruturaDados['associacao'],estruturaDados['id']);
 			//var tdEmail = geraTd(estruturaDados['email'], estruturaDados['idUsuario']);
 
 			tr.appendChild(tdNome);
