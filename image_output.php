@@ -3,7 +3,7 @@
 	require_once("bd.php");
 	
 	$id = $_GET['file'];
-	$fonte_mensagem_erro = "fonte_erros.ttf";
+	$fonte_mensagem_erro = "../../fonte_erros.ttf";
 	
 	
 	// COMENTE ISSO ANTES DE DEBUGAR, MALANDRO!
@@ -33,12 +33,20 @@
 		$image = imagecreatefromstring($consulta->resultado['imagem']);
 		
 		if ($image === false) {
-			$nova = imagecreatetruecolor(192, 192);
-			imagettftext($nova, 14, 0, 20, 30, imagecolorallocate($nova,255,255,255), $fonte_mensagem_erro, "ESSA IMAGEM AINDA\nNÃO FOI CRIADA. \nALGO DE ERRADO\nACONTECEU.\nNOSSA EQUIPE DE\nMACACOS ALTAMENTE\nTREINADOS ESTA\nTENTANDO RESOLVER\nISSO."); // Em caso de erro...
-			
+            $nova = imagecreatefrompng("images/desenhos/stubAnonimo.png");
+            if(isset($_GET[forum]) and $_GET[forum]==1){
+                imagecopyresampled($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
+            }
+
 		} else {// Processamento, resize.
-			$nova = imagecreatetruecolor(192, 192);
-			imagecopyresampled($nova, $image, 0, 0, 0, 0, 192, 192, imagesx($image), imagesy($image));
+            if(isset($_GET[forum]) and $_GET[forum]==1){
+			    $nova = imagecreatetruecolor(66, 66);
+                imagecopyresized($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
+            }
+            else if(isset($_GET[forum]) and $_GET[forum]==0){
+                $nova = imagecreatetruecolor(192, 192);
+            }
+
 		}
 
 
@@ -49,12 +57,8 @@
 		$image = imagecreatefromstring($consulta->resultado['arquivo']);
 
 		// Processamento, resize.
-		if (!isset($_GET['noresize'])){
-			$nova = imagecreatetruecolor(75, 50);
-			imagecopyresampled($nova, $image, 0, 0, 0, 0, 75, 50, imagesx($image), imagesy($image));
-		} else{
-			$nova = $image; // gambi
-		}
+		$nova = imagecreatetruecolor(75, 44);
+		imagecopyresampled($nova, $image, 0, 0, 0, 0, 75, 44, imagesx($image), imagesy($image));
 	}
 	
 	error_reporting(E_ALL);
