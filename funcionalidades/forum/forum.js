@@ -322,7 +322,7 @@ image/gif
 				</div>\
 			</li>\
 			<li>\
-				<div class=\"imagem\"><img src=\"img_output.php?id="+post.idUsuario+"\"/></div>\
+				<div class=\"imagem\"><img src=\"../../image_output.php?file="+post.idUsuario+"&userpic=1&forum=1\"/></div>\
 				"+textoPost
 				+"</li>\
 				<li>\

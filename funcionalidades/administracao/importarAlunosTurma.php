@@ -92,7 +92,7 @@ $q = new conexao();
                         <div id="containerPesquisa">
                             Pesquisar por
                             <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="nomeTurma" checked><span style="margin-right:2em;">Nome da Turma</span>
-                            <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="profResponsavel"><span style="margin-right:2em;">Descrição</span>
+                            <input type="radio" name="tipoPesquisaTurma" onclick="filtrarTurmas()" value="profResponsavel"><span style="margin-right:2em;">Professor Responsável</span>
                             <br><br>
                             <input id="filtroTurma" type="text" onkeyup="filtrarTurmas()">
                         </div>

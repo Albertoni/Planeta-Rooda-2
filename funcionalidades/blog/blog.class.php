@@ -587,7 +587,7 @@ echo "					<li class=\"tabela_blog\">
 						</center>
 					</li>
 					<li>
-						<center><img src=\"image_output.php?file=$idDono&userpic=1\" alt=\"Avatar de $nome\" /></center>
+						<center><img src=\"../../image_output.php?file=$idDono&userpic=1&forum=0\" alt=\"Avatar de $nome\" /></center>
 						<br />
 					</li>";
 }
