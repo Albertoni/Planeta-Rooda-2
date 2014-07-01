@@ -263,7 +263,7 @@ if (!$user->pertenceTurma($turma)) {
 	function setaCarteira(dados){
 		document.getElementById('carteiraNome').innerHTML = dados['nome'];
 		document.getElementById('carteiraEmail').innerHTML = dados['email'];
-		document.getElementById('carteiraTurma').innerHTML = <?php echo $nomeTurma; ?>;
+		document.getElementById('carteiraTurma').innerHTML = "<?php echo $nomeTurma; ?>";
 		document.getElementById('carteiraGosto').innerHTML = dados['gosto'];
 		document.getElementById('carteiraNaoGosto').innerHTML = dados['naogosto'];
 	}
