@@ -148,6 +148,7 @@ if (!$user->pertenceTurma($turma)) {
 						<img id="img-cart-2" src="http://placekitten.com/153/236" alt="Imagem real do usu&aacute;rio" border="0" />
 					</div>
 					<button id="trocaFoto" onclick="clearInterval(idIntervaloFoto); idIntervaloFoto = window.setInterval(trocaFoto, 10);">Trocar Foto</button>
+					<button id="img-cart-fechar" onclick="$('#lightbox').hide();$(document).unbind('keyup');$('#lightbox').unbind('click');"><img src="../../images/botoes/bt_fechar.png"></button>
 				</div>
 			</div>
 
@@ -305,16 +306,23 @@ if (!$user->pertenceTurma($turma)) {
 					return (function(){
 						var dados = estruturaDados;
 						return function(){
-							if ($("#lightbox").css('display') !== 'none') {
+							setaCarteira(dados);
+							$("#lightbox").show();
+							$(document).bind('keyup', function(e){
+								if (e.keyCode == 27 /* Esc apertado, fecha janela */){
+									$("#lightbox").hide();
+									$(document).unbind('keyup');
+									$("#lightbox").unbind('click');
+								};
+							});
+							$("#lightbox").bind('click', function(e){
 								$("#lightbox").hide();
 								$(document).unbind('keyup');
-							}else{
-								setaCarteira(dados);
-								$("#lightbox").show();
-								$(document).bind('keyup', function(e){
-									if (e.keyCode == 27 /* Esc apertado, fecha janela */){toggleCarteira()};
-								});
-							}
+								$("#lightbox").unbind('click');
+							});
+							$('#carteira-usuario').bind('click', function(e){
+								e.stopPropagation();
+							});
 						}
 					}());
 				}
