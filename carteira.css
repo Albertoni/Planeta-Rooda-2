@@ -8,6 +8,12 @@ body { margin: 0; padding: 0; }
 	background-repeat: no-repeat;
 	width: 800px;
 	height: 600px;
+
+	position: relative;
+	top:50%;
+	left:50%;
+	margin-left: -400px;
+	margin-top: -300px;
 }
 #carteira-usuario h2
 {
@@ -44,14 +50,19 @@ body { margin: 0; padding: 0; }
 #imagem-carteira 
 {
 	position: absolute;
-	top: 160px;
-	left: 154px;
+	top: 115px;
+	left: 81px;
 }
 #imagem-carteira img
 {
-	width: 136px;
-	height: 212px;
+	width: 153px;
+	height: 237px;
 	position: absolute;
 	top: 0;
 	left: 0;
+}
+#trocaFoto{
+	position: relative;
+	top:370px;
+	left: 98px;
 }

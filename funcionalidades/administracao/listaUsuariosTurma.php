@@ -132,7 +132,7 @@ if (!$user->pertenceTurma($turma)) {
 				</a>
 			</div>
 			<div id="lightbox">
-				<div id="carteira-usuario" style="background-color:<?=$user->getCorLuva()?>">
+				<div id="carteira-usuario">
 					<h2>Fulaninho</h2>
 					<div id="descricao-usuario">
 						<ul>
@@ -144,10 +144,10 @@ if (!$user->pertenceTurma($turma)) {
 						</ul>
 					</div>
 					<div id="imagem-carteira">
-						<img id="img-cart-1" src="fadeout1.png" alt="Imagem do avatar do usu&aacute;rio" border="0" />
-						<img id="img-cart-2" src="fadeout2.jpg" alt="Imagem real do usu&aacute;rio" border="0" />
+						<img id="img-cart-1" src="http://placekitten.com/153/237" alt="Imagem do avatar do usu&aacute;rio" border="0" />
+						<img id="img-cart-2" src="http://placekitten.com/153/236" alt="Imagem real do usu&aacute;rio" border="0" />
 					</div>
-					<button onclick="clearInterval(idIntervaloFoto); idIntervaloFoto = window.setInterval(trocaFoto, 10);">VAI!</button>
+					<button id="trocaFoto" onclick="clearInterval(idIntervaloFoto); idIntervaloFoto = window.setInterval(trocaFoto, 10);">Trocar Foto</button>
 				</div>
 			</div>
 
@@ -199,6 +199,27 @@ if (!$user->pertenceTurma($turma)) {
 			$('#cont_img').css('height','170px');
 		}
 	}
+	/////////////////////////////////////////
+	// Código relacionado à troca de fotos da carteira
+	function trocaFoto(){
+		real.style.opacity = 1.0 - opacidade;
+		avatar.style.opacity = opacidade;
+
+		if(opacidade < 0){
+			window.clearInterval(idIntervaloFoto);
+			temp = real;
+			real = avatar;
+			avatar = temp;
+			opacidade = 1.0;
+		}else{
+			opacidade -= 0.01;
+		}
+	}
+	var idIntervaloFoto = 0;
+	var real = document.getElementById("img-cart-1");
+	var avatar = document.getElementById("img-cart-2");
+	var opacidade = 1.0;
+	///////////////////////////////////////////
 
 
 	var listaUsuarios = [
