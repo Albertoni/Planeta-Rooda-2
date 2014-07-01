@@ -22,7 +22,9 @@
 	if (isset($_GET['blogpic']) and $_GET['blogpic'] == 1) { // Para listagens de blogs. Pega do blog_imagens
 		$consulta->solicitar("SELECT imagem FROM $tabela_imagem_blog WHERE id = '$id'");
 		$image = imagecreatefromstring($consulta->resultado['imagem']);
-
+        if($image===false){
+            $image= imagecreatefrompng("images/desenhos/stubAnonimo.png");
+        }
 		// Processamento, resize.
 		$nova = imagecreatetruecolor(66, 66);
 		imagecopyresampled($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
@@ -33,17 +35,24 @@
 		$image = imagecreatefromstring($consulta->resultado['imagem']);
 		
 		if ($image === false) {
-            $nova = imagecreatefrompng("images/desenhos/stubAnonimo.png");
-            if(isset($_GET[forum]) and $_GET[forum]==1){
-                imagecopyresampled($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
+            $image= imagecreatefrompng("images/desenhos/stubAnonimo.png");
+            if(isset($_GET['forum']) and $_GET['forum']==1){
+                //($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)
+                $nova = imagecreatetruecolor(66,66);
+                imagecopyresized($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
+            }
+            else if(isset($_GET['forum']) and $_GET['forum']==0){
+                //($dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h)
+                $nova = imagecreatetruecolor(192,192);
+                imagecopyresized($nova, $image, 0, 0, 0, 0, 192, 192, imagesx($image), imagesy($image));
             }
 
 		} else {// Processamento, resize.
-            if(isset($_GET[forum]) and $_GET[forum]==1){
+            if(isset($_GET['forum']) and $_GET['forum']==1){
 			    $nova = imagecreatetruecolor(66, 66);
                 imagecopyresized($nova, $image, 0, 0, 0, 0, 66, 66, imagesx($image), imagesy($image));
             }
-            else if(isset($_GET[forum]) and $_GET[forum]==0){
+            else if(isset($_GET['forum']) and $_GET['forum']==0){
                 $nova = imagecreatetruecolor(192, 192);
             }
 

@@ -29,7 +29,12 @@ if($perm == false){
 	die("Desculpe, mas o Portfolio esta desabilitado para esta turma.");
 }
 
-$editar = isset($_GET['projeto_id']);
+$editar = isset($_GET['editId']);
+
+if($editar){
+    $idEmEdicao=$_GET['editId'];
+}
+else $idEmEdicao=0;
 
 global $nivelProfessor;
 if($user->getNivel($turma) != $nivelProfessor){
@@ -51,7 +56,6 @@ if($user->getNivel($turma) != $nivelProfessor){
 	<script type="text/javascript" src="../../jquery.js"></script>
 	<script type="text/javascript" src="../../planeta.js"></script>
 	<script type="text/javascript" src="portfolio.js"></script>
-	<script type="text/javascript" src="../../postagem_wysiwyg.js"></script>
 	<script type="text/javascript" src="../lightbox.js"></script>
 
 	<link type="text/css" rel="stylesheet" href="../../calendario/ui-lightness/jquery-ui-1.10.4.custom.min.css" />
@@ -62,55 +66,8 @@ if($user->getNivel($turma) != $nivelProfessor){
 	<![endif]-->
 </head>
 
-<body onload="atualiza('ajusta()');inicia();Init(); checar(); ajusta_img();">
+<body onload="atualiza('ajusta()');inicia(); checar(); ajusta_img();">
 	<div id="descricao"></div>
-	<div id="fundo_lbox"></div>
-	<div id="light_box" class="bloco">
-		<img src="../../images/botoes/bt_fechar.png" class="fechar_coments" onmousedown="abreFechaLB()" />
-<?php
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarArquivos'], $turma))
-{
-?>
-		<div id="imagem_lbox">
-			<h1>INSERIR IMAGEM</h1>
-			<ul class="sem_estilo" style="line-height:25px">
-				<li>Você não pode enviar uma imagem antes de criar o Projeto. Caso seja necessário, edite o post depois de criá-lo, ou use outro site para dar upload na imagem.</li>
-				<li><input type="radio" id="troca_img2" class="select_img" checked name="select_img" value="2" />Imagem da Web</li>
-				<li>
-					<div id="cont_img">
-						<ul id="cont_img2" style="display:block;">
-							<li><input type="text" id="imagefromurl" value="http://" /></li>
-							<li style="margin-top:-5px">Endereço da imagem</li>
-						</ul>
-					</div>
-				</li>
-				<li>
-					<div align="right" onclick="addImage()"><img src="../../images/botoes/bt_confir_pq.png" /></div>
-				</li>
-			</ul>
-		</div>
-		
-<?php
-}
-
-if($_SESSION['user']->podeAcessar($perm['portfolio_adicionarLinks'], $turma))
-{
-?>
-		<div id="link_lbox">
-			<h1>INSERIR LINK</h1>
-			<ul class="sem_estilo">
-				<li>Texto a ser exibido: <input id="addlinktext" type="text" /></li>
-				<li style="margin-bottom:172px">Link para: <input id="addlinkurl" type="text" value="http://" /></li>
-				<li>
-					<div align="right"><img src="../../images/botoes/bt_confir_pq.png" alt="Confirmar" onclick="addLink()" /></div>
-				</li>
-			</ul>
-		</div>
-<?php
-}
-?>
-	</div>
-	
 	<div id="topo">
 		<div id="centraliza_topo">
 			<?php 
@@ -155,6 +112,7 @@ if(sizeof($_SESSION['SS_turmas']) > 1){
 			<input type="hidden" name="text" value="" />
 			<input type="hidden" name="owner_ids" id="owner_ids" value="" />
 			<input type="hidden" name="turma" value="<?=$turma?>" />
+            <input type="hidden" name="idProjetoEmEdicao" value="<?=$idEmEdicao?>"/>
 			<div class="bts_cima">
 			<a href="portfolio.php?turma=<?=$turma?>" align="left" >
 				<img src="../../images/botoes/bt_voltar.png" border="0" align="left"/>
@@ -237,6 +195,26 @@ if(!isset($_GET['editId'])){ // Se não tá setado, não tá editando
 </body>
 
 <script type="text/javascript">
+
+function gravaConteudo(){
+
+    var tituloSanitizado = document.getElementsByName("titulo_projeto")[0].value;
+    var marcados = document.querySelectorAll('input[type="checkbox"]:checked');
+    console.log(marcados);
+
+    if(tituloSanitizado==""){
+        alert("Preencha o título do projeto.");
+        return false;
+    }
+    else if(marcados.length < 1){
+        alert("Selecione pelo menos um colega para fazer parte do projeto.");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
 function ajusta_img() { 
 	if (navigator.appVersion.substr(0,3) == "4.0"){ //versao do ie 7
 		$('#cont_img3').css('width','436px');
@@ -244,25 +222,6 @@ function ajusta_img() {
 		$('#cont_img').css('height','170px');
 	}
 }
-
-var objContent;
-var objHolder;
-
-function Init() {
-	var ua = navigator.appName; 
-	objHolder = document.getElementById('text_post');
-	if(ua == "Netscape") {
-		objContent = objHolder.contentDocument;
-	} else {
-		objContent = objHolder.document;
-	}
-	objContent.designMode = "On";
-
-	objContent.body.style.fontFamily = 'Verdana';
-	objContent.body.style.fontSize = '11px';
-}
-modo=2;
-
 
 $.datepicker.regional['pt'] = {
 	closeText: 'Fechar',

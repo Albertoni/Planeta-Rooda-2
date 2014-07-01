@@ -99,7 +99,7 @@ foreach($bd->itens as $b) {
 ?>
 				<div class="cor<?=$i?>">
 					<div class="lista_esq">
-						<div class="imagem"><img src="image_output.php?blogpic=1&amp;file=<?=$b->getId()?>" /></div> <!--IMAGEM DO CRIADOR DO BROGUI VAI AQUI GENTE BOA-->
+						<div class="imagem"><img src="../../image_output.php?blogpic=1&amp;file=<?=$b->getId()?>&amp;forum=0" /></div> <!--IMAGEM DO CRIADOR DO BROGUI VAI AQUI GENTE BOA-->
 						<ul>
 							<li><a href="blog.php?id=<?=$b->getId()?>&amp;turma=<?=$turma?>"><?=$b->getTitle()?></a></li>
 							<li class="mensagens"><?=numeroMensagens($b->getSize())?></li>

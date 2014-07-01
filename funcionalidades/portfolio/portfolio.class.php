@@ -201,7 +201,7 @@ class projeto{
 		if($id === 0){
 			$this->id = 0;
 			$this->titulo = $titulo;
-			$this->palavras = explode(';', $palavras);
+			$this->tags = explode(';', $palavras);
 			$this->dataCriacao = $dataCriacao;
 			$this->dataEncerramento = $dataEncerramento;
 			$this->ownersIds = is_array($ownersIds) ? $ownersIds : explode(';', $ownersIds);
@@ -217,10 +217,16 @@ class projeto{
 	function getDataEncerramentoBruta(){return $this->dataEncerramento;}
 	function getDataCriacaoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataCriacao));}
 	function getDataEncerramentoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataEncerramento));}
-	function getPalavras(){return $this->palavras;}
-	function getPalavrasString(){return implode(', ', $this->palavras);}
+	function getPalavras(){return $this->tags;}
+	function getPalavrasString(){return implode(';', $this->tags);}
 	function getPosts(){return $this->posts;}
 	function getOwners(){return $this->ownersIds;}
+
+    function setTitulo($novoTitulo){$this->titulo=$novoTitulo;}
+    function setTags($novasTags){$this->tags = $novasTags;}
+    function setOwnersIds($novosDonos){$this->ownersIds = $novosDonos;}
+    function setDataCriacao($novaDataCriacao){$this->dataCriacao=$novaDataCriacao;}
+    function setDataEncerramento($novaDataEncerramento){$this->dataEncerramento=$novaDataEncerramento;}
 
 	function carrega($idProjeto){
 		global $tabela_portfolioProjetos;
@@ -274,7 +280,7 @@ class projeto{
 
 		$this->id = $q->sanitizaString($this->id);
 		$this->titulo = $q->sanitizaString($this->titulo);
-		$palavrasImplodido = $q->sanitizaString(implode(';', $this->palavras));
+		$palavrasImplodido = $q->sanitizaString(implode(';', $this->tags));
 		$this->dataCriacao = $q->sanitizaString($this->dataCriacao);
 		$this->dataEncerramento = $q->sanitizaString($this->dataEncerramento);
 		$ownersIdsImplodido = $q->sanitizaString(implode(';', $this->ownersIds));
@@ -282,12 +288,12 @@ class projeto{
 
 		if($this->existe){
 			$query = "UPDATE $tabela_portfolioProjetos SET 
-				titulo = $this->titulo,
-				tags = $palavrasImplodido,
-				owner_id = $ownersIdsImplodido,
-				dataCriacao = $this->dataCriacao,
-				dataEncerramento = $this->dataEncerramento,
-				turma = $this->turma
+				titulo = '$this->titulo',
+				tags = '$palavrasImplodido',
+				owner_ids = '$ownersIdsImplodido',
+				dataCriacao = '$this->dataCriacao',
+				dataEncerramento = '$this->dataEncerramento',
+				turma = '$this->turma'
 			WHERE
 				id = $this->id";
 		}else{
@@ -322,15 +328,17 @@ class projeto{
 		$projeto_id = $this->id;
 
 if($user->podeAcessar($perm['portfolio_editarPost'], $turma)){
-	$editarProjeto = "								<a class=\"$CSSencerrado\" href=\"portfolio_novo_projeto.php?projeto_id=$projeto_id
-	&amp;turma=$turma\">[Editar projeto]</a>\n";
+	$editarProjeto = "								<a class=\"$CSSencerrado\" href=\"portfolio_novo_projeto.php?editId=$projeto_id
+	&amp;turma=$turma\"> <img src=\"../..//images/botoes/bt_editar.png\" border=\"0\" align=\"right\"/></a>\n";
 }else{
 	$editarProjeto = "";
 }
 
 global $nivelProfessor;
 if(($this->emAndamento == true) && ($user->getNivel($turma)>=$nivelProfessor)){
-	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"trocaEstadoProjeto($projeto_id, 'encerrar');\">[Encerrar projeto]</a>\n";
+	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"trocaEstadoProjeto($projeto_id, 'encerrar');\">
+	                                                    <img src=\"../..//images/botoes/bt_excluir.png\" border=\"0\" align=\"right\"/>
+	                                                    </a>\n";
 }else if(($this->emAndamento == false) && ($user->getNivel($turma)>=$nivelProfessor)){
 	$encerrarProjeto = "								<a class=\"$CSSencerrado\" onclick=\"trocaEstadoProjeto($projeto_id, 'reativar');\">[Reativar projeto]</a>\n";
 }else{
