@@ -16,7 +16,6 @@ function definirEstadosCheckboxes(_dadosCheckboxes){
 	var index;
 	var checkbox;
 	var dadosCheckboxes = _dadosCheckboxes.split(",");
-    console.log(dadosCheckboxes);
 	for(index=0; index<dadosCheckboxes.length; index+=2){
 		checkbox = getElementoPorNome(dadosCheckboxes[index]);
 		if(dadosCheckboxes[index+1] == 'true'){
@@ -135,18 +134,13 @@ function criarCheckbox(_base, _tipo, _nome, _temCheck){
 function criarLinhaCheckboxesComNomes(_pai, _base, _tipo, _nomes, _estadoCheckboxes, _checkboxesQuePodemExistir){
 	var posicaoCheckbox = 0;
 	for(posicaoCheckbox=0; posicaoCheckbox<_nomes.length; posicaoCheckbox++){
-        /*console.log(_pai);
-        console.log(_base);
-        console.log(_tipo);
-        console.log(_nomes);*/
-        console.log(_checkboxesQuePodemExistir[_base + "_" + _tipo].indexOf(_nomes[posicaoCheckbox]));
-        if(_checkboxesQuePodemExistir[_base + "_" + _tipo] !== undefined)
-        if(_checkboxesQuePodemExistir[_base + "_" + _tipo].indexOf(_nomes[posicaoCheckbox]) != -1){
-		    _pai.appendChild(criarCheckbox(_base, _tipo, _nomes[posicaoCheckbox], _estadoCheckboxes[posicaoCheckbox]));
-        }else{
-            _pai.appendChild(document.createElement('td'));
-        }
-    }
+		if(_checkboxesQuePodemExistir[_base + "_" + _tipo] !== undefined)
+		if(_checkboxesQuePodemExistir[_base + "_" + _tipo].indexOf(_nomes[posicaoCheckbox]) != -1){
+			_pai.appendChild(criarCheckbox(_base, _tipo, _nomes[posicaoCheckbox], _estadoCheckboxes[posicaoCheckbox]));
+		}else{
+			_pai.appendChild(document.createElement('td'));
+		}
+	}
 }
 
 function verificaPossibilidadeAcessoFuncionalidade(){
