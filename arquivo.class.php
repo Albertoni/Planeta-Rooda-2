@@ -126,7 +126,7 @@ class Arquivo {
 	public function salvar() {
 		global $tabela_arquivos;
 		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUsuario) {
-			$this->errors[] = '[arquivo] Arquivo não pode ser enviado.';
+			$this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.';
 			return false;
 		}
 		// NOVO ARQUIVO
@@ -214,7 +214,7 @@ class Arquivo {
 			}
 			return true;
 		} else {
-			$this->erros[] = "[arquivo] Este arquivo não pode ser enviado";
+			$this->erros[] = "[arquivo] Este arquivo não pode ser enviado. Código de erro 2.";
 			return false;
 		}
 	}
