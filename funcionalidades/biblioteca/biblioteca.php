@@ -92,7 +92,8 @@ if ($perm === false) {
 				<div id="conteudo">
 					<div class="bloco" id="materiais">
 						<h1><?=$turma->getNome()?></h1>
-						<button type="button" id="botao_enviar_material" onclick="toggleEnviar()">Enviar material</button>
+                        <br>
+						<a shape="rect" coords="0,0,100,37"><img src="../../images/botoes/bt_enviar_pq.png" id="botao_enviar_material" onclick="toggleEnviar()"/></a>
 						<button type="button" id="botao_buscar_material">Buscar materiais</button>
 					</div>
 					<div id="lightbox">

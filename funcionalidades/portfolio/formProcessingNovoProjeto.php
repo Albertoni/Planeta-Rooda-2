@@ -50,5 +50,4 @@ else{
     $projeto = new projeto(0, $titulo, $tags, $dataInicio, $dataEncerramento, $donos, $turma);
     echo $projeto->salvar();
 }
-print_r($projeto);
-//magic_redirect("portfolio.php?turma=$turma");
+magic_redirect("portfolio.php?turma=$turma");

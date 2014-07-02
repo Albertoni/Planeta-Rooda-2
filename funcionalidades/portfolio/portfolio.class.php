@@ -201,7 +201,7 @@ class projeto{
 		if($id === 0){
 			$this->id = 0;
 			$this->titulo = $titulo;
-			$this->tags = explode(';', $palavras);
+			$this->tags = is_array($palavras) ? $palavras : explode(';', $palavras);
 			$this->dataCriacao = $dataCriacao;
 			$this->dataEncerramento = $dataEncerramento;
 			$this->ownersIds = is_array($ownersIds) ? $ownersIds : explode(';', $ownersIds);
@@ -218,7 +218,7 @@ class projeto{
 	function getDataCriacaoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataCriacao));}
 	function getDataEncerramentoFormatada(){return date('d/m/Y H:m:s', strtotime($this->dataEncerramento));}
 	function getPalavras(){return $this->tags;}
-	function getPalavrasString(){return implode(';', $this->tags);}
+	function getPalavrasString(){return rtrim(implode(';', $this->tags), ';');}
 	function getPosts(){return $this->posts;}
 	function getOwners(){return $this->ownersIds;}
 
@@ -237,8 +237,8 @@ class projeto{
 		if($q->registros > 0){
 			$this->id = $idProjeto;
 			$this->titulo = $q->resultado['titulo'];
-			$this->palavras = explode(';', $q->resultado['tags']);
-			$this->dataCriacao = $q->resultado['dataCriacao'];
+			$this->tags = explode(';', $q->resultado['tags']);
+            $this->dataCriacao = $q->resultado['dataCriacao'];
 			$this->dataEncerramento = $q->resultado['dataEncerramento'];
 			$this->ownersIds = explode(";", $q->resultado['owner_ids']);
 			$this->turma = $q->resultado['turma'];

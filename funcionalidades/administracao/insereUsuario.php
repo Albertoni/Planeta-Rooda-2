@@ -9,9 +9,10 @@ $user = usuario_sessao();
 validaPermissaoAcesso($user->getId());
 $q = new conexao();
 
-$idTurma = $_GET['turma'];
-$q->solicitar("SELECT nomeTurma FROM Turmas WHERE codTurma = '$idTurma'");
+$idTurma = (int)$_GET['turma'];
+$q->solicitar("SELECT nomeTurma,profResponsavel FROM Turmas WHERE codTurma = '$idTurma'");
 $nomeTurma = $q->resultado['nomeTurma'];
+$idProfResp = $q->resultado['profResponsavel'];
 /*if($user === false){
 	die("Voce nao esta logado em sua conta. Por favor volte e logue.");
 }*/
@@ -98,9 +99,9 @@ $nomeTurma = $q->resultado['nomeTurma'];
 
 					<form name="fConteudo" id="postFormId" action="salvaInsereUsuario.php" method="post">
 						<input type="hidden" name="ids_alunos" id="ids_alunos" value="" />
-						<input type="hidden" name="idProfResponsavel" value="<?= $user->getId(); ?>" />
 						<input name="turmaLista" type="hidden" value="<?=$_GET['turma']?>">
                         <input type="hidden" name="deOndeVem" value="<?=$_GET['deOndeVem']?>"/>
+                        <input type="hidden" name="userId" value="<?=$user->getId()?>"/>
 						<table>
 							<colgroup span="4"></colgroup>
 							<thead>
@@ -122,9 +123,17 @@ $nomeTurma = $q->resultado['nomeTurma'];
 							<ul class="sem_estilo">
 								<li>Nível de permissão</li>
 								<li><select form="postFormId" name="associacao"><!--para cada turma retornada na consulta ao BD, uma option deverá ser retornada-->
-										<option value=<?=NIVELPROFESSOR?>>Professor</option>
-										<option value=<?=NIVELMONITOR?>>Monitor</option>
-										<option value=<?=NIVELALUNO?> selected>Aluno</option>
+									<?php if($user->getId()==$idProfResp){
+
+                                        echo
+                                        "<option value=\"".NIVELPROFESSOR."\">Professor</option>
+										<option value=\"".NIVELMONITOR."\">Monitor</option>
+										<option value=\"".NIVELALUNO."\" selected>Aluno</option>"; }
+                                    else{
+                                        echo
+										"<option value=\"".NIVELMONITOR."\">Monitor</option>
+										<option value=\"".NIVELALUNO."\" selected>Aluno</option>";
+                                    }?>
 									</select></li>
 							</ul>
 					</div>

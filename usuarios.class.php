@@ -211,7 +211,7 @@ class Usuario { //estrutura para o item post do blog
 		$conexaoTurmas = new conexao();
 
 		$conexaoTurmas->solicitar(
-			"SELECT T.codTurma as codTurma, T.nomeTurma as nomeTurma
+			"SELECT DISTINCT T.codTurma as codTurma, T.nomeTurma as nomeTurma
 			FROM Turmas AS T 
 			INNER JOIN TurmasUsuario AS TU 
 				ON T.codTurma = TU.codTurma

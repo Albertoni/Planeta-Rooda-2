@@ -46,9 +46,9 @@ if ($turma <= 0) {
  <?php
       $idUsuario = $_SESSION['SS_usuario_id'];
       $q = new conexao();
-      $nivelUsuarioNaTurma = $q->solicitar("SELECT associacao FROM TurmasUsuario
+      $q->solicitar("SELECT associacao FROM TurmasUsuario
                                                                 WHERE codTurma=$turma AND codUsuario= $idUsuario");
-      if($nivelUsuarioNaTurma==NIVELPROFESSOR){
+      if($q->resultado['associacao']==NIVELPROFESSOR){
 ?>
                     <li><a href="funcionalidades/administracao/listaFuncionalidadesGerenciaTurma.php?turma=<?=$turma?>">
                             <img src="images/botoes/bt_gerenciaTurma.png" border="0" align="right"/>
