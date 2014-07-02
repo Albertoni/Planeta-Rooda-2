@@ -4,7 +4,6 @@ require_once("../../bd.php");
 require_once("../../funcoes_aux.php");
 require_once("../../usuarios.class.php");
 require("portfolio.class.php");
-print_r($_POST);
 
 $user = usuario_sessao();
 if($user === false){
