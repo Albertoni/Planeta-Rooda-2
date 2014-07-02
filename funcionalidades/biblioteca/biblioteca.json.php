@@ -140,7 +140,6 @@ function enviar() {
 					}
 				}
 				elseif (!isset($_FILES['arquivo'])) {
-					//print_r($_FILES);
 					$json['errors'][] = "[enviar] Nenhum arquivo enviado.";
 					return;
 				} else {
