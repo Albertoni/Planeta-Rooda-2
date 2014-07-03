@@ -26,8 +26,6 @@ if( ! (isset($_POST['data'])))	{die("Favor voltar e preencher a data corretament
 if( ! (isset($_POST['desc'])))	{die("Favor voltar e preencher a descricao corretamente");}
 if( ! (isset($_POST['titulo']))){die("Favor voltar e preencher o titulo corretamente");}
 
-print_r($_POST); // DEBUGAGEM
-
 $q = new conexao(); global $tabela_Aulas;
 
 $turma	= $_POST['turma'];
@@ -80,7 +78,6 @@ case 1:
 
 
 case 2: // ARQUIVO
-	print_r($_FILES);
 	if(!isset($_FILES['arqui'])) die("ERRO: o parametro do arquivo não foi passado corretamente. Voltar e tentar novamente deve consertar o erro.");
 	require_once("../../file.class.php");
 	
@@ -129,5 +126,5 @@ default:
 }
 ?>
 <script>
-	//window.location = "ver_aulas.php?turma=<?=$turma?>";
+	window.location = "ver_aulas.php?turma=<?=$turma?>";
 </script>

@@ -55,7 +55,7 @@ function coment(){
 
 </head>
 
-<body onload="atualiza('ajusta()');Init();inicia();coment();">
+<body onload="atualiza('ajusta()');inicia();coment();">
 
 	<div id="descricao"></div>
 

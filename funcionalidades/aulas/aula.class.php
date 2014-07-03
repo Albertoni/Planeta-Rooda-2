@@ -103,13 +103,9 @@ class aula{
 		$material	= $q->sanitizaString(is_array($this->material) ? $this->material['name'] : $this->material); // pega arquivos e não-arquivos numa tacada só
 		$fundo		= (int) $this->fundo;
 		
-		print_r($this);
-		
-		$query = "UPDATE $tabela_Aulas 
+		$q->solicitar("UPDATE $tabela_Aulas 
 		SET titulo='$titulo', data='$data', descricao='$desc', 
-		textoAula='$material', fundo=$fundo WHERE id=$id_da_aula";
-		echo $query;
-		$q->solicitar($query);
+		textoAula='$material', fundo=$fundo WHERE id=$id_da_aula");
 	}
 	
 	// Cadastra no BD

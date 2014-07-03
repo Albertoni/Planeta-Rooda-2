@@ -108,9 +108,9 @@ WHERE codMaterial = $id"
 		if ($this->titulo === '') {
 			$this->erros[] = '[material] Não pode salvar material sem título.';
 		}
-		if ($this->autor === '') {
+		/*if ($this->autor === '') { // REMOVIDO DE ACORDO COM PEDIDO NA ATA DE ERROS DE 3 DE JULHO DE 2014
 			$this->erros[] = '[material] Não pode salvar material sem autor.';
-		}
+		}*/
 		if ($this->codUsuario === false) {
 			$this->erros[] = '[material] Não pode salvar material sem usuario.';
 		}
