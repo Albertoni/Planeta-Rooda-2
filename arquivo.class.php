@@ -126,7 +126,22 @@ class Arquivo {
 	public function salvar() {
 		global $tabela_arquivos;
 		if ($this->titulo === '' || $this->nome === '' || $this->tipo === '' || $this->tamanho <= 0 || !$this->idUsuario) {
-			$this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.';
+            if($this->titulo === ''){
+                $this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.1.';
+            }
+            if($this->nome === ''){
+                $this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.2.';
+            }
+            if($this->tipo === ''){
+                $this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.3.';
+            }
+            if($this->tamanho <= 0){
+                $this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.4.';
+            }
+            if(!$this->idUsuario){
+                $this->errors[] = '[arquivo] Arquivo não pode ser enviado. Código de erro 1.5.';
+            }
+
 			return false;
 		}
 		// NOVO ARQUIVO
@@ -243,7 +258,7 @@ class Arquivo {
 			$arquivo = fopen($FILE['tmp_name'], 'r');
 			$this->setConteudo(fread($arquivo, $FILE['size']));
 			$this->setNome($FILE['name']);
-			$this->setTipo($FILE['type']);
+			$this->setTipo( ( ($FILE['type'] != '') ? $FILE['type'] : 'application/octet-stream' ) ); // If theres no mimetype, sets it to a safe default. Fuck raccoons.
 			if (!$this->getTitulo()) {
 				$this->setTitulo($FILE['name']);
 			}
@@ -405,7 +420,8 @@ class Arquivo {
 		header("Content-length: {$this->getTamanho()}");
 		header("Content-type: {$this->getTipo()}");
 		if (!$isImage || $forceDownload){
-			header("Content-Disposition: attachment; filename={$this->getNome()}");
+            $nomeCodificado = rawurlencode($this->getNome());
+			header('Content-Disposition: attachment; filename="'.$nomeCodificado.'"');
 		}
 		print $this->getConteudo();
 		return;
