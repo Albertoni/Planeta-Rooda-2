@@ -8,8 +8,6 @@ session_start();
 
 
 echo "<pre>";
-print_r($_POST);
-
 
 $turma =	is_numeric($_POST['turma']) ? $_POST['turma'] : 0;
 
@@ -146,8 +144,8 @@ while (isset($_POST['tipo_'.$i])) {
 	}
 	$i++;
 }
+magic_redirect("planeta_pergunta.php?turma=".$turma);
 ?>
-</pre>
-<script>
-	//window.location = "planeta_pergunta.php?turma=<?=$turma?>";
-</script>
+
+
+

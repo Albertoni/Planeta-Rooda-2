@@ -155,7 +155,7 @@ for($i=0 ; $i < $consulta->registros ;$i++) {
 				<br /><div id="autor" class="criado_por">Criado por: <?=$nomecriador->resultado['usuario_nome']?></div>
 			</li>
 <?php
-if(checa_nivel($_SESSION['SS_usuario_nivel_sistema'], $nivelProfessor) == true){
+if(checa_nivel($usuario->getNivel($turma), $nivelProfessor) == true){
 	$alunos = new conexao();
 	$nome = new conexao();
 	$alunos->solicitar("SELECT usuario FROM $tabela_PerguntaRespostas WHERE questionario = ".$consulta->resultado['id']);
