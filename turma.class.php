@@ -212,6 +212,22 @@ class Turma{
 
 		return json_encode($json);
 	}
+    /*
+     * Retorna o número de materiais ainda não aprovados na biblioteca da turma;
+     * @return numero de materiais com aprovações pendentes.
+     */
+    public function getNumeroAprovacoesBiblioteca(){
+        $alteracoes = 0;
+
+        $q = new conexao();
+
+        $q->solicitar("SELECT COUNT(*) AS alteracoes FROM BibliotecaMateriais
+                                WHERE materialAprovado=0 AND    codTurma=".$this->getId());
+
+        if($q->erro=="")$alteracoes = $q->resultado['alteracoes'];
+        return  $alteracoes;
+    }
+
 	/*
 		TODO:
 	

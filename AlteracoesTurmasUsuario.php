@@ -7,21 +7,21 @@ require_once("usuarios.class.php");
 require_once("turma.class.php");
 
 /**
-* Este arquivo destina-se à implementação da classe AlteracoesTurmasUsuario.
+* Este arquivo destina-se ï¿½ implementaï¿½ï¿½o da classe AlteracoesTurmasUsuario.
 */
 class AlteracoesTurmasUsuario{
 //dados
-	//Usuario de cujas turmas as alterações poderão ser acessadas.
+	//Usuario de cujas turmas as alteraï¿½ï¿½es poderï¿½o ser acessadas.
 	private /*Usuario*/ $usuario;
-	//Turmas em que o usuário desempenha certo papel.
+	//Turmas em que o usuï¿½rio desempenha certo papel.
 	private /*Array<Turma>*/ $turmasUsuarioAluno;
 	private /*Array<Turma>*/ $turmasUsuarioMonitor;
 	private /*Array<Turma>*/ $turmasUsuarioProfessor;
 	
 	
-//métodos
+//mï¿½todos
 	/**
-	* @param Usuario 	$usuario	O usuário de cujas turmas as alterações serão pesquisadas.
+	* @param Usuario 	$usuario	O usuï¿½rio de cujas turmas as alteraï¿½ï¿½es serï¿½o pesquisadas.
 	*/
 	public function __construct(/*Usuario*/ $usuario){
 		global $nivelAluno;
@@ -36,10 +36,10 @@ class AlteracoesTurmasUsuario{
 	}
 	
 	/**
-	* @param int	$nivelDeCorte	Determina de que turmas as mensagens serão buscadas. O nível de corte é aplicado como <=, retornando turmas em que 
-	*								o usuário desempenhe múltiplos papéis.
-	* @return Array<String> 		Todas as mensagens que de alterações que devem ser exibidas, separadas por turmas em que um usuário desempenha um papel.
-	*								Exemplo: Array[0] = <mensagem das alterações na turma X>, Array[1] = <mensagem das alterações na turma Y>, ...
+	* @param int	$nivelDeCorte	Determina de que turmas as mensagens serï¿½o buscadas. O nï¿½vel de corte ï¿½ aplicado como <=, retornando turmas em que 
+	*								o usuï¿½rio desempenhe mï¿½ltiplos papï¿½is.
+	* @return Array<String> 		Todas as mensagens que de alteraï¿½ï¿½es que devem ser exibidas, separadas por turmas em que um usuï¿½rio desempenha um papel.
+	*								Exemplo: Array[0] = <mensagem das alteraï¿½ï¿½es na turma X>, Array[1] = <mensagem das alteraï¿½ï¿½es na turma Y>, ...
 	*/
 	public function gerarMensagensAlteracoesTurmasComPapel(/*int*/ $nivelDeCorte){
 		global $nivelAluno;
@@ -61,7 +61,8 @@ class AlteracoesTurmasUsuario{
 		if(0 < count($arrayTurmas)){
 			for($i=0; $i<count($arrayTurmas); $i++){
 				$mensagemAlteracoes = "";
-				
+
+                $aprovacoesNecessariasBib = $arrayTurmas[$i]->getNumeroAprovacoesBiblioteca();
 				$alteracoesBiblioteca	 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::BIBLIOTECA, $dataUltimoLogin);
 				$alteracoesBlog 		 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::BLOG, $dataUltimoLogin);
 				$alteracoesForum 		 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::FORUM, $dataUltimoLogin);
@@ -74,7 +75,7 @@ class AlteracoesTurmasUsuario{
 				if(0 < $alteracoesBiblioteca || 0 < $alteracoesBlog || 0 < $alteracoesForum || 0 < $alteracoesArte
 						|| 0 < $alteracoesPergunta || 0 < $alteracoesPortfolio || 0 < $alteracoesPlayer || 0 < $alteracoesAulas){
 					$mensagemAlteracoes = "Altera&ccedil;&otilde;es na turma ".$arrayTurmas[$i]->getNome().":<br>";
-					
+
 					if(0 < $alteracoesBiblioteca)	{ $mensagemAlteracoes .= $alteracoesBiblioteca." na Biblioteca.<br>"; }
 					if(0 < $alteracoesBlog)			{ $mensagemAlteracoes .= $alteracoesBlog." em Blogs de pessoas desta turma.<br>"; }
 					if(0 < $alteracoesForum)		{ $mensagemAlteracoes .= $alteracoesForum." no F&oacute;rum.<br>"; }
@@ -88,6 +89,12 @@ class AlteracoesTurmasUsuario{
 					
 					$mensagens[] = $mensagemAlteracoes;
 				}
+
+                if(0 < $aprovacoesNecessariasBib){
+                    $mensagemAlteracoes = " N&uacute;mero de aprova&ccedil;&otilde;es pendentes na biblioteca da turma ".$arrayTurmas[$i]->getNome().": ".$aprovacoesNecessariasBib."<br>";
+                    $mensagemAlteracoes .= '<br>';
+                    $mensagens[] = $mensagemAlteracoes;
+                }
 			}
 		}
 		
