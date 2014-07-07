@@ -413,7 +413,7 @@ class Arquivo {
 		try{
 			$teste = new Imagem($this->id);
 			$isImage = true;
-		}catch(Exception $e){
+		}catch(Exception $e){ // gotta catch em all exception handling, se isso der merda um dia me perdoem - joão 7/7/14
 			$isImage = false;
 		}
 
