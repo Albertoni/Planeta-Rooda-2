@@ -91,6 +91,7 @@ function enviar() {
 	global $_POST;
 	global $_FILES;
 	global $perm;
+
 	$idUsuario = $usuario->getId();
 	$idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 	$turma = new turma($idTurma);

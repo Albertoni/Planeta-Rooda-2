@@ -679,8 +679,38 @@ var BIBLIOTECA = (function () {
 				$(editorMaterial).fadeOut();
 			}
 		});
-		formEnvioMaterial.onsubmit = function () {
-			setTimeout(function () { ajax.submitNewMaterial(formEnvioMaterial); }, 5);
+		formEnvioMaterial.onsubmit = function (event) {
+			event.stopPropagation();
+			event.preventDefault();
+
+			var file = new FormData(formEnvioMaterial);
+
+			setTimeout(function(){ 
+				var request = $.ajax({
+					url: formEnvioMaterial.action,
+					type: "POST",
+					data: file,
+					dataType: "json",
+
+					// Estes devem ficar falsos senão o jquery acha que tá enviando texto e não arquivo
+					processData: false,
+					contentType: false,
+
+					success: function(response, textStatus, jqXHR){
+						console.log(response);
+						if (response.success){
+							formEnvioMaterial.reset();
+							toggleEnviar();
+						}else{
+							ROODA.ui.alert("pqp");
+						};
+					},
+					error: function(jqXHR, textStatus, errorThrown){
+						console.log("ERRO " + textStatus);
+					}
+				});
+				
+			 }, 5);
 			return false;
 		};
 

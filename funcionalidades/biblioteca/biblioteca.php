@@ -6,6 +6,8 @@ require_once("../../usuarios.class.php");
 require_once("../../reguaNavegacao.class.php");
 require_once("../../turma.class.php");
 
+header('Content-Type: text/html; charset=UTF-8');
+
 $usuario = usuario_sessao();
 $idTurma = isset($_GET['turma']) ? (int) $_GET['turma'] : 0;
 
