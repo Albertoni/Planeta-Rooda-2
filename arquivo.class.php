@@ -420,8 +420,7 @@ class Arquivo {
 		header("Content-length: {$this->getTamanho()}");
 		header("Content-type: {$this->getTipo()}");
 		if (!$isImage || $forceDownload){
-            $nomeCodificado = rawurlencode($this->getNome());
-			header('Content-Disposition: attachment; filename="'.$nomeCodificado.'"');
+			header('Content-Disposition: attachment; filename="'.$this->getNome().'"');
 		}
 		print $this->getConteudo();
 		return;

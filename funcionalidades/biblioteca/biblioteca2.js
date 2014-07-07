@@ -702,11 +702,11 @@ var BIBLIOTECA = (function () {
 							formEnvioMaterial.reset();
 							toggleEnviar();
 						}else{
-							ROODA.ui.alert("pqp");
+							ROODA.ui.alert('Erro: ' + response.errors.join(', '));
 						};
 					},
 					error: function(jqXHR, textStatus, errorThrown){
-						console.log("ERRO " + textStatus);
+						ROODA.ui.alert('Um erro no servidor aconteceu, tente novamente. Erro: ' + textStatus);
 					}
 				});
 				
