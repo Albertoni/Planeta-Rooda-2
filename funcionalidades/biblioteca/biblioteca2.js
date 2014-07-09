@@ -257,8 +257,13 @@ var BIBLIOTECA = (function () {
 			classes = classes.map(function(e) { return e.split(".").join("-"); });
 			this.arquivo = obj.arquivo;
 			this.HTMLElemento.classList.add('arquivo');
+			console.log(classes);
 			for (i in classes) {
-				this.HTMLElemento.classList.add(classes[i]);
+				try{
+					this.HTMLElemento.classList.add(classes[i]);
+				}catch(error){
+					console.log(error);
+				}
 			}
 		}
 		else if (this.tipo === 'link') {
@@ -680,11 +685,16 @@ var BIBLIOTECA = (function () {
 			}
 		});
 		formEnvioMaterial.onsubmit = function (event) {
+			// Para o navegador não tentar enviar e nós controlarmos
 			event.stopPropagation();
 			event.preventDefault();
 
+			// Copia os dados do formulario
 			var file = new FormData(formEnvioMaterial);
 
+			// Mensagenzinha padrão de enviando
+
+			// Envia via jquery
 			setTimeout(function(){ 
 				var request = $.ajax({
 					url: formEnvioMaterial.action,
@@ -696,6 +706,7 @@ var BIBLIOTECA = (function () {
 					processData: false,
 					contentType: false,
 
+					// Função que roda se tudo deu certo
 					success: function(response, textStatus, jqXHR){
 						console.log(response);
 						if (response.success){
@@ -705,8 +716,15 @@ var BIBLIOTECA = (function () {
 							ROODA.ui.alert('Erro: ' + response.errors.join(', '));
 						};
 					},
+
+					// função pra caso de erro
 					error: function(jqXHR, textStatus, errorThrown){
 						ROODA.ui.alert('Um erro no servidor aconteceu, tente novamente. Erro: ' + textStatus);
+					},
+
+					// essa sempre roda APÓS a success ou a error. Uso para remover a mensagem "enviando"
+					complete: function(jqXHR, textStatus){
+						// body...
 					}
 				});
 				

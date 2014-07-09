@@ -52,6 +52,9 @@ WHERE codMaterial = $id"
 			{
 				$this->popular($bd->resultado);
 			}
+			elseif ($bd->registros === 0) {
+				$this->erros[] = "Arquivo não existe no banco de dados.";
+			}
 			elseif ($bd->erro !== '')
 			{
 				$this->erros[] = $bd->erro;

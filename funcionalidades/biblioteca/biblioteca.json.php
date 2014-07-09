@@ -114,10 +114,10 @@ function enviar() {
 
 		return;
 	}
-	$titulo = isset($_POST['titulo']) ? utf8_encode($_POST['titulo']) : '';
-	$autor = isset($_POST['autor']) ? utf8_encode($_POST['autor']) : '';
-	$tags = isset($_POST['tags']) ? utf8_encode($_POST['tags']) : '';
-	$link = isset($_POST['link']) ? utf8_encode($_POST['link']) : '';
+	$titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
+	$autor = isset($_POST['autor']) ?   $_POST['autor'] : '';
+	$tags = isset($_POST['tags']) ?     $_POST['tags'] : '';
+	$link = isset($_POST['link']) ?     $_POST['link'] : '';
 	if ($titulo === '') {
 		$json['errors'][] = "Não pode enviar material sem título";
 	};
@@ -181,10 +181,10 @@ function editar() {
 	global $usuario;
 	global $turma;
 	global $_POST;
-	$id     = isset($_POST['id'])     ? (int) ($_POST['id'])     : 0;
-	$titulo = isset($_POST['titulo']) ? utf8_encode($_POST['titulo']) : '';
-	$autor  = isset($_POST['autor'])  ? utf8_encode($_POST['autor'])  : '';
-	$tags   = isset($_POST['tags'])   ? utf8_encode($_POST['tags'])   : '';
+	$id     = isset($_POST['id'])     ? (int)($_POST['id']):0;
+	$titulo = isset($_POST['titulo']) ? $_POST['titulo'] : '';
+	$autor  = isset($_POST['autor'])  ? $_POST['autor']  : '';
+	$tags   = isset($_POST['tags'])   ? $_POST['tags']   : '';
 	if (!$id) {
 		$json['errors'][] = 'Náo foi possivel editar o material, referencia inválida.';
 		return;
