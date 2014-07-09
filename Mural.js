@@ -22,7 +22,7 @@ function Mural(/*void*/){
 	
 //dados
 	//Id da div que cont�m o mural e s� ele.
-	/*String*/ this.paiId = 'caixaMural';
+	/*String*/ this.paiId = 'divLugarDoMural';
 	//Id deste mural.
 	/*String*/ this.id = 'Mural';
 	//Id do bot�o UP (ver janelas acima).
