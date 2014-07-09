@@ -274,9 +274,6 @@ class Usuario { //estrutura para o item post do blog
 	*									se _nivelDeCorte = professor, retornará somente turmas em que o usuário é aluno, monitor e professor, ou aluno e professor, ou monitor e professor.
 	*/
 	public function buscaTurmasComNivel(/*int*/ $nivelDeCorte){
-		global $nivelAluno;
-		global $nivelMonitor;
-		global $nivelProfessor;
 
 		$conexaoTurmas = new conexao();
 		$conexaoTurmas->solicitar("SELECT *
@@ -287,20 +284,20 @@ class Usuario { //estrutura para o item post do blog
 
 		for($i=0; $i<$conexaoTurmas->registros; $i++){
 			$associacaoDefinida = isset($conexaoTurmas->resultado['associacao']) && $conexaoTurmas->resultado['associacao'] != '';
-			$ehNoMaximoAluno = $conexaoTurmas->resultado['associacao'] == strval($nivelAluno);
-			$ehNoMaximoMonitor = $conexaoTurmas->resultado['associacao'] == strval($nivelMonitor)
-				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelMonitor);
-			$ehNoMaximoProfessor = $conexaoTurmas->resultado['associacao'] == strval($nivelProfessor)
-				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelMonitor+$nivelProfessor)
-				|| $conexaoTurmas->resultado['associacao'] == strval($nivelMonitor+$nivelProfessor)
-				|| $conexaoTurmas->resultado['associacao'] == strval($nivelAluno+$nivelProfessor);
+			$ehNoMaximoAluno = $conexaoTurmas->resultado['associacao'] == strval(NIVELALUNO);
+			$ehNoMaximoMonitor = $conexaoTurmas->resultado['associacao'] == strval(NIVELMONITOR)
+				|| $conexaoTurmas->resultado['associacao'] == strval(NIVELALUNO+NIVELMONITOR);
+			$ehNoMaximoProfessor = $conexaoTurmas->resultado['associacao'] == strval(NIVELPROFESSOR)
+				|| $conexaoTurmas->resultado['associacao'] == strval(NIVELALUNO+NIVELPROFESSOR+NIVELMONITOR)
+				|| $conexaoTurmas->resultado['associacao'] == strval(NIVELMONITOR+NIVELPROFESSOR)
+				|| $conexaoTurmas->resultado['associacao'] == strval(NIVELALUNO+NIVELPROFESSOR);
 			$turma = new turma();
 			$turma->openTurma($conexaoTurmas->resultado['codTurma']);
-			if($associacaoDefinida && $nivelDeCorte == $nivelAluno && $ehNoMaximoAluno){
+			if($associacaoDefinida && $nivelDeCorte == NIVELALUNO && $ehNoMaximoAluno){
 				array_push($turmasUsuario, $turma);
-			} else if($associacaoDefinida && $nivelDeCorte == $nivelMonitor && $ehNoMaximoMonitor){
+			} else if($associacaoDefinida && $nivelDeCorte == NIVELMONITOR && $ehNoMaximoMonitor){
 				array_push($turmasUsuario, $turma);
-			} else if($associacaoDefinida && $nivelDeCorte == $nivelProfessor && $ehNoMaximoProfessor){
+			} else if($associacaoDefinida && $nivelDeCorte == NIVELPROFESSOR && $ehNoMaximoProfessor){
 				array_push($turmasUsuario, $turma);
 			}
 

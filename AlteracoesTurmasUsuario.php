@@ -24,15 +24,12 @@ class AlteracoesTurmasUsuario{
 	* @param Usuario 	$usuario	O usu�rio de cujas turmas as altera��es ser�o pesquisadas.
 	*/
 	public function __construct(/*Usuario*/ $usuario){
-		global $nivelAluno;
-		global $nivelMonitor;
-		global $nivelProfessor;
 		
 		$this->usuario = $usuario;
 		
-		$this->turmasUsuarioAluno			 = $this->usuario->buscaTurmasComNivel($nivelAluno);
-		$this->turmasUsuarioMonitor			 = $this->usuario->buscaTurmasComNivel($nivelMonitor);
-		$this->turmasUsuarioProfessor		 = $this->usuario->buscaTurmasComNivel($nivelProfessor);
+		$this->turmasUsuarioAluno			 = $this->usuario->buscaTurmasComNivel(NIVELALUNO);
+		$this->turmasUsuarioMonitor			 = $this->usuario->buscaTurmasComNivel(NIVELMONITOR);
+		$this->turmasUsuarioProfessor		 = $this->usuario->buscaTurmasComNivel(NIVELPROFESSOR);
 	}
 	
 	/**
@@ -42,27 +39,35 @@ class AlteracoesTurmasUsuario{
 	*								Exemplo: Array[0] = <mensagem das altera��es na turma X>, Array[1] = <mensagem das altera��es na turma Y>, ...
 	*/
 	public function gerarMensagensAlteracoesTurmasComPapel(/*int*/ $nivelDeCorte){
-		global $nivelAluno;
-		global $nivelMonitor;
-		global $nivelProfessor;
 		
 		$mensagens = array();
 		$arrayTurmas = array();
 		switch($nivelDeCorte){
-			case $nivelAluno:		$arrayTurmas = $this->turmasUsuarioAluno;
+			case NIVELALUNO:		$arrayTurmas = $this->turmasUsuarioAluno;
 				break;
-			case $nivelMonitor:		$arrayTurmas = $this->turmasUsuarioMonitor;
+			case NIVELMONITOR:		$arrayTurmas = $this->turmasUsuarioMonitor;
 				break;
-			case $nivelProfessor:	$arrayTurmas = $this->turmasUsuarioProfessor;
+			case NIVELPROFESSOR:	$arrayTurmas = $this->turmasUsuarioProfessor;
 				break;
 		}
 		
 		$dataUltimoLogin = $this->usuario->getDataUltimoLogin();
+
+        $q = new conexao();
+
+
+
+
+
 		if(0 < count($arrayTurmas)){
 			for($i=0; $i<count($arrayTurmas); $i++){
+                $q->solicitar("SELECT biblioteca_aprovarMateriais FROM GerenciamentoTurma WHERE codTurma=".(int)$arrayTurmas[$i]->getId());
+                $monitorPodeAlterar = $q->resultado['biblioteca_aprovarMateriais'];
 				$mensagemAlteracoes = "";
-
-                $aprovacoesNecessariasBib = $arrayTurmas[$i]->getNumeroAprovacoesBiblioteca();
+                if($this->usuario->getNivel($arrayTurmas[$i]->getId())==NIVELPROFESSOR ||
+                   $this->usuario->getNivel($arrayTurmas[$i]->getId())==NIVELMONITOR && $monitorPodeAlterar==NIVELMONITOR+NIVELPROFESSOR){
+                    $aprovacoesNecessariasBib = $arrayTurmas[$i]->getNumeroAprovacoesBiblioteca();
+                }
 				$alteracoesBiblioteca	 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::BIBLIOTECA, $dataUltimoLogin);
 				$alteracoesBlog 		 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::BLOG, $dataUltimoLogin);
 				$alteracoesForum 		 = $arrayTurmas[$i]->getNumeroAlteracoes(turma::FORUM, $dataUltimoLogin);
@@ -90,7 +95,7 @@ class AlteracoesTurmasUsuario{
 					$mensagens[] = $mensagemAlteracoes;
 				}
 
-                if(0 < $aprovacoesNecessariasBib){
+                if(isset($aprovacoesNecessariasBib) && 0 < $aprovacoesNecessariasBib){
                     $mensagemAlteracoes = " N&uacute;mero de aprova&ccedil;&otilde;es pendentes na biblioteca da turma ".$arrayTurmas[$i]->getNome().": ".$aprovacoesNecessariasBib."<br>";
                     $mensagemAlteracoes .= '<br>';
                     $mensagens[] = $mensagemAlteracoes;

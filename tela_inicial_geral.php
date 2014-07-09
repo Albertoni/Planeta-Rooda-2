@@ -55,11 +55,11 @@
 				<script>var Mural = new Mural();</script>
 				<?php
 					$alteracoesTurmas = new AlteracoesTurmasUsuario($usuario);
-					$mensagensProfessor = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel($nivelProfessor);
+					$mensagensProfessor = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel(NIVELPROFESSOR);
 					foreach($mensagensProfessor as $mensagem){ echo "<script>Mural.adicionarJanela(\"".$mensagem."\")</script>"; }
-					$mensagensMonitor = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel($nivelMonitor);
+					$mensagensMonitor = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel(NIVELMONITOR);
 					foreach($mensagensMonitor as $mensagem){ echo "<script>Mural.adicionarJanela(\"".$mensagem."\")</script>"; }
-					$mensagensAluno = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel($nivelAluno);
+					$mensagensAluno = $alteracoesTurmas->gerarMensagensAlteracoesTurmasComPapel(NIVELALUNO);
 					foreach($mensagensAluno as $mensagem){ echo "<script>Mural.adicionarJanela(\"".$mensagem."\")</script>"; }
 				?>
 				<script>
