@@ -368,7 +368,21 @@ ul.listaFun li a {
 .bloco h1 .bt_fechar {
 	margin: 5px 5px;
 }
-.comentario button[name=excluir],
+.comentario button[name=excluir] {
+	background: transparent url('images/botoes/bt_excluirpeq.png') no-repeat top left;
+	background-size: 100% auto;
+	border: 0 none;
+	display: inline-block;
+	float: right;
+	width: 20px;
+	height: 20px;
+	margin: 2px 0 2px 5px;
+	padding: 0;
+	overflow: hidden;
+	text-indent: -999px;
+	vertical-align: middle;
+}
+
 .bt_fechar {
 	background: transparent url('images/botoes/bt_x.png') no-repeat bottom left;
 	border: 0 none;
