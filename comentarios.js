@@ -1,5 +1,5 @@
 (function (exports) {
-	'use sctrict';
+	'use strict';
 	function Comentario(obj, botaoApagar) {
 		this.id = obj.id;
 		this.usuario = new ROODA.Usuario(obj.usuario.id, obj.usuario.usuario, obj.usuario.nome);
